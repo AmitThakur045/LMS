@@ -3,6 +3,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { NavLink } from "react-router-dom";
+import dummyPdf from "../Assests/screenshots.pdf";
+import PdfViewer from "../components/PdfViewer";
 
 const sampleData = [
   {
@@ -32,6 +34,7 @@ const sampleData = [
 ];
 
 const AssignmentMain = () => {
+
   return (
     <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
       <div className="h-24 bg-[#373737] w-full rounded-tl-2xl rounded-tr-2xl flex">
@@ -64,7 +67,7 @@ const AssignmentMain = () => {
         </div>
       </div>
       <div className="flex h-full">
-        <div className="flex-[0.4] bg-[#EDF0F5]  rounded-bl-2xl">
+        <div className="flex-[0.4] bg-[#EDF0F5] rounded-bl-2xl">
           <h1 className="ml-6 mt-7 font-semibold text-2xl">Assignment</h1>
           <div className="space-y-4 mt-4 overflow-y-auto h-[33rem]">
             {sampleData.map((data, i) => (
@@ -80,7 +83,9 @@ const AssignmentMain = () => {
             ))}
           </div>
         </div>
-        <div className="flex-[0.6] bg-[#F9F9F9]  rounded-br-2xl"></div>
+        <div className="flex-[0.6] bg-[#F9F9F9] overflow-y-auto">
+          <PdfViewer pdf={dummyPdf} />
+        </div>
       </div>
     </div>
   );
