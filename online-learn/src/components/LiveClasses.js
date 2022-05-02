@@ -10,7 +10,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@mui/material";
 
@@ -73,22 +72,19 @@ const LiveClasses = () => {
           <div className="flex-[0.2] rounded-tr-2xl h-full flex">
             <NavLink
               to="/community"
-              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
               <PeopleIcon fontSize="medium" className="" />
               <p className="text-base">Community</p>
             </NavLink>
             <NavLink
               to="/help"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
               <HelpOutlineIcon fontSize="medium" className="" />
               <p className="text-base">Help</p>
             </NavLink>
             <NavLink
               to="/notes"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
               <FormatListNumberedIcon fontSize="medium" className="" />
               <p className="text-base">Notes</p>
             </NavLink>
@@ -126,8 +122,7 @@ const LiveClasses = () => {
                   height: "65px",
                   width: "160px",
                 }}
-                variant="contained"
-              >
+                variant="contained">
                 Join
               </Button>
             </div>
