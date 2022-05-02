@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
+import HomeSidebar from "./HomeSidebar";
 
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
@@ -78,42 +79,7 @@ const Community = () => {
 
   return (
     <div className="bg-black w-screen h-screen flex overflow-hidden">
-      <div className="h-[45.5rem] flex-[0.07] flex flex-col items-center my-4 justify-between py-5">
-        <img src={logo} alt="" />
-        <div className="flex flex-col space-y-10">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
-            <MenuBookIcon className=" h-7" alt="" />
-            <p className="">Courses</p>
-          </NavLink>
-          <NavLink
-            to="/resources"
-            className={({ isActive }) =>
-              isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
-            <DiamondIcon className=" h-7" alt="" />
-            <p className="">Resources</p>
-          </NavLink>
-          <NavLink
-            to="/community"
-            className={({ isActive }) =>
-              isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
-            <PeopleIcon className=" h-7" alt="" />
-            <p className="">Community</p>
-          </NavLink>
-        </div>
-        <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
-          <LogoutIcon onClick={logout} className="cursor-pointer h-10  " />
-          <p className="">Logout</p>
-        </div>
-      </div>
+      <HomeSidebar />
       <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 pl-[3.1rem] pr-[3.1rem] pt-[3rem]">
         <div>
           <p className="text-4xl font-bold">Community</p>
@@ -139,8 +105,7 @@ const Community = () => {
                         color: "#fff",
                         height: "38px",
                       }}
-                      variant="contained"
-                    >
+                      variant="contained">
                       New Thread
                     </Button>
                   </div>
@@ -183,8 +148,7 @@ const Community = () => {
                             color: "#fff",
                             height: "38px",
                           }}
-                          variant="contained"
-                        >
+                          variant="contained">
                           {data.answer}
                         </Button>
                       </div>
@@ -196,8 +160,7 @@ const Community = () => {
                         <div
                           className={`border-2 h-[50px] w-[50px] rounded-full flex items-center justify-center font-bold bg-${
                             colors[Math.floor(Math.random() * colors.length)]
-                          }-500`}
-                        >
+                          }-500`}>
                           {data.avatar}
                         </div>
                       </div>
