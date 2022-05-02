@@ -19,10 +19,10 @@ const CourseSidebar = () => {
   };
 
   return (
-    <div className="h-[45.5rem] flex-[0.07] flex flex-col items-center my-4 justify-between py-5">
+    <div className="h-[45.5rem] flex-[0.07] flex flex-col  my-4 justify-between py-5">
       <NavLink
         to="/"
-        className="text-[#555555] hover:text-white transition-all duration-200">
+        className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
         <ArrowBackIcon className=" h-7" alt="" />
         <p className="">Back</p>
       </NavLink>
