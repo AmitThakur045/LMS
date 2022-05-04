@@ -1,11 +1,11 @@
 import React from "react";
 import Sidebar from "./Sidebar";
-
 import PeopleIcon from "@mui/icons-material/People";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PersonIcon from "@mui/icons-material/Person";
 import PieChart from "../../Utils/PieChart";
 import Header from "./Header";
+import Areachart from "../../Utils/Areachart.js";
 
 const Dashboard = () => {
   return (
@@ -46,7 +46,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className=" flex space-x-4 mx-7 my-6">
+          <div className="flex space-x-4 mx-7 my-6">
             <div className="flex-[0.35] bg-white rounded-lg shadow-lg h-[15rem] flex items-center">
               <PieChart percentage={67} />
               <div className="space-y-4 text-[#60086f]">
@@ -54,7 +54,9 @@ const Dashboard = () => {
                 <p className="font-semibold text-2xl">43</p>
               </div>
             </div>
-            <div className="flex-[0.65] bg-white shadow-lg h-[15rem]"></div>
+            <div className="flex-[0.65] bg-white shadow-lg h-[19rem] pt-4">
+              <Areachart />
+            </div>
           </div>
           <div className=""></div>
         </div>
