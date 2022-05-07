@@ -10,25 +10,18 @@ const batchSchema = new Schema({
   batchCode: {
     type: String,
     required: true,
+    unique: true,
   },
   courses: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      courseCode: String,
       ref: "course",
-    }
+    },
   ],
-  totalLectures: {
-    type: Number,
-    default: 10,
-  },
   year: {
     type: String,
     required: true,
-  },
-  attendence: {
-    type: Schema.Types.ObjectId,
-    ref: "attendence",
-  },
+  }
 });
 
 export default mongoose.model("batch", batchSchema);

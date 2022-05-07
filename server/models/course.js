@@ -9,10 +9,11 @@ const courseSchema = mongoose.Schema({
   courseCode: {
     type: String,
     required: true,
+    unique: true,
   },
-  batch: {
+  batchCode: {
     type: String,
-    required: true,
+    ref: "batch",
   },
   description: {
     type: String,
