@@ -26,10 +26,16 @@ const facultySchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  batch: {
-    type: String,
-    required: true,
-  },
+  batch: [
+    {
+      batchCode: String,
+      course: {
+        courseCode: String,
+        ref: "course" 
+      },
+      ref: "batch"
+    }
+  ],
   contactNumber: {
     type: Number,
   },

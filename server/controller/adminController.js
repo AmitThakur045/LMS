@@ -124,8 +124,6 @@ export const addAdmin = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    // batch details
-
     var username = email.split("@")[0];
 
     let hashedPassword;
@@ -159,20 +157,115 @@ export const addAdmin = async (req, res) => {
   }
 };
 
+export const addBatch = async (req, res) => {
+  try {
+    const { batchName, batchCode, year, courses } = req.body;
+    const errors = { batchCodeError: String };
+    const existingBatch = await Batch.findOne({ batchCode });
+
+    if (existingBatch) {
+      errors.batchCodeError = "Batch already exists";
+      return res.status(400).json(errors);
+    }
+
+    const newBatch = await new Batch({
+      batchName,
+      batchCode,
+      year,
+      courses,
+    });
+
+    await newBatch.save();
+
+    courses.map((course) => {
+      Course.findOneAndUpdate(
+        { courseCode: course.courseCode },
+        { $push: { batchCode: batchCode } },
+        { new: true }
+      );
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Batch added successfully",
+      response: newBatch,
+    });
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
+export const addCourseInBatch = async (req, res) => {
+  try {
+    const {
+      batchCode,
+      courseCode,
+      courseName,
+      description,
+      totalLectures,
+      rating,
+      difficulty,
+      year,
+    } = req.body;
+    const errors = { batchCodeError: String };
+
+    const existingBatch = await Batch.findOne({
+      batchCode,
+      coursees: { courseCode },
+    });
+
+    if (existingBatch) {
+      errors.batchCodeError = "Course already exists in batch";
+      return res.status(400).json(errors);
+    }
+
+    const newCourse = await new Course({
+      courseCode,
+      courseName,
+      description,
+      totalLectures,
+      rating,
+      difficulty,
+      year,
+    });
+
+    await newCourse.save();
+
+    Batch.findOneAndUpdate(
+      batchCode,
+      { $push: { coursees: newCourse } },
+      { new: true }
+    );
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
 export const addFaculty = async (req, res) => {
   try {
-    const { name, dob, contactNumber, avatar, email, joiningYear, gender, designation, batch } = req.body;
+    const {
+      name,
+      dob,
+      contactNumber,
+      avatar,
+      email,
+      joiningYear,
+      gender,
+      designation,
+      batch,
+    } = req.body;
     const errors = { emailError: String };
-    
+
     const existingFaculty = await Faculty.findOne({ email });
     if (existingFaculty) {
       errors.emailError = "Faculty already exists";
       return res.status(400).json(errors);
     }
 
-    // batch details
-
-    var username = email.split("@")[0];
     let hashedPassword;
     const newDob = dob.split("-").reverse().join("-");
 
@@ -184,36 +277,36 @@ export const addFaculty = async (req, res) => {
       email,
       password: hashedPassword,
       joiningYear,
-      username,
       department,
       avatar,
       contactNumber,
       dob,
+      batch,
       gender,
       designation,
       passwordUpdated,
     });
     await newFaculty.save();
+    
     return res.status(200).json({
       success: true,
       message: "Faculty registerd successfully",
       response: newFaculty,
     });
-
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
     res.status(500).json(errors);
   }
-}
+};
 
-export const getFaculty = async (req, res) => {
+export const getFacultyByBatchCode = async (req, res) => {
   try {
-    const { batch } = req.body;
+    const { batchCode } = req.body;
     const errors = { noFacultyError: String };
-    const faculties = await Faculty.find({ batch });
+    const faculties = await Faculty.find({ batch: { batchCode } });
 
-    if(faculties.length === 0) {
+    if (faculties.length === 0) {
       errors.noFacultyError = "No faculty found";
       return res.status(400).json(errors);
     }
@@ -224,4 +317,126 @@ export const getFaculty = async (req, res) => {
     errors.backendError = error;
     res.status(500).json(errors);
   }
-}
+};
+
+export const getFacultyByCourseCode = async (req, res) => {
+  try {
+    const { batchCode, courseCode } = req.body;
+    const errors = { noFacultyError: String };
+
+    const faculties = await Faculty.find({
+      batch: { batchCode, course: { courseCode } },
+    });
+
+    if (faculties.length === 0) {
+      errors.noFacultyError = "No faculty found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json({ result: faculties });
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
+export const addStudent = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      avatar,
+      year,
+      batch,
+      gender,
+      fatherName,
+      motherName,
+      contactNumber,
+      fatherContactNumber,
+      dob,
+      assignment,
+    } = req.body;
+    const errors = { studentError: String };
+
+    const existingStudent = await Admin.findOne({ email });
+
+    if (existingStudent) {
+      errors.studentError = "Student already exists";
+      return res.status(400).json(errors);
+    }
+
+    var passwordUpdated = false;
+    const newDob = dob.split("-").reverse().join("-");
+    let hashedPassword = await bcrypt.hash(newDob, 10);
+
+    const newStudent = await new Student({
+      name,
+      email,
+      avatar,
+      year,
+      batch,
+      password: hashedPassword,
+      gender,
+      fatherName,
+      motherName,
+      contactNumber,
+      fatherContactNumber,
+      assignment,
+      passwordUpdated,
+    });
+    await newStudent.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Student added successfully",
+      response: newStudent,
+    })
+
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
+export const getStudentByBatchCode = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    const errors = { noStudentError: String };
+    const students = await Student.find({ batch: { batchCode } });
+
+    if (students.length === 0) {
+      errors.noStudentError = "No student found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json({ result: students });
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
+export const getStudentByCourseCode = async (req, res) => {
+  try {
+    const { batchCode, courseCode } = req.body;
+    const errors = { noStudentError: String };
+
+    const students = await Student.find({
+      batch: { batchCode, course: { courseCode } },
+    });
+
+    if (students.length === 0) {
+      errors.noStudentError = "No student found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json({ result: students });
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};

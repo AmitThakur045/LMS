@@ -1,10 +1,19 @@
 import mongoose from "mongoose";
 
 const assignmentSchema = mongoose.Schema({
+  assignmentCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   assignment: {
     type: String,
     required: true,
     trim: true,
+  },
+  courseCode: {
+    type: String,
+    required: true,
   },
   batchCode: {
     type: String,
