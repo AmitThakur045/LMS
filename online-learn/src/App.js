@@ -13,6 +13,9 @@ import Admin from "./components/Admin/Admin";
 import AddAdmin from "./components/Admin/AdminSection/AddAdmin";
 import SearchAdmin from "./components/Admin/AdminSection/SearchAdmin";
 import UpdateAdmin from "./components/Admin/AdminSection/UpdateAdmin";
+import AddFaculty from "./components/Admin/FacultySection/AddFaculty";
+import SearchFaculty from "./components/Admin/FacultySection/SearchFaculty";
+import AddCourse from "./components/Admin/CourseSection/AddCourse";
 
 function App() {
   return (
@@ -31,11 +34,18 @@ function App() {
       <Route path="/admin/course" exact element={<AdminCourse />} />
       <Route path="/admin/admin/addadmin" exact element={<AddAdmin />} />
       <Route path="/admin/admin/searchadmin" exact element={<SearchAdmin />} />
+      <Route path="/admin/faculty/addfaculty" exact element={<AddFaculty />} />
       <Route
-        path="/admin/admin/searchadmin/updateadmin"
+        path="/admin/faculty/searchfaculty"
+        exact
+        element={<SearchFaculty />}
+      />
+      <Route
+        path="/admin/faculty/searchadmin/updateadmin"
         exact
         element={<UpdateAdmin />}
       />
+      <Route path="/admin/course/addcourse" exact element={<AddCourse />} />
     </Routes>
   );
 }
