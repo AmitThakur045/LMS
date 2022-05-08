@@ -75,46 +75,58 @@ export const updatedPassword = async (req, res) => {
   }
 };
 
+export const getAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const errors = { noAdminError: String };
+    const admin = await Admin.findOne({ email });
+    if (admin === null) {
+      errors.noAdminError = "No Admin Found";
+      return res.status(404).json(errors);
+    }
+    res.status(200).json(admin);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export const updateAdmin = async (req, res) => {
   try {
-    const { name, dob, contactNumber, avatar, email } = req.body;
-    const updatedAdmin = await Admin.findOne({ email });
+    const { firstName, lastName, contactNumber, avatar, email } = req.body;
+    const updateAdmin = await Admin.findOne({ email });
 
-    if (name) {
-      updatedAdmin.name = name;
-      await updatedAdmin.save();
+    if (firstName) {
+      updateAdmin.firstName = firstName;
+      await updateAdmin.save();
     }
-
-    if (dob) {
-      updatedAdmin.dob = dob;
-      await updatedAdmin.save();
+    if (lastName) {
+      updateAdmin.lastName = lastName;
+      await updateAdmin.save();
     }
 
     if (contactNumber) {
-      updatedAdmin.contactNumber = contactNumber;
-      await updatedAdmin.save();
+      updateAdmin.contactNumber = contactNumber;
+      await updateAdmin.save();
     }
 
     if (avatar) {
-      updatedAdmin.avatar = avatar;
-      await updatedAdmin.save();
+      updateAdmin.avatar = avatar;
+      await updateAdmin.save();
     }
 
     res.status(200).json({
       success: true,
       message: "Admin updated successfully",
-      response: updatedAdmin,
+      response: updateAdmin,
     });
   } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
+    res.status(500).json(error.message);
   }
 };
 
 export const addAdmin = async (req, res) => {
   try {
-    const { name, dob, contactNumber, avatar, email, joiningYear } = req.body;
+    const { firstName, lastName, dob, contactNumber, avatar, email } = req.body;
 
     const errors = { emailError: String };
     const existingAdmin = await Admin.findOne({ email });
@@ -124,25 +136,19 @@ export const addAdmin = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    var username = email.split("@")[0];
-
     let hashedPassword;
     const newDob = dob.split("-").reverse().join("-");
 
     hashedPassword = await bcrypt.hash(newDob, 10);
-    var passwordUpdated = false;
 
     const newAdmin = await new Admin({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
-      joiningYear,
-      username,
-      department,
       avatar,
       contactNumber,
       dob,
-      passwordUpdated,
     });
     await newAdmin.save();
     return res.status(200).json({
@@ -151,9 +157,17 @@ export const addAdmin = async (req, res) => {
       response: newAdmin,
     });
   } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
+    res.status(500).json(error);
+  }
+};
+
+export const deleteAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    await Admin.findOneAndDelete({ email });
+    res.status(200).json({ message: "Admin Deleted" });
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
@@ -287,7 +301,7 @@ export const addFaculty = async (req, res) => {
       passwordUpdated,
     });
     await newFaculty.save();
-    
+
     return res.status(200).json({
       success: true,
       message: "Faculty registerd successfully",
@@ -391,8 +405,7 @@ export const addStudent = async (req, res) => {
       success: true,
       message: "Student added successfully",
       response: newStudent,
-    })
-
+    });
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;

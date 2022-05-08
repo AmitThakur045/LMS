@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const adminSchema = mongoose.Schema(
+const adminSchema = new Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      require: true,
+    },
+    lastName: {
       type: String,
       require: true,
     },
@@ -14,13 +19,7 @@ const adminSchema = mongoose.Schema(
     password: {
       type: String,
     },
-    username: {
-      type: String,
-    },
     dob: {
-      type: String,
-    },
-    joiningYear: {
       type: String,
     },
     avatar: {

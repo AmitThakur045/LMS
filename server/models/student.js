@@ -24,10 +24,10 @@ const studentSchema = new Schema({
   },
   batch: [
     {
-      batchCode: String,
+      type: Schema.Types.ObjectId,
       course: {
-        courseCode: String,
-        ref: "course"
+        type: Schema.Types.ObjectId,
+        ref: "course",
       },
       ref: "batch",
     },
@@ -56,7 +56,7 @@ const studentSchema = new Schema({
       assignmentCode: String,
       courseCode: String,
       batchCode: String,
-    }
+    },
   ],
   passwordUpdated: {
     type: Boolean,

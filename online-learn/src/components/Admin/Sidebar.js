@@ -29,6 +29,22 @@ const Sidebar = () => {
           <p className="font-bold">Dashboard</p>
         </NavLink>
         <NavLink
+          to="/admin/admin"
+          className={({ isActive }) =>
+            isActive ? isActiveStyle : isNotActiveStyle
+          }>
+          <PersonIcon />
+          <p className="font-bold">Admin</p>
+        </NavLink>
+        <NavLink
+          to="/admin/faculty"
+          className={({ isActive }) =>
+            isActive ? isActiveStyle : isNotActiveStyle
+          }>
+          <PersonIcon />
+          <p className="font-bold">Faculty</p>
+        </NavLink>
+        <NavLink
           to="/admin/batch"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
