@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-
-const facultySchema = mongoose.Schema({
+const { Schema } = mongoose;
+const facultySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -28,13 +28,13 @@ const facultySchema = mongoose.Schema({
   },
   batch: [
     {
-      batchCode: String,
+      type: Schema.Types.ObjectId,
       course: {
-        courseCode: String,
-        ref: "course" 
+        type: Schema.Types.ObjectId,
+        ref: "course",
       },
-      ref: "batch"
-    }
+      ref: "batch",
+    },
   ],
   contactNumber: {
     type: Number,
