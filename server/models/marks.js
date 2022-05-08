@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-
 const marksSchema = new Schema({
   assignment: {
-    assignmentCode: String,
+    type: Schema.Types.ObjectId,
     ref: "assignment",
   },
   student: {
-    email: String,
+    type: Schema.Types.ObjectId,
     ref: "student",
   },
   marks: {

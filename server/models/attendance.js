@@ -3,11 +3,11 @@ const { Schema } = mongoose;
 
 const attendenceSchema = new Schema({
   student: {
-    email: String,
+    type: Schema.Types.ObjectId,
     ref: "student",
   },
   batch: {
-    batchCode: String,
+    type: Schema.Types.ObjectId,
     ref: "batch",
   },
   totalLecturesByFaculty: {

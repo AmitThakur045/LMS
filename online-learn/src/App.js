@@ -8,6 +8,11 @@ import Dashboard from "./components/Admin/Dashboard";
 import Batch from "./components/Admin/Batch";
 import Student from "./components/Admin/Student";
 import AdminCourse from "./components/Admin/Course";
+import Faculty from "./components/Admin/Faculty";
+import Admin from "./components/Admin/Admin";
+import AddAdmin from "./components/Admin/AdminSection/AddAdmin";
+import SearchAdmin from "./components/Admin/AdminSection/SearchAdmin";
+import UpdateAdmin from "./components/Admin/AdminSection/UpdateAdmin";
 
 function App() {
   return (
@@ -21,7 +26,16 @@ function App() {
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
       <Route path="/admin/batch" exact element={<Batch />} />
       <Route path="/admin/student" exact element={<Student />} />
+      <Route path="/admin/faculty" exact element={<Faculty />} />
+      <Route path="/admin/admin" exact element={<Admin />} />
       <Route path="/admin/course" exact element={<AdminCourse />} />
+      <Route path="/admin/admin/addadmin" exact element={<AddAdmin />} />
+      <Route path="/admin/admin/searchadmin" exact element={<SearchAdmin />} />
+      <Route
+        path="/admin/admin/searchadmin/updateadmin"
+        exact
+        element={<UpdateAdmin />}
+      />
     </Routes>
   );
 }

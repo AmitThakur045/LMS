@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const assignmentSchema = mongoose.Schema({
+const assignmentSchema = new Schema({
   assignmentCode: {
     type: String,
     required: true,
