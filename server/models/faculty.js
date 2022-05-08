@@ -16,15 +16,8 @@ const facultySchema = new Schema({
   password: {
     type: String,
   },
-  username: {
-    type: String,
-  },
   gender: {
     type: String,
-  },
-  designation: {
-    type: String,
-    required: true,
   },
   batch: [
     {
@@ -42,14 +35,6 @@ const facultySchema = new Schema({
   dob: {
     type: String,
     required: true,
-  },
-  joiningYear: {
-    type: Number,
-    required: true,
-  },
-  passwordUpdated: {
-    type: Boolean,
-    default: false,
   },
 });
 
