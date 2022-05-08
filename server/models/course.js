@@ -12,10 +12,6 @@ const courseSchema = new Schema({
     required: true,
     unique: true,
   },
-  batchCode: {
-    type: Schema.Types.ObjectId,
-    ref: "batch",
-  },
   description: {
     type: String,
     required: true,
@@ -31,10 +27,14 @@ const courseSchema = new Schema({
   difficulty: {
     type: String,
   },
-  year: {
-    type: String,
-    required: true,
-  },
+  section: [
+    {
+      sectionNumber: { type: Number },
+      lesson: [
+        { lessonNumber: { type: Number }, lessonName: { type: String } },
+      ],
+    },
+  ],
 });
 
 export default mongoose.model("course", courseSchema);
