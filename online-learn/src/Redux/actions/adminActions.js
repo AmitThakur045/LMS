@@ -4,6 +4,7 @@ import {
   SET_ERRORS,
   UPDATE_ADMIN,
   DELETE_ADMIN,
+  ADD_COURSE,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -48,6 +49,16 @@ export const deleteAdmin = (formData, navigate) => async (dispatch) => {
     alert("Admin Deleted");
     dispatch({ type: DELETE_ADMIN, payload: true });
     dispatch({ type: GET_ADMIN, payload: {} });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const addCourse = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addCourse(formData);
+    alert("Course Added Successfully");
+    dispatch({ type: ADD_COURSE, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
