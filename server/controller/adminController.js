@@ -161,6 +161,45 @@ export const addAdmin = async (req, res) => {
   }
 };
 
+export const addCourse = async (req, res) => {
+  try {
+    const {
+      courseName,
+      courseCode,
+      description,
+      totalLectures,
+      difficulty,
+      section,
+      courseImg,
+    } = req.body;
+    const errors = { courseCodeError: String };
+    const existingCourse = await Course.findOne({ courseCode });
+
+    if (existingCourse) {
+      errors.courseCodeError = "Course already exists";
+      return res.status(400).json(errors);
+    }
+
+    const newCourse = await new Course({
+      courseName,
+      courseCode,
+      description,
+      totalLectures,
+      difficulty,
+      courseImg,
+      section,
+    });
+    await newCourse.save();
+    return res.status(200).json({
+      success: true,
+      message: "Course Added successfully",
+      response: newCourse,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export const deleteAdmin = async (req, res) => {
   try {
     const { email } = req.body;

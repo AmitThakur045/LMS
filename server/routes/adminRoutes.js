@@ -6,6 +6,7 @@ import {
   getAdmin,
   updateAdmin,
   deleteAdmin,
+  addCourse,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -14,4 +15,5 @@ router.post("/addadmin", addAdmin);
 router.post("/getadmin", getAdmin);
 router.post("/updateadmin", updateAdmin);
 router.post("/deleteadmin", deleteAdmin);
+router.post("/addcourse", addCourse);
 export default router;
