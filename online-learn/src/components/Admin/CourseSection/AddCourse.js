@@ -59,11 +59,14 @@ const AddCourse = () => {
   //   }, [store.errors, store.admin.adminAdded]);
 
   const addSection = (sectionId) => {
-    let sec = { sectionNumber: sectionId, lesson: [Array.from(lesson)] };
-    setSection([...section, sec]);
+    let sec = { sectionNumber: sectionId, lesson: lesson };
+    let data = section;
+    data.push(sec);
+
+    setSection(data);
     setLesson([{ lessonNumber: 1, lessonName: "" }]);
-    console.log(section);
   };
+
   const addLesson = (lessonId) => {
     let newLesson = { lessonNumber: lessonId, lessonName: "" };
     setLesson([...lesson, newLesson]);
@@ -71,6 +74,12 @@ const AddCourse = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let data = section;
+    data.shift();
+    setSection(data);
+    console.log(section);
+
     setError({});
     setLoading(true);
     // dispatch(addAdmin(value));
@@ -198,7 +207,7 @@ const AddCourse = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    addSection(sectionId + 2);
+                    addSection(sectionId + 1);
                   }}
                   className="bg-[#bd7575] text-white w-32 h-10 rounded-md hover:scale-105 duration-150 transition-all">
                   Add Section
