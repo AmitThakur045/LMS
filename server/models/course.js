@@ -20,9 +20,8 @@ const courseSchema = new Schema({
     type: Number,
     required: true,
   },
-  rating: {
-    type: Number,
-    default: 0,
+  courseImg: {
+    type: String,
   },
   difficulty: {
     type: String,
@@ -30,8 +29,13 @@ const courseSchema = new Schema({
   section: [
     {
       sectionNumber: { type: Number },
+      sectionName: { type: String },
       lesson: [
-        { lessonNumber: { type: Number }, lessonName: { type: String } },
+        {
+          lessonNumber: { type: Number },
+          lessonName: { type: String },
+          lessonDescription: { type: String },
+        },
       ],
     },
   ],
