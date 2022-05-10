@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const studentSchema = new Schema({
-  name: {
+  firstName: {
     type: String,
-    required: true,
+    require: true,
+  },
+  lastName: {
+    type: String,
+    require: true,
   },
   email: {
     type: String,
@@ -25,10 +29,12 @@ const studentSchema = new Schema({
   batch: [
     {
       type: Schema.Types.ObjectId,
-      course: {
-        type: Schema.Types.ObjectId,
-        ref: "course",
-      },
+      course: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "course",
+        },
+      ],
       ref: "batch",
     },
   ],
