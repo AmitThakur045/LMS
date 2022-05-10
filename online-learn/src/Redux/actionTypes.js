@@ -4,3 +4,5 @@ export const GET_ADMIN = "GET_ADMIN";
 export const UPDATE_ADMIN = "UPDATE_ADMIN";
 export const DELETE_ADMIN = "DELETE_ADMIN";
 export const ADD_COURSE = "ADD_COURSE";
+export const GET_COURSE = "GET_COURSE";
+export const DELETE_COURSE = "DELETE_COURSE";
