@@ -1,6 +1,7 @@
 import {
   ADD_ADMIN,
   ADD_COURSE,
+  ADD_STUDENT,
   DELETE_ADMIN,
   GET_ADMIN,
   UPDATE_ADMIN,
@@ -12,6 +13,7 @@ const initialState = {
   adminUpdated: false,
   adminDeleted: false,
   courseAdded: false,
+  studentAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -41,6 +43,11 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         courseAdded: action.payload,
       };
+    case ADD_STUDENT: 
+      return {
+        ...state,
+        studentAdded: action.payload,
+      }
     default:
       return state;
   }
