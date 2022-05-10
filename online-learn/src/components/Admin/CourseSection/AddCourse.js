@@ -55,6 +55,7 @@ const AddCourse = () => {
         totalLectures: "",
         difficulty: "",
         section: [],
+        courseImg: "",
       });
       setSection({
         sectionNumber: 1,
@@ -83,6 +84,7 @@ const AddCourse = () => {
           totalLectures: "",
           difficulty: "",
           section: [],
+          courseImg: "",
         });
         setSection([
           {
@@ -125,6 +127,7 @@ const AddCourse = () => {
       totalLectures: "",
       difficulty: "",
       section: [],
+      courseImg: "",
     });
     setSection([
       {

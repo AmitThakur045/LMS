@@ -5,6 +5,8 @@ import {
   UPDATE_ADMIN,
   DELETE_ADMIN,
   ADD_COURSE,
+  GET_COURSE,
+  DELETE_COURSE,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -43,7 +45,7 @@ export const updateAdmin = (value, navigate) => async (dispatch) => {
   }
 };
 
-export const deleteAdmin = (formData, navigate) => async (dispatch) => {
+export const deleteAdmin = (formData) => async (dispatch) => {
   try {
     const { data } = await api.deleteAdmin(formData);
     alert("Admin Deleted");
@@ -59,6 +61,26 @@ export const addCourse = (formData) => async (dispatch) => {
     const { data } = await api.addCourse(formData);
     alert("Course Added Successfully");
     dispatch({ type: ADD_COURSE, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getCourse = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getCourse(formData);
+    dispatch({ type: GET_COURSE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const deleteCourse = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.deleteCourse(formData);
+    alert("Course Deleted");
+    dispatch({ type: DELETE_COURSE, payload: true });
+    dispatch({ type: GET_COURSE, payload: {} });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
