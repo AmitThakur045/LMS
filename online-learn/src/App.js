@@ -16,6 +16,7 @@ import UpdateAdmin from "./components/Admin/AdminSection/UpdateAdmin";
 import AddFaculty from "./components/Admin/FacultySection/AddFaculty";
 import SearchFaculty from "./components/Admin/FacultySection/SearchFaculty";
 import AddCourse from "./components/Admin/CourseSection/AddCourse";
+import AddStudent from "./components/Admin/StudentSection/AddStudent";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
       <Route path="/admin/admin/addadmin" exact element={<AddAdmin />} />
       <Route path="/admin/admin/searchadmin" exact element={<SearchAdmin />} />
       <Route path="/admin/faculty/addfaculty" exact element={<AddFaculty />} />
+      <Route path="/admin/student/addstudent" exact element={<AddStudent />} />
       <Route
         path="/admin/faculty/searchfaculty"
         exact
