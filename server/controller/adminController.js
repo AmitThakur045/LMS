@@ -200,11 +200,34 @@ export const addCourse = async (req, res) => {
   }
 };
 
+export const getCourse = async (req, res) => {
+  try {
+    const { courseCode } = req.body;
+    const errors = { noCourseError: String };
+    const course = await Course.findOne({ courseCode });
+    if (course === null) {
+      errors.noCourseError = "No Course Found";
+      return res.status(404).json(errors);
+    }
+    res.status(200).json(course);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 export const deleteAdmin = async (req, res) => {
   try {
     const { email } = req.body;
     await Admin.findOneAndDelete({ email });
     res.status(200).json({ message: "Admin Deleted" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+export const deleteCourse = async (req, res) => {
+  try {
+    const { courseCode } = req.body;
+    await Course.findOneAndDelete({ courseCode });
+    res.status(200).json({ message: "Course Deleted" });
   } catch (error) {
     res.status(500).json(error);
   }

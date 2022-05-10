@@ -2,7 +2,9 @@ import {
   ADD_ADMIN,
   ADD_COURSE,
   DELETE_ADMIN,
+  DELETE_COURSE,
   GET_ADMIN,
+  GET_COURSE,
   UPDATE_ADMIN,
 } from "../actionTypes";
 
@@ -12,6 +14,8 @@ const initialState = {
   adminUpdated: false,
   adminDeleted: false,
   courseAdded: false,
+  course: {},
+  courseDeleted: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -40,6 +44,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         courseAdded: action.payload,
+      };
+    case GET_COURSE:
+      return {
+        ...state,
+        course: action.payload,
+      };
+    case DELETE_COURSE:
+      return {
+        ...state,
+        courseDeleted: action.payload,
       };
     default:
       return state;
