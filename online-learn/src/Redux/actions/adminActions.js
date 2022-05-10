@@ -7,6 +7,8 @@ import {
   ADD_COURSE,
   GET_COURSE,
   DELETE_COURSE,
+  ADD_STUDENT,
+
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -85,3 +87,13 @@ export const deleteCourse = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const addStudent = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addStudent(formData);
+    alert("Student Added Successfully");
+    dispatch({ type: ADD_STUDENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}

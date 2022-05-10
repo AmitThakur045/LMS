@@ -19,3 +19,4 @@ export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
 export const addCourse = (course) => API.post("/api/admin/addcourse", course);
 export const getCourse = (data) => API.post("/api/admin/getcourse", data);
 export const deleteCourse = (data) => API.post("/api/admin/deletecourse", data);
+export const addStudent = (student) => API.post("/api/admin/addstudent", student);
