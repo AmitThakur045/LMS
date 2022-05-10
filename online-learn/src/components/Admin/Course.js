@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { GET_COURSE } from "../../Redux/actionTypes";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 const Course = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: GET_COURSE, payload: {} });
+  }, []);
   return (
     <div className="h-screen w-full bg-[#f1f2f6] flex">
       <Sidebar />
