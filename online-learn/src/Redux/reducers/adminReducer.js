@@ -5,7 +5,9 @@ import {
   DELETE_ADMIN,
   DELETE_COURSE,
   GET_ADMIN,
+  GET_ALL_STUDENT,
   GET_COURSE,
+  GET_STUDENT,
   UPDATE_ADMIN,
 } from "../actionTypes";
 
@@ -18,6 +20,8 @@ const initialState = {
   course: {},
   courseDeleted: false,
   studentAdded: false,
+  allStudent: [],
+  student: {},
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -61,6 +65,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         studentAdded: action.payload,
+      };
+    case GET_ALL_STUDENT:
+      return {
+        ...state,
+        allStudent: action.payload,
+      };
+    case GET_STUDENT:
+      return {
+        ...state,
+        student: action.payload,
       };
     default:
       return state;

@@ -18,6 +18,7 @@ import SearchFaculty from "./components/Admin/FacultySection/SearchFaculty";
 import AddCourse from "./components/Admin/CourseSection/AddCourse";
 import SearchCourse from "./components/Admin/CourseSection/SearchCourse";
 import AddStudent from "./components/Admin/StudentSection/AddStudent";
+import SearchStudent from "./components/Admin/StudentSection/SearchStudent";
 
 function App() {
   return (
@@ -53,6 +54,11 @@ function App() {
         path="/admin/course/searchcourse"
         exact
         element={<SearchCourse />}
+      />
+      <Route
+        path="/admin/student/searchstudent"
+        exact
+        element={<SearchStudent />}
       />
     </Routes>
   );

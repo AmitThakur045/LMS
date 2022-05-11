@@ -161,6 +161,84 @@ export const addAdmin = async (req, res) => {
   }
 };
 
+export const addStudent = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      avatar,
+      batch,
+      currentActiveBatch,
+      contactNumber,
+      dob,
+      performance,
+    } = req.body;
+    const errors = { studentError: String };
+    const existingStudent = await Student.findOne({ email });
+
+    if (existingStudent) {
+      errors.studentError = "Student already exists";
+      return res.status(400).json(errors);
+    }
+    const newDob = dob.split("-").reverse().join("-");
+    let hashedPassword = await bcrypt.hash(newDob, 10);
+
+    const newStudent = await new Student({
+      firstName,
+      lastName,
+      email,
+      avatar,
+      batch,
+      currentActiveBatch,
+      contactNumber,
+      dob,
+      performance,
+      password: hashedPassword,
+    });
+    await newStudent.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Student added successfully",
+      response: newStudent,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getAllStudent = async (req, res) => {
+  try {
+    const students = await Student.find();
+    const errors = { noStudentError: String };
+
+    if (students.length === 0) {
+      errors.noStudentError = "No Student Found";
+      return res.status(400).json(errors);
+    }
+    res.status(200).json(students);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getStudent = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const errors = { noStudentError: String };
+    const student = await Student.findOne({ email });
+    if (student === null) {
+      errors.noStudentError = "No Student Found";
+      return res.status(404).json(errors);
+    }
+    res.status(200).json(student);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
 export const addCourse = async (req, res) => {
   try {
     const {
@@ -410,66 +488,6 @@ export const getFacultyByCourseCode = async (req, res) => {
     }
 
     res.status(200).json({ result: faculties });
-  } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
-  }
-};
-
-export const addStudent = async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      avatar,
-      year,
-      batch,
-      gender,
-      fatherName,
-      motherName,
-      contactNumber,
-      fatherContactNumber,
-      dob,
-      assignment,
-    } = req.body;
-    const errors = { studentError: String };
-    const existingStudent = await Admin.findOne({ email });
-
-    if (existingStudent) {
-      errors.studentError = "Student already exists";
-      return res.status(400).json(errors);
-    }
-
-    var passwordUpdated = false;
-    const newDob = dob.split("-").reverse().join("-");
-    let hashedPassword = await bcrypt.hash(newDob, 10);
-
-    const newStudent = await new Student({
-      firstName,
-      lastName,
-      email,
-      avatar,
-      year,
-      batch,
-      password: hashedPassword,
-      gender,
-      dob,
-      fatherName,
-      motherName,
-      contactNumber,
-      fatherContactNumber,
-      assignment,
-      passwordUpdated,
-    });
-    await newStudent.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Student added successfully",
-      response: newStudent,
-    });
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
