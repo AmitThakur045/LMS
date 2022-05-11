@@ -11,64 +11,16 @@ import { Link } from "react-router-dom";
 
 const dummyBatch = [
   {
-    batchNumber: 1,
     batchName: "Batch-001",
-    course: [
-      {
-        courseName: "JavaScript1",
-      },
-      {
-        courseName: "React1",
-      },
-      {
-        courseName: "NodeJS1",
-      },
-    ],
   },
   {
-    batchNumber: 2,
     batchName: "Batch-002",
-    course: [
-      {
-        courseName: "JavaScript2",
-      },
-      {
-        courseName: "React2",
-      },
-      {
-        courseName: "NodeJS2",
-      },
-    ],
   },
   {
-    batchNumber: 3,
     batchName: "Batch-003",
-    course: [
-      {
-        courseName: "JavaScript3",
-      },
-      {
-        courseName: "React3",
-      },
-      {
-        courseName: "NodeJS3",
-      },
-    ],
   },
   {
-    batchNumber: 4,
     batchName: "Batch-004",
-    course: [
-      {
-        courseName: "JavaScript4",
-      },
-      {
-        courseName: "React4",
-      },
-      {
-        courseName: "NodeJS4",
-      },
-    ],
   },
 ];
 
@@ -77,16 +29,8 @@ const AddStudent = () => {
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
-  let courseCount = 1;
 
-  const [batch, setBatch] = useState({
-    batchNumber: "",
-    batchName: "",
-    batchAdded: false,
-    course: [],
-  });
-
-  const [batchNumber, setBatchNumber] = useState("");
+  // const [batchNumber, setBatchNumber] = useState("");
   const [value, setValue] = useState({
     firstName: "",
     lastName: "",
@@ -95,7 +39,7 @@ const AddStudent = () => {
     contactNumber: "",
     avatar: "",
     year: "",
-    batch: {},
+    batch: [],
     gender: "",
     fatherName: "",
     motherName: "",
@@ -114,7 +58,7 @@ const AddStudent = () => {
         contactNumber: "",
         avatar: "",
         year: "",
-        batch: {},
+        batch: [],
         gender: "",
         fatherName: "",
         motherName: "",
@@ -140,7 +84,7 @@ const AddStudent = () => {
           contactNumber: "",
           avatar: "",
           year: "",
-          batch: {},
+          batch: [],
           gender: "",
           fatherName: "",
           motherName: "",
@@ -160,28 +104,14 @@ const AddStudent = () => {
     setError({});
     setLoading(true);
     console.log(value);
+
+    dispatch(addStudent(value));
   };
 
-  const handleBatchNumber = (e) => {
-    setBatchNumber(e.target.value);
-    courseCount = 1;
-  };
-
-  const addNewCourse = (e) => {
-    let newCourse = {
-      courseNumber: ++courseCount,
-      courseName: "",
-    };
-
-    newCourse.courseName = e.target.value;
-
-    let newBatch = { ...batch };
-    newBatch.batchNumber = batchNumber;
-    newBatch.batchName = dummyBatch[batchNumber - 1].batchName;
-    newBatch.course.push(newCourse);
-    newBatch.batchAdded = true;
-    setBatch(newBatch);
-    setValue({ ...value, batch: newBatch });
+  const handleBatch = (e) => {
+    let newValue = { ...value };
+    newValue.batch.push(e.target.value);
+    setValue(newValue);
   };
 
   return (
@@ -346,33 +276,15 @@ const AddStudent = () => {
                 <select
                   value={value.batchName}
                   style={{ width: "205px", border: "2px solid #a0a9ad" }}
-                  onChange={handleBatchNumber}
+                  onChange={handleBatch}
                 >
                   {dummyBatch.map((batch, index) => (
-                    <option key={index} className="" value={batch.batchNumber}>
+                    <option key={index} className="" value={batch.batchName}>
                       {batch.batchName}
                     </option>
                   ))}
                 </select>
               </div>
-              <div></div>
-              {batchNumber.length > 0 && (
-                <div>
-                  <div>
-                    <p className="text-sm text-[#7e7e7e]">Select Course</p>
-                  </div>
-                  <select
-                    style={{ width: "205px", border: "2px solid #a0a9ad" }}
-                    onChange={addNewCourse}
-                  >
-                    {dummyBatch[batchNumber - 1].course.map((item, index) => (
-                      <option key={index} value={item.courseName}>
-                        {item.courseName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
             </div>
 
             <div className="flex space-x-5">
@@ -394,7 +306,7 @@ const AddStudent = () => {
                     contactNumber: "",
                     avatar: "",
                     year: "",
-                    batch: {},
+                    batch: [],
                     gender: "",
                     fatherName: "",
                     motherName: "",

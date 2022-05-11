@@ -28,14 +28,7 @@ const studentSchema = new Schema({
   },
   batch: [
     {
-      type: Schema.Types.ObjectId,
-      course: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "course",
-        },
-      ],
-      ref: "batch",
+      type: String,
     },
   ],
   gender: {

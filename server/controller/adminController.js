@@ -420,7 +420,8 @@ export const getFacultyByCourseCode = async (req, res) => {
 export const addStudent = async (req, res) => {
   try {
     const {
-      name,
+      firstName,
+      lastName,
       email,
       avatar,
       year,
@@ -434,7 +435,6 @@ export const addStudent = async (req, res) => {
       assignment,
     } = req.body;
     const errors = { studentError: String };
-
     const existingStudent = await Admin.findOne({ email });
 
     if (existingStudent) {
@@ -447,13 +447,15 @@ export const addStudent = async (req, res) => {
     let hashedPassword = await bcrypt.hash(newDob, 10);
 
     const newStudent = await new Student({
-      name,
+      firstName,
+      lastName,
       email,
       avatar,
       year,
       batch,
       password: hashedPassword,
       gender,
+      dob,
       fatherName,
       motherName,
       contactNumber,
