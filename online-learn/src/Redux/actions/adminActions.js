@@ -8,7 +8,8 @@ import {
   GET_COURSE,
   DELETE_COURSE,
   ADD_STUDENT,
-
+  GET_ALL_STUDENT,
+  GET_STUDENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -96,4 +97,21 @@ export const addStudent = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
+
+export const getAllStudent = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllStudent();
+    dispatch({ type: GET_ALL_STUDENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getStudent = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getStudent(formData);
+    dispatch({ type: GET_STUDENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};

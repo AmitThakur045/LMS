@@ -22,44 +22,23 @@ const studentSchema = new Schema({
     type: String,
     required: true,
   },
-  year: {
-    type: Number,
-    required: true,
-  },
   batch: [
     {
       type: String,
     },
   ],
-  gender: {
-    type: String,
-  },
-  fatherName: {
-    type: String,
-  },
-  motherName: {
-    type: String,
-  },
   contactNumber: {
-    type: Number,
-  },
-  fatherContactNumber: {
     type: Number,
   },
   dob: {
     type: String,
     required: true,
   },
-  assignment: [
-    {
-      assignmentCode: String,
-      courseCode: String,
-      batchCode: String,
-    },
-  ],
-  passwordUpdated: {
-    type: Boolean,
-    default: false,
+  currentActiveBatch: {
+    type: String,
+  },
+  performance: {
+    type: String,
   },
 });
 
