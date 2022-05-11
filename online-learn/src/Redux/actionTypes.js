@@ -7,3 +7,5 @@ export const ADD_COURSE = "ADD_COURSE";
 export const GET_COURSE = "GET_COURSE";
 export const DELETE_COURSE = "DELETE_COURSE";
 export const ADD_STUDENT = "ADD_STUDENT";
+export const GET_ALL_STUDENT = "GET_ALL_STUDENT";
+export const GET_STUDENT = "GET_STUDENT";
