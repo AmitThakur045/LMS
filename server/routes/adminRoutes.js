@@ -9,6 +9,7 @@ import {
   addCourse,
   getCourse,
   deleteCourse,
+  addStudent,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -20,4 +21,5 @@ router.post("/deleteadmin", deleteAdmin);
 router.post("/addcourse", addCourse);
 router.post("/getcourse", getCourse);
 router.post("/deletecourse", deleteCourse);
+router.post("/addstudent", addStudent);
 export default router;
