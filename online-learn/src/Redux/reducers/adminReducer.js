@@ -1,10 +1,12 @@
 import {
   ADD_ADMIN,
+  ADD_BATCH,
   ADD_COURSE,
   ADD_STUDENT,
   DELETE_ADMIN,
   DELETE_COURSE,
   GET_ADMIN,
+  GET_ALL_COURSE,
   GET_ALL_STUDENT,
   GET_COURSE,
   GET_STUDENT,
@@ -21,7 +23,9 @@ const initialState = {
   courseDeleted: false,
   studentAdded: false,
   allStudent: [],
+  allCourse: [],
   student: {},
+  batchAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -75,6 +79,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         student: action.payload,
+      };
+    case GET_ALL_COURSE:
+      return {
+        ...state,
+        allCourse: action.payload,
+      };
+    case ADD_BATCH:
+      return {
+        ...state,
+        batchAdded: action.payload,
       };
     default:
       return state;
