@@ -10,6 +10,10 @@ import Spinner from "../../../Utils/Spinner";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 const SearchStudent = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +29,7 @@ const SearchStudent = () => {
     setLoading(true);
     dispatch(getStudent({ email }));
   };
+
   const [openMenu, setOpenMenu] = useState(false);
 
   const students = useSelector((state) => state.admin.allStudent);
@@ -133,29 +138,80 @@ const SearchStudent = () => {
                   {students?.map((student, idx) => (
                     <div
                       key={idx}
-                      className="grid grid-cols-9 hover:font-semibold duration-200 transition-all cursor-pointer z-[0]">
+                      className="grid grid-cols-9 hover:font-semibold duration-200 transition-all cursor-pointer z-[0]"
+                    >
                       <h1
                         onClick={() => setViewStudent(student)}
-                        className="col-span-1 py-2 px-2">
+                        className="col-span-1 py-2 px-2"
+                      >
                         {idx + 1}
                       </h1>
                       <h1
                         onClick={() => setViewStudent(student)}
-                        className="col-span-3 py-2 px-2">
+                        className="col-span-3 py-2 px-2"
+                      >
                         {student.firstName} {student.lastName}
                       </h1>
                       <h1
                         onClick={() => setViewStudent(student)}
-                        className="col-span-2 py-2 px-2">
+                        className="col-span-2 py-2 px-2"
+                      >
                         {student.email}
                       </h1>
                       <h1
                         onClick={() => setViewStudent(student)}
-                        className="col-span-2 py-2 px-2">
+                        className="col-span-2 py-2 px-2"
+                      >
                         {student.currentActiveBatch}
                       </h1>
-                      <div onClick={() => setOpenMenu(true)} className="z-[10]">
-                        <MoreVertIcon />
+                      <div>
+                        <button onClick={() => setOpenMenu(true)}>
+                          <MoreVertIcon />
+                        </button>
+                        <Modal
+                          isOpen={openMenu}
+                          onRequestClose={() => setOpenMenu(false)}
+                          style={{
+                            overlay: {
+                              position: "fixed",
+                              zIndex: 1020,
+                              top: 0,
+                              left: 0,
+                              width: "100vw",
+                              height: "100vh",
+                              background: "rgba(255, 255, 255, 0.75)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            },
+                            content: {
+                              background: "white",
+                              width: "15rem",
+                              maxWidth: "calc(100vw - 2rem)",
+                              maxHeight: "calc(100vh - 2rem)",
+                              overflowY: "auto",
+                              position: "relative",
+                              border: "1px solid #ccc",
+                              borderRadius: "0.3rem",
+                            },
+                          }}
+                        >
+                          <div className="flex flex-row-reverse">
+                            <button
+                              onClick={() => setOpenMenu(false)}
+                            >
+                              <CancelIcon />
+                            </button>
+                          </div>
+                          <div className="flex space-x-8">
+                            <button className="text-2xl font-bold">
+                              Update
+                            </button>
+                            <button className="text-2xl font-bold">
+                              Delete
+                            </button>
+                          </div>
+                        </Modal>
                       </div>
                     </div>
                   ))}
@@ -165,7 +221,8 @@ const SearchStudent = () => {
               <div className="flex-[0.7] shadow-lg h-full px-2 py-2 overflow-x-hidden overflow-y-auto pb-10">
                 <form
                   className="flex mx-6 py-3 space-x-10"
-                  onSubmit={handleSubmit}>
+                  onSubmit={handleSubmit}
+                >
                   <div className="flex  flex-col space-y-8">
                     <div className="flex space-x-5">
                       <div className="space-y-1">
@@ -259,7 +316,8 @@ const SearchStudent = () => {
             <div className="flex-[0.3] border-2 shadow-lg h-fit">
               <form
                 onSubmit={handleSubmit}
-                className="flex w-4/6 mx-auto my-6 flex-col space-y-8">
+                className="flex w-4/6 mx-auto my-6 flex-col space-y-8"
+              >
                 <div className="space-y-1 self-center">
                   <p className="text-sm text-[#7e7e7e]">Email</p>
                   <input
@@ -277,7 +335,8 @@ const SearchStudent = () => {
                 <div className="flex space-x-5">
                   <button
                     type="submit"
-                    className="bg-[#ed6e9e] text-white h-10 flex-[0.5] hover:scale-105 transition-all duration-150">
+                    className="bg-[#ed6e9e] text-white h-10 flex-[0.5] hover:scale-105 transition-all duration-150"
+                  >
                     Search
                   </button>
                   <button
@@ -287,7 +346,8 @@ const SearchStudent = () => {
                       setEmail("");
                       setError({});
                       setViewStudent("");
-                    }}>
+                    }}
+                  >
                     Clear
                   </button>
                 </div>
