@@ -12,16 +12,13 @@ const batchSchema = new Schema({
     required: true,
     unique: true,
   },
-  courses: [
+  courses: [{ type: String }],
+  students: [
     {
       type: Schema.Types.ObjectId,
-      ref: "course",
+      ref: "student",
     },
   ],
-  year: {
-    type: String,
-    required: true,
-  },
 });
 
 export default mongoose.model("batch", batchSchema);
