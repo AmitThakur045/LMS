@@ -20,6 +20,7 @@ import SearchCourse from "./components/Admin/CourseSection/SearchCourse";
 import AddStudent from "./components/Admin/StudentSection/AddStudent";
 import SearchStudent from "./components/Admin/StudentSection/SearchStudent";
 import StudentLogin from "./components/StudentLogin";
+import AddBatch from "./components/Admin/BatchSection/AddBatch";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         exact
         element={<SearchStudent />}
       />
+      <Route path="/admin/batch/addbatch" exact element={<AddBatch />} />
     </Routes>
   );
 }

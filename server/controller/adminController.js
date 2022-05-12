@@ -223,6 +223,24 @@ export const getAllStudent = async (req, res) => {
   }
 };
 
+export const getAllCourse = async (req, res) => {
+  try {
+    const courses = await Course.find();
+    const errors = { courseError: String };
+    const courseCodes = [];
+    if (courses.length === 0) {
+      errors.courseError = "No Course Found";
+      return res.status(400).json(errors);
+    }
+    for (let i = 0; i < courses.length; i++) {
+      courseCodes.push(courses[i].courseCode);
+    }
+    res.status(200).json(courseCodes);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
 export const getStudent = async (req, res) => {
   try {
     const { email } = req.body;
@@ -313,31 +331,23 @@ export const deleteCourse = async (req, res) => {
 
 export const addBatch = async (req, res) => {
   try {
-    const { batchName, batchCode, year, courses } = req.body;
-    const errors = { batchCodeError: String };
+    const { batchName, batchCode, courses } = req.body;
+    const errors = { batchError: String };
     const existingBatch = await Batch.findOne({ batchCode });
 
+    console.log(courses);
     if (existingBatch) {
-      errors.batchCodeError = "Batch already exists";
+      errors.batchError = "Batch already exists";
       return res.status(400).json(errors);
     }
 
     const newBatch = await new Batch({
       batchName,
       batchCode,
-      year,
       courses,
     });
 
     await newBatch.save();
-
-    courses.map((course) => {
-      Course.findOneAndUpdate(
-        { courseCode: course.courseCode },
-        { $push: { batchCode: batchCode } },
-        { new: true }
-      );
-    });
 
     return res.status(200).json({
       success: true,
@@ -345,9 +355,7 @@ export const addBatch = async (req, res) => {
       response: newBatch,
     });
   } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
+    res.status(500).json(error);
   }
 };
 
