@@ -23,3 +23,6 @@ export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
 export const getAllStudent = () => API.get("/api/admin/getallstudent");
 export const getStudent = (data) => API.post("/api/admin/getstudent", data);
+export const getAllCourse = () => API.get("/api/admin/getallcourse");
+
+export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);

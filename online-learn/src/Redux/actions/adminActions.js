@@ -10,6 +10,8 @@ import {
   ADD_STUDENT,
   GET_ALL_STUDENT,
   GET_STUDENT,
+  GET_ALL_COURSE,
+  ADD_BATCH,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -111,6 +113,25 @@ export const getStudent = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getStudent(formData);
     dispatch({ type: GET_STUDENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getAllCourse = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllCourse();
+    dispatch({ type: GET_ALL_COURSE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const addBatch = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addBatch(formData);
+    alert("Batch Added Successfully");
+    dispatch({ type: ADD_BATCH, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
