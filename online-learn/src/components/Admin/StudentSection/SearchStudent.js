@@ -204,10 +204,10 @@ const SearchStudent = () => {
                             </button>
                           </div>
                           <div className="flex space-x-8">
-                            <button className="text-2xl text-cyan-800">
+                            <button className="text-2xl font-bold">
                               Update
                             </button>
-                            <button className="text-2xl text-cyan-800">
+                            <button className="text-2xl font-bold">
                               Delete
                             </button>
                           </div>
