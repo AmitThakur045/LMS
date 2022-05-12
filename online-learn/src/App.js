@@ -19,11 +19,13 @@ import AddCourse from "./components/Admin/CourseSection/AddCourse";
 import SearchCourse from "./components/Admin/CourseSection/SearchCourse";
 import AddStudent from "./components/Admin/StudentSection/AddStudent";
 import SearchStudent from "./components/Admin/StudentSection/SearchStudent";
+import StudentLogin from "./components/StudentLogin";
 
 function App() {
   return (
     <Routes>
       <Route path="/*" element={<Home />} />
+      <Route path="/login" exact element={<StudentLogin />} />
       <Route path="/community" exact element={<Community />} />
       <Route path="/course" exact element={<Course />} />
       <Route path="/assignment" exact element={<Assignment />} />
