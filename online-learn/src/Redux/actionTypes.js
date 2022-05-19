@@ -11,3 +11,4 @@ export const GET_ALL_STUDENT = "GET_ALL_STUDENT";
 export const GET_STUDENT = "GET_STUDENT";
 export const ADD_BATCH = "ADD_BATCH";
 export const GET_ALL_COURSE = "GET_ALL_COURSE";
+export const GET_ALL_ADMIN = "GET_ALL_ADMIN";
