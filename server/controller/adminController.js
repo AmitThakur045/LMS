@@ -126,7 +126,16 @@ export const updateAdmin = async (req, res) => {
 
 export const addAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, dob, contactNumber, avatar, email } = req.body;
+    const {
+      firstName,
+      lastName,
+      dob,
+      contactNumber,
+      avatar,
+      email,
+      sub,
+      domain,
+    } = req.body;
 
     const errors = { emailError: String };
     const existingAdmin = await Admin.findOne({ email });
@@ -149,6 +158,8 @@ export const addAdmin = async (req, res) => {
       avatar,
       contactNumber,
       dob,
+      sub,
+      domain,
     });
     await newAdmin.save();
     return res.status(200).json({
@@ -218,6 +229,21 @@ export const getAllStudent = async (req, res) => {
       return res.status(400).json(errors);
     }
     res.status(200).json(students);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getAllAdmin = async (req, res) => {
+  try {
+    const admins = await Admin.find();
+    const errors = { noAdminError: String };
+
+    if (admins.length === 0) {
+      errors.noAdminError = "No Admin Found";
+      return res.status(400).json(errors);
+    }
+    res.status(200).json(admins);
   } catch (error) {
     console.log("Backend Error", error);
   }
