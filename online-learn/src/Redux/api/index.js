@@ -22,6 +22,7 @@ export const deleteCourse = (data) => API.post("/api/admin/deletecourse", data);
 export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
 export const getAllStudent = () => API.get("/api/admin/getallstudent");
+export const getAllAdmin = () => API.get("/api/admin/getalladmin");
 export const getStudent = (data) => API.post("/api/admin/getstudent", data);
 export const getAllCourse = () => API.get("/api/admin/getallcourse");
 
