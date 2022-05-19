@@ -28,6 +28,12 @@ const adminSchema = new Schema(
     contactNumber: {
       type: Number,
     },
+    sub: {
+      type: String,
+    },
+    domain: {
+      type: String,
+    },
     passwordUpdated: {
       type: Boolean,
       default: false,

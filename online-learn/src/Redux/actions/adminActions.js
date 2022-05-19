@@ -12,6 +12,7 @@ import {
   GET_STUDENT,
   GET_ALL_COURSE,
   ADD_BATCH,
+  GET_ALL_ADMIN,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -44,7 +45,7 @@ export const updateAdmin = (value, navigate) => async (dispatch) => {
     const { data } = await api.updateAdmin(value);
     dispatch({ type: UPDATE_ADMIN, payload: true });
     alert("Admin Updated Successfully");
-    navigate("/admin/admin/searchadmin");
+    navigate("/admin/admin");
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -55,7 +56,6 @@ export const deleteAdmin = (formData) => async (dispatch) => {
     const { data } = await api.deleteAdmin(formData);
     alert("Admin Deleted");
     dispatch({ type: DELETE_ADMIN, payload: true });
-    dispatch({ type: GET_ADMIN, payload: {} });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -105,6 +105,14 @@ export const getAllStudent = () => async (dispatch) => {
   try {
     const { data } = await api.getAllStudent();
     dispatch({ type: GET_ALL_STUDENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getAllAdmin = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllAdmin();
+    dispatch({ type: GET_ALL_ADMIN, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
