@@ -253,15 +253,13 @@ export const getAllCourse = async (req, res) => {
   try {
     const courses = await Course.find();
     const errors = { courseError: String };
-    const courseCodes = [];
+
     if (courses.length === 0) {
       errors.courseError = "No Course Found";
       return res.status(400).json(errors);
     }
-    for (let i = 0; i < courses.length; i++) {
-      courseCodes.push(courses[i].courseCode);
-    }
-    res.status(200).json(courseCodes);
+
+    res.status(200).json(courses);
   } catch (error) {
     console.log("Backend Error", error);
   }
