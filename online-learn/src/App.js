@@ -6,22 +6,19 @@ import Assignment from "./components/Assignment";
 import LiveClasses from "./components/LiveClasses";
 import Dashboard from "./components/Admin/DashboardSection/Dashboard";
 import Batch from "./components/Admin/Batch";
-import Student from "./components/Admin/Student";
-import AdminCourse from "./components/Admin/Course";
-import Faculty from "./components/Admin/Faculty";
+import AdminCourse from "./components/Admin/CourseSection/Course";
 import Admin from "./components/Admin/AdminSection/Admin";
 import AddAdmin from "./components/Admin/AdminSection/AddAdmin/AddAdmin";
 
-import AddFaculty from "./components/Admin/FacultySection/AddFaculty";
-import SearchFaculty from "./components/Admin/FacultySection/SearchFaculty";
-import AddCourse from "./components/Admin/CourseSection/AddCourse";
-import SearchCourse from "./components/Admin/CourseSection/SearchCourse";
-import AddStudent from "./components/Admin/StudentSection/AddStudent";
-import SearchStudent from "./components/Admin/StudentSection/SearchStudent";
+import AddCourse from "./components/Admin/CourseSection/AddCourse/AddCourse";
 import StudentLogin from "./components/StudentLogin";
 import AddBatch from "./components/Admin/BatchSection/AddBatch";
 import ViewAdmin from "./components/Admin/AdminSection/ViewAdmin/ViewAdmin";
 import UpdateAdmin from "./components/Admin/AdminSection/UpdateAdmin/UpdateAdmin";
+import ViewCourse from "./components/Admin/CourseSection/ViewCourse/ViewCourse";
+import Student from "./components/Admin/StudentSection/Student";
+import AddStudent from "./components/Admin/StudentSection/AddStudent/AddStudent";
+import ViewStudent from "./components/Admin/StudentSection/ViewStudent/ViewStudent";
 
 function App() {
   return (
@@ -36,30 +33,19 @@ function App() {
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
       <Route path="/admin/batch" exact element={<Batch />} />
       <Route path="/admin/student" exact element={<Student />} />
-      <Route path="/admin/faculty" exact element={<Faculty />} />
       <Route path="/admin/admin" exact element={<Admin />} />
       <Route path="/admin/course" exact element={<AdminCourse />} />
       <Route path="/admin/admin/addadmin" exact element={<AddAdmin />} />
       <Route path="/admin/admin/viewadmin" exact element={<ViewAdmin />} />
       <Route path="/admin/admin/updateadmin" exact element={<UpdateAdmin />} />
-      <Route path="/admin/faculty/addfaculty" exact element={<AddFaculty />} />
       <Route path="/admin/student/addstudent" exact element={<AddStudent />} />
-      <Route
-        path="/admin/faculty/searchfaculty"
-        exact
-        element={<SearchFaculty />}
-      />
 
       <Route path="/admin/course/addcourse" exact element={<AddCourse />} />
+      <Route path="/admin/course/viewcourse" exact element={<ViewCourse />} />
       <Route
-        path="/admin/course/searchcourse"
+        path="/admin/student/viewstudent"
         exact
-        element={<SearchCourse />}
-      />
-      <Route
-        path="/admin/student/searchstudent"
-        exact
-        element={<SearchStudent />}
+        element={<ViewStudent />}
       />
       <Route path="/admin/batch/addbatch" exact element={<AddBatch />} />
     </Routes>

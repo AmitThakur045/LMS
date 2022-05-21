@@ -38,7 +38,7 @@ const RecentNotification = () => {
       </h1>
       <div className="px-4 mt-6 space-y-4 overflow-y-auto scrollbar-none">
         {data.map((not, idx) => (
-          <div className="flex items-center justify-between">
+          <div key={idx} className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div
                 className={`${
