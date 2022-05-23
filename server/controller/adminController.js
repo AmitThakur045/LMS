@@ -567,3 +567,38 @@ export const getStudentByCourseCode = async (req, res) => {
     res.status(500).json(errors);
   }
 };
+
+// get all batches
+export const getAllBatch = async (req, res) => {
+  try {
+    const batches = await Batch.find();
+    const errors = { noBatchError: String };
+    
+    if (batches.length === 0) {
+      errors.noBatchError = "No Batch Found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json(batches);
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
+
+export const getBatch = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+
+    const errors = { noBatchError: String };
+    const batch = await Batch.findOne({ batchCode });
+    if (batch === null) {
+      errors.noBatchError = "No Batch Found";
+      return res.status(404).json(errors);
+    }
+    res.status(200).json(batch);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};

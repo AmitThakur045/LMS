@@ -13,6 +13,8 @@ import {
   GET_ALL_COURSE,
   ADD_BATCH,
   GET_ALL_ADMIN,
+  GET_ALL_BATCH,
+  GET_BATCH,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -140,6 +142,24 @@ export const addBatch = (formData) => async (dispatch) => {
     const { data } = await api.addBatch(formData);
     alert("Batch Added Successfully");
     dispatch({ type: ADD_BATCH, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getAllBatch = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllBatch();
+    dispatch({ type: GET_ALL_BATCH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getBatch = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getBatch(formData);
+    dispatch({ type: GET_BATCH, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

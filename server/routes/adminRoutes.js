@@ -15,6 +15,8 @@ import {
   getAllCourse,
   addBatch,
   getAllAdmin,
+  getAllBatch,
+  getBatch,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -32,4 +34,6 @@ router.get("/getalladmin", getAllAdmin);
 router.post("/getstudent", getStudent);
 router.get("/getallcourse", getAllCourse);
 router.post("/addbatch", addBatch);
+router.get("/getallbatch", getAllBatch);
+router.post("/getbatch", getBatch);
 export default router;

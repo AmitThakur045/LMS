@@ -9,9 +9,11 @@ import {
   GET_ALL_ADMIN,
   GET_ALL_COURSE,
   GET_ALL_STUDENT,
+  GET_ALL_BATCH,
   GET_COURSE,
   GET_STUDENT,
   UPDATE_ADMIN,
+  GET_BATCH,
 } from "../actionTypes";
 
 const initialState = {
@@ -92,10 +94,20 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         allCourse: action.payload,
       };
+    case GET_ALL_BATCH:
+      return {
+        ...state,
+        allBatch: action.payload,
+      };
     case ADD_BATCH:
       return {
         ...state,
         batchAdded: action.payload,
+      };
+    case GET_BATCH:
+      return {
+        ...state,
+        batch: action.payload,
       };
     default:
       return state;
