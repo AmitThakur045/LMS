@@ -6,66 +6,31 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  DELETE_COURSE,
-  GET_COURSE,
-  SET_ERRORS,
-} from "../../../Redux/actionTypes";
-import {
-  deleteCourse,
-  getAllCourse,
-} from "../../../Redux/actions/adminActions";
+import { GET_ALL_BATCH, GET_BATCH, SET_ERRORS } from "../../../Redux/actionTypes";
+import { getAllBatch } from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
 import { Avatar, Menu, MenuItem } from "@mui/material";
-import { confirmAlert } from "react-confirm-alert";
 
 const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [courses, setCourses] = useState([]);
+  const [batches, setBatches] = useState([]);
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const allCourses = useSelector((state) => state.admin.allCourse);
 
-  const deletecourse = () => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <div className="custom-ui bg-gray-800 text-white h-48 flex flex-col justify-center w-96 px-10 py-4 rounded-md space-y-4">
-            <h1 className="text-3xl">Are you sure?</h1>
-            <p>You want to delete this course?</p>
-            <div className="space-x-4 text-black">
-              <button
-                className="bg-white rounded-lg w-24 h-8 hover:scale-105 transition-all duration-150"
-                onClick={onClose}>
-                No
-              </button>
-              <button
-                className="bg-white rounded-lg w-24 h-8 hover:scale-105 transition-all duration-150"
-                onClick={() => {
-                  dispatch(
-                    deleteCourse({ courseCode: courses[index].courseCode })
-                  );
-                  onClose();
-                }}>
-                Yes
-              </button>
-            </div>
-          </div>
-        );
-      },
-    });
-  };
+  const allBatches = useSelector((state) => state.admin.allBatch);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -75,31 +40,26 @@ const Main = () => {
   }, [store.errors]);
 
   useEffect(() => {
-    if (allCourses.length !== 0) {
-      setCourses(allCourses);
+    if (allBatches?.length !== 0) {
+      setBatches(allBatches);
       setLoading(false);
     }
-  }, [allCourses]);
+  }, [allBatches]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-    dispatch(getAllCourse());
+    dispatch(getAllBatch());
+
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
-
-  useEffect(() => {
-    dispatch(getAllCourse());
-    dispatch({ type: DELETE_COURSE, payload: false });
-  }, [store.admin.courseDeleted]);
 
   const handleSearch = (event) => {
     let value = event.target.value;
     let result = [];
-    result = allCourses.filter((data) => {
-      return data.courseCode.search(value) !== -1;
+    result = allBatches.filter((data) => {
+      return data.batchCode.search(value) !== -1;
     });
-
-    setCourses(result);
+    setBatches(result);
   };
 
   return (
@@ -110,20 +70,20 @@ const Main = () => {
             <AiOutlineSearch fontSize={20} color="#696969" />
             <input
               onChange={(event) => handleSearch(event)}
-              placeholder="Quick Search Course"
+              placeholder="Quick Search Student"
               className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
               type="text"
             />
           </div>
           <Link
-            to="/admin/course/addcourse"
+            to="/admin/batch/addbatch"
             type="button"
             className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
             <IoIosAddCircleOutline fontSize={20} />
-            <h1>Add Course</h1>
+            <h1>Add Batch</h1>
           </Link>
         </div>
-        {(loading || Object.keys(error).length !== 0) && (
+        {(loading || Object.keys(error)?.length !== 0) && (
           <div className="flex flex-col mt-10">
             <div className="flex items-center justify-center mt-5">
               {loading && (
@@ -135,66 +95,47 @@ const Main = () => {
                   messageColor="blue"
                 />
               )}
-              {error.courseError && (
+              {error.noBatchError && (
                 <p className="text-red-500 text-2xl font-bold">
-                  {error.courseError}
+                  {error.noStudentError}
                 </p>
               )}
             </div>
           </div>
         )}
-        {!loading && Object.keys(error).length === 0 && courses.length !== 0 && (
+        {!loading && batches.length !== 0 && (
           <div className="overflow-y-auto space-y-2">
-            <div className="grid grid-cols-11 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
-              <h1 className="col-span-2 text-[13px] font-bold">Course Code</h1>
-              <h1 className="col-span-3 text-[13px] font-bold">Course Name</h1>
-
-              <h1 className="col-span-2 text-[13px] font-bold">
-                Total Lectures
-              </h1>
-              <h1 className="col-span-3 text-[13px] font-bold">Difficulty</h1>
+            <div className="grid grid-cols-12 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+              <h1 className="col-span-3 text-[13px] font-bold">Batch Name</h1>
+              <h1 className="col-span-3 text-[13px] font-bold">Batch Code</h1>
               <h1 className="col-span-1 text-[13px] font-bold">Action</h1>
             </div>
-            {courses.map((ad, idx) => (
+            {batches.map((ad, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-11 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+                className="grid grid-cols-12 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
                 <div
                   onClick={() => {
-                    navigate("/admin/course/viewcourse");
-                    dispatch({ type: GET_COURSE, payload: ad });
+                    window.open("/admin/batch/viewbatch");
+                    dispatch({ type: GET_BATCH, payload: ad });
                   }}
-                  className="col-span-2 font-semibold text-[13px] cursor-pointer flex space-x-2">
-                  <Avatar
+                  className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
+                  {/* <Avatar
                     sx={{ height: 20, width: 20 }}
-                    src={ad.courseImg}
+                    src={ad?.avatar}
                     alt=""
-                  />
-                  <p className="">{ad.courseCode}</p>
+                  /> */}
+                  <p className="">
+                    {ad.batchName}
+                  </p>
                 </div>
                 <p
                   onClick={() => {
-                    navigate("/admin/course/viewcourse");
-                    dispatch({ type: GET_COURSE, payload: ad });
+                    window.open("/admin/batch/viewbatch");
+                    dispatch({ type: GET_BATCH, payload: ad });
                   }}
                   className="col-span-3 font-semibold text-[13px] cursor-pointer">
-                  {ad.courseName}
-                </p>
-                <p
-                  onClick={() => {
-                    navigate("/admin/course/viewcourse");
-                    dispatch({ type: GET_COURSE, payload: ad });
-                  }}
-                  className="col-span-2 font-semibold text-[13px] cursor-pointer">
-                  {ad.totalLectures}
-                </p>
-                <p
-                  onClick={() => {
-                    navigate("/admin/course/viewcourse");
-                    dispatch({ type: GET_COURSE, payload: ad });
-                  }}
-                  className="col-span-3 font-semibold text-[13px] cursor-pointer">
-                  {ad.difficulty}
+                  {ad.batchCode}
                 </p>
                 <div className="col-span-1 font-semibold text-[13px] cursor-pointer ">
                   <BsThreeDotsVertical
@@ -213,10 +154,13 @@ const Main = () => {
                     }}>
                     <MenuItem
                       onClick={() => {
-                        deletecourse();
-                        handleClose();
+                        dispatch({
+                          type: GET_BATCH,
+                          payload: batches[index],
+                        });
+                        window.open("/admin/batch/updatenbatch");
                       }}>
-                      Delete Course
+                      Update Batch
                     </MenuItem>
                   </Menu>
                 </div>

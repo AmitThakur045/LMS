@@ -5,7 +5,7 @@ import Course from "./components/Course";
 import Assignment from "./components/Assignment";
 import LiveClasses from "./components/LiveClasses";
 import Dashboard from "./components/Admin/DashboardSection/Dashboard";
-import Batch from "./components/Admin/Batch";
+import Batch from "./components/Admin/BatchSection/Batch";
 import AdminCourse from "./components/Admin/CourseSection/Course";
 import Admin from "./components/Admin/AdminSection/Admin";
 import AddAdmin from "./components/Admin/AdminSection/AddAdmin/AddAdmin";
@@ -19,6 +19,11 @@ import ViewCourse from "./components/Admin/CourseSection/ViewCourse/ViewCourse";
 import Student from "./components/Admin/StudentSection/Student";
 import AddStudent from "./components/Admin/StudentSection/AddStudent/AddStudent";
 import ViewStudent from "./components/Admin/StudentSection/ViewStudent/ViewStudent";
+import ViewBatch from "./components/Admin/BatchSection/ViewBatch/ViewBatch";
+import BatchCourse from "./components/Admin/BatchSection/ViewBatch/BatchCourse";
+import BatchAssignment from "./components/Admin/BatchSection/ViewBatch/BatchAssignment";
+import BatchCommunity from "./components/Admin/BatchSection/ViewBatch/BatchCommunity";
+import BatchStudent from "./components/Admin/BatchSection/ViewBatch/BatchStudent";
 
 function App() {
   return (
@@ -48,6 +53,11 @@ function App() {
         element={<ViewStudent />}
       />
       <Route path="/admin/batch/addbatch" exact element={<AddBatch />} />
+      <Route path="/admin/batch/viewbatch" exact element={<ViewBatch />} />
+      <Route path="admin/batch/course" exact element={<BatchCourse />} />
+      <Route path="admin/batch/assignment" exact element={<BatchAssignment />} />
+      <Route path="admin/batch/community" exact element={<BatchCommunity />} />
+      <Route path="admin/batch/student" exact element={<BatchStudent />} />
     </Routes>
   );
 }
