@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../../../Assests/Logo.png";
-import { AiOutlineAppstore } from "react-icons/ai";
+import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
 import { VscLibrary } from "react-icons/vsc";
@@ -25,8 +25,7 @@ const Sidebar = () => {
             to="/admin/batch/viewbatch"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-            >
+            }>
             <div className="flex items-center space-x-6">
               <AiOutlineAppstore fontSize={20} />
               <p className="text-[14px]">Batch Code</p>
@@ -41,6 +40,17 @@ const Sidebar = () => {
             <div className="flex items-center space-x-6">
               <RiAdminLine fontSize={20} />
               <p className="text-[14px]">Course</p>
+            </div>
+            <MdKeyboardArrowRight fontSize={20} />
+          </NavLink>
+          <NavLink
+            to="/admin/batch/date"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <div className="flex items-center space-x-6">
+              <AiOutlineCalendar fontSize={20} />
+              <p className="text-[14px]">Date</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
