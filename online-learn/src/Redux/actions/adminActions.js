@@ -147,9 +147,9 @@ export const addBatch = (formData) => async (dispatch) => {
   }
 };
 
-export const getAllBatch = () => async (dispatch) => {
+export const getAllBatchCodes = () => async (dispatch) => {
   try {
-    const { data } = await api.getAllBatch();
+    const { data } = await api.getAllBatchCodes();
     dispatch({ type: GET_ALL_BATCH, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
@@ -160,6 +160,15 @@ export const getBatch = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getBatch(formData);
     dispatch({ type: GET_BATCH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getAllCourseCodes = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllCourseCodes();
+    dispatch({ type: GET_ALL_COURSE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

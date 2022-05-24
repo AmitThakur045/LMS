@@ -1,30 +1,17 @@
 import React from "react";
-import {
-  AiOutlineBell,
-  AiOutlineMenu,
-  AiOutlineMessage,
-  AiOutlineSearch,
-} from "react-icons/ai";
-import { IoMdHand } from "react-icons/io";
+import { AiOutlineBell, AiOutlineMessage } from "react-icons/ai";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import profile from "../../../../Assests/profile.svg";
 const Header = () => {
   return (
-    <div className="flex justify-between w-full pl-12 pr-12 py-10">
-      <div className="flex items-center space-x-48">
-        <div className="flex items-center space-x-2">
-          <AiOutlineMenu />
-          <h1>Hello Brad</h1>
-          <IoMdHand color="#FFCD00" />
-        </div>
-        <div className="flex w-[15.3rem] bg-[#F7F6FB] pl-2 space-x-2 rounded-md h-[1.8rem] items-center">
-          <AiOutlineSearch fontSize={20} color="#C7C4D9" />
-          <input
-            placeholder="Search here"
-            className="bg-[#F7F6FB] placeholder:text-[#C7C4D9] placeholder:text-[12px] flex w-full outline-none "
-            type="text"
-          />
+    <div className="flex justify-between w-full  pl-12 pr-12 py-10">
+      <div className="flex items-center space-x-3">
+        <Link to="/admin/batch" className="cursor-pointer">
+          <RiArrowGoBackFill fontSize={20} className="" />
+        </Link>
+        <div className="">
+          <h1 className="text-[#504F89] font-bold text-[26px]">Search Batch</h1>
         </div>
       </div>
       <div className="flex space-x-5 items-center">
