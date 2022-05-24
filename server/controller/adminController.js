@@ -355,20 +355,25 @@ export const deleteCourse = async (req, res) => {
 
 export const addBatch = async (req, res) => {
   try {
-    const { batchName, batchCode, courses } = req.body;
+    const { batchName, batchCode, courses, students } = req.body;
     const errors = { batchError: String };
     const existingBatch = await Batch.findOne({ batchCode });
 
-    console.log(courses);
     if (existingBatch) {
       errors.batchError = "Batch already exists";
       return res.status(400).json(errors);
     }
-
+    let stu = [];
+    for (let i = 0; i < students.length; i++) {
+      if (students[i][0] !== "") {
+        stu.push(students[i][0]);
+      }
+    }
     const newBatch = await new Batch({
       batchName,
       batchCode,
       courses,
+      students: stu,
     });
 
     await newBatch.save();
@@ -569,24 +574,46 @@ export const getStudentByCourseCode = async (req, res) => {
 };
 
 // get all batches
-export const getAllBatch = async (req, res) => {
+
+export const getAllBatchCodes = async (req, res) => {
   try {
     const batches = await Batch.find();
     const errors = { noBatchError: String };
-    
-    if (batches.length === 0) {
-      errors.noBatchError = "No Batch Found";
-      return res.status(400).json(errors);
+    let batchCodes = [];
+
+    for (let i = 0; i < batches.length; i++) {
+      batchCodes.push({
+        label: batches[i].batchCode,
+        value: batches[i].batchCode,
+      });
     }
 
-    res.status(200).json(batches);
+    res.status(200).json(batchCodes);
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
     res.status(500).json(errors);
   }
 };
+export const getAllCourseCodes = async (req, res) => {
+  try {
+    const courses = await Course.find();
+    let courseCodes = [];
 
+    for (let i = 0; i < courses.length; i++) {
+      courseCodes.push({
+        label: courses[i].courseCode,
+        value: courses[i].courseCode,
+      });
+    }
+
+    res.status(200).json(courseCodes);
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
 export const getBatch = async (req, res) => {
   try {
     const { batchCode } = req.body;

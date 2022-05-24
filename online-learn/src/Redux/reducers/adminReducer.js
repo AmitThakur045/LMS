@@ -23,11 +23,13 @@ const initialState = {
   adminDeleted: false,
   courseAdded: false,
   course: {},
+  batch: {},
   courseDeleted: false,
   studentAdded: false,
   allStudent: [],
   allCourse: [],
   allAdmin: [],
+  allBatch: [],
   student: {},
   batchAdded: false,
 };
@@ -89,6 +91,11 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         student: action.payload,
       };
+    case GET_BATCH:
+      return {
+        ...state,
+        batch: action.payload,
+      };
     case GET_ALL_COURSE:
       return {
         ...state,
@@ -104,11 +111,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         batchAdded: action.payload,
       };
-    case GET_BATCH:
-      return {
-        ...state,
-        batch: action.payload,
-      };
+
     default:
       return state;
   }

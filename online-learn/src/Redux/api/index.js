@@ -27,5 +27,6 @@ export const getStudent = (data) => API.post("/api/admin/getstudent", data);
 export const getAllCourse = () => API.get("/api/admin/getallcourse");
 
 export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);
-export const getAllBatch = () => API.get("/api/admin/getallbatch");
+export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
+export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
 export const getBatch = (data) => API.post("/api/admin/getbatch", data);
