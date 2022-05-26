@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Course1_img from "../Assests/Course1_img.svg";
 import Course2_img from "../Assests/Course2_img.svg";
+import Course3_img from "../Assests/Course3_img.jpg";
+import Course4_img from "../Assests/Course4_img.jpg";
 
 import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
@@ -49,7 +51,7 @@ const sampleDate = [
     ],
   },
   {
-    img: Course1_img,
+    img: Course3_img,
     title: "Learning Strategy: how instead of what",
     description:
       "Sed sem felis, efficitur eget lacus nec, dignissim consequat ipsum. Aenean venenatis, sem vehicula finibus suscipit, risus ex lobortis dui, vestibulum tempor magna quam sed justo. Proin vel nisi dui. Phasellus sit amet tempor leo. Sed sagittis",
@@ -69,7 +71,7 @@ const sampleDate = [
     ],
   },
   {
-    img: Course1_img,
+    img: Course4_img,
     title: "Learning Strategy: how instead of what",
     description:
       "Sed sem felis, efficitur eget lacus nec, dignissim consequat ipsum. Aenean venenatis, sem vehicula finibus suscipit, risus ex lobortis dui, vestibulum tempor magna quam sed justo. Proin vel nisi dui. Phasellus sit amet tempor leo. Sed sagittis",
@@ -227,9 +229,9 @@ const Home = () => {
                       key={i}
                       className="h-[9.75rem] border-[1px] rounded-2xl flex">
                       <div
-                        className={`w-full flex-[0.3] bg-[${
-                          colors[Math.floor(Math.random() * colors.length)]
-                        }] rounded-tl-2xl rounded-bl-2xl flex items-center justify-center space-x-3`}>
+                        className={`w-full flex-[0.3] ${
+                          i % 2 === 0 ? "bg-[#C87343]" : "bg-[#DFB23C]"
+                        } rounded-tl-2xl rounded-bl-2xl flex items-center justify-center space-x-3`}>
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
