@@ -3,7 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { NavLink } from "react-router-dom";
-import dummyPdf from "../Assests/screenshots.pdf";
+import dummyPdf from "../Assests/SamplePdf.pdf";
 import PdfViewer from "../components/PdfViewer";
 
 const sampleData = [
@@ -34,7 +34,6 @@ const sampleData = [
 ];
 
 const AssignmentMain = () => {
-
   return (
     <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
       <div className="h-24 bg-[#373737] w-full rounded-tl-2xl rounded-tr-2xl flex">
@@ -73,9 +72,9 @@ const AssignmentMain = () => {
             {sampleData.map((data, i) => (
               <div className="bg-[#127FED] h-[10rem] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between">
                 <h3>Assignment {i + 1}</h3>
-                <h1 className="text-2xl">{data.title}</h1>
+                <h1 className="text-[21px]">{data.title}</h1>
                 <div className="">
-                  <span className="bg-[#6EAEE9] rounded-2xl py-1 px-2 ">
+                  <span className="bg-[#6EAEE9] flex items-center justify-center w-[5rem] rounded-2xl h-[2rem] ">
                     {data.gradable}
                   </span>
                 </div>
