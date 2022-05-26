@@ -55,6 +55,7 @@ const CourseMain = () => {
               <p className="text-sm text-[#6A6A6A] font-semibold">Section 1</p>
               <div className="flex relative cursor-pointer">
                 <Collapsible
+                  open
                   onClick={() => setOpenSection(!openSection)}
                   className="flex-1 w-full flex flex-col z-[10] font-bold text-2xl"
                   openedClassName="w-full flex-1 flex flex-col z-[10] font-bold text-2xl"
