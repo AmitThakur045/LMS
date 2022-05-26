@@ -7,6 +7,11 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import reducers from "./Redux/reducers";
 import thunk from "redux-thunk";
+import { registerLicense } from "@syncfusion/ej2-base";
+
+registerLicense(
+  "ORg4AjUWIQA/Gnt2VVhhQlFaclhJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxRdkBhX39ZcnVWT2NfUEI="
+);
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
