@@ -5,6 +5,10 @@ import barGraph from "../../../Assests/barGraph.svg";
 import pieChart from "../../../Assests/pieChart.svg";
 import sampleAvatar from "../../../Assests/sampleAvatar1.svg";
 import { FaCircle } from "react-icons/fa";
+import LineGraph from "./LineGraph";
+import BarGraph from "./BarGraph";
+import PieChart from "./PieChart";
+
 const Main = () => {
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
@@ -39,25 +43,15 @@ const Main = () => {
         </div>
       </div>
       <div className="flex justify-between">
-        <img src={curveGraph} alt="" />
-        <img src={barGraph} alt="" />
+        <LineGraph />
+        <BarGraph />
       </div>
       <div className="flex space-x-10">
         <div className="w-[60%] space-y-6">
           <h1 className="text-[#510B88] font-bold text-[18px]">Batch</h1>
           <hr />
           <div className="flex items-center space-x-20 justify-evenly">
-            <img src={pieChart} alt="" />
-            <div className="flex flex-col space-y-4">
-              <div className="flex items-center space-x-6">
-                <FaCircle color="#E72208" />
-                <p className="text-[#590A7E]">Batches</p>
-              </div>
-              <div className="flex items-center space-x-6">
-                <FaCircle color="#4100CC" />
-                <p className="text-[#590A7E]">Batches</p>
-              </div>
-            </div>
+            <PieChart legendVisiblity />
           </div>
         </div>
         <div className="w-[40%] space-y-6">
@@ -65,7 +59,7 @@ const Main = () => {
             Student Queries
           </h1>
           <hr />
-          <div className="flex flex-col space-y-4 overflow-y-auto h-[15rem] ">
+          <div className="flex flex-col space-y-4 overflow-y-auto h-[25rem] ">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
                 <img src={sampleAvatar} alt="" />
