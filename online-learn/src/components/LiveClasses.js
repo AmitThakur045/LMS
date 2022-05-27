@@ -12,6 +12,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@mui/material";
+import Calender from "./Calender";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -91,14 +92,8 @@ const LiveClasses = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="flex-[0.70] h-full">
-            <Calendar
-              localizer={localizer}
-              // events={allEvents}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 550, width: 800, margin: "50px" }}
-            />
+          <div className="flex-[0.70] h-full p-2">
+            <Calender />
           </div>
           <div className="flex-[0.3] mx-24 justify-center my-12 rounded-2xl shadow-lg h-[20rem]">
             <div className="text-4xl mt-6 font-bold flex justify-center items-center">
