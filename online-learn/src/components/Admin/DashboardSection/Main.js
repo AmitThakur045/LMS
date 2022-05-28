@@ -1,13 +1,20 @@
 import React from "react";
 import currentIcon from "../../../Assests/currentIcon.svg";
-import curveGraph from "../../../Assests/curveGraph.svg";
-import barGraph from "../../../Assests/barGraph.svg";
-import pieChart from "../../../Assests/pieChart.svg";
+
 import sampleAvatar from "../../../Assests/sampleAvatar1.svg";
-import { FaCircle } from "react-icons/fa";
-import LineGraph from "./LineGraph";
-import BarGraph from "./BarGraph";
-import PieChart from "./PieChart";
+
+import LineGraph from "../../../Utils/LineGraph";
+import BarGraph from "../../../Utils/BarGraph";
+import PieChart from "../../../Utils/PieChart";
+import {
+  lineCustomSeries,
+  LinePrimaryXAxis,
+  LinePrimaryYAxis,
+  barCustomSeries,
+  barPrimaryXAxis,
+  barPrimaryYAxis,
+  pieChartData as data,
+} from "./Data";
 
 const Main = () => {
   return (
@@ -43,15 +50,26 @@ const Main = () => {
         </div>
       </div>
       <div className="flex justify-between">
-        <LineGraph />
-        <BarGraph />
+        <LineGraph
+          lineCustomSeries={lineCustomSeries}
+          LinePrimaryXAxis={LinePrimaryXAxis}
+          LinePrimaryYAxis={LinePrimaryYAxis}
+          chartId={"TeacherStudents"}
+          height={"420px"}
+          width={"550px"}
+        />
+        <BarGraph
+          barCustomSeries={barCustomSeries}
+          barPrimaryXAxis={barPrimaryXAxis}
+          barPrimaryYAxis={barPrimaryYAxis}
+        />
       </div>
       <div className="flex space-x-10">
         <div className="w-[60%] space-y-6">
           <h1 className="text-[#510B88] font-bold text-[18px]">Batch</h1>
           <hr />
           <div className="flex items-center space-x-20 justify-evenly">
-            <PieChart legendVisiblity />
+            <PieChart data={data} legendVisiblity />
           </div>
         </div>
         <div className="w-[40%] space-y-6">

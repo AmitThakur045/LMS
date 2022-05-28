@@ -10,13 +10,8 @@ import {
   ColumnSeries,
   DataLabel,
 } from "@syncfusion/ej2-react-charts";
-import {
-  barCustomSeries,
-  barPrimaryXAxis,
-  barPrimaryYAxis,
-} from "./dummyData";
 
-const BarGraph = () => {
+const BarGraph = ({ barCustomSeries, barPrimaryXAxis, barPrimaryYAxis }) => {
   return (
     <ChartComponent
       id="charts"
@@ -24,8 +19,7 @@ const BarGraph = () => {
       primaryYAxis={barPrimaryYAxis}
       chartArea={{ border: { width: 0 } }}
       tooltip={{ enable: true }}
-      legendSettings={{ background: "white" }}
-    >
+      legendSettings={{ background: "white" }}>
       <Inject services={[ColumnSeries, Legend, Tooltip, Category, DataLabel]} />
       <SeriesCollectionDirective>
         {barCustomSeries.map((item, index) => (

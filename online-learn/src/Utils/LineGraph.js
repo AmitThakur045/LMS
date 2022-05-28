@@ -8,28 +8,29 @@ import {
   DateTime,
   Legend,
   Tooltip,
+  Category,
 } from "@syncfusion/ej2-react-charts";
 
-import {
+const LineGraph = ({
   lineCustomSeries,
   LinePrimaryXAxis,
   LinePrimaryYAxis,
-} from "./dummyData";
-
-const LineGraph = () => {
+  chartId,
+  height,
+  width,
+}) => {
   return (
     <ChartComponent
-      id="line-chart"
-      height="420px"
+      id={chartId}
+      height={height}
+      width={width}
       primaryXAxis={LinePrimaryXAxis}
       primaryYAxis={LinePrimaryYAxis}
       chartArea={{ border: { width: 0 } }}
       tooltip={{ enable: true }}
-      legendSettings={{ background: "white" }}
-    >
-      <Inject services={[LineSeries, DateTime, Legend, Tooltip]} />
+      legendSettings={{ background: "white" }}>
+      <Inject services={[LineSeries, DateTime, Legend, Tooltip, Category]} />
       <SeriesCollectionDirective>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         {lineCustomSeries.map((item, index) => (
           <SeriesDirective key={index} {...item} />
         ))}

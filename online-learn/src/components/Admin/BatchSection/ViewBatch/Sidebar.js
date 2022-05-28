@@ -28,7 +28,9 @@ const Sidebar = () => {
             }>
             <div className="flex items-center space-x-6">
               <AiOutlineAppstore fontSize={20} />
-              <p className="text-[14px]">Batch Code</p>
+              <p className="text-[14px]">
+                {JSON.parse(localStorage.getItem("batch")).batchCode}
+              </p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>

@@ -14,14 +14,11 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 // import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 
-import { scheduleData } from "./Admin/DashboardSection/dummyData";
-
-const Scheduler = () => {
+const Scheduler = ({ scheduleData }) => {
   return (
     <ScheduleComponent
       height="620px"
-      eventSettings={{ dataSource: scheduleData }}
-    >
+      eventSettings={{ dataSource: scheduleData }}>
       <Inject
         services={[Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]}
       />

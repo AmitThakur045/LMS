@@ -4,8 +4,7 @@ import RecentNotification from "../RecentNotification";
 
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Modal from "react-modal";
-import { Button } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 
 import Select from "react-select";
 import {
@@ -14,37 +13,30 @@ import {
 } from "../../../Redux/actions/adminActions";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    border: "1px solid #bbbbbb",
-  },
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 10,
+  borderRadius: "3px",
+  p: 4,
 };
-
 const Main = () => {
-  const [modalIsOpen, setIsOpen] = useState(false);
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
-  function closeModal() {
-    setIsOpen(false);
-    setSelectedBatch("");
-  }
-
   const dispatch = useDispatch();
   const [selectedBatch, setSelectedBatch] = useState("");
 
   const allBatches = useSelector((state) => state.admin.allBatch);
   const batch = useSelector((state) => state.admin.batch);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedBatch("");
+  };
   useEffect(() => {
     dispatch(getAllBatchCodes());
   }, []);
@@ -52,41 +44,49 @@ const Main = () => {
   useEffect(() => {
     localStorage.setItem("batch", JSON.stringify(batch));
   }, [batch]);
-  console.log(selectedBatch);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        overlayClassName=""
-        contentLabel="Example Modal">
-        <div className="flex flex-col h-[15rem] w-[25rem] space-y-4">
-          <div onClick={closeModal} className="self-end cursor-pointer">
-            <AiOutlineCloseCircle fontSize={23} />
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <div className="flex flex-col space-y-4 h-[15rem]">
+            <div className="flex items-center">
+              <h1 className="self-center w-[95%] font-bold">Search Batch</h1>
+              <div
+                onClick={handleClose}
+                className="self-end cursor-pointer w-[5%]">
+                <AiOutlineCloseCircle
+                  className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
+                  fontSize={23}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-3  ">
+              <Select
+                className="w-[75%]"
+                options={allBatches}
+                onChange={(e) => setSelectedBatch(e.value)}
+              />
+              <Button
+                disabled={selectedBatch !== "" ? false : true}
+                onClick={() => {
+                  dispatch(getBatch({ batchCode: selectedBatch }));
+                  handleClose();
+                  window.open("/admin/batch/viewbatch");
+                }}
+                className="w-[25%]"
+                variant="contained"
+                color="primary">
+                Search
+              </Button>
+            </div>
           </div>
-          <div className="flex space-x-3  ">
-            <Select
-              className="w-[80%]"
-              options={allBatches}
-              onChange={(e) => setSelectedBatch(e.value)}
-            />
-            <Button
-              disabled={selectedBatch !== "" ? false : true}
-              onClick={() => {
-                dispatch(getBatch({ batchCode: selectedBatch }));
-                setIsOpen(false);
-                window.open("/admin/batch/viewbatch");
-              }}
-              className="w-[20%]"
-              variant="contained"
-              color="primary">
-              Search
-            </Button>
-          </div>
-        </div>
+        </Box>
       </Modal>
+
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex  space-x-5">
         <Link
           to="/admin/batch/addbatch"
@@ -95,7 +95,7 @@ const Main = () => {
           <IoIosAddCircleOutline />
         </Link>
         <div
-          onClick={openModal}
+          onClick={handleOpen}
           className="bg-[#5848a4] shadow-[#111111] h-[10rem] w-[50%] rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-[#352b66] transition-all duration-150">
           <h1>Search Batch</h1>
           <IoIosAddCircleOutline />

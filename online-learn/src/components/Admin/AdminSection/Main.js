@@ -13,9 +13,19 @@ import {
 } from "../../../Redux/actionTypes";
 import { deleteAdmin, getAllAdmin } from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
-import { Avatar, Menu, MenuItem } from "@mui/material";
-import { confirmAlert } from "react-confirm-alert";
-
+import { Avatar, Box, Menu, MenuItem, Modal } from "@mui/material";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 10,
+  borderRadius: "3px",
+  p: 4,
+};
 const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
@@ -32,35 +42,11 @@ const Main = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const allAdmins = useSelector((state) => state.admin.allAdmin);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
-  const deleteadmin = () => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <div className="custom-ui bg-gray-800 text-white h-48 flex flex-col justify-center w-96 px-10 py-4 rounded-md space-y-4">
-            <h1 className="text-3xl">Are you sure?</h1>
-            <p>You want to delete this admin?</p>
-            <div className="space-x-4 text-black">
-              <button
-                className="bg-white rounded-lg w-24 h-8 hover:scale-105 transition-all duration-150"
-                onClick={onClose}>
-                No
-              </button>
-              <button
-                className="bg-white rounded-lg w-24 h-8 hover:scale-105 transition-all duration-150"
-                onClick={() => {
-                  dispatch(deleteAdmin({ email: admins[index].email }));
-                  onClose();
-                }}>
-                Yes
-              </button>
-            </div>
-          </div>
-        );
-      },
-    });
-  };
+  const allAdmins = useSelector((state) => state.admin.allAdmin);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -79,6 +65,7 @@ const Main = () => {
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getAllAdmin());
+    setLoading(true);
 
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
@@ -216,7 +203,7 @@ const Main = () => {
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        deleteadmin();
+                        handleOpenDeleteModal();
                         handleClose();
                       }}>
                       Delete Admin
@@ -232,6 +219,33 @@ const Main = () => {
         <ActiveBatch />
         <RecentNotification />
       </div>
+      <Modal
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <div className="flex flex-col space-y-2">
+            <h1 className="text-3xl">Are you sure?</h1>
+            <p>You want to delete this admin?</p>
+            <div className="space-x-4 text-black">
+              <button
+                className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
+                onClick={handleCloseDeleteModal}>
+                No
+              </button>
+              <button
+                className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
+                onClick={() => {
+                  dispatch(deleteAdmin({ email: admins[index].email }));
+                  handleCloseDeleteModal();
+                }}>
+                Yes
+              </button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };
