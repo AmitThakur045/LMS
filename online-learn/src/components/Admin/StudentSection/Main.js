@@ -46,7 +46,7 @@ const Main = () => {
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getAllStudent());
-
+    setLoading(true);
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 

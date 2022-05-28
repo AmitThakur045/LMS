@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 
 import Header from "./Header";
 
-import Main from "./Main";
+import Main from "./Dashboard/Main";
 
 const ViewBatch = () => {
   return (
@@ -11,7 +11,7 @@ const ViewBatch = () => {
       <Sidebar />
       <div className="flex flex-col  w-full">
         <Header />
-        {/* <Main /> */}
+        <Main />
       </div>
     </div>
   );
