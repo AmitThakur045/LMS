@@ -12,7 +12,32 @@ const batchSchema = new Schema({
     required: true,
     unique: true,
   },
-  courses: [{ type: String, unique: true }],
+  courses: [
+    {
+      courseName: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      courseCode: { type: String, unique: true },
+      complete: {
+        sectionCompleted: { type: Number },
+        lessonCompleted: { type: Number },
+        totalLesson: { type: Number },
+      },
+      lessonVideo: [
+        {
+          sectionNumber: { type: Number },
+          lesson: [
+            {
+              lessonNumber: { type: Number },
+              video: { type: String },
+            },
+          ],
+        },
+      ],
+    },
+  ],
   students: [{ type: String, unique: true }],
 });
 
