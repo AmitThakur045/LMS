@@ -25,6 +25,7 @@ import BatchCommunity from "./components/Admin/BatchSection/ViewBatch/BatchCommu
 import BatchStudent from "./components/Admin/BatchSection/ViewBatch/BatchStudent";
 import SearchBatch from "./components/Admin/BatchSection/SearchBatch/SearchBatch";
 import AddBatch from "./components/Admin/BatchSection/AddBatch/AddBatch";
+import BatchDate from "./components/Admin/BatchSection/ViewBatch/BatchDate";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
       />
       <Route path="admin/batch/community" exact element={<BatchCommunity />} />
       <Route path="admin/batch/student" exact element={<BatchStudent />} />
+      <Route path="admin/batch/date" exact element={<BatchDate />} />
     </Routes>
   );
 }
