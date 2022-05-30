@@ -38,6 +38,14 @@ const batchSchema = new Schema({
       ],
     },
   ],
+  schedule: [
+    {
+      title: { type: String },
+      link: { type: String },
+      start: { type: String },
+      end: { type: String },
+    },
+  ],
   students: [{ type: String, unique: true }],
 });
 
