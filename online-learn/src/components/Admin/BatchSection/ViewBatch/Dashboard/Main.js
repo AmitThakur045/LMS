@@ -9,11 +9,10 @@ import {
   LinePrimaryYAxis2,
 } from "./Data";
 import LineGraph from "../../../../../Utils/LineGraph";
+
 const Main = () => {
-  const [batchData, setBatchData] = useState({});
-  useEffect(() => {
-    setBatchData(JSON.parse(localStorage.getItem("batch")));
-  }, []);
+  const batchData = JSON.parse(localStorage.getItem("batch"));
+
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
       <div className="flex justify-between mt-4 ">

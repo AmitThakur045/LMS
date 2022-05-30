@@ -334,6 +334,21 @@ export const getCourse = async (req, res) => {
     res.status(500).json(error);
   }
 };
+export const getCourses = async (req, res) => {
+  try {
+    const courses = req.body;
+
+    const courseData = [];
+    for (let i = 0; i < courses.length; i++) {
+      let courseCode = courses[i];
+      let temp = await Course.findOne({ courseCode });
+      courseData.push(temp);
+    }
+    res.status(200).json(courseData);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 export const deleteAdmin = async (req, res) => {
   try {
     const { email } = req.body;
@@ -369,10 +384,46 @@ export const addBatch = async (req, res) => {
         stu.push(students[i][0]);
       }
     }
+    let courseData = [];
+
+    for (let i = 0; i < courses.length; i++) {
+      const course = await Course.findOne({ courseCode: courses[i] });
+      let couCode = courses[i];
+      let cou = {};
+
+      cou.courseCode = couCode;
+      cou.courseName = course.courseName;
+      cou.complete = {
+        sectionCompleted: 0,
+        lessonCompleted: 0,
+        totalLesson: 0,
+      };
+      cou.lessonVideo = [];
+
+      let sum = 0;
+
+      for (let i = 0; i < course.section.length; i++) {
+        let temp1 = {
+          sectionNumber: course.section[i].sectionNumber,
+          lesson: [],
+        };
+        sum += course.section[i].lesson.length;
+        for (let j = 0; j < course.section[i].lesson.length; j++) {
+          let temp2 = {
+            lessonNumber: course.section[i].lesson[j].lessonNumber,
+            video: "",
+          };
+          temp1.lesson.push(temp2);
+        }
+        cou.lessonVideo.push(temp1);
+      }
+      cou.complete.totalLesson = sum;
+      courseData.push(cou);
+    }
     const newBatch = await new Batch({
       batchName,
       batchCode,
-      courses,
+      courses: courseData,
       students: stu,
     });
 
@@ -393,7 +444,7 @@ export const addCourseInBatch = async (req, res) => {
     const {
       batchCode,
       courseCode,
-      courseName,
+      co1urseName,
       description,
       totalLectures,
       rating,

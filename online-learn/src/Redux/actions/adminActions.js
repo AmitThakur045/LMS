@@ -15,6 +15,7 @@ import {
   GET_ALL_ADMIN,
   GET_ALL_BATCH,
   GET_BATCH,
+  GET_COURSES,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -77,6 +78,15 @@ export const getCourse = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getCourse(formData);
     dispatch({ type: GET_COURSE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getCourses = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getCourses(formData);
+    localStorage.setItem("courses", JSON.stringify(data));
+    dispatch({ type: GET_COURSES, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

@@ -30,10 +30,13 @@ const courseSchema = new Schema({
     {
       sectionNumber: { type: Number },
       sectionName: { type: String },
+      sectionCompleted: { type: Boolean, default: false },
       lesson: [
         {
           lessonNumber: { type: Number },
           lessonName: { type: String },
+          lessonCompleted: { type: Boolean, default: false },
+          lessonVideo: { type: String, default: false },
           lessonDescription: { type: String },
         },
       ],
