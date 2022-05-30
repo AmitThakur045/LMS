@@ -87,7 +87,6 @@ const Main = () => {
     const base64 = await convertBase64(file);
     setUploadedVideo(base64);
   };
-  console.log(batchCourseData);
 
   useEffect(() => {
     if (uploadedVideo !== "") {
@@ -112,6 +111,7 @@ const Main = () => {
       };
     });
   };
+  console.log("yo");
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
       <div className="flex flex-col space-y-4">
@@ -150,10 +150,8 @@ const Main = () => {
                   key={lessonIdx}
                   className="flex justify-between shadow-sm rounded-sm shadow-gray-400 py-4 px-4">
                   <div className="flex items-center space-x-3">
-                    {batchCourseData.complete?.lessonCompleted <
-                    batchCourseData.complete?.totalLesson -
-                      (lessonIdx + sectionIdx) -
-                      1 ? (
+                    {batchCourseData.complete?.lessonCompleted - 1 >
+                    sectionIdx + lessonIdx ? (
                       <BsFillCheckCircleFill
                         onClick={() => handleIconClickDecrease()}
                         fontSize={20}
@@ -193,7 +191,7 @@ const Main = () => {
         </div>
         <Button
           size="large"
-          color="error  "
+          color="error"
           className="w-[7rem] self-center"
           variant="contained">
           Submit
