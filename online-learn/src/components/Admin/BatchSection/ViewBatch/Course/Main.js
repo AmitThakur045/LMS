@@ -7,10 +7,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { Button } from "@mui/material";
+import { GET_BATCH, INDEX_COUNTER } from "../../../../../Redux/actionTypes";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -28,6 +31,8 @@ const Main = () => {
   const batchData = JSON.parse(localStorage.getItem("batch"));
   const courseData = JSON.parse(localStorage.getItem("courses"));
   const [lessonCount, setLessonCount] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let temp = [...lessonCount];
@@ -47,7 +52,15 @@ const Main = () => {
         <div key={idx} className="space-y-4">
           <div className="flex justify-between">
             <h1 className="font-bold text-[#605C94]">{course.courseName}</h1>
-            <Button variant="contained">Update</Button>
+            <Button
+              onClick={() => {
+                navigate("/admin/batch/course/update");
+                dispatch({ type: GET_BATCH, payload: batchData.courses[idx] });
+                dispatch({ type: INDEX_COUNTER, payload: idx });
+              }}
+              variant="contained">
+              Update
+            </Button>
           </div>
           <BorderLinearProgress
             variant="determinate"
@@ -72,7 +85,8 @@ const Main = () => {
                     aria-controls="panel1a-content"
                     id="section">
                     <div className="flex items-center space-x-3">
-                      {sectionData.sectionCompleted ? (
+                      {batchData.courses[idx].complete.sectionCompleted >
+                      sectionIdx ? (
                         <BsFillCheckCircleFill
                           fontSize={20}
                           className="text-[#1bca72]"
