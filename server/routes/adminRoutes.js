@@ -43,5 +43,5 @@ router.get("/getallbatchcodes", getAllBatchCodes);
 router.get("/getallcoursecodes", getAllCourseCodes);
 router.post("/getbatch", getBatch);
 router.post("/addevent", addEvent);
-router.get("/getbatchevent", getBatchEvent);
+router.post("/getbatchevent", getBatchEvent);
 export default router;

@@ -198,11 +198,11 @@ export const addEvent = (batchCode, newEvent) => async (dispatch) => {
 
 export const getBatchEvent = (batchCode) => async (dispatch) => {
   try {
-    console.log(batchCode);
+
     const { data } = await api.getBatchEvent(batchCode);
-    console.log("data", data);
+
     dispatch({ type: GET_BATCH_EVENT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
