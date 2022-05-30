@@ -15,3 +15,5 @@ export const GET_ALL_COURSE = "GET_ALL_COURSE";
 export const GET_ALL_ADMIN = "GET_ALL_ADMIN";
 export const GET_ALL_BATCH = "GET_ALL_BATCH";
 export const GET_BATCH = "GET_BATCH";
+export const ADD_EVENT = "ADD_EVENT";
+export const GET_BATCH_EVENT = "GET_BATCH_EVENT";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
@@ -14,6 +14,8 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { addEvent, getBatchEvent } from "../../../../../Redux/actions/adminActions"
+import { useDispatch, useSelector } from "react-redux";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -27,43 +29,54 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const events = [
-  {
-    title: "Big Meeting",
-    link: "https://www.google.com",
-    allDay: true,
-    start: new Date(2022, 6, 0),
-    end: new Date(2022, 6, 0),
-  },
-  {
-    title: "Vacation",
-    link: "https://www.google.com",
-    start: new Date(2022, 6, 7),
-    end: new Date(2022, 6, 10),
-  },
-  {
-    title: "Conference",
-    link: "https://www.google.com",
-    start: new Date(2022, 6, 20),
-    end: new Date(2022, 6, 23),
-  },
-];
+// const events = [
+//   {
+//     title: "Big Meeting",
+//     link: "https://www.google.com",
+//     allDay: true,
+//     start: new Date(2022, 6, 0),
+//     end: new Date(2022, 6, 0),
+//   },
+//   {
+//     title: "Vacation",
+//     link: "https://www.google.com",
+//     start: new Date(2022, 6, 7),
+//     end: new Date(2022, 6, 10),
+//   },
+//   {
+//     title: "Conference",
+//     link: "https://www.google.com",
+//     start: new Date(2022, 6, 20),
+//     end: new Date(2022, 6, 23),
+//   },
+// ];
 
 const Main = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state);
+  const batchData = JSON.parse(localStorage.getItem("batch"));
+  const scheduleData = useSelector((state) => state.admin.batchEvent);
+
   const [newEvent, setNewEvent] = useState({
     title: "",
     link: "",
     start: "",
     end: "",
   });
-  const [allEvents, setAllEvents] = useState(events);
+
+  const [allEvents, setAllEvents] = useState(scheduleData);
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    console.log(newEvent);
-    setAllEvents([...allEvents, newEvent]);
+    console.log("allEvent");
+    dispatch(addEvent(batchData.batchCode, newEvent));
     setNewEvent({title: "", link: "", start: "", end: ""});
   }
+
+  useEffect(() => {
+    dispatch(getBatchEvent(batchData.batchCode));
+    setAllEvents(scheduleData);
+  }, [store.eventAdded])
 
   return (
     <div className="flex">
