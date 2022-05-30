@@ -19,7 +19,7 @@ import Student from "./components/Admin/StudentSection/Student";
 import AddStudent from "./components/Admin/StudentSection/AddStudent/AddStudent";
 import ViewStudent from "./components/Admin/StudentSection/ViewStudent/ViewStudent";
 import ViewBatch from "./components/Admin/BatchSection/ViewBatch/ViewBatch";
-import BatchCourse from "./components/Admin/BatchSection/ViewBatch/BatchCourse";
+import BatchCourse from "./components/Admin/BatchSection/ViewBatch/Course/BatchCourse";
 import BatchAssignment from "./components/Admin/BatchSection/ViewBatch/BatchAssignment";
 import BatchCommunity from "./components/Admin/BatchSection/ViewBatch/BatchCommunity";
 import BatchStudent from "./components/Admin/BatchSection/ViewBatch/BatchStudent";
