@@ -15,6 +15,7 @@ import {
   UPDATE_ADMIN,
   GET_BATCH,
   GET_COURSES,
+  INDEX_COUNTER,
 } from "../actionTypes";
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
   allBatch: [],
   student: {},
   batchAdded: false,
+  index: 0,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -82,6 +84,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         studentAdded: action.payload,
+      };
+    case INDEX_COUNTER:
+      return {
+        ...state,
+        index: action.payload,
       };
     case GET_ALL_STUDENT:
       return {
