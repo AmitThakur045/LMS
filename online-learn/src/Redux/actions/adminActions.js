@@ -16,6 +16,8 @@ import {
   GET_ALL_BATCH,
   GET_BATCH,
   GET_COURSES,
+  ADD_EVENT,
+  GET_BATCH_EVENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -183,3 +185,24 @@ export const getAllCourseCodes = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const addEvent = (batchCode, newEvent) => async (dispatch) => {
+  try {
+    const { data } = await api.addEvent({ batchCode, newEvent });
+    alert("Event Added Successfully");
+    dispatch({ type: ADD_EVENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getBatchEvent = (batchCode) => async (dispatch) => {
+  try {
+    console.log(batchCode);
+    const { data } = await api.getBatchEvent(batchCode);
+    console.log("data", data);
+    dispatch({ type: GET_BATCH_EVENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}

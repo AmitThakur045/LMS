@@ -15,6 +15,8 @@ import {
   UPDATE_ADMIN,
   GET_BATCH,
   GET_COURSES,
+  ADD_EVENT,
+  GET_BATCH_EVENT,
 } from "../actionTypes";
 
 const initialState = {
@@ -34,6 +36,8 @@ const initialState = {
   allBatch: [],
   student: {},
   batchAdded: false,
+  eventAdded: false,
+  batchEvent: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -118,7 +122,16 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         batchAdded: action.payload,
       };
-
+    case ADD_EVENT: 
+      return {
+        ...state,
+        eventAdded: action.payload,
+      };
+    case GET_BATCH_EVENT:
+      return {
+        ...state,
+        batchEvent: action.payload,
+      };
     default:
       return state;
   }
