@@ -17,6 +17,7 @@ import {
   GET_COURSES,
   ADD_EVENT,
   GET_BATCH_EVENT,
+  INDEX_COUNTER,
 } from "../actionTypes";
 
 const initialState = {
@@ -38,6 +39,7 @@ const initialState = {
   batchAdded: false,
   eventAdded: false,
   batchEvent: [],
+  index: 0,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -87,6 +89,11 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         studentAdded: action.payload,
       };
+    case INDEX_COUNTER:
+      return {
+        ...state,
+        index: action.payload,
+      };
     case GET_ALL_STUDENT:
       return {
         ...state,
@@ -122,7 +129,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         batchAdded: action.payload,
       };
-    case ADD_EVENT: 
+    case ADD_EVENT:
       return {
         ...state,
         eventAdded: action.payload,
