@@ -46,7 +46,7 @@ const Main = () => {
     localStorage.clear();
     localStorage.setItem("batch", JSON.stringify(batch));
     let temp = [];
-    for (let i = 0; i < batch.courses.length; i++) {
+    for (let i = 0; i < batch.courses?.length; i++) {
       temp.push(batch.courses[i].courseCode);
     }
     dispatch(getCourses(temp));
