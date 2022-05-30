@@ -10,6 +10,7 @@ import Select from "react-select";
 import {
   getAllBatchCodes,
   getBatch,
+  getCourses,
 } from "../../../Redux/actions/adminActions";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +43,13 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
+    localStorage.clear();
     localStorage.setItem("batch", JSON.stringify(batch));
+    let temp = [];
+    for (let i = 0; i < batch.courses.length; i++) {
+      temp.push(batch.courses[i].courseCode);
+    }
+    dispatch(getCourses(temp));
   }, [batch]);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">

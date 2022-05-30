@@ -18,6 +18,7 @@ import {
   getAllBatchCodes,
   getBatch,
   getAllCourseCodes,
+  getCourses,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.post("/updateadmin", updateAdmin);
 router.post("/deleteadmin", deleteAdmin);
 router.post("/addcourse", addCourse);
 router.post("/getcourse", getCourse);
+router.post("/getcourses", getCourses);
 router.post("/deletecourse", deleteCourse);
 router.post("/addstudent", addStudent);
 router.get("/getallstudent", getAllStudent);
