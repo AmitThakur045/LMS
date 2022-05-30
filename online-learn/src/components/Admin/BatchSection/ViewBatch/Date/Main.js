@@ -14,8 +14,13 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { addEvent, getBatchEvent } from "../../../../../Redux/actions/adminActions"
+import {
+  addEvent,
+  getBatchEvent,
+} from "../../../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../../../../Utils/Spinner";
+import { ADD_EVENT, SET_ERRORS } from "../../../../../Redux/actionTypes";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -53,8 +58,11 @@ const localizer = dateFnsLocalizer({
 
 const Main = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
   const batchData = JSON.parse(localStorage.getItem("batch"));
+
+  const [error, setError] = useState({});
   const scheduleData = useSelector((state) => state.admin.batchEvent);
 
   const [newEvent, setNewEvent] = useState({
@@ -64,111 +72,153 @@ const Main = () => {
     end: "",
   });
 
-  const [allEvents, setAllEvents] = useState(scheduleData);
+  const [allEvents, setAllEvents] = useState([]);
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    console.log("allEvent");
+
     dispatch(addEvent(batchData.batchCode, newEvent));
-    setNewEvent({title: "", link: "", start: "", end: ""});
-  }
+    setNewEvent({ title: "", link: "", start: "", end: "" });
+  };
 
   useEffect(() => {
-    dispatch(getBatchEvent(batchData.batchCode));
+    if (scheduleData.length !== 0) {
+      setAllEvents(scheduleData);
+      setLoading(false);
+    }
+  }, [scheduleData]);
+
+  useEffect(() => {
+    dispatch(getBatchEvent({ batchCode: batchData.batchCode }));
     setAllEvents(scheduleData);
-  }, [store.eventAdded])
+    dispatch({ type: ADD_EVENT, payload: false });
+  }, [store.admin.eventAdded]);
+
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setError(store.errors);
+      setLoading(false);
+    }
+  }, [store.errors]);
+
+  useEffect(() => {
+    dispatch({ type: SET_ERRORS, payload: {} });
+    setLoading(true);
+  }, []);
 
   return (
-    <div className="flex">
-      <div className="overflow-y-auto flex-[0.7]">
-        <Calendar
-          localizer={localizer}
-          events={allEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500, margin: "50px" }}
-        />
-      </div>
-      <div className="flex-[0.3]">
-        <form
-          onSubmit={handleAddEvent}
-          className="w-full h-full space-x-5 px-10 mb-5"
-        >
-          <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
-          <div className="flex flex-col w-[100%] space-y-6">
-            <div className="flex justify-between w-full">
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="Title"
-                variant="outlined"
-                className="bg-white w-full"
-                value={newEvent.title}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, title: e.target.value })
-                }
+    <div className="">
+      {(loading || Object.keys(error).length !== 0) && (
+        <div className="flex flex-col mt-10">
+          <div className="flex items-center justify-center mt-5">
+            {loading && (
+              <Spinner
+                message="Loading"
+                height={50}
+                width={150}
+                color="#111111"
+                messageColor="blue"
               />
-            </div>
-            <div className="flex justify-between">
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="Link"
-                variant="outlined"
-                className="bg-white w-full"
-                value={newEvent.link}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, link: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex-col space-x-8">
-              <div>
-                <p className="text-[#8d91b1]">Start Time</p>
-              </div>
-              <div>
-                <TextField
-                  required
-                  type="datetime-local"
-                  id="outlined-basic"
-                  variant="outlined"
-                  className="bg-white w-full"
-                  value={newEvent.start}
-                  onChange={(e) =>
-                    setNewEvent({ ...newEvent, start: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex-col space-x-8">
-              <div>
-                <p className="text-[#8d91b1]">End Time</p>
-              </div>
-              <div>
-                <TextField
-                  required
-                  type="datetime-local"
-                  id="outlined-basic"
-                  variant="outlined"
-                  className="bg-white w-full"
-                  value={newEvent.end}
-                  onChange={(e) =>
-                    setNewEvent({ ...newEvent, end: e.target.value })
-                  }
-                />
-              </div>
-            </div>
+            )}
+            {error.noBatchError && (
+              <p className="text-red-500 text-2xl font-bold">
+                {error.noBatchError}
+              </p>
+            )}
           </div>
-          <button
-            type="submit"
-            className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+        </div>
+      )}
+      {!loading && Object.keys(error).length === 0 && allEvents.length !== 0 && (
+        <div className="flex">
+          <div className="overflow-y-auto flex-[0.7]">
+            <Calendar
+              localizer={localizer}
+              events={allEvents}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500, margin: "50px" }}
+            />
+          </div>
+          <div className="flex-[0.3]">
+            <form
+              onSubmit={handleAddEvent}
+              className="w-full h-full space-x-5 px-10 mb-5">
+              <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
+              <div className="flex flex-col w-[100%] space-y-6">
+                <div className="flex justify-between w-full">
+                  <TextField
+                    required
+                    type="text"
+                    id="outlined-basic"
+                    label="Title"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={newEvent.title}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, title: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <TextField
+                    required
+                    type="text"
+                    id="outlined-basic"
+                    label="Link"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={newEvent.link}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, link: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="flex-col space-x-8">
+                  <div>
+                    <p className="text-[#8d91b1]">Start Time</p>
+                  </div>
+                  <div>
+                    <TextField
+                      required
+                      type="datetime-local"
+                      id="outlined-basic"
+                      variant="outlined"
+                      className="bg-white w-full"
+                      value={newEvent.start}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, start: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex-col space-x-8">
+                  <div>
+                    <p className="text-[#8d91b1]">End Time</p>
+                  </div>
+                  <div>
+                    <TextField
+                      required
+                      type="datetime-local"
+                      id="outlined-basic"
+                      variant="outlined"
+                      className="bg-white w-full"
+                      value={newEvent.end}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, end: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

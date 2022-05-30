@@ -33,4 +33,5 @@ export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
 export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
 export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
-export const getBatchEvent = (batchCode) => API.get("/api/admin/getbatchevent", batchCode);
+export const getBatchEvent = (batchCode) =>
+  API.post("/api/admin/getbatchevent", batchCode);

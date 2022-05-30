@@ -685,32 +685,26 @@ export const getBatch = async (req, res) => {
 export const addEvent = async (req, res) => {
   try {
     const { batchCode, newEvent } = req.body;
+
     const errors = { noBatchError: String };
     const batch = await Batch.findOne({ batchCode });
-    if (batch === null) {
-      errors.noBatchError = "No Batch Found";
-      return res.status(404).json(errors);
-    }
+
     batch.schedule.push(newEvent);
     await batch.save();
     res.status(200).json(batch);
   } catch (error) {
     console.log("Backend Error", error);
   }
-}
+};
 
 export const getBatchEvent = async (req, res) => {
   try {
     const { batchCode } = req.body;
-    console.log(batchCode);
-    const errors = { noBatchError: String };
+
     const batch = await Batch.findOne({ batchCode });
-    if (batch === null) {
-      errors.noBatchError = "No Batch Found";
-      return res.status(404).json(errors);
-    }
+
     res.status(200).json(batch.schedule);
   } catch (error) {
     console.log("Backend Error", error);
   }
-}
+};
