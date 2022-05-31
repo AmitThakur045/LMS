@@ -18,6 +18,9 @@ import {
   GET_COURSES,
   ADD_EVENT,
   GET_BATCH_EVENT,
+  GET_STUDENTS,
+  UPLOAD_ATTENDANCE,
+  GET_ATTENDANCE,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -89,6 +92,15 @@ export const getCourses = (formData) => async (dispatch) => {
     const { data } = await api.getCourses(formData);
     localStorage.setItem("courses", JSON.stringify(data));
     dispatch({ type: GET_COURSES, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getStudents = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getStudents(formData);
+    localStorage.setItem("students", JSON.stringify(data));
+    dispatch({ type: GET_STUDENTS, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -198,10 +210,27 @@ export const addEvent = (batchCode, newEvent) => async (dispatch) => {
 
 export const getBatchEvent = (batchCode) => async (dispatch) => {
   try {
-
     const { data } = await api.getBatchEvent(batchCode);
 
     dispatch({ type: GET_BATCH_EVENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const uploadAttendance = (attendanceRecord) => async (dispatch) => {
+  try {
+    const { data } = await api.uploadAttendance(attendanceRecord);
+    alert("Attendance Uploaded Successfully");
+    dispatch({ type: UPLOAD_ATTENDANCE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getAttendance = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getAttendance(formData);
+    dispatch({ type: GET_ATTENDANCE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

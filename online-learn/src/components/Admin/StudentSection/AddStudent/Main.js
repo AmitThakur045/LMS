@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ADD_STUDENT, SET_ERRORS } from "../../../../Redux/actionTypes";
-import { addStudent } from "../../../../Redux/actions/adminActions";
+import {
+  addStudent,
+  getAllBatchCodes,
+} from "../../../../Redux/actions/adminActions";
 
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
@@ -31,26 +34,12 @@ const MenuProps = {
     },
   },
 };
-const dummyBatch = [
-  "Batch-001",
-  "Batch-002",
-  "Batch-003",
-  "Batch-005",
-  "Batch-006",
-  "Batch-007",
-  "Batch-008",
-  "Batch-009",
-  "Batch-010",
-  "Batch-011",
-  "Batch-012",
-];
 
 const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [batchCodes, setBatchCodes] = useState([]);
 
   const [values, setValues] = useState({
     firstName: "",
@@ -59,8 +48,7 @@ const Main = () => {
     dob: "",
     contactNumber: "",
     avatar: "",
-    batch: [],
-    currentActiveBatch: "",
+
     performance: "",
   });
 
@@ -91,7 +79,6 @@ const Main = () => {
       setValues({ ...values, email: "" });
     }
   }, [store.errors]);
-
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
@@ -107,11 +94,9 @@ const Main = () => {
           dob: "",
           contactNumber: "",
           avatar: "",
-          batch: [],
-          currentActiveBatch: "",
           performance: "",
         });
-        setBatchCodes([]);
+
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_STUDENT, payload: false });
       }
@@ -125,16 +110,6 @@ const Main = () => {
     setError({});
     setLoading(true);
     dispatch(addStudent(values));
-  };
-
-  const handleBatch = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setValues({
-      ...values,
-      batch: typeof value === "string" ? value.split(",") : value,
-    });
   };
 
   return (
@@ -248,27 +223,6 @@ const Main = () => {
                   setValues({ ...values, performance: e.target.value })
                 }
               />
-            </div>
-            <div className="flex">
-              <FormControl sx={{ width: 475 }}>
-                <InputLabel id="demo-multiple-checkbox-label">Batch</InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={values.batch}
-                  onChange={handleBatch}
-                  input={<OutlinedInput label="Batch" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}>
-                  {dummyBatch.map((batch) => (
-                    <MenuItem key={batch} value={batch}>
-                      <Checkbox checked={values.batch.indexOf(batch) > -1} />
-                      <ListItemText primary={batch} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             </div>
           </div>
         </div>
