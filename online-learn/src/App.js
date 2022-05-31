@@ -72,6 +72,7 @@ function App() {
       <Route path="admin/batch/community" exact element={<BatchCommunity />} />
       <Route path="admin/batch/student" exact element={<BatchStudent />} />
       <Route path="admin/batch/date" exact element={<BatchDate />} />
+      <Route path="admin/batch/assignment" exact element={<BatchAssignment />} />
     </Routes>
   );
 }
