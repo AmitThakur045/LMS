@@ -40,6 +40,18 @@ const studentSchema = new Schema({
   performance: {
     type: String,
   },
+  assignment: [
+    {
+      assignmentCode: { type: String },
+      score: { type: String },
+    },
+  ],
+  attendance: [
+    {
+      courseCode: { type: String, required: true },
+      attended: { type: Number },
+    },
+  ],
 });
 
 export default mongoose.model("student", studentSchema);

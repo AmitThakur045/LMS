@@ -21,6 +21,9 @@ import {
   getCourses,
   addEvent,
   getBatchEvent,
+  getStudents,
+  uploadAttendance,
+  getAttendance,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -32,6 +35,7 @@ router.post("/deleteadmin", deleteAdmin);
 router.post("/addcourse", addCourse);
 router.post("/getcourse", getCourse);
 router.post("/getcourses", getCourses);
+router.post("/getstudents", getStudents);
 router.post("/deletecourse", deleteCourse);
 router.post("/addstudent", addStudent);
 router.get("/getallstudent", getAllStudent);
@@ -44,4 +48,6 @@ router.get("/getallcoursecodes", getAllCourseCodes);
 router.post("/getbatch", getBatch);
 router.post("/addevent", addEvent);
 router.post("/getbatchevent", getBatchEvent);
+router.post("/uploadattendance", uploadAttendance);
+router.post("/getattendance", getAttendance);
 export default router;
