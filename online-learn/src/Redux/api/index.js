@@ -20,6 +20,7 @@ export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
 export const addCourse = (course) => API.post("/api/admin/addcourse", course);
 export const getCourse = (data) => API.post("/api/admin/getcourse", data);
 export const getCourses = (data) => API.post("/api/admin/getcourses", data);
+export const getStudents = (data) => API.post("/api/admin/getstudents", data);
 export const deleteCourse = (data) => API.post("/api/admin/deletecourse", data);
 export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
@@ -35,3 +36,7 @@ export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
   API.post("/api/admin/getbatchevent", batchCode);
+export const uploadAttendance = (attendanceRecord) =>
+  API.post("/api/admin/uploadattendance", attendanceRecord);
+export const getAttendance = (data) =>
+  API.post("/api/admin/getattendance", data);

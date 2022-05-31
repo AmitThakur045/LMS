@@ -11,6 +11,7 @@ import {
   getAllBatchCodes,
   getBatch,
   getCourses,
+  getStudents,
 } from "../../../Redux/actions/adminActions";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +51,10 @@ const Main = () => {
       temp.push(batch.courses[i].courseCode);
     }
     dispatch(getCourses(temp));
+
+    dispatch(getStudents({ emails: batch.students }));
   }, [batch]);
+  console.log(allBatches);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <Modal

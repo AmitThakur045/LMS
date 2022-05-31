@@ -1,11 +1,9 @@
 import React from "react";
-import Sidebar from "./Sidebar";
+import Header from "../Header";
+import Sidebar from "../Sidebar";
+import Main from "./Main";
 
-import Header from "./Header";
-
-import Main from "./Date/Main";
-
-const BatchCode = () => {
+const BatchStudent = () => {
   return (
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
       <Sidebar />
@@ -17,4 +15,4 @@ const BatchCode = () => {
   );
 };
 
-export default BatchCode;
+export default BatchStudent;

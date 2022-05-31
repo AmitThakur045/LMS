@@ -18,6 +18,9 @@ import {
   ADD_EVENT,
   GET_BATCH_EVENT,
   INDEX_COUNTER,
+  GET_STUDENTS,
+  UPLOAD_ATTENDANCE,
+  GET_ATTENDANCE,
 } from "../actionTypes";
 
 const initialState = {
@@ -28,6 +31,7 @@ const initialState = {
   courseAdded: false,
   course: {},
   courses: [],
+  students: [],
   batch: {},
   courseDeleted: false,
   studentAdded: false,
@@ -39,7 +43,9 @@ const initialState = {
   batchAdded: false,
   eventAdded: false,
   batchEvent: [],
+  attendance: [],
   index: 0,
+  attendanceUploaded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -78,6 +84,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         courses: action.payload,
+      };
+    case GET_STUDENTS:
+      return {
+        ...state,
+        students: action.payload,
       };
     case DELETE_COURSE:
       return {
@@ -138,6 +149,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         batchEvent: action.payload,
+      };
+    case UPLOAD_ATTENDANCE:
+      return {
+        ...state,
+        attendanceUploaded: action.payload,
+      };
+    case GET_ATTENDANCE:
+      return {
+        ...state,
+        attendance: action.payload,
       };
     default:
       return state;
