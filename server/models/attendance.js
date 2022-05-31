@@ -2,22 +2,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const attendenceSchema = new Schema({
-  student: {
-    type: Schema.Types.ObjectId,
-    ref: "student",
-  },
-  batch: {
-    type: Schema.Types.ObjectId,
-    ref: "batch",
-  },
-  totalLecturesByFaculty: {
-    type: Number,
-    default: 0,
-  },
-  lectureAttended: {
-    type: Number,
-    default: 0,
-  },
+  batchCode: { type: String },
+  courseCode: { type: String },
+  date: { type: String },
+  students: [{ email: { type: String }, present: { type: Boolean } }],
 });
 
 export default mongoose.model("attendance", attendenceSchema);

@@ -349,6 +349,21 @@ export const getCourses = async (req, res) => {
     res.status(500).json(error);
   }
 };
+export const getStudents = async (req, res) => {
+  try {
+    const { emails } = req.body;
+    console.log(emails);
+    const studentsData = [];
+    for (let i = 0; i < emails.length; i++) {
+      let email = emails[i];
+      let temp = await Student.findOne({ email });
+      studentsData.push(temp);
+    }
+    res.status(200).json(studentsData);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 export const deleteAdmin = async (req, res) => {
   try {
     const { email } = req.body;
@@ -379,15 +394,12 @@ export const addBatch = async (req, res) => {
       return res.status(400).json(errors);
     }
     let stu = [];
-    for (let i = 0; i < students.length; i++) {
-      if (students[i][0] !== "") {
-        stu.push(students[i][0]);
-      }
-    }
+
     let courseData = [];
 
     for (let i = 0; i < courses.length; i++) {
       const course = await Course.findOne({ courseCode: courses[i] });
+
       let couCode = courses[i];
       let cou = {};
 
@@ -419,6 +431,16 @@ export const addBatch = async (req, res) => {
       }
       cou.complete.totalLesson = sum;
       courseData.push(cou);
+    }
+
+    for (let i = 0; i < students.length; i++) {
+      if (students[i][0] !== "") {
+        const student = await Student.findOne({ email: students[i][0] });
+
+        student.batch.push(batchCode);
+        stu.push(students[i][0]);
+        await student.save();
+      }
     }
     const newBatch = await new Batch({
       batchName,
@@ -704,6 +726,70 @@ export const getBatchEvent = async (req, res) => {
     const batch = await Batch.findOne({ batchCode });
 
     res.status(200).json(batch.schedule);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getAttendance = async (req, res) => {
+  try {
+    const { batchCode, courseCode } = req.body;
+    const attendance = await Attendance.find({ batchCode, courseCode });
+    res.status(200).json(attendance);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const uploadAttendance = async (req, res) => {
+  try {
+    const attendanceRecord = req.body;
+
+    for (let i = 0; i < attendanceRecord.length; i++) {
+      const attendance = await Attendance.findOne({
+        batchCode: attendanceRecord[i].batchCode,
+        courseCode: attendanceRecord[i].courseCode,
+        date: attendanceRecord[i].date,
+      });
+
+      let flag = false;
+      if (attendance) {
+        console.log("No");
+        for (let j = 0; j < attendance.students.length; j++) {
+          if (attendance.students[j].email === attendanceRecord[i].student) {
+            attendance.students[j].present = attendanceRecord[i].present;
+            await attendance.save();
+            flag = true;
+          }
+        }
+        if (flag === false) {
+          console.log("Yo");
+          attendance.students.push({
+            email: attendanceRecord[i].student,
+            present: attendanceRecord[i].present,
+          });
+          await attendance.save();
+          flag = false;
+        }
+      } else if (!attendance) {
+        console.log("Yes");
+        let student = [];
+        student.push({
+          email: attendanceRecord[i].student,
+          present: attendanceRecord[i].present,
+        });
+        console.log(student);
+        const newAttendance = await new Attendance({
+          batchCode: attendanceRecord[i].batchCode,
+          courseCode: attendanceRecord[i].courseCode,
+          date: attendanceRecord[i].date,
+          students: student,
+        });
+        await newAttendance.save();
+      }
+    }
+
+    res.status(200).json("Attendance Uploaded");
   } catch (error) {
     console.log("Backend Error", error);
   }
