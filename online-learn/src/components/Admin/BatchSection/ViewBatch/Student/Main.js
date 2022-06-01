@@ -115,8 +115,6 @@ const Main = () => {
     setSelectedCourse("");
   };
 
-  console.log(allCourses);
-
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
       <Modal
@@ -184,13 +182,13 @@ const Main = () => {
               aria-controls="panel1a-content"
               id="panel1a-header">
               <div className="grid grid-cols-12 w-full">
-                <div className="col-span-2 flex items-center space-x-2">
+                <div className="col-span-2 font-semibold flex items-center space-x-2">
                   <Avatar src={student.avatar} sx={{ height: 20, width: 20 }} />
                   <div className="">
                     {student.firstName} {student.lastName}
                   </div>
                 </div>
-                <div className="col-span-2 font-bold">{student.email}</div>
+                <div className="col-span-2  font-semibold">{student.email}</div>
                 <div className="col-span-6"></div>
               </div>
             </AccordionSummary>
