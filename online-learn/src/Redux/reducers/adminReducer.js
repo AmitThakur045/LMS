@@ -21,6 +21,7 @@ import {
   GET_STUDENTS,
   UPLOAD_ATTENDANCE,
   GET_ATTENDANCE,
+  ADD_ASSIGNMENT,
 } from "../actionTypes";
 
 const initialState = {
@@ -46,6 +47,7 @@ const initialState = {
   attendance: [],
   index: 0,
   attendanceUploaded: false,
+  assignmentAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -159,6 +161,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         attendance: action.payload,
+      };
+    case ADD_ASSIGNMENT:
+      return {
+        ...state,
+        assignmentAdded: action.payload,
       };
     default:
       return state;

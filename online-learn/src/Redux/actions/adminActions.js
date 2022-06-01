@@ -21,6 +21,7 @@ import {
   GET_STUDENTS,
   UPLOAD_ATTENDANCE,
   GET_ATTENDANCE,
+  ADD_ASSIGNMENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -236,4 +237,13 @@ export const getAttendance = (formData) => async (dispatch) => {
   }
 };
 
-
+export const addAssignment = (formData) => async (dispatch) => {
+  try {
+    console.log("form", formData);
+    const { data } = await api.addAssignment(formData);
+    alert("Assignment Added Successfully");
+    dispatch({ type: ADD_ASSIGNMENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};

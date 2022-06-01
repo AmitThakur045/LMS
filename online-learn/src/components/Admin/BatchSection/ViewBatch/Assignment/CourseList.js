@@ -35,6 +35,7 @@ const CourseList = ({ currentList, courseCode }) => {
   const [value, setValue] = useState({
     courseCode: "",
     batchCode: "",
+    assignmentName: "",
     assignmentCode: "",
     assignmentDescription: "",
     assignmentDate: "",
@@ -79,7 +80,7 @@ const CourseList = ({ currentList, courseCode }) => {
     setValue(tmp);
     console.log(value);
     
-    // dispatch(addAssignment(value));
+    dispatch(addAssignment(value));
 
     setOpen(false);
   };
