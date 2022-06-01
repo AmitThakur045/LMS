@@ -7,10 +7,13 @@ const assignmentSchema = new Schema({
     required: true,
     unique: true,
   },
-  assignment: {
+  assignmentDescription: {
     type: String,
     required: true,
-    trim: true,
+  },
+  assignmentPdf: {
+    type: String,
+    required: true,
   },
   courseCode: {
     type: String,
@@ -20,11 +23,7 @@ const assignmentSchema = new Schema({
     type: String,
     required: true,
   },
-  totalMarks: {
-    type: Number,
-    default: 10,
-  },
-  date: {
+  assignmentDate: {
     type: String,
     required: true,
   },
