@@ -222,7 +222,7 @@ export const uploadAttendance = (attendanceRecord) => async (dispatch) => {
   try {
     const { data } = await api.uploadAttendance(attendanceRecord);
     alert("Attendance Uploaded Successfully");
-    dispatch({ type: UPLOAD_ATTENDANCE, payload: data });
+    dispatch({ type: UPLOAD_ATTENDANCE, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
