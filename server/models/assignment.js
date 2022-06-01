@@ -24,10 +24,6 @@ const assignmentSchema = new Schema({
     type: Number,
     default: 10,
   },
-  year: {
-    type: String,
-    required: true,
-  },
   date: {
     type: String,
     required: true,
