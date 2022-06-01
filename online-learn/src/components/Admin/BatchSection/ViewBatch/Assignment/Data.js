@@ -1,3 +1,5 @@
+import SamplePdf from "../../../../../Assests/SamplePdf.pdf";
+
 export const sampleData = [
   {
     courseCode: "CSE101",
@@ -7,12 +9,15 @@ export const sampleData = [
     assignment: [
       {
         assignmentCode: "B009CSE10101",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10102",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10103",
+        assignmentPdf: SamplePdf,
       },
     ],
   },
@@ -24,12 +29,15 @@ export const sampleData = [
     assignment: [
       {
         assignmentCode: "B009CSE10201",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10202",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10203",
+        assignmentPdf: SamplePdf,
       },
     ],
   },
@@ -41,12 +49,15 @@ export const sampleData = [
     assignment: [
       {
         assignmentCode: "B009CSE10301",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10302",
+        assignmentPdf: SamplePdf,
       },
       {
         assignmentCode: "B009CSE10303",
+        assignmentPdf: SamplePdf,
       },
     ],
   },
@@ -56,112 +67,112 @@ export const assignment = [
   {
     assignmentCode: "B009CSE10101",
     assignmentTitle: "OOPS",
-    assignmentPdf: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    assignmentPdf: SamplePdf,
     student: [
       {
         email: "student@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Sam",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student2@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Richy",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student3@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Jordon",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
     ],
   },
   {
     assignmentCode: "B009CSE10102",
     assignmentTitle: "Inheritance",
-    assignmentPdf: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    assignmentPdf: SamplePdf,
     student: [
       {
         email: "student@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Abhi",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student2@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Amit",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student3@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Virat",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
     ],
   },
   {
     assignmentCode: "B009CSE10103",
     assignmentTitle: "Polymorphism",
-    assignmentPdf: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    assignmentPdf: SamplePdf,
     student: [
       {
         email: "student@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Prince",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student2@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Akassh",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student3@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Mohit",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
     ],
   },
   {
     assignmentCode: "B009CSE10201",
     assignmentTitle: "Inheritance",
-    assignmentPdf: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    assignmentPdf: SamplePdf,
     student: [
       {
         email: "student@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "RAM",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student2@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "RaOne",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
       {
         email: "student3@gamil.com",
         image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
         firstName: "Spike",
         lastName: "Smith",
-        studentAnswer: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        studentAnswer: SamplePdf,
       },
     ],
   },

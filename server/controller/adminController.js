@@ -6,6 +6,7 @@ import Attendance from "../models/attendance.js";
 import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Assignment from "../models/assignment.js";
 
 export const adminLogin = async (req, res) => {
   const { username, password } = req.body;
@@ -788,5 +789,48 @@ export const uploadAttendance = async (req, res) => {
     res.status(200).json("Attendance Uploaded");
   } catch (error) {
     console.log("Backend Error", error);
+  }
+};
+
+export const addAssignment = async (req, res) => {
+  try {
+    const {
+      batchCode,
+      courseCode,
+      assignmentCode,
+      assignmentDescription,
+      assignmentDate,
+      assignmentPdf,
+    } = req.body;
+
+    const errors = { assignmentCodeError: String };
+    const existingAssignment = await Assignment.findOne({ courseCode });
+
+    if (existingAssignment) {
+      errors.assignmentCodeError = "Assignment already exists";
+      return res.status(400).json(errors);
+    }
+
+    const newAssignment = await new Assignment({
+      batchCode,
+      courseCode,
+      assignmentCode,
+      assignmentDescription,
+      assignmentDate,
+      assignmentPdf,
+    });
+
+    console.log(newAssignment);
+
+    await newAssignment.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Assignment Added successfully",
+      response: newAssignment,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(error);
   }
 };
