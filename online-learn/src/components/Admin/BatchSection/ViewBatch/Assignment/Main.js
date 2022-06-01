@@ -11,33 +11,41 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CourseList from "./CourseList";
 import { sampleData } from "./Data";
+import Divider from "@mui/material/Divider";
 
 const Main = () => {
   const [currentList, setCurrentList] = React.useState([]);
+  const [currentCourseCode, setCurrentCourseCode] = React.useState("");
 
   return (
-    <div className="flex">
-      <div className="w-[20rem] h-full">
+    <div className="flex h-full">
+      <div className="w-[18rem] h-full shadow-lg overflow-y-auto">
         <List>
           {sampleData.map((item, index) => (
-            <ListItem
-              button
-              key={index}
-              onClick={() => setCurrentList(item.assignment)}
-            >
-              <ListItemIcon>
-                <img
-                  className="w-[20px] h-[20px] rounded-full"
-                  src={item.courseImg}
-                  alt={item.courseCode}
-                />
-              </ListItemIcon>
-              <ListItemText primary={item.courseName} />
-            </ListItem>
+            <div>
+              <ListItem
+                button
+                key={index}
+                onClick={() => { 
+                  setCurrentList(item.assignment)
+                  setCurrentCourseCode(item.courseCode)
+                }}
+              >
+                <ListItemIcon>
+                  <img
+                    className="w-[20px] h-[20px] rounded-full"
+                    src={item.courseImg}
+                    alt={item.courseCode}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={item.courseName} />
+              </ListItem>
+              <Divider />
+            </div>
           ))}
         </List>
       </div>
-      <CourseList currentList={currentList} />
+      <CourseList currentList={currentList} courseCode={currentCourseCode} />
     </div>
   );
 };
