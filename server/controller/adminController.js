@@ -352,7 +352,6 @@ export const getCourses = async (req, res) => {
 export const getStudents = async (req, res) => {
   try {
     const { emails } = req.body;
-    console.log(emails);
     const studentsData = [];
     for (let i = 0; i < emails.length; i++) {
       let email = emails[i];
@@ -754,7 +753,6 @@ export const uploadAttendance = async (req, res) => {
 
       let flag = false;
       if (attendance) {
-        console.log("No");
         for (let j = 0; j < attendance.students.length; j++) {
           if (attendance.students[j].email === attendanceRecord[i].student) {
             attendance.students[j].present = attendanceRecord[i].present;
@@ -763,7 +761,6 @@ export const uploadAttendance = async (req, res) => {
           }
         }
         if (flag === false) {
-          console.log("Yo");
           attendance.students.push({
             email: attendanceRecord[i].student,
             present: attendanceRecord[i].present,
@@ -772,13 +769,12 @@ export const uploadAttendance = async (req, res) => {
           flag = false;
         }
       } else if (!attendance) {
-        console.log("Yes");
         let student = [];
         student.push({
           email: attendanceRecord[i].student,
           present: attendanceRecord[i].present,
         });
-        console.log(student);
+
         const newAttendance = await new Attendance({
           batchCode: attendanceRecord[i].batchCode,
           courseCode: attendanceRecord[i].courseCode,
