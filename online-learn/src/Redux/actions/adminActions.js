@@ -248,12 +248,14 @@ export const addAssignment = (formData) => async (dispatch) => {
   }
 };
 
-export const getStudentByAssignmentCode = (assignmentCode) => async (dispatch) => {
-  try {
-    console.log("assign", assignmentCode);
-    const { data } = await api.getStudentByAssignmentCode(assignmentCode);
-    dispatch({ type: GET_STUDENT_BY_ASSIGNMENT_CODE, payload: data });
-  } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data });
-  }
-}
+export const getStudentByAssignmentCode =
+  (assignmentCode) => async (dispatch) => {
+    try {
+      console.log("assign", assignmentCode);
+      const { data } = await api.getStudentByAssignmentCode(assignmentCode);
+      console.log(data);
+      dispatch({ type: GET_STUDENT_BY_ASSIGNMENT_CODE, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
