@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import StudentList from "./StudentList";
 import { assignment } from "./Data";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
@@ -12,7 +9,10 @@ import { Box, Modal } from "@mui/material";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
-import { addAssignment } from "../../../../../Redux/actions/adminActions";
+import {
+  addAssignment,
+  getStudentByAssignmentCode,
+} from "../../../../../Redux/actions/adminActions";
 
 const style = {
   position: "absolute",
@@ -50,6 +50,9 @@ const CourseList = ({ currentList, courseCode }) => {
   const [assignmentDescription, setAssignmentDescription] = useState("");
   const [newAssignment, setNewAssignment] = useState();
 
+  const store = useSelector((state) => state);
+  const studentData = useSelector((state) => state.admin.students);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -83,6 +86,7 @@ const CourseList = ({ currentList, courseCode }) => {
     tmp.assignmentCode = assignmentCode;
     tmp.batchCode = batchCode;
     tmp.assignmentDate = new Date().toISOString().slice(0, 10);
+    tmp.courseCode = courseCode;
 
     setValue(tmp);
     console.log(value);
@@ -93,13 +97,8 @@ const CourseList = ({ currentList, courseCode }) => {
   };
 
   useEffect(() => {
-    let tmp = [];
-    assignment.filter((assignment) => {
-      if (assignment.assignmentCode === currentAssignmentCode) {
-        tmp = assignment.student;
-      }
-    });
-    setStudentList(tmp);
+    dispatch(getStudentByAssignmentCode(currentAssignmentCode));
+    setStudentList(studentData);
   }, [currentAssignmentCode]);
 
   return (
@@ -115,7 +114,8 @@ const CourseList = ({ currentList, courseCode }) => {
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }>
+                      }
+                    >
                       <div>
                         <div className="flex text-[1.3rem] text-slate-700">
                           Assignment {item.assignmentCode.slice(-2)}
@@ -126,7 +126,12 @@ const CourseList = ({ currentList, courseCode }) => {
                       </div>
                     </ListItem>
                     <div className="top-0">
-                      <a id="downloadFile" href={item.assignmentPdf} download>
+                      <a
+                        id="downloadFile"
+                        href={item.assignmentPdf}
+                        target="_blank"
+                        download
+                      >
                         <Button>
                           <CloudDownloadIcon />
                         </Button>
@@ -141,21 +146,25 @@ const CourseList = ({ currentList, courseCode }) => {
           <div className="bottom-0 fixed w-[16rem]">
             <button
               className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpen(true)}
+            >
               Create Assignment
             </button>
           </div>
         </div>
       ) : (
-        <div className="shadow-lg">
-          <div className="w-[16rem]">
-            <button
-              className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}>
-              Create Assignment
-            </button>
+        courseCode.length !== 0 && (
+          <div className="shadow-lg">
+            <div className="w-[16rem]">
+              <button
+                className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+                onClick={() => setOpen(true)}
+              >
+                Create Assignment
+              </button>
+            </div>
           </div>
-        </div>
+        )
       )}
 
       {currentList.length !== 0 && <StudentList studentList={studentList} />}
@@ -164,7 +173,8 @@ const CourseList = ({ currentList, courseCode }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <form onSubmit={submitHandler}>
             <div className="flex flex-col space-y-4 h-[15rem]">
@@ -174,7 +184,8 @@ const CourseList = ({ currentList, courseCode }) => {
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]">
+                  className="self-end cursor-pointer w-[5%]"
+                >
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -201,12 +212,9 @@ const CourseList = ({ currentList, courseCode }) => {
                   label="Course Code"
                   variant="outlined"
                   className="bg-white"
-                  value={value.courseCode}
-                  // InputProps={{
-                  //   readOnly: true,
-                  // }}
-                  onChange={(e) => {
-                    setValue({ ...value, courseCode: e.target.value });
+                  value={courseCode}
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </div>
@@ -236,7 +244,8 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}>
+                  }}
+                >
                   <input
                     type="file"
                     ref={inputRef}
@@ -249,7 +258,8 @@ const CourseList = ({ currentList, courseCode }) => {
                 <div className="w-full">
                   <button
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+                  >
                     Submit
                   </button>
                 </div>
@@ -260,7 +270,8 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
+                  >
                     clear
                   </button>
                 </div>

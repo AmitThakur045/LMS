@@ -9,7 +9,7 @@ const StudentList = ({ studentList }) => {
   return (
     <>
       {studentList.length !== 0 ? (
-        <div className="w-[40rem] h-full shadow-lg overflow-y-auto">
+        <div className="w-[45rem] h-full shadow-lg overflow-y-auto">
           <List>
             {studentList.map((item, index) => (
               <SingleStudent item={item} index={index} />
@@ -17,7 +17,7 @@ const StudentList = ({ studentList }) => {
           </List>
         </div>
       ) : (
-        <div className="w-[35rem] h-full shadow-lg"></div>
+        <div className="w-[45rem] h-full shadow-lg"></div>
       )}
     </>
   );
