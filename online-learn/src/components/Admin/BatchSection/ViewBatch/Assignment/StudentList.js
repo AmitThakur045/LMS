@@ -11,9 +11,13 @@ const StudentList = ({ studentList }) => {
       {studentList.length !== 0 ? (
         <div className="w-[45rem] h-full shadow-lg overflow-y-auto">
           <List>
-            {studentList.map((item, index) => (
-              <SingleStudent item={item} index={index} />
-            ))}
+            {studentList.map((item, index) =>
+              item.checkedAssignment !== undefined ? (
+                <SingleStudent item={item} index={index} isMarked={true} />
+              ) : (
+                <SingleStudent item={item} index={index} isMarked={false} />
+              )
+            )}
           </List>
         </div>
       ) : (
