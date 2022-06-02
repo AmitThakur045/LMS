@@ -6,16 +6,36 @@ import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Divider } from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 const SingleStudent = ({ item, index }) => {
   const inputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState();
   const [isSelected, setIsSelected] = useState(false);
+  const [marks, setMarks] = useState();
+
+  const [value, setValue] = useState({
+    marks: "",
+    selectedFile: ""
+  }); 
 
   const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    if (file) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onloadend = (e) => {
+        setValue({
+          ...value,
+          selectedFile: fileReader.result
+        });
+      };
+    }
     setIsSelected(true);
   };
+
+  const submitHandler = () => {
+    console.log(value);
+  }
 
   return (
     <div>
@@ -64,6 +84,20 @@ const SingleStudent = ({ item, index }) => {
                 />
               </Button>
             </div>
+            <div>
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Marks"
+                variant="outlined"
+                sx={{
+                  width: "70px"
+                }}
+                value={value.marks}
+                onChange={(e) => setValue({ ...value, marks: e.target.value })}
+              />
+            </div>
+            {/* submit button */}
           </div>
         </div>
       </ListItem>
