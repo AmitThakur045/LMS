@@ -798,6 +798,7 @@ export const addAssignment = async (req, res) => {
       batchCode,
       courseCode,
       assignmentCode,
+      assignmentName,
       assignmentDescription,
       assignmentDate,
       assignmentPdf,
@@ -815,14 +816,21 @@ export const addAssignment = async (req, res) => {
       batchCode,
       courseCode,
       assignmentCode,
+      assignmentName,
       assignmentDescription,
       assignmentDate,
       assignmentPdf,
     });
-
-    console.log(newAssignment);
-
     await newAssignment.save();
+
+    const newCourseAssignment = {
+      assignmentCode,
+      assignmentName,
+    };
+
+    const currCourse = await Course.findOne({ courseCode });
+    currCourse.assignments.push(newCourseAssignment);
+    await currCourse.save();
 
     return res.status(200).json({
       success: true,
@@ -832,5 +840,36 @@ export const addAssignment = async (req, res) => {
   } catch (error) {
     console.log("error", error);
     res.status(500).json(error);
+  }
+};
+
+export const getStudentByAssignmentCode = async (req, res) => {
+  try {
+    const { assignmentCode } = req.body;
+    console.log("assignmentCode", assignmentCode);
+
+    const errors = { noAssignmentError: String };
+    const assignment = await Assignment.findOne({ assignmentCode });
+
+    if (assignment === null) {
+      errors.noAssignmentError = "No Assignment Found";
+      console.log("noAssignmentError", errors.noAssignmentError);
+      return res.status(404).json(errors);
+    }
+
+    let StudentList = [];
+    assignment.student.map((student) => {
+      Student.findOne({ email: student.email }, (err, student) => {
+        if (err) {
+          console.log(err);
+        } else {
+          StudentList.push(student);
+        }
+      });
+    });
+
+    res.status(200).json(StudentList);
+  } catch (error) {
+    console.log("Backend Error", error);
   }
 };

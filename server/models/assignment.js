@@ -7,6 +7,10 @@ const assignmentSchema = new Schema({
     required: true,
     unique: true,
   },
+  assignmentName: {
+    type: String,
+    required: true,
+  },
   assignmentDescription: {
     type: String,
     required: true,
@@ -27,6 +31,11 @@ const assignmentSchema = new Schema({
     type: String,
     required: true,
   },
+  student: [
+    {
+      email: { type: String, required: true },
+    }
+  ]
 });
 
 export default mongoose.model("assignment", assignmentSchema);
