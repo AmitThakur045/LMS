@@ -23,6 +23,7 @@ import {
   GET_ATTENDANCE,
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
+  ADD_SCORE,
 } from "../actionTypes";
 
 const initialState = {
@@ -49,6 +50,7 @@ const initialState = {
   index: 0,
   attendanceUploaded: false,
   assignmentAdded: false,
+  scoreAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -172,6 +174,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         students: action.payload,
+      };
+    case ADD_SCORE: 
+      return {
+        ...state,
+        scoreAdded: action.payload,
       };
     default:
       return state;
