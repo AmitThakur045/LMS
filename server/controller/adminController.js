@@ -809,6 +809,7 @@ export const addAssignment = async (req, res) => {
 
     if (existingAssignment) {
       errors.assignmentCodeError = "Assignment already exists";
+      // console.log(errors.assignmentCodeError);
       return res.status(400).json(errors);
     }
 
@@ -821,15 +822,20 @@ export const addAssignment = async (req, res) => {
       assignmentDate,
       assignmentPdf,
     });
+
+    // console.log("newAssignment", newAssignment);
+
     await newAssignment.save();
 
     const newCourseAssignment = {
-      assignmentCode,
-      assignmentName,
+      assignmentCode: assignmentCode,
+      assignmentName: assignmentName,
+      assignmentPdf: assignmentPdf,
     };
 
     const currCourse = await Course.findOne({ courseCode });
-    currCourse.assignments.push(newCourseAssignment);
+    currCourse.assignment.push(newCourseAssignment);
+    // console.log("currCourse", currCourse)
     await currCourse.save();
 
     return res.status(200).json({
@@ -846,14 +852,14 @@ export const addAssignment = async (req, res) => {
 export const getStudentByAssignmentCode = async (req, res) => {
   try {
     const { assignmentCode } = req.body;
-    console.log("assignmentCode", assignmentCode);
+    // console.log("assignmentCode", assignmentCode);
 
     const errors = { noAssignmentError: String };
     const assignment = await Assignment.findOne({ assignmentCode });
-    console.log();
+    // console.log();
     if (assignment === null) {
       errors.noAssignmentError = "No Assignment Found";
-      console.log("noAssignmentError", errors.noAssignmentError);
+      // console.log("noAssignmentError", errors.noAssignmentError);
       return res.status(404).json(errors);
     }
 
@@ -863,11 +869,66 @@ export const getStudentByAssignmentCode = async (req, res) => {
         email: assignment.student[i].email,
       });
       if (student) {
-        StudentList.push(student);
+        const assignmentPdf = await student.assignment.filter((item) => {
+          return item.assignmentCode === assignmentCode;
+        });
+        const tmp = {
+          email: student.email,
+          firstName: student.firstName,
+          lastName: student.lastName,
+          avatar: student.avatar,
+          assignmentCode: assignmentCode,
+          studentAnswer: assignmentPdf.studentAnswer,
+        };
+
+        // console.log(tmp);
+        StudentList.push(tmp);
+      }
+    }
+    res.status(200).json(StudentList);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const addScore = async (req, res) => {
+  try {
+    const {
+      email,
+      assignmentCode,
+      checkedAssignment,
+      score,
+    } = req.body;
+
+    // console.log("req", req.body);
+
+    const errors = { noAssignmentError: String };
+    const assignment = await Assignment.findOne({ assignmentCode });
+    if (assignment === null) {
+      errors.noAssignmentError = "No Assignment Found";
+      return res.status(404).json(errors);
+    }
+
+    const student = await Student.findOne({ email });
+    if (student === null) {
+      errors.noAssignmentError = "No Student Found";
+      return res.status(404).json(errors);
+    }
+
+    for(let i=0; i<student.assignment.length; i++) {
+      if(student.assignment[i].assignmentCode === assignmentCode) {
+        student.assignment[i].checkedAssignment = checkedAssignment;
+        student.assignment[i].score = score;
       }
     }
 
-    res.status(200).json(StudentList);
+    await student.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Marks Added successfully",
+      response: student,
+    });
   } catch (error) {
     console.log("Backend Error", error);
   }

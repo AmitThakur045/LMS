@@ -43,3 +43,4 @@ export const getAttendance = (data) =>
 export const addAssignment = (assignment) => API.post("/api/admin/addassignment", assignment);
 export const getStudentByAssignmentCode = (data) =>
   API.post("/api/admin/getstudentbyassignmentcode", data);
+export const addScore = (formData) => API.post("/api/admin/addscore", formData);

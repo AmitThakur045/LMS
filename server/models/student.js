@@ -43,6 +43,8 @@ const studentSchema = new Schema({
   assignment: [
     {
       assignmentCode: { type: String },
+      studentAnswer: { type: String },
+      checkedAssignment: { type: String },
       score: { type: String },
     },
   ],

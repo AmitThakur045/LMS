@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -7,16 +8,27 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Divider } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { AiOutlineCheckCircle } from "react-icons/ai";
+import { BsFillCheckCircleFill } from "react-icons/bs";
+import { addScore } from "../../../../../Redux/actions/adminActions";
+
+import SamplePdf from "../../../../../Assests/SamplePdf.pdf";
 
 const SingleStudent = ({ item, index }) => {
   const inputRef = useRef(null);
-  const [isSelected, setIsSelected] = useState(false);
-  const [marks, setMarks] = useState();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({});
+  const store = useSelector((state) => state);
 
+  const [isSelected, setIsSelected] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const [value, setValue] = useState({
     marks: "",
-    selectedFile: ""
-  }); 
+    selectedFile: "",
+  });
+
+  let isMarked = useSelector((state) => state.admin.scoreAdded);
 
   const changeHandler = (event) => {
     const file = event.target.files[0];
@@ -26,20 +38,50 @@ const SingleStudent = ({ item, index }) => {
       fileReader.onloadend = (e) => {
         setValue({
           ...value,
-          selectedFile: fileReader.result
+          selectedFile: fileReader.result,
         });
       };
     }
     setIsSelected(true);
   };
 
-  const submitHandler = () => {
+  const submitHandler = (e) => {
+    e.preventDefault();
     console.log(value);
-  }
+    dispatch(
+      addScore({
+        email: item.email,
+        assignmentCode: item.assignmentCode,
+        score: value.marks,
+        checkedAssignment: value.selectedFile,
+      })
+    );
+    setIsAdded(true);
+  };
+  
+  // useEffect(() => {
+  //   if (item.checkedAssignment !== undefined) {
+  //     setIsAdded(true);
+  //   } else {
+  //     setIsAdded(false);
+  //   }
+  // }, [submitHandler]);
+
+  // useEffect(() => {
+  //   setIsAdded(isMarked);
+  // }, [isMarked === true]);
 
   return (
     <div>
+      {item.checkedAssignment !== undefined ? ( isMarked = true) : ( isMarked = false)}
       <ListItem button key={index}>
+        <div type="button" onClick={submitHandler}>
+          {(isMarked || isAdded) ? (
+            <BsFillCheckCircleFill style={{ fontSize: "24px" }} />
+          ) : (
+            <AiOutlineCheckCircle style={{ fontSize: "24px" }} />
+          )}
+        </div>
         <div className="p-2 pr-3">
           <img
             src={item.avatar}
@@ -56,7 +98,8 @@ const SingleStudent = ({ item, index }) => {
           </div>
           <div className="flex items-center space-x-2">
             <div>
-              <a href={item.studentAnswer} download>
+              {/* <a href={item.assignment?.studentAnswer} download> */}
+              <a href={SamplePdf} download>
                 <Button>
                   <CloudDownloadIcon />
                 </Button>
@@ -69,10 +112,11 @@ const SingleStudent = ({ item, index }) => {
                   backgroundColor: "#bfd8e0",
                   borderRadius: "20px",
                 }}
+                disabled={isSelected || isAdded || isMarked}
                 onClick={() => inputRef.current.click()}
               >
                 <div className="flex text-blue-600 px-2 space-x-1">
-                  <div>{isSelected ? `Uploaded` : `Upload`}</div>
+                  <div>{(isSelected || isMarked || isAdded) ? `Uploaded` : `Upload`}</div>
                   <CloudUploadIcon />
                 </div>
                 <input
@@ -87,17 +131,18 @@ const SingleStudent = ({ item, index }) => {
             <div>
               <TextField
                 id="outlined-basic"
+                type="number"
                 size="small"
-                label="Marks"
+                label={isMarked ? item.score :"Marks"}
                 variant="outlined"
                 sx={{
-                  width: "70px"
+                  width: "70px",
                 }}
-                value={value.marks}
+                value={(isAdded || isMarked) ? item.score : value.marks}
+                disabled={isAdded || isMarked}
                 onChange={(e) => setValue({ ...value, marks: e.target.value })}
               />
             </div>
-            {/* submit button */}
           </div>
         </div>
       </ListItem>
