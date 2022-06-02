@@ -90,7 +90,6 @@ const CourseList = ({ currentList, courseCode }) => {
 
     setValue(tmp);
     console.log(value);
-
     dispatch(addAssignment(value));
 
     setOpen(false);

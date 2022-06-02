@@ -21,12 +21,6 @@ const Main = () => {
   const store = useSelector((state) => state);
   const courseData = JSON.parse(localStorage.getItem("courses"));
 
-  // useEffect(() => {
-  //   if (courseData.assignment.length !== 0) {
-  //     setCurrentList(courseData.assignment);
-  //   }
-  // }, [courseData.assignment]);
-
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
