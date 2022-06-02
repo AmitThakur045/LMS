@@ -42,7 +42,7 @@ const SingleStudent = ({ item, index }) => {
       <ListItem button key={index}>
         <div className="p-2 pr-3">
           <img
-            src={item.image}
+            src={item.avatar}
             alt={item.email}
             className="w-[24px] h-[24px] rounded-full"
           />
