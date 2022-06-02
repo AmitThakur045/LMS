@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   getAttendance,
   uploadAttendance,
@@ -120,8 +122,17 @@ const Main = () => {
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll overflow-x-hidden h-full ">
       <div className="flex flex-col overflow-x-scroll space-y-3 w-[73rem] rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
-        <div className="self-center text-[18px] font-bold text-[#5848a4] mb-4">
-          Attendance Report for {months[dates.month]} of {courseCode}
+        <div className="flex w-[65%] justify-between">
+          <Link to="/admin/batch/student" className="cursor-pointer">
+            <RiArrowGoBackFill
+              onClick={() => localStorage.removeItem("courseCode")}
+              fontSize={20}
+              className=""
+            />
+          </Link>
+          <div className="text-[18px] font-bold text-[#5848a4] mb-4">
+            Attendance Report for {months[dates.month]} of {courseCode}
+          </div>
         </div>
         <div className="flex space-x-1">
           {[...Array(n + 1)].map((date, idx) => (
