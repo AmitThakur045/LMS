@@ -253,7 +253,7 @@ export const getStudentByAssignmentCode =
     try {
       console.log("assign", assignmentCode);
       const { data } = await api.getStudentByAssignmentCode(assignmentCode);
-      console.log(data);
+
       dispatch({ type: GET_STUDENT_BY_ASSIGNMENT_CODE, payload: data });
     } catch (error) {
       dispatch({ type: SET_ERRORS, payload: error.response.data });

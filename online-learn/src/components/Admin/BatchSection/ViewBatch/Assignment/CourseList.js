@@ -51,7 +51,6 @@ const CourseList = ({ currentList, courseCode }) => {
   const [newAssignment, setNewAssignment] = useState();
 
   const store = useSelector((state) => state);
-  const studentData = useSelector((state) => state.admin.students);
 
   const handleClose = () => {
     setOpen(false);
@@ -96,10 +95,13 @@ const CourseList = ({ currentList, courseCode }) => {
   };
 
   useEffect(() => {
+    setStudentList(assignmentStudent);
+  }, [assignmentStudent]);
+
+  useEffect(() => {
     dispatch(
       getStudentByAssignmentCode({ assignmentCode: currentAssignmentCode })
     );
-    setStudentList(studentData);
   }, [currentAssignmentCode]);
 
   return (
