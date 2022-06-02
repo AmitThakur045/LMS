@@ -850,7 +850,7 @@ export const getStudentByAssignmentCode = async (req, res) => {
 
     const errors = { noAssignmentError: String };
     const assignment = await Assignment.findOne({ assignmentCode });
-
+    console.log();
     if (assignment === null) {
       errors.noAssignmentError = "No Assignment Found";
       console.log("noAssignmentError", errors.noAssignmentError);
@@ -858,15 +858,14 @@ export const getStudentByAssignmentCode = async (req, res) => {
     }
 
     let StudentList = [];
-    assignment.student.map((student) => {
-      Student.findOne({ email: student.email }, (err, student) => {
-        if (err) {
-          console.log(err);
-        } else {
-          StudentList.push(student);
-        }
+    for (let i = 0; i < assignment.student.length; i++) {
+      const student = await Student.findOne({
+        email: assignment.student[i].email,
       });
-    });
+      if (student) {
+        StudentList.push(student);
+      }
+    }
 
     res.status(200).json(StudentList);
   } catch (error) {

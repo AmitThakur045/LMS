@@ -70,6 +70,7 @@ const CourseList = ({ currentList, courseCode }) => {
       };
     }
   };
+  const assignmentStudent = useSelector((store) => store.admin.students);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -81,7 +82,6 @@ const CourseList = ({ currentList, courseCode }) => {
       assignmentNo = "0" + assignmentNo;
     }
     const assignmentCode = batchCode + courseCode + assignmentNo;
-
     let tmp = value;
     tmp.assignmentCode = assignmentCode;
     tmp.batchCode = batchCode;
@@ -97,7 +97,9 @@ const CourseList = ({ currentList, courseCode }) => {
   };
 
   useEffect(() => {
-    dispatch(getStudentByAssignmentCode(currentAssignmentCode));
+    dispatch(
+      getStudentByAssignmentCode({ assignmentCode: currentAssignmentCode })
+    );
     setStudentList(studentData);
   }, [currentAssignmentCode]);
 
@@ -114,8 +116,7 @@ const CourseList = ({ currentList, courseCode }) => {
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }
-                    >
+                      }>
                       <div>
                         <div className="flex text-[1.3rem] text-slate-700">
                           Assignment {item.assignmentCode.slice(-2)}
@@ -131,7 +132,7 @@ const CourseList = ({ currentList, courseCode }) => {
                         href={item.assignmentPdf}
                         target="_blank"
                         download
-                      >
+                        rel="noreferrer">
                         <Button>
                           <CloudDownloadIcon />
                         </Button>
@@ -146,8 +147,7 @@ const CourseList = ({ currentList, courseCode }) => {
           <div className="bottom-0 fixed w-[16rem]">
             <button
               className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}
-            >
+              onClick={() => setOpen(true)}>
               Create Assignment
             </button>
           </div>
@@ -158,8 +158,7 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="w-[16rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}
-              >
+                onClick={() => setOpen(true)}>
                 Create Assignment
               </button>
             </div>
@@ -173,8 +172,7 @@ const CourseList = ({ currentList, courseCode }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={submitHandler}>
             <div className="flex flex-col space-y-4 h-[15rem]">
@@ -184,8 +182,7 @@ const CourseList = ({ currentList, courseCode }) => {
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]"
-                >
+                  className="self-end cursor-pointer w-[5%]">
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -244,8 +241,7 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}
-                >
+                  }}>
                   <input
                     type="file"
                     ref={inputRef}
@@ -258,8 +254,7 @@ const CourseList = ({ currentList, courseCode }) => {
                 <div className="w-full">
                   <button
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                  >
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
                     Submit
                   </button>
                 </div>
@@ -270,8 +265,7 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
-                  >
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
                     clear
                   </button>
                 </div>
