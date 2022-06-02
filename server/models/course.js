@@ -42,6 +42,13 @@ const courseSchema = new Schema({
       ],
     },
   ],
+  assignment: [
+    {
+      assignmentName: { type: String, required: true },
+      assignmentCode: { type: String, required: true }, 
+      assignmentPdf: {  type: String, required: true },
+    }
+  ]
 });
 
 export default mongoose.model("course", courseSchema);

@@ -41,3 +41,5 @@ export const uploadAttendance = (attendanceRecord) =>
 export const getAttendance = (data) =>
   API.post("/api/admin/getattendance", data);
 export const addAssignment = (assignment) => API.post("/api/admin/addassignment", assignment);
+export const getStudentByAssignmentCode = (data) =>
+  API.post("/api/admin/getstudentbyassignmentcode", data);
