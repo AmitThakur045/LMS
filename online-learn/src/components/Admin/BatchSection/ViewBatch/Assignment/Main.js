@@ -9,6 +9,7 @@ import { sampleData } from "./Data";
 import Divider from "@mui/material/Divider";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_ERRORS } from "../../../../../Redux/actionTypes";
+import { getCourses } from "../../../../../Redux/actions/adminActions";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Main = () => {
 
   const store = useSelector((state) => state);
   const courseData = JSON.parse(localStorage.getItem("courses"));
+  const batchData = JSON.parse(localStorage.getItem("batch"));
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -33,6 +35,16 @@ const Main = () => {
     setLoading(true);
   }, []);
 
+  useEffect(() => {
+    if (store.admin.assignmentAdded) {
+      let temp = [];
+      for (let i = 0; i < batchData.courses?.length; i++) {
+        temp.push(batchData.courses[i].courseCode);
+      }
+      dispatch(getCourses(temp));
+    }
+  }, [store.admin.assignmentAdded]);
+
   return (
     <div className="flex h-full">
       <div className="w-[18rem] h-full shadow-lg overflow-y-auto">
@@ -45,8 +57,7 @@ const Main = () => {
                 onClick={() => {
                   setCurrentList(item.assignment);
                   setCurrentCourseCode(item.courseCode);
-                }}
-              >
+                }}>
                 <ListItemIcon>
                   <img
                     className="w-[20px] h-[20px] rounded-full"

@@ -805,7 +805,7 @@ export const addAssignment = async (req, res) => {
     } = req.body;
 
     const errors = { assignmentCodeError: String };
-    const existingAssignment = await Assignment.findOne({ courseCode });
+    const existingAssignment = await Assignment.findOne({ assignmentCode });
 
     if (existingAssignment) {
       errors.assignmentCodeError = "Assignment already exists";
@@ -893,12 +893,7 @@ export const getStudentByAssignmentCode = async (req, res) => {
 
 export const addScore = async (req, res) => {
   try {
-    const {
-      email,
-      assignmentCode,
-      checkedAssignment,
-      score,
-    } = req.body;
+    const { email, assignmentCode, checkedAssignment, score } = req.body;
 
     // console.log("req", req.body);
 
@@ -915,8 +910,8 @@ export const addScore = async (req, res) => {
       return res.status(404).json(errors);
     }
 
-    for(let i=0; i<student.assignment.length; i++) {
-      if(student.assignment[i].assignmentCode === assignmentCode) {
+    for (let i = 0; i < student.assignment.length; i++) {
+      if (student.assignment[i].assignmentCode === assignmentCode) {
         student.assignment[i].checkedAssignment = checkedAssignment;
         student.assignment[i].score = score;
       }
