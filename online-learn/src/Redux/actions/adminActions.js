@@ -241,7 +241,6 @@ export const getAttendance = (formData) => async (dispatch) => {
 
 export const addAssignment = (formData) => async (dispatch) => {
   try {
-    console.log("addAssignment", formData);
     const { data } = await api.addAssignment(formData);
     alert("Assignment Added Successfully");
     dispatch({ type: ADD_ASSIGNMENT, payload: true });
@@ -253,9 +252,7 @@ export const addAssignment = (formData) => async (dispatch) => {
 export const getStudentByAssignmentCode =
   (assignmentCode) => async (dispatch) => {
     try {
-      console.log("assign", assignmentCode);
       const { data } = await api.getStudentByAssignmentCode(assignmentCode);
-
       dispatch({ type: GET_STUDENT_BY_ASSIGNMENT_CODE, payload: data });
     } catch (error) {
       dispatch({ type: SET_ERRORS, payload: error.response.data });
@@ -264,7 +261,6 @@ export const getStudentByAssignmentCode =
 
 export const addScore = (formData) => async (dispatch) => {
   try {
-    console.log("formdata", formData);
     const { data } = await api.addScore(formData);
     alert("Marks Added Successfully");
     dispatch({ type: ADD_SCORE, payload: true });
