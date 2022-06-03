@@ -809,7 +809,6 @@ export const addAssignment = async (req, res) => {
 
     if (existingAssignment) {
       errors.assignmentCodeError = "Assignment already exists";
-      // console.log(errors.assignmentCodeError);
       return res.status(400).json(errors);
     }
 
@@ -823,20 +822,17 @@ export const addAssignment = async (req, res) => {
       assignmentPdf,
     });
 
-    // console.log("newAssignment", newAssignment);
-
     await newAssignment.save();
 
-    const newCourseAssignment = {
+    const newBatchAssignment = {
       assignmentCode: assignmentCode,
       assignmentName: assignmentName,
       assignmentPdf: assignmentPdf,
     };
 
-    const currCourse = await Course.findOne({ courseCode });
-    currCourse.assignment.push(newCourseAssignment);
-    // console.log("currCourse", currCourse)
-    await currCourse.save();
+    const currBatch = await Batch.findOne({ batchCode });
+    currBatch.assignment.push(newBatchAssignment);
+    await currBatch.save();
 
     return res.status(200).json({
       success: true,
@@ -852,11 +848,9 @@ export const addAssignment = async (req, res) => {
 export const getStudentByAssignmentCode = async (req, res) => {
   try {
     const { assignmentCode } = req.body;
-    // console.log("assignmentCode", assignmentCode);
 
     const errors = { noAssignmentError: String };
     const assignment = await Assignment.findOne({ assignmentCode });
-    // console.log();
     if (assignment === null) {
       errors.noAssignmentError = "No Assignment Found";
       // console.log("noAssignmentError", errors.noAssignmentError);
@@ -894,8 +888,6 @@ export const getStudentByAssignmentCode = async (req, res) => {
 export const addScore = async (req, res) => {
   try {
     const { email, assignmentCode, checkedAssignment, score } = req.body;
-
-    // console.log("req", req.body);
 
     const errors = { noAssignmentError: String };
     const assignment = await Assignment.findOne({ assignmentCode });

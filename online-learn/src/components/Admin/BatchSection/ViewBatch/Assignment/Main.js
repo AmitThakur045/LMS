@@ -45,6 +45,16 @@ const Main = () => {
     }
   }, [store.admin.assignmentAdded]);
 
+  const handleClick = ( courseCode ) => {
+    setCurrentCourseCode(courseCode);
+    let tmp = batchData.assignment.filter((item) => item.assignmentCode.substr(4, 6) === courseCode);
+    setCurrentList(tmp);
+  }
+
+  // useEffect(() => {
+  //   handleClick(courseData[0].courseCode);
+  // }, [store.admin.assignmentAdded])
+
   return (
     <div className="flex h-full">
       <div className="w-[18rem] h-full shadow-lg overflow-y-auto">
@@ -54,10 +64,8 @@ const Main = () => {
               <ListItem
                 button
                 key={index}
-                onClick={() => {
-                  setCurrentList(item.assignment);
-                  setCurrentCourseCode(item.courseCode);
-                }}>
+                onClick={() => handleClick(item.courseCode)}
+                >
                 <ListItemIcon>
                   <img
                     className="w-[20px] h-[20px] rounded-full"

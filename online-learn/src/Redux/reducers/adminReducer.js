@@ -51,6 +51,7 @@ const initialState = {
   attendanceUploaded: false,
   assignmentAdded: false,
   scoreAdded: false,
+  studentList: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -173,7 +174,7 @@ const adminReducer = (state = initialState, action) => {
     case GET_STUDENT_BY_ASSIGNMENT_CODE:
       return {
         ...state,
-        students: action.payload,
+        studentList: action.payload,
       };
     case ADD_SCORE: 
       return {
