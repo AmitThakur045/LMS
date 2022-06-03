@@ -14,6 +14,13 @@ const batchSchema = new Schema({
   },
   courses: [
     {
+      assignment: [
+        {
+          assignmentName: { type: String, required: true },
+          assignmentCode: { type: String, required: true },
+          assignmentPdf: { type: String, required: true },
+        },
+      ],
       courseName: {
         type: String,
         required: true,
@@ -47,13 +54,6 @@ const batchSchema = new Schema({
     },
   ],
   students: [{ type: String, unique: true }],
-  assignment: [
-    {
-      assignmentName: { type: String, required: true },
-      assignmentCode: { type: String, required: true }, 
-      assignmentPdf: {  type: String, required: true },
-    }
-  ]
 });
 
 export default mongoose.model("batch", batchSchema);
