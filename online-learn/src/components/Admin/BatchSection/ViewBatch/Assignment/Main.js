@@ -64,10 +64,10 @@ const Main = () => {
 
   return (
     <div className="flex h-full">
-      <div className="w-[18rem] h-full shadow-lg overflow-y-auto">
-        <List>
+      <div className="w-[18rem] h-full overflow-y-auto">
+        <div className="pt-2">
           {batchData.courses?.map((item, index) => (
-            <div>
+            <div key={index} className={currentCourseCode === item.courseCode ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100" : ""}>
               <ListItem button key={index} onClick={() => handleClick(item)}>
                 <ListItemIcon>
                   <img
@@ -80,12 +80,13 @@ const Main = () => {
                     alt={item.courseCode}
                   />
                 </ListItemIcon>
-                <ListItemText primary={item.courseName} />
+                {/* <ListItemText primary={item.courseName} /> */}
+                <div className="py-1">{item.courseName}</div>
               </ListItem>
               <Divider />
             </div>
           ))}
-        </List>
+        </div>
       </div>
 
       <CourseList currentList={currentList} courseCode={currentCourseCode} />

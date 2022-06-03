@@ -122,7 +122,7 @@ const CourseList = ({ currentList, courseCode }) => {
           <div className="w-[16rem] h-full flex-col pt-2 shadow-lg overflow-y-auto">
             <div>
               {currentList.map((item, index) => (
-                <div key={index}>
+                <div key={index} className={currentAssignmentCode === item.assignmentCode && "bg-slate-200 shadow-xl font-semibold transition-all duration-100"}>
                   <div className="flex items-center">
                     <ListItem
                       button

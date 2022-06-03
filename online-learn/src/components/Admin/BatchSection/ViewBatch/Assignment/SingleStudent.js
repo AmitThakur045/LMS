@@ -14,13 +14,14 @@ import { addScore } from "../../../../../Redux/actions/adminActions";
 
 import SamplePdf from "../../../../../Assests/SamplePdf.pdf";
 
-const SingleStudent = ({ item, index }) => {
+const SingleStudent = ({ item, index, currentEmail }) => {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
 
+  const [email, setEmail] = useState("");
   const [isSelected, setIsSelected] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [value, setValue] = useState({
@@ -58,7 +59,7 @@ const SingleStudent = ({ item, index }) => {
     );
     setIsAdded(true);
   };
-  
+
   // useEffect(() => {
   //   if (item.checkedAssignment !== undefined) {
   //     setIsAdded(true);
@@ -72,11 +73,14 @@ const SingleStudent = ({ item, index }) => {
   // }, [isMarked === true]);
 
   return (
-    <div>
-      {item.checkedAssignment !== undefined ? ( isMarked = true) : ( isMarked = false)}
-      <ListItem button key={index}>
+    <div key={index} onClick={() => setEmail(item.email)} className={currentEmail === email && "bg-slate-200 shadow-lg font-semibold transition-all duration-100"} >
+      {item.checkedAssignment !== undefined
+        ? (isMarked = true)
+        : (isMarked = false)}
+
+      <ListItem button>
         <div type="button" onClick={submitHandler}>
-          {(isMarked || isAdded) ? (
+          {isMarked || isAdded ? (
             <BsFillCheckCircleFill style={{ fontSize: "24px" }} />
           ) : (
             <AiOutlineCheckCircle style={{ fontSize: "24px" }} />
@@ -116,7 +120,9 @@ const SingleStudent = ({ item, index }) => {
                 onClick={() => inputRef.current.click()}
               >
                 <div className="flex text-blue-600 px-2 space-x-1">
-                  <div>{(isSelected || isMarked || isAdded) ? `Uploaded` : `Upload`}</div>
+                  <div>
+                    {isSelected || isMarked || isAdded ? `Uploaded` : `Upload`}
+                  </div>
                   <CloudUploadIcon />
                 </div>
                 <input
@@ -133,12 +139,12 @@ const SingleStudent = ({ item, index }) => {
                 id="outlined-basic"
                 type="number"
                 size="small"
-                label={isMarked ? item.score :"Marks"}
+                label={isMarked ? item.score : "Marks"}
                 variant="outlined"
                 sx={{
                   width: "70px",
                 }}
-                value={(isAdded || isMarked) ? item.score : value.marks}
+                value={isAdded || isMarked ? item.score : value.marks}
                 disabled={isAdded || isMarked}
                 onChange={(e) => setValue({ ...value, marks: e.target.value })}
               />

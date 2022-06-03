@@ -13,9 +13,9 @@ const StudentList = ({ studentList }) => {
           <List>
             {studentList.map((item, index) =>
               item.checkedAssignment !== undefined ? (
-                <SingleStudent item={item} index={index} isMarked={true} />
+                <SingleStudent item={item} index={index} currentEmail={item.email} />
               ) : (
-                <SingleStudent item={item} index={index} isMarked={false} />
+                <SingleStudent item={item} index={index} currentEmail={item.email} />
               )
             )}
           </List>
