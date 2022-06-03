@@ -831,7 +831,11 @@ export const addAssignment = async (req, res) => {
     };
 
     const currBatch = await Batch.findOne({ batchCode });
-    currBatch.assignment.push(newBatchAssignment);
+    for (let i = 0; i < currBatch.courses.length; i++) {
+      if (currBatch.courses[i].courseCode === courseCode) {
+        currBatch.courses[i].assignment.push(newBatchAssignment);
+      }
+    }
     await currBatch.save();
 
     return res.status(200).json({
