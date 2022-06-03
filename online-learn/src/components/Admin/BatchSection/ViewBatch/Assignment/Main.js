@@ -87,9 +87,8 @@ const Main = () => {
           ))}
         </List>
       </div>
-      {currentList.length !== 0 && (
-        <CourseList currentList={currentList} courseCode={currentCourseCode} />
-      )}
+
+      <CourseList currentList={currentList} courseCode={currentCourseCode} />
     </div>
   );
 };

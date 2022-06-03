@@ -100,12 +100,14 @@ const CourseList = ({ currentList, courseCode }) => {
   }, [assignmentStudent]);
 
   useEffect(() => {
-    dispatch(
-      getStudentByAssignmentCode({
-        assignmentCode: currentList[0].assignmentCode,
-      })
-    );
-  }, []);
+    if (currentList.length !== 0) {
+      dispatch(
+        getStudentByAssignmentCode({
+          assignmentCode: currentList[0].assignmentCode,
+        })
+      );
+    }
+  }, [currentList]);
 
   useEffect(() => {
     dispatch(
