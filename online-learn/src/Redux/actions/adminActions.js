@@ -24,6 +24,7 @@ import {
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
+  GET_EVENT_BY_COURSE_CODE,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -264,6 +265,16 @@ export const addScore = (formData) => async (dispatch) => {
     const { data } = await api.addScore(formData);
     alert("Marks Added Successfully");
     dispatch({ type: ADD_SCORE, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getEventByCourseCode = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getEventByCourseCode(formData);
+
+    dispatch({ type: GET_EVENT_BY_COURSE_CODE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

@@ -27,6 +27,7 @@ import {
   addAssignment,
   getStudentByAssignmentCode,
   addScore,
+  getEventByCourseCode,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -55,5 +56,6 @@ router.post("/uploadattendance", uploadAttendance);
 router.post("/getattendance", getAttendance);
 router.post("/addAssignment", addAssignment);
 router.post("/getstudentbyassignmentcode", getStudentByAssignmentCode);
+router.post("/geteventbycoursecode", getEventByCourseCode);
 router.post("/addscore", addScore);
 export default router;

@@ -36,11 +36,14 @@ export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
   API.post("/api/admin/getbatchevent", batchCode);
+export const getEventByCourseCode = (data) =>
+  API.post("/api/admin/geteventbycoursecode", data);
 export const uploadAttendance = (attendanceRecord) =>
   API.post("/api/admin/uploadattendance", attendanceRecord);
 export const getAttendance = (data) =>
   API.post("/api/admin/getattendance", data);
-export const addAssignment = (assignment) => API.post("/api/admin/addassignment", assignment);
+export const addAssignment = (assignment) =>
+  API.post("/api/admin/addassignment", assignment);
 export const getStudentByAssignmentCode = (data) =>
   API.post("/api/admin/getstudentbyassignmentcode", data);
 export const addScore = (formData) => API.post("/api/admin/addscore", formData);

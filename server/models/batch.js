@@ -51,6 +51,7 @@ const batchSchema = new Schema({
       link: { type: String },
       start: { type: String },
       end: { type: String },
+      courseCode: { type: String },
     },
   ],
   students: [{ type: String, unique: true }],

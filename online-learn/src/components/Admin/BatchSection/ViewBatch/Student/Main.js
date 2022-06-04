@@ -7,7 +7,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar, Button, Modal, Box } from "@mui/material";
 import Select from "react-select";
-import { ProgressBarComponent } from "@syncfusion/ej2-react-progressbar";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { styled } from "@mui/material/styles";
 import "react-circular-progressbar/dist/styles.css";
@@ -189,7 +188,15 @@ const Main = () => {
                   </div>
                 </div>
                 <div className="col-span-2  font-semibold">{student.email}</div>
-                <div className="col-span-6"></div>
+                <div className="col-span-2">
+                  Total Attendance: {calTotalAttendance(student.attendance)}
+                </div>
+                <div className="col-span-2">
+                  Total Assignment: {calTotalAssignment(student.assignment)}
+                </div>
+                <div className="col-span-2">
+                  Courses Completed: {calCourseCompleted(student.attendance)}%
+                </div>
               </div>
             </AccordionSummary>
             <AccordionDetails>
@@ -237,11 +244,11 @@ const Main = () => {
                         <div className="flex flex-[0.8] space-x-2 items-center">
                           <BsPersonCheck className="text-[#eede49]" />
                           <p className="text-[#47ada8] font-bold">
-                            Course Completed:
+                            Courses Completed:
                           </p>
                         </div>
                         <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calCourseCompleted(student.attendance)}
+                          {calCourseCompleted(student.attendance)}%
                         </span>
                       </div>
                     </div>
