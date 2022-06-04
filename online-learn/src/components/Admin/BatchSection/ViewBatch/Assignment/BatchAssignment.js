@@ -1,9 +1,9 @@
 import React from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 
-import Header from "./Header";
+import Header from "../Header";
 
-import Main from "./Assignment/Main";
+import Main from "./Main";
 
 const BatchAssignment = () => {
   return (

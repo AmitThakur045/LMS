@@ -20,8 +20,8 @@ import AddStudent from "./components/Admin/StudentSection/AddStudent/AddStudent"
 import ViewStudent from "./components/Admin/StudentSection/ViewStudent/ViewStudent";
 import ViewBatch from "./components/Admin/BatchSection/ViewBatch/ViewBatch";
 import BatchCourse from "./components/Admin/BatchSection/ViewBatch/Course/BatchCourse";
-import BatchAssignment from "./components/Admin/BatchSection/ViewBatch/BatchAssignment";
-import BatchCommunity from "./components/Admin/BatchSection/ViewBatch/BatchCommunity";
+import BatchAssignment from "./components/Admin/BatchSection/ViewBatch/Assignment/BatchAssignment";
+import BatchCommunity from "./components/Admin/BatchSection/ViewBatch/Community/BatchCommunity";
 import BatchStudent from "./components/Admin/BatchSection/ViewBatch/Student/BatchStudent";
 import SearchBatch from "./components/Admin/BatchSection/SearchBatch/SearchBatch";
 import AddBatch from "./components/Admin/BatchSection/AddBatch/AddBatch";
@@ -78,7 +78,11 @@ function App() {
         element={<Attendance />}
       />
       <Route path="admin/batch/date" exact element={<BatchDate />} />
-      <Route path="admin/batch/assignment" exact element={<BatchAssignment />} />
+      <Route
+        path="admin/batch/assignment"
+        exact
+        element={<BatchAssignment />}
+      />
     </Routes>
   );
 }
