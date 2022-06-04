@@ -24,6 +24,7 @@ import {
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
+  GET_EVENT_BY_COURSE_CODE,
 } from "../actionTypes";
 
 const initialState = {
@@ -52,6 +53,7 @@ const initialState = {
   assignmentAdded: false,
   scoreAdded: false,
   studentList: [],
+  eventByCourseCode: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -176,10 +178,15 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         studentList: action.payload,
       };
-    case ADD_SCORE: 
+    case ADD_SCORE:
       return {
         ...state,
         scoreAdded: action.payload,
+      };
+    case GET_EVENT_BY_COURSE_CODE:
+      return {
+        ...state,
+        eventByCourseCode: action.payload,
       };
     default:
       return state;

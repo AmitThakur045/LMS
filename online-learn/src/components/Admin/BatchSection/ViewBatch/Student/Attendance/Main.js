@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import {
   getAttendance,
   uploadAttendance,
+  getEventByCourseCode,
 } from "../../../../../../Redux/actions/adminActions";
 import { UPLOAD_ATTENDANCE } from "../../../../../../Redux/actionTypes";
 import Spinner from "../../../../../../Utils/Spinner";
@@ -31,21 +32,31 @@ const Main = () => {
   const store = useSelector((state) => state);
   const courseCode = JSON.parse(localStorage.getItem("courseCode"));
   const n = 30;
-  const [dates, setDates] = useState({});
+
   const [attendancess, setAttendancess] = useState([]);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+  const [eventDates, setEventDates] = useState([]);
   useEffect(() => {
-    const temp = new Date();
-
-    setDates({ year: temp.getFullYear(), month: temp.getMonth() });
+    dispatch(
+      getEventByCourseCode({
+        batchCode: batchData.batchCode,
+        courseCode: courseCode,
+      })
+    );
     dispatch(
       getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
     );
   }, []);
 
   const attendances = useSelector((store) => store.admin.attendance);
+  const events = useSelector((store) => store.admin.eventByCourseCode);
+
+  useEffect(() => {
+    setEventDates(events);
+  }, [events]);
 
   const markAttendance = (email, date, value) => {
+    console.log(date);
     let data = [...attendanceRecord];
     let temp;
     if (value === "P" || value === "p") {
@@ -93,13 +104,14 @@ const Main = () => {
     }
   }, [store.errors, store.admin.attendanceUploaded]);
 
-  const checkDate = (idx, email) => {
-    const date = new Date(dates.year, dates.month, idx);
+  const checkDate = (date, email) => {
+    const newDate = new Date(date.year, date.month, date.day);
+
     if (attendancess.length === 0) {
       return "";
     } else {
       for (let i = 0; i < attendancess.length; i++) {
-        if (attendancess[i].date.toString() === date.toString()) {
+        if (attendancess[i].date.toString() === newDate.toString()) {
           for (let j = 0; j < attendancess[i].students.length; j++) {
             if (attendancess[i].students[j].email === email) {
               if (attendancess[i].students[j].present === false) {
@@ -131,19 +143,19 @@ const Main = () => {
             />
           </Link>
           <div className="text-[18px] font-bold text-[#5848a4] mb-4">
-            Attendance Report for {months[dates.month]} of {courseCode}
+            Attendance Report of {courseCode}
           </div>
         </div>
         <div className="flex space-x-1">
-          {[...Array(n + 1)].map((date, idx) => (
+          {eventDates?.map((date, idx) => (
             <div key={idx} className="flex">
               {idx === 0 ? (
                 <div className="shadow-md bg-white font-semibold text-[#111111] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
                   Name
                 </div>
               ) : (
-                <div className="shadow-md bg-white font-semibold text-[#111111] w-[2.5rem] flex items-center px-3 justify-center h-[2.5rem]">
-                  {idx}
+                <div className="shadow-md bg-white font-semibold text-[#111111] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]">
+                  {date.day} {months[date.month]} {date.year}
                 </div>
               )}
             </div>
@@ -152,7 +164,7 @@ const Main = () => {
         <div className="flex flex-col space-y-3 ">
           {studentData.map((student, index) => (
             <div key={student.email} className="flex space-x-1">
-              {[...Array(n + 1)].map((date, idx) => (
+              {eventDates?.map((date, idx) => (
                 <div key={idx} className="flex ">
                   {idx === 0 ? (
                     <div className="shadow-md bg-white font-semibold text-[#5848e4] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
@@ -160,11 +172,11 @@ const Main = () => {
                     </div>
                   ) : (
                     <input
-                      className="shadow-md bg-white font-semibold text-[#5848e4] w-[2.5rem] flex items-center px-3 justify-center h-[2.5rem]"
-                      dt={new Date(dates.year, dates.month, idx)}
+                      className="shadow-md bg-white font-semibold text-[#5848e4] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]"
+                      dt={new Date(date.year, date.month, date.day)}
                       em={student.email}
                       maxLength={1}
-                      placeholder={checkDate(idx, student.email)}
+                      placeholder={checkDate(date, student.email)}
                       autoCapitalize
                       key={idx}
                       onChange={(e) =>

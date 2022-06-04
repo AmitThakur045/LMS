@@ -438,6 +438,9 @@ export const addBatch = async (req, res) => {
         const student = await Student.findOne({ email: students[i][0] });
 
         student.batch.push(batchCode);
+        for (let j = 0; j < courses.length; j++) {
+          student.attendance.push({ courseCode: courses[j], attended: 0 });
+        }
         stu.push(students[i][0]);
         await student.save();
       }
@@ -502,102 +505,6 @@ export const addCourseInBatch = async (req, res) => {
       { $push: { coursees: newCourse } },
       { new: true }
     );
-  } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
-  }
-};
-
-export const addFaculty = async (req, res) => {
-  try {
-    const {
-      name,
-      dob,
-      contactNumber,
-      avatar,
-      email,
-      joiningYear,
-      gender,
-      designation,
-      batch,
-    } = req.body;
-    const errors = { emailError: String };
-
-    const existingFaculty = await Faculty.findOne({ email });
-    if (existingFaculty) {
-      errors.emailError = "Faculty already exists";
-      return res.status(400).json(errors);
-    }
-
-    let hashedPassword;
-    const newDob = dob.split("-").reverse().join("-");
-
-    hashedPassword = await bcrypt.hash(newDob, 10);
-    var passwordUpdated = false;
-
-    const newFaculty = await new Faculty({
-      name,
-      email,
-      password: hashedPassword,
-      joiningYear,
-      department,
-      avatar,
-      contactNumber,
-      dob,
-      batch,
-      gender,
-      designation,
-      passwordUpdated,
-    });
-    await newFaculty.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Faculty registerd successfully",
-      response: newFaculty,
-    });
-  } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
-  }
-};
-
-export const getFacultyByBatchCode = async (req, res) => {
-  try {
-    const { batchCode } = req.body;
-    const errors = { noFacultyError: String };
-    const faculties = await Faculty.find({ batch: { batchCode } });
-
-    if (faculties.length === 0) {
-      errors.noFacultyError = "No faculty found";
-      return res.status(400).json(errors);
-    }
-
-    res.status(200).json({ result: faculties });
-  } catch (error) {
-    const errors = { backendError: String };
-    errors.backendError = error;
-    res.status(500).json(errors);
-  }
-};
-
-export const getFacultyByCourseCode = async (req, res) => {
-  try {
-    const { batchCode, courseCode } = req.body;
-    const errors = { noFacultyError: String };
-
-    const faculties = await Faculty.find({
-      batch: { batchCode, course: { courseCode } },
-    });
-
-    if (faculties.length === 0) {
-      errors.noFacultyError = "No faculty found";
-      return res.status(400).json(errors);
-    }
-
-    res.status(200).json({ result: faculties });
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
@@ -731,6 +638,38 @@ export const getBatchEvent = async (req, res) => {
   }
 };
 
+export const getEventByCourseCode = async (req, res) => {
+  try {
+    const { batchCode, courseCode } = req.body;
+
+    const batch = await Batch.findOne({ batchCode });
+    const schedule = [];
+    schedule.push({});
+    for (let i = 0; i < batch.schedule.length; i++) {
+      if (batch.schedule[i].courseCode === courseCode) {
+        let temp = batch.schedule[i].start;
+        let str = temp.split("T")[0];
+
+        let year = str.slice(0, 4);
+
+        let month = str.slice(5, 7);
+
+        let day = str.slice(8, 10);
+
+        schedule.push({
+          day: parseInt(day),
+          year: parseInt(year),
+          month: parseInt(month) - 1,
+        });
+      }
+    }
+
+    res.status(200).json(schedule);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
 export const getAttendance = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
@@ -756,6 +695,38 @@ export const uploadAttendance = async (req, res) => {
       if (attendance) {
         for (let j = 0; j < attendance.students.length; j++) {
           if (attendance.students[j].email === attendanceRecord[i].student) {
+            const student = await Student.findOne({
+              email: attendance.students[j].email,
+            });
+
+            for (let k = 0; k < student.attendance.length; k++) {
+              if (student.attendance[k].courseCode === attendance.courseCode) {
+                let temp = student.attendance[k].attended;
+
+                if (attendanceRecord[i].present === true) {
+                  if (attendance.students[j].present === true) {
+                    continue;
+                  } else {
+                    if (attendanceRecord[i]) {
+                      ++temp;
+
+                      student.attendance[k].attended = temp;
+                      await student.save();
+                    }
+                  }
+                } else {
+                  if (attendance.students[j].present === true) {
+                    if (attendanceRecord[i]) {
+                      --temp;
+                      student.attendance[k].attended = temp;
+                      await student.save();
+                    }
+                  } else {
+                    continue;
+                  }
+                }
+              }
+            }
             attendance.students[j].present = attendanceRecord[i].present;
             await attendance.save();
             flag = true;
@@ -766,12 +737,30 @@ export const uploadAttendance = async (req, res) => {
             email: attendanceRecord[i].student,
             present: attendanceRecord[i].present,
           });
+
+          const student = await Student.findOne({
+            email: attendanceRecord[i].student,
+          });
+          for (let k = 0; k < student.attendance.length; k++) {
+            if (
+              student.attendance[k].courseCode ===
+              attendanceRecord[i].courseCode
+            ) {
+              let temp = student.attendance[k].attended;
+              if (attendanceRecord[i].present === true) {
+                ++temp;
+
+                student.attendance[k].attended = temp;
+                await student.save();
+              }
+            }
+          }
           await attendance.save();
           flag = false;
         }
       } else if (!attendance) {
-        let student = [];
-        student.push({
+        let students = [];
+        students.push({
           email: attendanceRecord[i].student,
           present: attendanceRecord[i].present,
         });
@@ -780,9 +769,26 @@ export const uploadAttendance = async (req, res) => {
           batchCode: attendanceRecord[i].batchCode,
           courseCode: attendanceRecord[i].courseCode,
           date: attendanceRecord[i].date,
-          students: student,
+          students: students,
         });
         await newAttendance.save();
+
+        const student = await Student.findOne({
+          email: attendanceRecord[i].student,
+        });
+        for (let k = 0; k < student.attendance.length; k++) {
+          if (
+            student.attendance[k].courseCode === attendanceRecord[i].courseCode
+          ) {
+            let temp = student.attendance[k].attended;
+            if (attendanceRecord[i].present === true) {
+              ++temp;
+
+              student.attendance[k].attended = temp;
+              await student.save();
+            }
+          }
+        }
       }
     }
 

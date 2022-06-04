@@ -70,6 +70,7 @@ const Main = () => {
     link: "",
     start: "",
     end: "",
+    courseCode: "",
   });
 
   const [allEvents, setAllEvents] = useState([]);
@@ -78,7 +79,7 @@ const Main = () => {
     e.preventDefault();
 
     dispatch(addEvent(batchData.batchCode, newEvent));
-    setNewEvent({ title: "", link: "", start: "", end: "" });
+    setNewEvent({ title: "", link: "", start: "", end: "", courseCode: "" });
   };
 
   useEffect(() => {
@@ -188,6 +189,25 @@ const Main = () => {
                   />
                 </div>
               </div>
+              <FormControl required className="">
+                <InputLabel id="demo-simple-select-label">
+                  Course Code
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={newEvent.courseCode}
+                  label="Course Code"
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, courseCode: e.target.value })
+                  }>
+                  {batchData.courses.map((course, idx) => (
+                    <MenuItem value={course.courseCode}>
+                      {course.courseCode}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
             <button
               type="submit"
