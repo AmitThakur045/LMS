@@ -145,6 +145,13 @@ export const addAdmin = async (req, res) => {
       return res.status(400).json(errors);
     }
 
+    let tempOrganizationName;
+    if (sub === "false") {
+      tempOrganizationName = "Super Admin";
+    } else {
+      tempOrganizationName = organizationName;
+    }
+
     let hashedPassword;
     const newDob = dob.split("-").reverse().join("-");
 
@@ -159,7 +166,7 @@ export const addAdmin = async (req, res) => {
       contactNumber,
       dob,
       sub,
-      organizationName,
+      organizationName: tempOrganizationName,
     });
     await newAdmin.save();
     return res.status(200).json({
@@ -243,6 +250,51 @@ export const getAllAdmin = async (req, res) => {
       return res.status(400).json(errors);
     }
     res.status(200).json(admins);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const getAdminsByOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    const admins = await Admin.find({ organizationName: organizationName });
+
+    const errors = { noAdminError: String };
+
+    if (admins.length === 0) {
+      errors.noAdminError = "No Admin Found";
+      return res.status(400).json(errors);
+    }
+    res.status(200).json(admins);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getStudentsByOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    const batches = await Batch.find({ organizationName: organizationName });
+
+    const errors = { noStudentError: String };
+    let students = [];
+
+    for (let i = 0; i < batches.length; i++) {
+      for (let j = 0; j < batches[i].students.length; j++) {
+        const student = await Student.findOne({
+          email: batches[i].students[j],
+        });
+        if (student) {
+          students.push(student);
+        }
+      }
+    }
+
+    if (students.length === 0) {
+      errors.noStudentError = "No Admin Found";
+      return res.status(400).json(errors);
+    }
+    res.status(200).json(students);
   } catch (error) {
     console.log("Backend Error", error);
   }
@@ -393,7 +445,7 @@ export const addBatch = async (req, res) => {
       return res.status(400).json(errors);
     }
     let stu = [];
-    console.log("1");
+
     let courseData = [];
 
     for (let i = 0; i < courses.length; i++) {
@@ -431,21 +483,21 @@ export const addBatch = async (req, res) => {
       cou.complete.totalLesson = sum;
       courseData.push(cou);
     }
-    console.log("2");
 
-    console.log(students[0][0]);
     for (let i = 0; i < students.length; i++) {
       if (students[i][0] !== "") {
         const student = await Student.findOne({ email: students[i][0] });
-
-        student.batchCode.push(batchCode);
-        for (let j = 0; j < courses.length; j++) {
-          student.attendance.push({ courseCode: courses[j], attended: 0 });
+        if (student) {
+          student.batchCode.push(batchCode);
+          for (let j = 0; j < courses.length; j++) {
+            student.attendance.push({ courseCode: courses[j], attended: 0 });
+          }
+          stu.push(students[i][0]);
+          await student.save();
         }
-        stu.push(students[i][0]);
-        await student.save();
       }
     }
+
     const newBatch = await new Batch({
       batchName,
       organizationName,
@@ -455,7 +507,6 @@ export const addBatch = async (req, res) => {
     });
 
     await newBatch.save();
-    console.log("4");
 
     return res.status(200).json({
       success: true,
@@ -834,7 +885,7 @@ export const getStudentByAssignmentCode = async (req, res) => {
     const assignment = await Assignment.findOne({ assignmentCode });
     if (assignment === null) {
       errors.noAssignmentError = "No Assignment Found";
-      // console.log("noAssignmentError", errors.noAssignmentError);
+
       return res.status(404).json(errors);
     }
 
@@ -844,11 +895,10 @@ export const getStudentByAssignmentCode = async (req, res) => {
         email: assignment.student[i].email,
       });
       if (student) {
-        console.log(student.assignment);
         const assignmentPdf = student.assignment.filter((item) => {
           return item.assignmentCode === assignmentCode;
         });
-        // console.log(assignmentCode);
+
         const tmp = {
           email: student.email,
           firstName: student.firstName,
@@ -859,7 +909,6 @@ export const getStudentByAssignmentCode = async (req, res) => {
           assignment: assignmentPdf,
         };
 
-        // console.log(tmp);
         StudentList.push(tmp);
       }
     }

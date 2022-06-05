@@ -17,6 +17,7 @@ import {
 } from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
 import { Avatar, Box, Menu, MenuItem, Modal } from "@mui/material";
+import SubAdminModal from "../../../Utils/SubAdminModal";
 const style = {
   position: "absolute",
   top: "50%",
@@ -30,6 +31,8 @@ const style = {
   p: 4,
 };
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -85,9 +88,16 @@ const Main = () => {
 
     setCourses(result);
   };
+  const [showSubAdminModal, setShowSubAdminModal] = useState(false);
 
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
+      {showSubAdminModal && (
+        <SubAdminModal
+          showSubAdminModal={showSubAdminModal}
+          setShowSubAdminModal={setShowSubAdminModal}
+        />
+      )}
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
         <div className="flex items-center justify-between">
           <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
@@ -99,13 +109,24 @@ const Main = () => {
               type="text"
             />
           </div>
-          <Link
-            to="/admin/course/addcourse"
-            type="button"
-            className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
-            <IoIosAddCircleOutline fontSize={20} />
-            <h1>Add Course</h1>
-          </Link>
+          <div className="">
+            {user.result.sub === "false" ? (
+              <Link
+                to="/admin/course/addcourse"
+                type="button"
+                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                <IoIosAddCircleOutline fontSize={20} />
+                <h1>Add Course</h1>
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowSubAdminModal(true)}
+                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                <IoIosAddCircleOutline fontSize={20} />
+                <h1>Add Course</h1>
+              </button>
+            )}
+          </div>
         </div>
         {(loading || Object.keys(error).length !== 0) && (
           <div className="flex flex-col mt-10">
@@ -195,13 +216,23 @@ const Main = () => {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}>
-                    <MenuItem
-                      onClick={() => {
-                        handleOpenDeleteModal();
-                        handleClose();
-                      }}>
-                      Delete Course
-                    </MenuItem>
+                    {user.result.sub === "false" ? (
+                      <MenuItem
+                        onClick={() => {
+                          handleOpenDeleteModal();
+                          handleClose();
+                        }}>
+                        Delete Course
+                      </MenuItem>
+                    ) : (
+                      <MenuItem
+                        onClick={() => {
+                          setShowSubAdminModal(true);
+                          handleClose();
+                        }}>
+                        Delete Course
+                      </MenuItem>
+                    )}
                   </Menu>
                 </div>
               </div>

@@ -11,9 +11,14 @@ import {
   GET_ADMIN,
   SET_ERRORS,
 } from "../../../Redux/actionTypes";
-import { deleteAdmin, getAllAdmin } from "../../../Redux/actions/adminActions";
+import {
+  deleteAdmin,
+  getAllAdmin,
+  getAdminsByOrganizationName,
+} from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
 import { Avatar, Box, Menu, MenuItem, Modal } from "@mui/material";
+import SubAdminModal from "../../../Utils/SubAdminModal";
 const style = {
   position: "absolute",
   top: "50%",
@@ -66,20 +71,25 @@ const Main = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-    dispatch(
-      getAllAdmin({
-        organizationName: user.result.organizationName,
-        sub: user.result.sub,
-      })
-    );
+    if (user.result.sub === "true") {
+      dispatch(
+        getAdminsByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+    } else {
+      dispatch(getAllAdmin());
+    }
     setLoading(true);
 
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   useEffect(() => {
-    dispatch(getAllAdmin());
-    dispatch({ type: DELETE_ADMIN, payload: false });
+    if (store.admin.adminDeleted) {
+      dispatch(getAllAdmin());
+      dispatch({ type: DELETE_ADMIN, payload: false });
+    }
   }, [store.admin.adminDeleted]);
 
   const handleSearch = (event) => {
@@ -90,9 +100,16 @@ const Main = () => {
     });
     setAdmins(result);
   };
+  const [showSubAdminModal, setShowSubAdminModal] = useState(false);
 
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
+      {showSubAdminModal && (
+        <SubAdminModal
+          showSubAdminModal={showSubAdminModal}
+          setShowSubAdminModal={setShowSubAdminModal}
+        />
+      )}
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
         <div className="flex items-center justify-between">
           <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
@@ -104,13 +121,24 @@ const Main = () => {
               type="text"
             />
           </div>
-          <Link
-            to="/admin/admin/addadmin"
-            type="button"
-            className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
-            <IoIosAddCircleOutline fontSize={20} />
-            <h1>Add Admin</h1>
-          </Link>
+          <div className="">
+            {user.result.sub === "false" ? (
+              <Link
+                to="/admin/admin/addadmin"
+                type="button"
+                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                <IoIosAddCircleOutline fontSize={20} />
+                <h1>Add Admin</h1>
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowSubAdminModal(true)}
+                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                <IoIosAddCircleOutline fontSize={20} />
+                <h1>Add Admin</h1>
+              </button>
+            )}
+          </div>
         </div>
         {(loading || Object.keys(error).length !== 0) && (
           <div className="flex flex-col mt-10">
@@ -203,20 +231,57 @@ const Main = () => {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}>
-                    <MenuItem
-                      onClick={() => {
-                        dispatch({ type: GET_ADMIN, payload: admins[index] });
-                        navigate("/admin/admin/updateadmin");
-                      }}>
-                      Update Admin
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        handleOpenDeleteModal();
-                        handleClose();
-                      }}>
-                      Delete Admin
-                    </MenuItem>
+                    {user.result.sub === "false" ? (
+                      <>
+                        <MenuItem
+                          onClick={() => {
+                            dispatch({
+                              type: GET_ADMIN,
+                              payload: admins[index],
+                            });
+                            navigate("/admin/admin/updateadmin");
+                          }}>
+                          Update Admin
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleOpenDeleteModal();
+                            handleClose();
+                          }}>
+                          Delete Admin
+                        </MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        {ad.email === user.result.email ? (
+                          <MenuItem
+                            onClick={() => {
+                              dispatch({
+                                type: GET_ADMIN,
+                                payload: admins[index],
+                              });
+                              navigate("/admin/admin/updateadmin");
+                            }}>
+                            Update Admin
+                          </MenuItem>
+                        ) : (
+                          <MenuItem
+                            onClick={() => {
+                              setShowSubAdminModal(true);
+                              handleClose();
+                            }}>
+                            Update Admin
+                          </MenuItem>
+                        )}
+                        <MenuItem
+                          onClick={() => {
+                            setShowSubAdminModal(true);
+                            handleClose();
+                          }}>
+                          Delete Admin
+                        </MenuItem>
+                      </>
+                    )}
                   </Menu>
                 </div>
               </div>

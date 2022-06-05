@@ -8,10 +8,13 @@ import {
   getCourses,
   getStudents,
 } from "../../Redux/actions/adminActions";
+import { ADD_BATCH } from "../../Redux/actionTypes";
 
 const ActiveBatch = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
+  const store = useSelector((state) => state);
+
   const batch = useSelector((state) => state.admin.batch);
   const allBatches = useSelector((state) => state.admin.allBatch);
   const [batches, setBatches] = useState([]);
@@ -20,6 +23,21 @@ const ActiveBatch = () => {
       setBatches(allBatches);
     }
   }, [allBatches]);
+
+  useEffect(() => {
+    if (store.admin.batchAdded) {
+      if (user.result.sub === "true") {
+        dispatch(
+          getBatchCodesByOrganizationName({
+            organizationName: user.result.organizationName,
+          })
+        );
+      } else {
+        dispatch(getAllBatchCodes());
+      }
+      dispatch({ type: ADD_BATCH, payload: false });
+    }
+  }, [store.admin.batchAdded]);
 
   useEffect(() => {
     if (user.result.sub === "true") {
@@ -33,18 +51,20 @@ const ActiveBatch = () => {
     }
   }, []);
   useEffect(() => {
-    localStorage.removeItem("batch");
-    localStorage.removeItem("courses");
-    localStorage.removeItem("students");
-    localStorage.removeItem("courseCode");
-    localStorage.setItem("batch", JSON.stringify(batch));
-    let temp = [];
-    for (let i = 0; i < batch.courses?.length; i++) {
-      temp.push(batch.courses[i].courseCode);
-    }
-    dispatch(getCourses(temp));
+    if (Object.keys(batch).length !== 0) {
+      localStorage.removeItem("batch");
+      localStorage.removeItem("courses");
+      localStorage.removeItem("students");
+      localStorage.removeItem("courseCode");
+      localStorage.setItem("batch", JSON.stringify(batch));
+      let temp = [];
+      for (let i = 0; i < batch.courses?.length; i++) {
+        temp.push(batch.courses[i].courseCode);
+      }
+      dispatch(getCourses(temp));
 
-    dispatch(getStudents({ emails: batch.students }));
+      dispatch(getStudents({ emails: batch.students }));
+    }
   }, [batch]);
 
   return (

@@ -17,9 +17,9 @@ const batchSchema = new Schema({
     {
       assignment: [
         {
-          assignmentName: { type: String, required: true },
-          assignmentCode: { type: String, required: true },
-          assignmentPdf: { type: String, required: true },
+          assignmentName: { type: String },
+          assignmentCode: { type: String, unique: true },
+          assignmentPdf: { type: String },
         },
       ],
       courseName: {
@@ -27,7 +27,7 @@ const batchSchema = new Schema({
         required: true,
         trim: true,
       },
-      courseCode: { type: String, unique: true },
+      courseCode: { type: String },
       complete: {
         sectionCompleted: { type: Number },
         lessonCompleted: { type: Number },
@@ -55,7 +55,7 @@ const batchSchema = new Schema({
       courseCode: { type: String },
     },
   ],
-  students: [{ type: String, unique: true }],
+  students: [{ type: String }],
   batchLink: { type: String },
 });
 

@@ -38,6 +38,8 @@ const MenuProps = {
 };
 
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -147,20 +149,35 @@ const Main = () => {
               <InputLabel id="demo-simple-select-label">
                 Organization Name
               </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={values.organizationName}
-                label="Organization Name"
-                onChange={(e) =>
-                  setValues({ ...values, organizationName: e.target.value })
-                }>
-                {allOrganizationName?.map((organizationName, idx) => (
-                  <MenuItem key={idx} value={organizationName}>
-                    {organizationName}
+              {user.result.sub === "true" ? (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={values.organizationName}
+                  label="Organization Name"
+                  onChange={(e) =>
+                    setValues({ ...values, organizationName: e.target.value })
+                  }>
+                  <MenuItem value={user.result.organizationName}>
+                    {user.result.organizationName}
                   </MenuItem>
-                ))}
-              </Select>
+                </Select>
+              ) : (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={values.organizationName}
+                  label="Organization Name"
+                  onChange={(e) =>
+                    setValues({ ...values, organizationName: e.target.value })
+                  }>
+                  {allOrganizationName?.map((organizationName, idx) => (
+                    <MenuItem key={idx} value={organizationName}>
+                      {organizationName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             </FormControl>
 
             <div className="flex">
