@@ -26,6 +26,7 @@ const Main = () => {
   const courseData = JSON.parse(localStorage.getItem("courses"));
   const batchDataLocal = JSON.parse(localStorage.getItem("batch"));
   const batchData = useSelector((store) => store.admin.batch);
+
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
@@ -67,7 +68,13 @@ const Main = () => {
       <div className="w-[18rem] h-full overflow-y-auto">
         <div className="pt-2">
           {batchData.courses?.map((item, index) => (
-            <div key={index} className={currentCourseCode === item.courseCode ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100" : ""}>
+            <div
+              key={index}
+              className={
+                currentCourseCode === item.courseCode
+                  ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
+                  : ""
+              }>
               <ListItem button key={index} onClick={() => handleClick(item)}>
                 <ListItemIcon>
                   <img

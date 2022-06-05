@@ -25,9 +25,14 @@ import {
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
   GET_EVENT_BY_COURSE_CODE,
+  GET_ALL_ORGANIZATION_NAME,
+  ADD_BATCH_LINK,
+  ADMIN_LOGIN,
+  LOGOUT,
 } from "../actionTypes";
 
 const initialState = {
+  authData: null,
   adminAdded: false,
   admin: {},
   adminUpdated: false,
@@ -54,14 +59,27 @@ const initialState = {
   scoreAdded: false,
   studentList: [],
   eventByCourseCode: [],
+  allOrganizationName: [],
+  batchLinkAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADMIN_LOGIN:
+      localStorage.setItem("user", JSON.stringify({ ...action?.data }));
+      return { ...state, authData: action?.data };
+    case LOGOUT:
+      localStorage.clear();
+      return { ...state, authData: null };
     case ADD_ADMIN:
       return {
         ...state,
         adminAdded: action.payload,
+      };
+    case ADD_BATCH_LINK:
+      return {
+        ...state,
+        batchLinkAdded: action.payload,
       };
     case GET_ADMIN:
       return {
@@ -137,6 +155,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         allCourse: action.payload,
+      };
+    case GET_ALL_ORGANIZATION_NAME:
+      return {
+        ...state,
+        allOrganizationName: action.payload,
       };
     case GET_ALL_BATCH:
       return {

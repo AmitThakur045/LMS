@@ -123,13 +123,13 @@ const Main = () => {
                   labelId="demo-multiple-checkbox-label"
                   id="demo-multiple-checkbox"
                   multiple
-                  value={student.batch}
+                  value={student.batchCode}
                   input={<OutlinedInput label="Batch" />}
                   renderValue={(selected) => selected.join(", ")}
                   MenuProps={MenuProps}>
-                  {student.batch?.map((bt) => (
+                  {student.batchCode?.map((bt) => (
                     <MenuItem key={bt} value={bt}>
-                      <Checkbox checked={student.batch.indexOf(bt) > -1} />
+                      <Checkbox checked={student.batchCode.indexOf(bt) > -1} />
                       <ListItemText primary={bt} />
                     </MenuItem>
                   ))}

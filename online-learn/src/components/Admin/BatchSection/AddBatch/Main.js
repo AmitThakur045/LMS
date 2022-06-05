@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  ADD_BATCH,
-  ADD_STUDENT,
-  SET_ERRORS,
-} from "../../../../Redux/actionTypes";
+import { ADD_BATCH, SET_ERRORS } from "../../../../Redux/actionTypes";
 import {
   addBatch,
-  addStudent,
   getAllCourseCodes,
+  getAllOrganizationName,
 } from "../../../../Redux/actions/adminActions";
 
 import ActiveBatch from "../../ActiveBatch";
@@ -52,6 +48,7 @@ const Main = () => {
     batchName: "",
     students: [],
     courses: [],
+    organizationName: "",
   });
   const [emails, setEmails] = useState([]);
 
@@ -65,9 +62,13 @@ const Main = () => {
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getAllCourseCodes());
+    dispatch(getAllOrganizationName());
   }, []);
 
   const courses = useSelector((store) => store.admin.allCourse);
+  const allOrganizationName = useSelector(
+    (store) => store.admin.allOrganizationName
+  );
   useEffect(() => {
     if (store.errors || store.admin.batchAdded) {
       setLoading(false);
@@ -77,6 +78,7 @@ const Main = () => {
           batchName: "",
           students: [],
           courses: [],
+          organizationName: "",
         });
 
         dispatch({ type: SET_ERRORS, payload: {} });
@@ -141,6 +143,25 @@ const Main = () => {
                 }
               />
             </div>
+            <FormControl required className="w-[50%]">
+              <InputLabel id="demo-simple-select-label">
+                Organization Name
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={values.organizationName}
+                label="Organization Name"
+                onChange={(e) =>
+                  setValues({ ...values, organizationName: e.target.value })
+                }>
+                {allOrganizationName?.map((organizationName, idx) => (
+                  <MenuItem key={idx} value={organizationName}>
+                    {organizationName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <div className="flex">
               <FormControl sx={{ width: 475 }}>

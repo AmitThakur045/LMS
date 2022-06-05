@@ -31,9 +31,7 @@ const adminSchema = new Schema(
     sub: {
       type: String,
     },
-    domain: {
-      type: String,
-    },
+    organizationName: { type: String },
     passwordUpdated: {
       type: Boolean,
       default: false,
