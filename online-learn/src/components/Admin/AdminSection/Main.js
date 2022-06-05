@@ -27,6 +27,8 @@ const style = {
   p: 4,
 };
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -64,7 +66,12 @@ const Main = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-    dispatch(getAllAdmin());
+    dispatch(
+      getAllAdmin({
+        organizationName: user.result.organizationName,
+        sub: user.result.sub,
+      })
+    );
     setLoading(true);
 
     dispatch({ type: SET_ERRORS, payload: {} });

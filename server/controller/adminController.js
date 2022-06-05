@@ -489,6 +489,28 @@ export const getAllBatchCodes = async (req, res) => {
     res.status(500).json(errors);
   }
 };
+
+export const getBatchCodesByOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    const batches = await Batch.find({ organizationName });
+    const errors = { noBatchError: String };
+    let batchCodes = [];
+
+    for (let i = 0; i < batches.length; i++) {
+      batchCodes.push({
+        label: batches[i].batchCode,
+        value: batches[i].batchCode,
+      });
+    }
+
+    res.status(200).json(batchCodes);
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+};
 export const getAllOrganizationName = async (req, res) => {
   try {
     const admin = await Admin.find();

@@ -10,6 +10,7 @@ import Select from "react-select";
 import {
   getAllBatchCodes,
   getBatch,
+  getBatchCodesByOrganizationName,
   getCourses,
   getStudents,
 } from "../../../Redux/actions/adminActions";
@@ -30,6 +31,7 @@ const style = {
 const Main = () => {
   const dispatch = useDispatch();
   const [selectedBatch, setSelectedBatch] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const allBatches = useSelector((state) => state.admin.allBatch);
   const batch = useSelector((state) => state.admin.batch);
@@ -40,7 +42,15 @@ const Main = () => {
     setSelectedBatch("");
   };
   useEffect(() => {
-    dispatch(getAllBatchCodes());
+    if (user.result.sub === "true") {
+      dispatch(
+        getBatchCodesByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+    } else {
+      dispatch(getAllBatchCodes());
+    }
   }, []);
 
   useEffect(() => {
@@ -57,7 +67,6 @@ const Main = () => {
 
     dispatch(getStudents({ emails: batch.students }));
   }, [batch]);
-  console.log(allBatches);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <Modal

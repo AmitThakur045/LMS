@@ -191,6 +191,15 @@ export const getAllBatchCodes = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getBatchCodesByOrganizationName =
+  (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.getBatchCodesByOrganizationName(formData);
+      dispatch({ type: GET_ALL_BATCH, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
 
 export const getBatch = (formData) => async (dispatch) => {
   try {
