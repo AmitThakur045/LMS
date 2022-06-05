@@ -30,6 +30,7 @@ import {
   getEventByCourseCode,
   getAllOrganizationName,
   addBatchLink,
+  getBatchCodesByOrganizationName,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -51,6 +52,11 @@ router.get("/getallcourse", auth, getAllCourse);
 router.post("/addbatch", auth, addBatch);
 router.get("/getallorganizationname", auth, getAllOrganizationName);
 router.get("/getallbatchcodes", auth, getAllBatchCodes);
+router.post(
+  "/getbatchcodesbyorganizationname",
+  auth,
+  getBatchCodesByOrganizationName
+);
 router.get("/getallcoursecodes", auth, getAllCourseCodes);
 router.post("/getbatch", auth, getBatch);
 router.post("/addevent", auth, addEvent);
