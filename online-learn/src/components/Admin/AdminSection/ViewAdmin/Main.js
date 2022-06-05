@@ -106,24 +106,15 @@ const Main = () => {
                 </Select>
               </FormControl>
               {admin.sub === "true" && (
-                <FormControl aria-disabled className="w-[47%]">
-                  <InputLabel id="demo-simple-select-label">Domain</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={admin.domain}
-                    label="Domain">
-                    <MenuItem value="AI">AI</MenuItem>
-                    <MenuItem value="Data Science">Data Science</MenuItem>
-                    <MenuItem value="Java Development">
-                      Java Development
-                    </MenuItem>
-                    <MenuItem value="Web Development">Web Development</MenuItem>
-                    <MenuItem value="Machine Learning">
-                      Machine Learning
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                <TextField
+                  aira-disabled
+                  type="text"
+                  id="outlined-basic"
+                  label="Organization Name"
+                  variant="outlined"
+                  className="bg-white w-[50%]"
+                  value={admin.organizationName}
+                />
               )}
             </div>
           </div>

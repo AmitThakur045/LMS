@@ -48,7 +48,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(value);
+  
     dispatch(
       addScore({
         email: item.email,
@@ -72,8 +72,15 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   //   setIsAdded(isMarked);
   // }, [isMarked === true]);
 
+
   return (
-    <div key={index} onClick={() => setEmail(item.email)} className={currentEmail === email && "bg-slate-200 shadow-lg font-semibold transition-all duration-100"} >
+    <div
+      key={index}
+      onClick={() => setEmail(item.email)}
+      className={
+        currentEmail === email &&
+        "bg-slate-200 shadow-lg font-semibold transition-all duration-100"
+      }>
       {item.checkedAssignment !== undefined
         ? (isMarked = true)
         : (isMarked = false)}
@@ -117,8 +124,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
                   borderRadius: "20px",
                 }}
                 disabled={isSelected || isAdded || isMarked}
-                onClick={() => inputRef.current.click()}
-              >
+                onClick={() => inputRef.current.click()}>
                 <div className="flex text-blue-600 px-2 space-x-1">
                   <div>
                     {isSelected || isMarked || isAdded ? `Uploaded` : `Upload`}

@@ -133,66 +133,61 @@ const Main = () => {
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll overflow-x-hidden h-full ">
-      <div className="flex flex-col overflow-x-scroll space-y-3 w-[73rem] rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
-        <div className="flex w-[65%] justify-between">
-          <Link to="/admin/batch/student" className="cursor-pointer">
-            <RiArrowGoBackFill
-              onClick={() => localStorage.removeItem("courseCode")}
-              fontSize={20}
-              className=""
-            />
-          </Link>
+      <div className="flex flex-col  space-y-3 w-[73rem] rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
+        <div className="flex justify-center">
           <div className="text-[18px] font-bold text-[#5848a4] mb-4">
             Attendance Report of {courseCode}
           </div>
         </div>
-        <div className="flex space-x-1">
-          {eventDates?.map((date, idx) => (
-            <div key={idx} className="flex">
-              {idx === 0 ? (
-                <div className="shadow-md bg-white font-semibold text-[#111111] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
-                  Name
-                </div>
-              ) : (
-                <div className="shadow-md bg-white font-semibold text-[#111111] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]">
-                  {date.day} {months[date.month]} {date.year}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-col space-y-3 ">
-          {studentData.map((student, index) => (
-            <div key={student.email} className="flex space-x-1">
-              {eventDates?.map((date, idx) => (
-                <div key={idx} className="flex ">
-                  {idx === 0 ? (
-                    <div className="shadow-md bg-white font-semibold text-[#5848e4] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
-                      {student.firstName} {student.lastName}
-                    </div>
-                  ) : (
-                    <input
-                      className="shadow-md bg-white font-semibold text-[#5848e4] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]"
-                      dt={new Date(date.year, date.month, date.day)}
-                      em={student.email}
-                      maxLength={1}
-                      placeholder={checkDate(date, student.email)}
-                      autoCapitalize
-                      key={idx}
-                      onChange={(e) =>
-                        markAttendance(
-                          e.target.getAttribute("em"),
-                          e.target.getAttribute("dt"),
-                          e.target.value
-                        )
-                      }
-                      type="text"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+        <div className="flex flex-col overflow-x-scroll space-y-3 h-full ">
+          <div className="flex space-x-1">
+            {eventDates?.map((date, idx) => (
+              <div key={idx} className="flex">
+                {idx === 0 ? (
+                  <div className="shadow-md bg-white font-semibold text-[#111111] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
+                    Name
+                  </div>
+                ) : (
+                  <div className="shadow-md bg-white font-semibold text-[#111111] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]">
+                    {date.day} {months[date.month]} {date.year}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col space-y-3 ">
+            {studentData.map((student, index) => (
+              <div key={student.email} className="flex space-x-1">
+                {eventDates?.map((date, idx) => (
+                  <div key={idx} className="flex ">
+                    {idx === 0 ? (
+                      <div className="shadow-md bg-white font-semibold text-[#5848e4] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
+                        {student.firstName} {student.lastName}
+                      </div>
+                    ) : (
+                      <input
+                        className="shadow-md bg-white font-semibold text-[#5848e4] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]"
+                        dt={new Date(date.year, date.month, date.day)}
+                        em={student.email}
+                        maxLength={1}
+                        placeholder={checkDate(date, student.email)}
+                        autoCapitalize
+                        key={idx}
+                        onChange={(e) =>
+                          markAttendance(
+                            e.target.getAttribute("em"),
+                            e.target.getAttribute("dt"),
+                            e.target.value
+                          )
+                        }
+                        type="text"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <Button

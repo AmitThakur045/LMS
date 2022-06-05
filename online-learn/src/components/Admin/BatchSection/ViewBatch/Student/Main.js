@@ -303,6 +303,7 @@ const Main = () => {
                               course.courseCode,
                               course.attended
                             )}
+                            %
                           </p>
                         </div>
                       </div>

@@ -133,7 +133,9 @@ const Main = () => {
               <h1 className="col-span-2 text-[13px] font-bold">
                 Contact Number
               </h1>
-              <h1 className="col-span-3 text-[13px] font-bold">Domain</h1>
+              <h1 className="col-span-3 text-[13px] font-bold">
+                Organization Name
+              </h1>
               <h1 className="col-span-1 text-[13px] font-bold">Action</h1>
             </div>
             {admins.map((ad, idx) => (
@@ -177,7 +179,7 @@ const Main = () => {
                     dispatch({ type: GET_ADMIN, payload: ad });
                   }}
                   className="col-span-3 font-semibold text-[13px] cursor-pointer">
-                  {ad.domain}
+                  {ad.organizationName}
                 </p>
                 <div className="col-span-1 font-semibold text-[13px] cursor-pointer ">
                   <BsThreeDotsVertical

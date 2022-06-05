@@ -1,9 +1,17 @@
 import React from "react";
 import { AiOutlineBell, AiOutlineMessage } from "react-icons/ai";
 import { RiArrowGoBackFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import profile from "../../../../Assests/profile.svg";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/admin/login");
+  };
   return (
     <div className="flex justify-between w-full  pl-12 pr-12 py-10">
       <div className="flex items-center space-x-3">
@@ -23,12 +31,15 @@ const Header = () => {
         </div>
         <div className="flex items-center space-x-2">
           <div className="flex flex-col text-[12px] items-end">
-            <h1 className="font-bold">TheBrad</h1>
-            <p>Admin</p>
+            <h1 className="font-bold">
+              {user?.result?.firstName} {user?.result?.lastName}
+            </h1>
+            <p>{user?.result?.sub ? "Sub Admin" : "Super Admin"}</p>
           </div>
           <img
-            src={profile}
-            className="object-cover w-[1.8rem] h-[1.8rem]"
+            onClick={logout}
+            src={user?.result?.avatar}
+            className="object-cover cursor-pointer w-[1.8rem] h-[1.8rem]"
             alt=""
           />
         </div>

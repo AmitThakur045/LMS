@@ -28,34 +28,38 @@ import {
   getStudentByAssignmentCode,
   addScore,
   getEventByCourseCode,
+  getAllOrganizationName,
+  addBatchLink,
 } from "../controller/adminController.js";
 const router = express.Router();
 
 router.post("/login", adminLogin);
-router.post("/addadmin", addAdmin);
-router.post("/getadmin", getAdmin);
-router.post("/updateadmin", updateAdmin);
-router.post("/deleteadmin", deleteAdmin);
-router.post("/addcourse", addCourse);
-router.post("/getcourse", getCourse);
-router.post("/getcourses", getCourses);
-router.post("/getstudents", getStudents);
-router.post("/deletecourse", deleteCourse);
-router.post("/addstudent", addStudent);
-router.get("/getallstudent", getAllStudent);
-router.get("/getalladmin", getAllAdmin);
-router.post("/getstudent", getStudent);
-router.get("/getallcourse", getAllCourse);
-router.post("/addbatch", addBatch);
-router.get("/getallbatchcodes", getAllBatchCodes);
-router.get("/getallcoursecodes", getAllCourseCodes);
-router.post("/getbatch", getBatch);
-router.post("/addevent", addEvent);
-router.post("/getbatchevent", getBatchEvent);
-router.post("/uploadattendance", uploadAttendance);
-router.post("/getattendance", getAttendance);
-router.post("/addAssignment", addAssignment);
-router.post("/getstudentbyassignmentcode", getStudentByAssignmentCode);
-router.post("/geteventbycoursecode", getEventByCourseCode);
-router.post("/addscore", addScore);
+router.post("/addadmin", auth, addAdmin);
+router.post("/getadmin", auth, getAdmin);
+router.post("/updateadmin", auth, updateAdmin);
+router.post("/deleteadmin", auth, deleteAdmin);
+router.post("/addcourse", auth, addCourse);
+router.post("/getcourse", auth, getCourse);
+router.post("/getcourses", auth, getCourses);
+router.post("/getstudents", auth, getStudents);
+router.post("/deletecourse", auth, deleteCourse);
+router.post("/addstudent", auth, addStudent);
+router.get("/getallstudent", auth, getAllStudent);
+router.get("/getalladmin", auth, getAllAdmin);
+router.post("/getstudent", auth, getStudent);
+router.get("/getallcourse", auth, getAllCourse);
+router.post("/addbatch", auth, addBatch);
+router.get("/getallorganizationname", auth, getAllOrganizationName);
+router.get("/getallbatchcodes", auth, getAllBatchCodes);
+router.get("/getallcoursecodes", auth, getAllCourseCodes);
+router.post("/getbatch", auth, getBatch);
+router.post("/addevent", auth, addEvent);
+router.post("/getbatchevent", auth, getBatchEvent);
+router.post("/uploadattendance", auth, uploadAttendance);
+router.post("/getattendance", auth, getAttendance);
+router.post("/addAssignment", auth, addAssignment);
+router.post("/getstudentbyassignmentcode", auth, getStudentByAssignmentCode);
+router.post("/geteventbycoursecode", auth, getEventByCourseCode);
+router.post("/addscore", auth, addScore);
+router.post("/addbatchlink", auth, addBatchLink);
 export default router;

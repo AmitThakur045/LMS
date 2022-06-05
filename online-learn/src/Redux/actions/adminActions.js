@@ -25,12 +25,20 @@ import {
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
   GET_EVENT_BY_COURSE_CODE,
+  GET_ALL_ORGANIZATION_NAME,
+  ADD_BATCH_LINK,
+  ADMIN_LOGIN,
 } from "../actionTypes";
 import * as api from "../api";
 
 export const adminSignIn = (formData, navigate) => async (dispatch) => {
   try {
-  } catch (error) {}
+    const { data } = await api.adminSignIn(formData);
+    dispatch({ type: ADMIN_LOGIN, data });
+    navigate("/admin/dashboard");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
 };
 
 export const addAdmin = (formData) => async (dispatch) => {
@@ -201,12 +209,29 @@ export const getAllCourseCodes = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAllOrganizationName = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllOrganizationName();
+    dispatch({ type: GET_ALL_ORGANIZATION_NAME, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 
 export const addEvent = (batchCode, newEvent) => async (dispatch) => {
   try {
     const { data } = await api.addEvent({ batchCode, newEvent });
     alert("Event Added Successfully");
     dispatch({ type: ADD_EVENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addBatchLink = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addBatchLink(formData);
+    alert("Batch Link added Successfully");
+    dispatch({ type: ADD_BATCH_LINK, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

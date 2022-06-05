@@ -44,7 +44,10 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.clear();
+    localStorage.removeItem("batch");
+    localStorage.removeItem("courses");
+    localStorage.removeItem("students");
+    localStorage.removeItem("courseCode");
     localStorage.setItem("batch", JSON.stringify(batch));
     let temp = [];
     for (let i = 0; i < batch.courses?.length; i++) {

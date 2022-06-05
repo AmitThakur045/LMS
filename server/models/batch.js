@@ -7,6 +7,7 @@ const batchSchema = new Schema({
     required: true,
     trim: true,
   },
+  organizationName: { type: String },
   batchCode: {
     type: String,
     required: true,
@@ -55,6 +56,7 @@ const batchSchema = new Schema({
     },
   ],
   students: [{ type: String, unique: true }],
+  batchLink: { type: String },
 });
 
 export default mongoose.model("batch", batchSchema);

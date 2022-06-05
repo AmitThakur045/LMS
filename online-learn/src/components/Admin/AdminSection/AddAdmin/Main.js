@@ -31,7 +31,7 @@ const Main = () => {
     contactNumber: "",
     avatar: "",
     sub: "",
-    domain: "",
+    organizationName: "",
   });
 
   const uploadImage = async (e) => {
@@ -74,7 +74,7 @@ const Main = () => {
           contactNumber: "",
           avatar: "",
           sub: "",
-          domain: "",
+          organizationName: "",
         });
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_ADMIN, payload: false });
@@ -194,8 +194,8 @@ const Main = () => {
                 }
               />
             </div>
-            <div className="flex justify-between ">
-              <FormControl required className="w-[47%]">
+            <div className="flex space-x-8 ">
+              <FormControl required className="w-[50%]">
                 <InputLabel id="demo-simple-select-label">Sub Admin</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -208,27 +208,17 @@ const Main = () => {
                 </Select>
               </FormControl>
               {value.sub === "true" && (
-                <FormControl required className="w-[47%]">
-                  <InputLabel id="demo-simple-select-label">Domain</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={value.domain}
-                    label="Domain"
-                    onChange={(e) =>
-                      setValue({ ...value, domain: e.target.value })
-                    }>
-                    <MenuItem value="AI">AI</MenuItem>
-                    <MenuItem value="Data Science">Data Science</MenuItem>
-                    <MenuItem value="Java Development">
-                      Java Development
-                    </MenuItem>
-                    <MenuItem value="Web Development">Web Development</MenuItem>
-                    <MenuItem value="Machine Learning">
-                      Machine Learning
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                <TextField
+                  type="text"
+                  id="outlined-basic"
+                  label="Organization Name"
+                  variant="outlined"
+                  className="bg-white w-[50%]"
+                  value={value.organizationName}
+                  onChange={(e) =>
+                    setValue({ ...value, organizationName: e.target.value })
+                  }
+                />
               )}
             </div>
           </div>

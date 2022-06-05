@@ -28,6 +28,7 @@ import AddBatch from "./components/Admin/BatchSection/AddBatch/AddBatch";
 import BatchDate from "./components/Admin/BatchSection/ViewBatch/Date/BatchDate";
 import UpdateBatchCourse from "./components/Admin/BatchSection/ViewBatch/Course/Update/UpdateBatchCourse";
 import Attendance from "./components/Admin/BatchSection/ViewBatch/Student/Attendance/Attendance";
+import AdminLogin from "./components/Admin/AdminLogin";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
 
+      <Route path="/admin/login" exact element={<AdminLogin />} />
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
       <Route path="/admin/batch" exact element={<Batch />} />
       <Route path="/admin/student" exact element={<Student />} />

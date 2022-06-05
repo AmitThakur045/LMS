@@ -3,14 +3,16 @@ import axios from "axios";
 const API = axios.create({ baseURL: "http://localhost:5000/" });
 // const API = axios.create({ baseURL: "https://bessalani-lms.herokuapp.com/" });
 
-// API.interceptors.request.use((req) => {
-//   if (localStorage.getItem("user")) {
-//     req.headers.Authorization = `Bearer ${
-//       JSON.parse(localStorage.getItem("user")).token
-//     }`;
-//   }
-//   return req;
-// });
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("user")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("user")).token
+    }`;
+  }
+  return req;
+});
+
+export const adminSignIn = (formData) => API.post("/api/admin/login", formData);
 
 export const addAdmin = (admin) => API.post("/api/admin/addadmin", admin);
 export const getAdmin = (data) => API.post("/api/admin/getadmin", data);
@@ -32,6 +34,8 @@ export const getAllCourse = () => API.get("/api/admin/getallcourse");
 export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);
 export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
 export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
+export const getAllOrganizationName = () =>
+  API.get("/api/admin/getallorganizationname");
 export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
@@ -44,6 +48,7 @@ export const getAttendance = (data) =>
   API.post("/api/admin/getattendance", data);
 export const addAssignment = (assignment) =>
   API.post("/api/admin/addassignment", assignment);
+export const addBatchLink = (data) => API.post("/api/admin/addbatchlink", data);
 export const getStudentByAssignmentCode = (data) =>
   API.post("/api/admin/getstudentbyassignmentcode", data);
 export const addScore = (formData) => API.post("/api/admin/addscore", formData);

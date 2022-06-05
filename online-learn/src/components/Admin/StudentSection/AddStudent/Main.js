@@ -48,8 +48,6 @@ const Main = () => {
     dob: "",
     contactNumber: "",
     avatar: "",
-
-    performance: "",
   });
 
   const uploadImage = async (e) => {
@@ -94,7 +92,6 @@ const Main = () => {
           dob: "",
           contactNumber: "",
           avatar: "",
-          performance: "",
         });
 
         dispatch({ type: SET_ERRORS, payload: {} });
@@ -210,17 +207,6 @@ const Main = () => {
                 value={values.contactNumber}
                 onChange={(e) =>
                   setValues({ ...values, contactNumber: e.target.value })
-                }
-              />
-              <TextField
-                type="text"
-                id="outlined-basic"
-                label="Performance"
-                variant="outlined"
-                className="bg-white w-[60%]"
-                value={values.performance}
-                onChange={(e) =>
-                  setValues({ ...values, performance: e.target.value })
                 }
               />
             </div>
