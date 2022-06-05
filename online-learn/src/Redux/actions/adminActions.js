@@ -155,6 +155,22 @@ export const getAllAdmin = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAdminsByOrganizationName = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getAdminsByOrganizationName(formData);
+    dispatch({ type: GET_ALL_ADMIN, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getStudentsByOrganizationName = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getStudentsByOrganizationName(formData);
+    dispatch({ type: GET_ALL_STUDENT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const getStudent = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getStudent(formData);

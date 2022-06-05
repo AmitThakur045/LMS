@@ -7,11 +7,16 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_STUDENT, SET_ERRORS } from "../../../Redux/actionTypes";
-import { getAllStudent } from "../../../Redux/actions/adminActions";
+import {
+  getAllStudent,
+  getStudentsByOrganizationName,
+} from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -45,7 +50,15 @@ const Main = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-    dispatch(getAllStudent());
+    if (user.result.sub === "true") {
+      dispatch(
+        getStudentsByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+    } else {
+      dispatch(getAllStudent());
+    }
     setLoading(true);
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);

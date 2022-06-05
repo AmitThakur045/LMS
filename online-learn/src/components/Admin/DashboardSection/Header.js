@@ -45,7 +45,7 @@ const Header = () => {
             <h1 className="font-bold">
               {user?.result?.firstName} {user?.result?.lastName}
             </h1>
-            <p>{user?.result?.sub ? "Sub Admin" : "Super Admin"}</p>
+            <p>{user?.result?.sub === "true" ? "Sub Admin" : "Super Admin"}</p>
           </div>
           <img
             onClick={logout}

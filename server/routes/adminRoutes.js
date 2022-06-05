@@ -31,6 +31,8 @@ import {
   getAllOrganizationName,
   addBatchLink,
   getBatchCodesByOrganizationName,
+  getAdminsByOrganizationName,
+  getStudentsByOrganizationName,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -47,6 +49,12 @@ router.post("/deletecourse", auth, deleteCourse);
 router.post("/addstudent", auth, addStudent);
 router.get("/getallstudent", auth, getAllStudent);
 router.get("/getalladmin", auth, getAllAdmin);
+router.post("/getadminsbyorganizationname", auth, getAdminsByOrganizationName);
+router.post(
+  "/getstudentsbyorganizationname",
+  auth,
+  getStudentsByOrganizationName
+);
 router.post("/getstudent", auth, getStudent);
 router.get("/getallcourse", auth, getAllCourse);
 router.post("/addbatch", auth, addBatch);

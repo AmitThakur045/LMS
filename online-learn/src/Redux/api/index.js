@@ -28,6 +28,10 @@ export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
 export const getAllStudent = () => API.get("/api/admin/getallstudent");
 export const getAllAdmin = () => API.get("/api/admin/getalladmin");
+export const getAdminsByOrganizationName = (data) =>
+  API.post("/api/admin/getadminsbyorganizationname", data);
+export const getStudentsByOrganizationName = (data) =>
+  API.post("/api/admin/getstudentsbyorganizationname", data);
 export const getStudent = (data) => API.post("/api/admin/getstudent", data);
 export const getAllCourse = () => API.get("/api/admin/getallcourse");
 
