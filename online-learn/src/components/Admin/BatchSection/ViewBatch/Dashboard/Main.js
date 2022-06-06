@@ -9,9 +9,21 @@ import {
   LinePrimaryYAxis2,
 } from "./Data";
 import LineGraph from "../../../../../Utils/LineGraph";
+import { getAttendance } from "../../../../../Redux/api";
+import { useDispatch, useSelector } from "react-redux";
 
 const Main = () => {
   const batchData = JSON.parse(localStorage.getItem("batch"));
+  const [courseCode, setCourseCode] = useState("DS101");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode }));
+  }, []);
+
+  const attendances = useSelector((store) => store.admin.attendance);
+
+  console.log("attend", attendances);
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
