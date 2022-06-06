@@ -4,26 +4,90 @@ import {
   lineCustomSeries1,
   LinePrimaryXAxis1,
   LinePrimaryYAxis1,
-  lineCustomSeries2,
-  LinePrimaryXAxis2,
-  LinePrimaryYAxis2,
 } from "./Data";
 import LineGraph from "../../../../../Utils/LineGraph";
-import { getAttendance } from "../../../../../Redux/api";
+import { getAttendance } from "../../../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const Main = () => {
   const batchData = JSON.parse(localStorage.getItem("batch"));
   const [courseCode, setCourseCode] = useState("DS101");
+  const [listData, setListData] = useState([]);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode }));
-  }, []);
 
   const attendances = useSelector((store) => store.admin.attendance);
 
-  console.log("attend", attendances);
+  const createList = () => {
+    let list = [];
+    for (let i = 0; i < attendances.length; i++) {
+      let cnt = 0;
+      for (let j = 0; j < attendances[i].students.length; j++) {
+        if (attendances[i].students[j].present === true) {
+          cnt++;
+        }
+      }
+      list.push({ x: attendances[i].date, y: cnt });
+    }
+
+    const newList = list.sort((a, b) => {
+      return new Date(a.x) - new Date(b.x);
+    });
+
+    // change the format of x axis
+    const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    for (let i = 0; i < newList.length; i++) {
+      newList[i].x = new Date(newList[i].x).getDate();
+    }
+
+    setListData(newList);
+  };
+
+  useEffect(() => {
+    dispatch(
+      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
+    );
+    createList();
+  }, [courseCode]);
+
+  // console.log("attend", attendances);
+  // console.log("xAxis", listData);
+  // console.log("courseCode", courseCode);
+
+  const lineCustomSeries2 = [
+    {
+      dataSource: listData,
+      xName: "x",
+      yName: "y",
+      name: "Students",
+      width: "2",
+      marker: { visible: true, width: 10, height: 10 },
+      type: "Line",
+    },
+  ];
+
+  const LinePrimaryXAxis2 = {
+    valueType: "Category",
+    labelFormat: "y",
+    intervalType: "Date",
+    edgeLabelPlacement: "Shift",
+    majorGridLines: { width: 0 },
+    background: "white",
+  };
+
+  const LinePrimaryYAxis2 = {
+    labelFormat: "{value}",
+    rangePadding: "None",
+    minimum: 0,
+    maximum: 10,
+    interval: 2,
+    lineStyle: { width: 0 },
+    majorTickLines: { width: 0 },
+    minorTickLines: { width: 0 },
+  };
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
@@ -131,6 +195,22 @@ const Main = () => {
           />
         </div>
         <div className="bg-white shadow-sm rounded-md p-2">
+          <div>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-select-small">Course</InputLabel>
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={courseCode}
+                label="Course"
+                onChange={(e) => setCourseCode(e.target.value)}
+              >
+                {batchData.courses.map((course) => (
+                  <MenuItem value={course.courseCode}>{course.courseCode}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
           <LineGraph
             lineCustomSeries={lineCustomSeries2}
             LinePrimaryXAxis={LinePrimaryXAxis2}
