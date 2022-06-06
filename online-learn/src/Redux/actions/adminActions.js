@@ -284,7 +284,6 @@ export const uploadAttendance = (attendanceRecord) => async (dispatch) => {
 export const getAttendance = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getAttendance(formData);
-    console.log("attendence", data);
     dispatch({ type: GET_ATTENDANCE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });

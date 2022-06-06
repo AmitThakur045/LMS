@@ -696,6 +696,7 @@ export const getAttendance = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
     const attendance = await Attendance.find({ batchCode, courseCode });
+    // console.log(attendance);
     res.status(200).json(attendance);
   } catch (error) {
     console.log("Backend Error", error);
