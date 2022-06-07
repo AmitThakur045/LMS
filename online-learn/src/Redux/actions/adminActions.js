@@ -21,6 +21,7 @@ import {
   GET_STUDENTS,
   UPLOAD_ATTENDANCE,
   GET_ATTENDANCE,
+  GET_ATTENDANCE_BY_BATCH_CODES,
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
@@ -341,6 +342,16 @@ export const getAttendance = (formData) => async (dispatch) => {
     dispatch({ type: GET_ATTENDANCE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getAttendanceByBatchCodes = (allBatches) => async (dispatch) => {
+  try {
+    const { data } = await api.getAttendanceByBatchCodes(allBatches);
+    console.log("data", data);
+    dispatch({ type: GET_ATTENDANCE_BY_BATCH_CODES, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data }); 
   }
 };
 

@@ -24,6 +24,7 @@ import {
   getStudents,
   uploadAttendance,
   getAttendance,
+  getAttendanceByBatchCodes,
   addAssignment,
   getStudentByAssignmentCode,
   addScore,
@@ -91,6 +92,7 @@ router.post("/addevent", auth, addEvent);
 router.post("/getbatchevent", auth, getBatchEvent);
 router.post("/uploadattendance", auth, uploadAttendance);
 router.post("/getattendance", auth, getAttendance);
+router.post("/getattendancebybatchcodes", auth, getAttendanceByBatchCodes);
 router.post("/addAssignment", auth, addAssignment);
 router.post("/getstudentbyassignmentcode", auth, getStudentByAssignmentCode);
 router.post("/geteventbycoursecode", auth, getEventByCourseCode);

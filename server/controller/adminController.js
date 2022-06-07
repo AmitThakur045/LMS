@@ -814,6 +814,24 @@ export const getAttendance = async (req, res) => {
   }
 };
 
+export const getAttendanceByBatchCodes = async (req, res) => {
+  try {
+    const { allBatches } = req.body;
+    // console.log("allBatches", allBatches);
+    let attendance = [];
+    for (let i = 0; i < allBatches.length; i++) {
+      const batch = await Attendance.find({ batchCode: allBatches[i].value });
+      if (batch.length !== 0) {
+        attendance.push(batch);
+      }
+    }
+    // console.log(attendance[0]);
+    res.status(200).json(attendance[0]);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
 export const uploadAttendance = async (req, res) => {
   try {
     const attendanceRecord = req.body;
