@@ -33,6 +33,7 @@ const Main = () => {
   const [lessonCount, setLessonCount] = useState([]);
   const batchCourse = useSelector((store) => store.admin.batch);
   const indexCounter = useSelector((store) => store.admin.index);
+  const [completionUpdates, setCompletionUpdates] = useState([]);
   const [sectionLessonNumber, setSectionLessonNumber] = useState({
     sectionNumber: 0,
     lessonNumber: 0,
@@ -67,19 +68,88 @@ const Main = () => {
 
   const [uploadedVideo, setUploadedVideo] = useState("");
 
-  const handleIconClickIncrease = () => {
-    let temp = batchCourseData.complete.lessonCompleted;
-    temp++;
-    let data = { ...batchCourseData };
-    data.complete.lessonCompleted = temp;
-    SetBatchCourseData(temp);
+  const handleIconClickIncrease = (sectionIdx, lessonIdx) => {
+    const temp = JSON.parse(localStorage.getItem("batch"));
+    if (lessonIdx === 0) {
+      let data = [...completionUpdates];
+      data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: true });
+      setCompletionUpdates(data);
+      temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+        lessonIdx
+      ].lessonCompleted = true;
+      temp.courses[indexCounter].complete.lessonCompleted++;
+      if (
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson.length ===
+        lessonIdx + 1
+      ) {
+        temp.courses[indexCounter].lessonVideo[
+          sectionIdx
+        ].sectionCompleted = true;
+        temp.courses[indexCounter].complete.sectionCompleted++;
+      }
+      localStorage.setItem("batch", JSON.stringify(temp));
+    } else {
+      if (
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[lessonIdx - 1]
+          .lessonCompleted === false
+      ) {
+        alert("Previous Lesson is not completed");
+      } else {
+        let data = [...completionUpdates];
+        data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: true });
+        setCompletionUpdates(data);
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+          lessonIdx
+        ].lessonCompleted = true;
+        temp.courses[indexCounter].complete.lessonCompleted++;
+        if (
+          temp.courses[indexCounter].lessonVideo[sectionIdx].lesson.length ===
+          lessonIdx + 1
+        ) {
+          temp.courses[indexCounter].lessonVideo[
+            sectionIdx
+          ].sectionCompleted = true;
+          temp.courses[indexCounter].complete.sectionCompleted++;
+        }
+        localStorage.setItem("batch", JSON.stringify(temp));
+      }
+    }
   };
-  const handleIconClickDecrease = () => {
-    let temp = batchCourseData.complete.lessonCompleted;
-    temp--;
-    let data = { ...batchCourseData };
-    data.complete.lessonCompleted = temp;
-    SetBatchCourseData(temp);
+  const handleIconClickDecrease = (sectionIdx, lessonIdx) => {
+    const temp = JSON.parse(localStorage.getItem("batch"));
+    if (lessonIdx === 0) {
+      let data = [...completionUpdates];
+      data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: false });
+      setCompletionUpdates(data);
+      temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+        lessonIdx
+      ].lessonCompleted = false;
+      temp.courses[indexCounter].complete.lessonCompleted--;
+
+      temp.courses[indexCounter].lessonVideo[
+        sectionIdx
+      ].sectionCompleted = false;
+      temp.courses[indexCounter].complete.sectionCompleted--;
+
+      localStorage.setItem("batch", JSON.stringify(temp));
+    } else {
+      if (
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[lessonIdx + 1]
+          .lessonCompleted === true
+      ) {
+        alert("Next Lesson is completed");
+      } else {
+        let data = [...completionUpdates];
+        data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: false });
+        setCompletionUpdates(data);
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+          lessonIdx
+        ].lessonCompleted = false;
+        temp.courses[indexCounter].complete.lessonCompleted--;
+
+        localStorage.setItem("batch", JSON.stringify(temp));
+      }
+    }
   };
 
   const handleVideoUploadButton = async (e) => {
@@ -123,8 +193,8 @@ const Main = () => {
         <BorderLinearProgress
           variant="determinate"
           value={
-            (batchCourseData.complete?.lessonCompleted /
-              batchCourseData.complete?.totalLesson) *
+            (batchData.courses[indexCounter].complete.lessonCompleted /
+              batchData.courses[indexCounter].complete.totalLesson) *
             100
           }
         />
@@ -135,7 +205,8 @@ const Main = () => {
               key={sectionIdx}
               className="shadow-sm rounded-sm shadow-gray-400 py-6 px-4">
               <div className="flex items-center space-x-3 mb-7">
-                {batchCourseData.complete?.sectionCompleted ? (
+                {batchData.courses[indexCounter].lessonVideo[sectionIdx]
+                  .sectionCompleted ? (
                   <BsFillCheckCircleFill
                     fontSize={20}
                     className="text-[#1bca72]"
@@ -150,16 +221,20 @@ const Main = () => {
                   key={lessonIdx}
                   className="flex justify-between shadow-sm rounded-sm shadow-gray-400 py-4 px-4">
                   <div className="flex items-center space-x-3">
-                    {batchCourseData.complete?.lessonCompleted - 1 >
-                    sectionIdx + lessonIdx ? (
+                    {batchData.courses[indexCounter].lessonVideo[sectionIdx]
+                      .lesson[lessonIdx].lessonCompleted ? (
                       <BsFillCheckCircleFill
-                        onClick={() => handleIconClickDecrease()}
+                        onClick={() =>
+                          handleIconClickDecrease(sectionIdx, lessonIdx)
+                        }
                         fontSize={20}
                         className="text-[#1bca72]"
                       />
                     ) : (
                       <AiOutlineCheckCircle
-                        onClick={() => handleIconClickIncrease()}
+                        onClick={() =>
+                          handleIconClickIncrease(sectionIdx, lessonIdx)
+                        }
                         fontSize={20}
                         className="text-[#]"
                       />

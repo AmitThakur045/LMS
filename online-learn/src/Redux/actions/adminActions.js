@@ -28,6 +28,9 @@ import {
   GET_ALL_ORGANIZATION_NAME,
   ADD_BATCH_LINK,
   ADMIN_LOGIN,
+  GET_COURSES_LENGTH,
+  GET_ALL_STUDENT_LENGTH,
+  GET_ALL_ADMIN_LENGTH,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -138,6 +141,15 @@ export const addStudent = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const addStudentInBatch = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addStudentInBatch(formData);
+    alert("Student Added Successfully");
+    dispatch({ type: ADD_STUDENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 
 export const getAllStudent = () => async (dispatch) => {
   try {
@@ -147,10 +159,35 @@ export const getAllStudent = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAllStudentLength = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllStudentLength();
+    dispatch({ type: GET_ALL_STUDENT_LENGTH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getStudentsLengthByOrganizationName =
+  (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.getStudentsLengthByOrganizationName(formData);
+      dispatch({ type: GET_ALL_STUDENT_LENGTH, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
 export const getAllAdmin = () => async (dispatch) => {
   try {
     const { data } = await api.getAllAdmin();
     dispatch({ type: GET_ALL_ADMIN, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getAllAdminLength = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllAdminLength();
+    dispatch({ type: GET_ALL_ADMIN_LENGTH, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -163,6 +200,15 @@ export const getAdminsByOrganizationName = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAdminsLengthByOrganizationName =
+  (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.getAdminsLengthByOrganizationName(formData);
+      dispatch({ type: GET_ALL_ADMIN_LENGTH, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
 export const getStudentsByOrganizationName = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getStudentsByOrganizationName(formData);
@@ -203,6 +249,14 @@ export const getAllBatchCodes = () => async (dispatch) => {
   try {
     const { data } = await api.getAllBatchCodes();
     dispatch({ type: GET_ALL_BATCH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getCoursesLength = () => async (dispatch) => {
+  try {
+    const { data } = await api.getCoursesLength();
+    dispatch({ type: GET_COURSES_LENGTH, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

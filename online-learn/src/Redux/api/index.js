@@ -26,10 +26,19 @@ export const getStudents = (data) => API.post("/api/admin/getstudents", data);
 export const deleteCourse = (data) => API.post("/api/admin/deletecourse", data);
 export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
+export const addStudentInBatch = (student) =>
+  API.post("/api/admin/addstudentinbatch", student);
 export const getAllStudent = () => API.get("/api/admin/getallstudent");
+export const getAllStudentLength = () =>
+  API.get("/api/admin/getallstudentlength");
+export const getStudentsLengthByOrganizationName = (data) =>
+  API.post("/api/admin/getstudentslengthbyorganizationname", data);
 export const getAllAdmin = () => API.get("/api/admin/getalladmin");
+export const getAllAdminLength = () => API.get("/api/admin/getalladminlength");
 export const getAdminsByOrganizationName = (data) =>
   API.post("/api/admin/getadminsbyorganizationname", data);
+export const getAdminsLengthByOrganizationName = (data) =>
+  API.post("/api/admin/getadminslengthbyorganizationname", data);
 export const getStudentsByOrganizationName = (data) =>
   API.post("/api/admin/getstudentsbyorganizationname", data);
 export const getStudent = (data) => API.post("/api/admin/getstudent", data);
@@ -37,6 +46,7 @@ export const getAllCourse = () => API.get("/api/admin/getallcourse");
 
 export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);
 export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
+export const getCoursesLength = () => API.get("/api/admin/getcourseslength");
 export const getBatchCodesByOrganizationName = (data) =>
   API.post("/api/admin/getbatchcodesbyorganizationname", data);
 export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");

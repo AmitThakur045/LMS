@@ -5,7 +5,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Avatar, Button, Modal, Box } from "@mui/material";
+import { Avatar, Button, Modal, Box, TextField } from "@mui/material";
 import Select from "react-select";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { styled } from "@mui/material/styles";
@@ -14,6 +14,13 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addStudentInBatch,
+  getStudents,
+} from "../../../../../Redux/actions/adminActions";
+import { ADD_STUDENT, SET_ERRORS } from "../../../../../Redux/actionTypes";
+import Spinner from "../../../../../Utils/Spinner";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -40,13 +47,19 @@ const style = {
   p: 4,
 };
 const Main = () => {
+  const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState({});
+  const store = useSelector((state) => state);
   const studentData = JSON.parse(localStorage.getItem("students"));
+  const batchData = JSON.parse(localStorage.getItem("batch"));
   const courseData = JSON.parse(localStorage.getItem("courses"));
   const [totalClasses, setTotalClasses] = useState(0);
   const [studentsData, setStudentsData] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [allCourses, setAllCourses] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   function calTotalAttendance(attendance) {
     let att = 0;
     for (let i = 0; i < attendance.length; i++) {
@@ -55,6 +68,38 @@ const Main = () => {
 
     return att;
   }
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setError(store.errors);
+      setStudentEmail("");
+    }
+  }, [store.errors]);
+
+  const newStudents = useSelector((store) => store.admin.students);
+  useEffect(() => {
+    if (newStudents.length !== 0) {
+      setStudentsData(newStudents);
+    }
+  }, [newStudents]);
+
+  useEffect(() => {
+    if (store.errors || store.admin.studentAdded) {
+      setLoading(false);
+      if (store.admin.studentAdded) {
+        const data = JSON.parse(localStorage.getItem("batch"));
+        data.students.push(studentEmail);
+        localStorage.setItem("batch", JSON.stringify(data));
+        dispatch(getStudents({ emails: data.students }));
+
+        dispatch({ type: SET_ERRORS, payload: {} });
+        dispatch({ type: ADD_STUDENT, payload: false });
+        handleAddStudentClose();
+      }
+    } else {
+      setLoading(true);
+    }
+  }, [store.errors, store.admin.studentAdded]);
+
   useEffect(() => {
     let temp = 0;
     let temp2 = [];
@@ -113,9 +158,71 @@ const Main = () => {
     setOpen(false);
     setSelectedCourse("");
   };
+  const [studentEmail, setStudentEmail] = useState("");
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+  const handleAddStudentOpen = () => setOpenAddStudent(true);
+  const handleAddStudentClose = () => {
+    setOpenAddStudent(false);
+    setStudentEmail("");
+  };
+
+  const addstudent = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    dispatch(
+      addStudentInBatch({ email: studentEmail, batchCode: batchData.batchCode })
+    );
+  };
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
+      <Modal
+        open={openAddStudent}
+        onClose={handleAddStudentClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <div className="flex flex-col space-y-4 h-[15rem]">
+            <div className="flex items-center">
+              <h1 className="self-center w-[95%] font-bold">Add Student</h1>
+              <div
+                onClick={handleAddStudentClose}
+                className="self-end cursor-pointer w-[5%]">
+                <AiOutlineCloseCircle
+                  className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
+                  fontSize={23}
+                />
+              </div>
+            </div>
+            <form onSubmit={addstudent} className="flex flex-col space-y-3  ">
+              <TextField
+                required
+                type="email"
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                className="bg-white"
+                value={studentEmail}
+                onChange={(e) => setStudentEmail(e.target.value)}
+              />
+              <Button
+                disabled={studentEmail !== "" ? false : true}
+                type="submit"
+                className=""
+                variant="contained"
+                color="primary">
+                Add
+              </Button>
+              {loading && <Spinner message="Adding Student" />}
+              {error.studentError && (
+                <p className="text-red-500 flex self-center">
+                  {error.studentError}
+                </p>
+              )}
+            </form>
+          </div>
+        </Box>
+      </Modal>
       <Modal
         open={open}
         onClose={handleClose}
@@ -169,9 +276,17 @@ const Main = () => {
             type="text"
           />
         </div>
-        <Button onClick={handleOpen} variant="contained">
-          Mark Attendance
-        </Button>
+        <div className="space-x-3">
+          <Button
+            color="success"
+            onClick={handleAddStudentOpen}
+            variant="contained">
+            Add Student
+          </Button>
+          <Button onClick={handleOpen} variant="contained">
+            Mark Attendance
+          </Button>
+        </div>
       </div>
       <div className="">
         {studentsData.map((student, idx) => (

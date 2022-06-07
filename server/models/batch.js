@@ -7,6 +7,7 @@ const batchSchema = new Schema({
     required: true,
     trim: true,
   },
+  subAdmin: { type: String },
   organizationName: { type: String },
   batchCode: {
     type: String,
@@ -18,7 +19,7 @@ const batchSchema = new Schema({
       assignment: [
         {
           assignmentName: { type: String },
-          assignmentCode: { type: String, unique: true },
+          assignmentCode: { type: String },
           assignmentPdf: { type: String },
         },
       ],
@@ -36,10 +37,12 @@ const batchSchema = new Schema({
       lessonVideo: [
         {
           sectionNumber: { type: Number },
+          sectionCompleted: { type: Boolean, default: false },
           lesson: [
             {
               lessonNumber: { type: Number },
               video: { type: String },
+              lessonCompleted: { type: Boolean, default: false },
             },
           ],
         },

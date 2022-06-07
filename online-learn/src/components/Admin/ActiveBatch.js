@@ -30,6 +30,7 @@ const ActiveBatch = () => {
         dispatch(
           getBatchCodesByOrganizationName({
             organizationName: user.result.organizationName,
+            subAdmin: user.result.email,
           })
         );
       } else {
@@ -44,6 +45,7 @@ const ActiveBatch = () => {
       dispatch(
         getBatchCodesByOrganizationName({
           organizationName: user.result.organizationName,
+          subAdmin: user.result.email,
         })
       );
     } else {
