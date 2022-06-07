@@ -32,6 +32,11 @@ import {
   GET_COURSES_LENGTH,
   GET_ALL_STUDENT_LENGTH,
   GET_ALL_ADMIN_LENGTH,
+  UPDATE_COURSE_DATA,
+  GET_ATTENDANCE_STATUS,
+  ADD_DELETE_QUERY,
+  GET_ALL_DELETE_QUERY,
+  UPDATE_DELETE_QUERY,
 } from "../actionTypes";
 
 const initialState = {
@@ -67,6 +72,11 @@ const initialState = {
   coursesLength: 0,
   studentsLength: 0,
   adminsLength: 0,
+  courseUpdated: false,
+  attendanceStatus: {},
+  deleteQuery: false,
+  allDeleteQuery: [],
+  deleteQueryUpdated: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -82,6 +92,16 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         adminAdded: action.payload,
       };
+    case ADD_DELETE_QUERY:
+      return {
+        ...state,
+        deleteQuery: action.payload,
+      };
+    case UPDATE_DELETE_QUERY:
+      return {
+        ...state,
+        deleteQueryUpdated: action.payload,
+      };
     case ADD_BATCH_LINK:
       return {
         ...state,
@@ -91,6 +111,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         admin: action.payload,
+      };
+    case GET_ALL_DELETE_QUERY:
+      return {
+        ...state,
+        allDeleteQuery: action.payload,
       };
     case UPDATE_ADMIN:
       return {
@@ -167,6 +192,11 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         batch: action.payload,
       };
+    case GET_ATTENDANCE_STATUS:
+      return {
+        ...state,
+        attendanceStatus: action.payload,
+      };
     case GET_ALL_COURSE:
       return {
         ...state,
@@ -231,6 +261,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         eventByCourseCode: action.payload,
+      };
+    case UPDATE_COURSE_DATA:
+      return {
+        ...state,
+        courseUpdated: action.payload,
       };
     default:
       return state;

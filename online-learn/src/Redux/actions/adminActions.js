@@ -31,6 +31,11 @@ import {
   GET_COURSES_LENGTH,
   GET_ALL_STUDENT_LENGTH,
   GET_ALL_ADMIN_LENGTH,
+  UPDATE_COURSE_DATA,
+  GET_ATTENDANCE_STATUS,
+  ADD_DELETE_QUERY,
+  GET_ALL_DELETE_QUERY,
+  UPDATE_DELETE_QUERY,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -49,6 +54,24 @@ export const addAdmin = (formData) => async (dispatch) => {
     const { data } = await api.addAdmin(formData);
     alert("Admin Added Successfully");
     dispatch({ type: ADD_ADMIN, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addStudentQuery = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addStudentQuery(formData);
+    alert("Wait for any super admin to confirm");
+    dispatch({ type: ADD_DELETE_QUERY, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const updateDeleteQuery = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.updateDeleteQuery(formData);
+    alert("Status Updated");
+    dispatch({ type: UPDATE_DELETE_QUERY, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -261,6 +284,22 @@ export const getCoursesLength = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAllDeleteQuery = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllDeleteQuery();
+    dispatch({ type: GET_ALL_DELETE_QUERY, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getAllDeleteQueryBySubAdmin = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getAllDeleteQueryBySubAdmin(formData);
+    dispatch({ type: GET_ALL_DELETE_QUERY, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const getBatchCodesByOrganizationName =
   (formData) => async (dispatch) => {
     try {
@@ -343,6 +382,14 @@ export const getAttendance = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getAttendanceStatus = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getAttendanceStatus(formData);
+    dispatch({ type: GET_ATTENDANCE_STATUS, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 
 export const addAssignment = (formData) => async (dispatch) => {
   try {
@@ -379,6 +426,16 @@ export const getEventByCourseCode = (formData) => async (dispatch) => {
     const { data } = await api.getEventByCourseCode(formData);
 
     dispatch({ type: GET_EVENT_BY_COURSE_CODE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const updateCourseData = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.updateCourseData(formData);
+    alert("Course Data Updated Successfully");
+    dispatch({ type: UPDATE_COURSE_DATA, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
