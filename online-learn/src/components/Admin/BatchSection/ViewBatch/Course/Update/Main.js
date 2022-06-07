@@ -14,6 +14,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { Button } from "@mui/material";
 import { GET_BATCH, SET_ERRORS } from "../../../../../../Redux/actionTypes";
+import { updateCourseData } from "../../../../../../Redux/actions/adminActions";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -33,7 +34,8 @@ const Main = () => {
   const [lessonCount, setLessonCount] = useState([]);
   const batchCourse = useSelector((store) => store.admin.batch);
   const indexCounter = useSelector((store) => store.admin.index);
-  const [completionUpdates, setCompletionUpdates] = useState([]);
+  const [completionUpdates, setCompletionUpdates] = useState({});
+  const [garbageData, setGarbageData] = useState([]);
   const [sectionLessonNumber, setSectionLessonNumber] = useState({
     sectionNumber: 0,
     lessonNumber: 0,
@@ -70,10 +72,11 @@ const Main = () => {
 
   const handleIconClickIncrease = (sectionIdx, lessonIdx) => {
     const temp = JSON.parse(localStorage.getItem("batch"));
+
     if (lessonIdx === 0) {
-      let data = [...completionUpdates];
-      data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: true });
-      setCompletionUpdates(data);
+      const data = [...garbageData];
+      data.push({ sectionIdx, lessonIdx, val: true });
+      setGarbageData(data);
       temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
         lessonIdx
       ].lessonCompleted = true;
@@ -95,9 +98,9 @@ const Main = () => {
       ) {
         alert("Previous Lesson is not completed");
       } else {
-        let data = [...completionUpdates];
-        data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: true });
-        setCompletionUpdates(data);
+        const data = [...garbageData];
+        data.push({ sectionIdx, lessonIdx, val: true });
+        setGarbageData(data);
         temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
           lessonIdx
         ].lessonCompleted = true;
@@ -118,9 +121,9 @@ const Main = () => {
   const handleIconClickDecrease = (sectionIdx, lessonIdx) => {
     const temp = JSON.parse(localStorage.getItem("batch"));
     if (lessonIdx === 0) {
-      let data = [...completionUpdates];
-      data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: false });
-      setCompletionUpdates(data);
+      const data = [...garbageData];
+      data.push({ sectionIdx, lessonIdx, val: true });
+      setGarbageData(data);
       temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
         lessonIdx
       ].lessonCompleted = false;
@@ -139,9 +142,9 @@ const Main = () => {
       ) {
         alert("Next Lesson is completed");
       } else {
-        let data = [...completionUpdates];
-        data.push({ sectionIdx: sectionIdx, lessonIdx: lessonIdx, val: false });
-        setCompletionUpdates(data);
+        const data = [...garbageData];
+        data.push({ sectionIdx, lessonIdx, val: true });
+        setGarbageData(data);
         temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
           lessonIdx
         ].lessonCompleted = false;
@@ -151,6 +154,7 @@ const Main = () => {
       }
     }
   };
+  console.log("ye");
 
   const handleVideoUploadButton = async (e) => {
     const file = e.target.files[0];
@@ -160,10 +164,12 @@ const Main = () => {
 
   useEffect(() => {
     if (uploadedVideo !== "") {
-      let temp = { ...batchCourseData };
-      temp.lessonVideo[sectionLessonNumber.sectionNumber].lesson[
-        sectionLessonNumber.lessonNumber
-      ].video = uploadedVideo;
+      const temp = JSON.parse(localStorage.getItem("batch"));
+      temp.courses[indexCounter].lessonVideo[
+        sectionLessonNumber.sectionIdx
+      ].lesson[sectionLessonNumber.lessonIdx].video = uploadedVideo;
+      localStorage.setItem("batch", JSON.stringify(temp));
+      setUploadedVideo("");
     }
   }, [uploadedVideo]);
 
@@ -181,7 +187,17 @@ const Main = () => {
       };
     });
   };
-  console.log("yo");
+  const updateChanges = () => {
+    const temp = JSON.parse(localStorage.getItem("batch"));
+    dispatch(
+      updateCourseData({
+        lessonVideo: temp.courses[indexCounter].lessonVideo,
+        complete: temp.courses[indexCounter].complete,
+        batchCode: temp.batchCode,
+        courseCode: temp.courses[indexCounter].courseCode,
+      })
+    );
+  };
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
       <div className="flex flex-col space-y-4">
@@ -242,9 +258,16 @@ const Main = () => {
                     <Typography>{lessonData.lessonName}</Typography>
                   </div>
                   <label for="video">
-                    <div className="text-white bg-[#1976d2] w-[8rem] h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                      Upload Video
-                    </div>
+                    {batchData.courses[indexCounter].lessonVideo[sectionIdx]
+                      .lesson[lessonIdx].video === "" ? (
+                      <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                        Upload Video
+                      </div>
+                    ) : (
+                      <div className="text-white bg-[#1976d2] px-3 h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                        Upload Another Video
+                      </div>
+                    )}
                   </label>
                   <input
                     className="hidden"
@@ -254,8 +277,8 @@ const Main = () => {
                       handleVideoUploadButton(e);
                       setSectionLessonNumber({
                         ...sectionLessonNumber,
-                        sectionNumber: sectionIdx,
-                        lessonNumber: lessonIdx,
+                        sectionIdx: sectionIdx,
+                        lessonIdx: lessonIdx,
                       });
                     }}
                   />
@@ -266,6 +289,8 @@ const Main = () => {
         </div>
         <Button
           size="large"
+          type="button"
+          onClick={() => updateChanges()}
           color="error"
           className="w-[7rem] self-center"
           variant="contained">

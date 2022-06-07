@@ -10,10 +10,22 @@ import { GET_STUDENT, SET_ERRORS } from "../../../Redux/actionTypes";
 import {
   getAllStudent,
   getStudentsByOrganizationName,
+  addStudentQuery,
 } from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
-import { Avatar, Menu, MenuItem } from "@mui/material";
-
+import { Avatar, Box, Menu, MenuItem, Modal } from "@mui/material";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 10,
+  borderRadius: "3px",
+  p: 4,
+};
 const Main = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
@@ -72,7 +84,9 @@ const Main = () => {
     });
     setStudents(result);
   };
-
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
@@ -193,6 +207,9 @@ const Main = () => {
                       }}>
                       Update Student
                     </MenuItem>
+                    <MenuItem onClick={handleOpenDeleteModal}>
+                      Delete Student
+                    </MenuItem>
                   </Menu>
                 </div>
               </div>
@@ -204,6 +221,39 @@ const Main = () => {
         <ActiveBatch />
         <RecentNotification />
       </div>
+      <Modal
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <div className="flex flex-col space-y-2">
+            <h1 className="text-3xl">Are you sure?</h1>
+            <p>You want to delete this admin?</p>
+            <div className="space-x-4 text-black">
+              <button
+                className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
+                onClick={handleCloseDeleteModal}>
+                No
+              </button>
+              <button
+                className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
+                onClick={() => {
+                  dispatch(
+                    addStudentQuery({
+                      code: students[index].email,
+                      subAdmin: user.result.email,
+                      avatar: students[index].avatar,
+                    })
+                  );
+                  handleCloseDeleteModal();
+                }}>
+                Yes
+              </button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

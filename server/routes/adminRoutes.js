@@ -40,12 +40,22 @@ import {
   getAllAdminLength,
   getAdminsLengthByOrganizationName,
   addStudentInBatch,
+  updateCourseData,
+  getAttendanceStatus,
+  addStudentQuery,
+  getAllDeleteQuery,
+  updateDeleteQuery,
+  getAllDeleteQueryBySubAdmin,
 } from "../controller/adminController.js";
 const router = express.Router();
 
 router.post("/login", adminLogin);
 router.post("/addadmin", auth, addAdmin);
+router.post("/addstudentquery", auth, addStudentQuery);
+router.post("/updatedeletequery", auth, updateDeleteQuery);
 router.post("/getadmin", auth, getAdmin);
+router.get("/getalldeletequery", auth, getAllDeleteQuery);
+router.get("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
 router.post("/updateadmin", auth, updateAdmin);
 router.post("/deleteadmin", auth, deleteAdmin);
 router.post("/addcourse", auth, addCourse);
@@ -93,9 +103,11 @@ router.post("/getbatchevent", auth, getBatchEvent);
 router.post("/uploadattendance", auth, uploadAttendance);
 router.post("/getattendance", auth, getAttendance);
 router.post("/getattendancebybatchcodes", auth, getAttendanceByBatchCodes);
+router.post("/getattendancestatus", auth, getAttendanceStatus);
 router.post("/addAssignment", auth, addAssignment);
 router.post("/getstudentbyassignmentcode", auth, getStudentByAssignmentCode);
 router.post("/geteventbycoursecode", auth, getEventByCourseCode);
 router.post("/addscore", auth, addScore);
 router.post("/addbatchlink", auth, addBatchLink);
+router.post("/updatecoursedata", auth, updateCourseData);
 export default router;
