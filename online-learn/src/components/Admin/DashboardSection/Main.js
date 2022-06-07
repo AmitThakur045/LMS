@@ -24,24 +24,53 @@ import {
   getStudentsLengthByOrganizationName,
   getAdminsLengthByOrganizationName,
   getAllAdminLength,
+  getAllDeleteQuery,
+  updateDeleteQuery,
+  getAllDeleteQueryBySubAdmin,
 } from "../../../Redux/actions/adminActions";
+import { Avatar } from "@mui/material";
+import Spinner from "../../../Utils/Spinner";
+import { UPDATE_DELETE_QUERY } from "../../../Redux/actionTypes";
 
 const Main = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({});
+  const store = useSelector((state) => state);
   const user = JSON.parse(localStorage.getItem("user"));
   const allBatches = useSelector((state) => state.admin.allBatch);
   const allCourses = useSelector((state) => state.admin.coursesLength);
   const allStudents = useSelector((state) => state.admin.studentsLength);
   const allAdmins = useSelector((state) => state.admin.adminsLength);
+  const allDeleteQueries = useSelector((state) => state.admin.allDeleteQuery);
   const [batches, setBatches] = useState(0);
   const [courses, setCourses] = useState(0);
   const [students, setStudents] = useState(0);
   const [admins, setAdmins] = useState(0);
+  const [deleteQueries, setDeleteQueries] = useState([]);
+  const [noQueryFound, setNoQueryFound] = useState(false);
   useEffect(() => {
     if (allBatches.length !== 0) {
       setBatches(allBatches.length);
     }
   }, [allBatches]);
+
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setLoading(false);
+      setError(store.errors);
+    }
+  }, [store.errors]);
+  useEffect(() => {
+    if (allDeleteQueries.length !== 0) {
+      setLoading(false);
+      setDeleteQueries(allDeleteQueries);
+      let data = deleteQueries.find((query) => query.updated.false);
+      if (!data) {
+        setNoQueryFound(true);
+      }
+    }
+  }, [allDeleteQueries]);
   useEffect(() => {
     if (allCourses.length !== 0) {
       setCourses(allCourses);
@@ -58,6 +87,7 @@ const Main = () => {
     }
   }, [allAdmins]);
   useEffect(() => {
+    setLoading(true);
     if (user.result.sub === "true") {
       dispatch(
         getBatchCodesByOrganizationName({
@@ -76,13 +106,24 @@ const Main = () => {
           organizationName: user.result.organizationName,
         })
       );
+      dispatch(getAllDeleteQueryBySubAdmin({ subAdmin: user.result.email }));
     } else {
       dispatch(getAllBatchCodes());
       dispatch(getAllStudentLength());
       dispatch(getAllAdminLength());
     }
+
     dispatch(getCoursesLength());
+    dispatch(getAllDeleteQuery());
   }, []);
+
+  useEffect(() => {
+    if (store.admin.deleteQueryUpdated) {
+      setLoading(true);
+      dispatch(getAllDeleteQuery());
+      dispatch({ type: UPDATE_DELETE_QUERY, payload: false });
+    }
+  }, [store.admin.deleteQueryUpdated]);
 
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
@@ -145,132 +186,113 @@ const Main = () => {
           </h1>
           <hr />
           <div className="flex flex-col space-y-4 overflow-y-auto h-[25rem] ">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img src={sampleAvatar} alt="" />
-                <div className="flex flex-col items-start ">
-                  <h1 className="text-[#4A1E90] text-[16px]">Harry Potter</h1>
-                  <p className="text-[#7A5488] text-[12px]">By Dumbledore</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6">
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
-                  Decline
-                </button>
-              </div>
-            </div>
+            {deleteQueries.length !== 0 &&
+              deleteQueries.map((query) => (
+                <>
+                  {user.result.sub === "false" ? (
+                    <>
+                      {query.updated === false && (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-6">
+                            <Avatar src={query.avatar} alt="" />
+                            <div className="flex flex-col items-start ">
+                              <h1 className="text-[#4A1E90] text-[16px]">
+                                {query.code}
+                              </h1>
+                              <p className="text-[#7A5488] text-[12px]">
+                                {query.subAdmin}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center space-x-6">
+                            <button
+                              onClick={() =>
+                                dispatch(
+                                  updateDeleteQuery({
+                                    code: query.code,
+                                    subAdmin: query.subAdmin,
+                                    status: true,
+                                  })
+                                )
+                              }
+                              type="button"
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              Approve
+                            </button>
+                            <button
+                              onClick={() =>
+                                dispatch(
+                                  updateDeleteQuery({
+                                    code: query.code,
+                                    subAdmin: query.subAdmin,
+                                    status: false,
+                                  })
+                                )
+                              }
+                              type="button"
+                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                              Decline
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-6">
+                          <Avatar src={query.avatar} alt="" />
+                          <div className="flex flex-col items-start ">
+                            <h1 className="text-[#4A1E90] text-[16px]">
+                              {query.code}
+                            </h1>
+                            <p className="text-[#7A5488] text-[12px]">
+                              {query.subAdmin}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center space-x-6">
+                          {query.status === true ? (
+                            <button
+                              type="button"
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              Approved
+                            </button>
+                          ) : (
+                            <>
+                              {query.status === false ? (
+                                <button
+                                  type="button"
+                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                                  Declined
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150">
+                                  Waiting
+                                </button>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              ))}
+
+            {loading && <Spinner message="Loading" />}
+            {error.deleteQueryError && (
+              <p className="text-red-500 flex self-center">
+                {error.noQueryFound}
+              </p>
+            )}
+            {noQueryFound && user.result.sub === "false" && (
+              <p className="text-red-500 flex self-center">No Query Found</p>
+            )}
           </div>
         </div>
       </div>

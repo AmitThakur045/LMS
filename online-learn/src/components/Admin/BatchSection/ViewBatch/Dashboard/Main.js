@@ -6,7 +6,10 @@ import {
   LinePrimaryYAxis1,
 } from "./Data";
 import LineGraph from "../../../../../Utils/LineGraph";
-import { getAttendance } from "../../../../../Redux/actions/adminActions";
+import {
+  getAttendance,
+  getAttendanceStatus,
+} from "../../../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,6 +23,18 @@ const Main = () => {
   const dispatch = useDispatch();
 
   const attendances = useSelector((store) => store.admin.attendance);
+  const [courseStatusNumber, setCourseStatusNumber] = useState(0);
+
+  function courseStatus() {
+    let lessonCompleted = 0;
+    let totalLessons = 0;
+    for (let i = 0; i < batchData.courses.length; i++) {
+      lessonCompleted += batchData.courses[i].complete.lessonCompleted;
+      totalLessons += batchData.courses[i].complete.totalLesson;
+    }
+    console.log(lessonCompleted, totalLessons);
+    setCourseStatusNumber(Math.round((lessonCompleted / totalLessons) * 100));
+  }
 
   const createList = () => {
     let list = [];
@@ -38,14 +53,37 @@ const Main = () => {
     });
 
     // change the format of x axis
-    const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     for (let i = 0; i < newList.length; i++) {
       newList[i].x = new Date(newList[i].x).getDate();
     }
 
     setListData(newList);
   };
+  const attendanceStatus = useSelector((store) => store.admin.attendanceStatus);
+  const [totalAttendanceStatus, setTotalAttendanceStatus] = useState(0);
+  const [totalClassesHeld, setTotalClassesHeld] = useState(0);
+  useEffect(() => {
+    if (Object.keys(attendanceStatus).length !== 0) {
+      let totalClasses = batchData.schedule.length;
+      let totalStudents = batchData.students.length;
+      let totalAttendance = totalClasses * totalStudents;
+      setTotalAttendanceStatus(
+        Math.round((attendanceStatus.LectureAttended / totalAttendance) * 100)
+      );
+      setTotalClassesHeld(
+        Math.round(
+          (attendanceStatus.totalClasses / batchData.schedule.length) * 100
+        )
+      );
+    }
+  }, [attendanceStatus]);
+  useEffect(() => {
+    courseStatus();
+    dispatch(getAttendanceStatus({ batchCode: batchData.batchCode }));
+  }, []);
 
+  console.log(attendanceStatus);
   useEffect(() => {
     dispatch(
       getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
@@ -121,7 +159,7 @@ const Main = () => {
             width="100%"
             trackThickness={10}
             progressThickness={10}
-            value={23}
+            value={courseStatusNumber}
             enableRtl={false}
             showProgressValue={true}
             trackColor="#F8C7D8"
@@ -144,7 +182,7 @@ const Main = () => {
             width="100%"
             trackThickness={10}
             progressThickness={10}
-            value={89}
+            value={totalAttendanceStatus}
             enableRtl={false}
             showProgressValue={true}
             trackColor="#c7f8d2"
@@ -167,7 +205,7 @@ const Main = () => {
             width="100%"
             trackThickness={10}
             progressThickness={10}
-            value={52}
+            value={totalClassesHeld}
             enableRtl={false}
             showProgressValue={true}
             trackColor="#c9c7f8"
@@ -203,10 +241,11 @@ const Main = () => {
                 id="demo-select-small"
                 value={courseCode}
                 label="Course"
-                onChange={(e) => setCourseCode(e.target.value)}
-              >
+                onChange={(e) => setCourseCode(e.target.value)}>
                 {batchData.courses.map((course) => (
-                  <MenuItem value={course.courseCode}>{course.courseCode}</MenuItem>
+                  <MenuItem value={course.courseCode}>
+                    {course.courseCode}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
