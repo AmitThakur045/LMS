@@ -40,6 +40,9 @@ const studentSchema = new Schema({
   performance: {
     type: String,
   },
+  dateOfJoining: {
+    type: String,
+  },
   assignment: [
     {
       assignmentCode: { type: String },
