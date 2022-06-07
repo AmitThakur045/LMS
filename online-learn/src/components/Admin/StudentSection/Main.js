@@ -87,6 +87,7 @@ const Main = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+  console.log(students);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
@@ -207,7 +208,11 @@ const Main = () => {
                       }}>
                       Update Student
                     </MenuItem>
-                    <MenuItem onClick={handleOpenDeleteModal}>
+                    <MenuItem
+                      onClick={() => {
+                        handleOpenDeleteModal();
+                        handleClose();
+                      }}>
                       Delete Student
                     </MenuItem>
                   </Menu>
@@ -229,7 +234,7 @@ const Main = () => {
         <Box sx={style}>
           <div className="flex flex-col space-y-2">
             <h1 className="text-3xl">Are you sure?</h1>
-            <p>You want to delete this admin?</p>
+            <p>You want to delete this student?</p>
             <div className="space-x-4 text-black">
               <button
                 className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "

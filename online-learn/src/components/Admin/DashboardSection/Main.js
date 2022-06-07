@@ -69,10 +69,14 @@ const Main = () => {
     if (allDeleteQueries.length !== 0) {
       setLoading(false);
       setDeleteQueries(allDeleteQueries);
-      let data = deleteQueries.find((query) => query.updated.false);
-      if (!data) {
-        setNoQueryFound(true);
+      let flag = false;
+      for (let i = 0; i < deleteQueries.length; i++) {
+        if (deleteQueries[i].updated.false) {
+          flag = true;
+        }
       }
+
+      setNoQueryFound(flag);
     }
   }, [allDeleteQueries]);
   useEffect(() => {
@@ -200,6 +204,7 @@ const Main = () => {
       dispatch({ type: UPDATE_DELETE_QUERY, payload: false });
     }
   }, [store.admin.deleteQueryUpdated]);
+  console.log(deleteQueries);
 
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">

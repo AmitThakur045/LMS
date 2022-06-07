@@ -297,7 +297,10 @@ const Main = () => {
               id="panel1a-header">
               <div className="grid grid-cols-12 w-full">
                 <div className="col-span-2 font-semibold flex items-center space-x-2">
-                  <Avatar src={student.avatar} sx={{ height: 20, width: 20 }} />
+                  <Avatar
+                    src={student?.avatar}
+                    sx={{ height: 20, width: 20 }}
+                  />
                   <div className="">
                     {student.firstName} {student.lastName}
                   </div>
