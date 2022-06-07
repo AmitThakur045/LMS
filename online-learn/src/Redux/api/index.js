@@ -69,6 +69,8 @@ export const uploadAttendance = (attendanceRecord) =>
   API.post("/api/admin/uploadattendance", attendanceRecord);
 export const getAttendance = (data) =>
   API.post("/api/admin/getattendance", data);
+export const getAttendanceByBatchCodes = (allBatches) =>
+  API.post("/api/admin/getattendancebybatchcodes", allBatches);
 export const getAttendanceStatus = (data) =>
   API.post("/api/admin/getattendancestatus", data);
 export const addAssignment = (assignment) =>
