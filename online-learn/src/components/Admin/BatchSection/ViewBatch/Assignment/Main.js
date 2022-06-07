@@ -48,6 +48,7 @@ const Main = () => {
 
   useEffect(() => {
     if (Object.keys(batchData).length !== 0) {
+      console.log(batchData);
       setCurrentCourseCode(batchData.courses[0].courseCode);
       setCurrentList(batchData.courses[0].assignment);
     }

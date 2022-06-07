@@ -54,6 +54,7 @@ const Main = () => {
       dispatch(
         getStudentsByOrganizationName({
           organizationName: user.result.organizationName,
+          subAdmin: user.result.email,
         })
       );
     } else {

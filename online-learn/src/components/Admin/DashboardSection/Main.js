@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import currentIcon from "../../../Assests/currentIcon.svg";
 
 import sampleAvatar from "../../../Assests/sampleAvatar1.svg";
@@ -15,36 +15,103 @@ import {
   barPrimaryYAxis,
   pieChartData as data,
 } from "./Data";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllBatchCodes,
+  getAllStudentLength,
+  getBatchCodesByOrganizationName,
+  getCoursesLength,
+  getStudentsLengthByOrganizationName,
+  getAdminsLengthByOrganizationName,
+  getAllAdminLength,
+} from "../../../Redux/actions/adminActions";
 
 const Main = () => {
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const allBatches = useSelector((state) => state.admin.allBatch);
+  const allCourses = useSelector((state) => state.admin.coursesLength);
+  const allStudents = useSelector((state) => state.admin.studentsLength);
+  const allAdmins = useSelector((state) => state.admin.adminsLength);
+  const [batches, setBatches] = useState(0);
+  const [courses, setCourses] = useState(0);
+  const [students, setStudents] = useState(0);
+  const [admins, setAdmins] = useState(0);
+  useEffect(() => {
+    if (allBatches.length !== 0) {
+      setBatches(allBatches.length);
+    }
+  }, [allBatches]);
+  useEffect(() => {
+    if (allCourses.length !== 0) {
+      setCourses(allCourses);
+    }
+  }, [allCourses]);
+  useEffect(() => {
+    if (allStudents.length !== 0) {
+      setStudents(allStudents);
+    }
+  }, [allStudents]);
+  useEffect(() => {
+    if (allAdmins.length !== 0) {
+      setAdmins(allAdmins);
+    }
+  }, [allAdmins]);
+  useEffect(() => {
+    if (user.result.sub === "true") {
+      dispatch(
+        getBatchCodesByOrganizationName({
+          organizationName: user.result.organizationName,
+          subAdmin: user.result.email,
+        })
+      );
+      dispatch(
+        getStudentsLengthByOrganizationName({
+          organizationName: user.result.organizationName,
+          subAdmin: user.result.email,
+        })
+      );
+      dispatch(
+        getAdminsLengthByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+    } else {
+      dispatch(getAllBatchCodes());
+      dispatch(getAllStudentLength());
+      dispatch(getAllAdminLength());
+    }
+    dispatch(getCoursesLength());
+  }, []);
+
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
       <div className="flex justify-between">
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Batches</h1>
-            <p>51</p>
+            <p>{batches}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Courses</h1>
-            <p>23</p>
+            <p>{courses}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Students</h1>
-            <p>243</p>
+            <p>{students}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Sub Admins</h1>
-            <p>12</p>
+            <p>{admins}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>

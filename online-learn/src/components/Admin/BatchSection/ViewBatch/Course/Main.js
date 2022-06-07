@@ -85,8 +85,8 @@ const Main = () => {
                     aria-controls="panel1a-content"
                     id="section">
                     <div className="flex items-center space-x-3">
-                      {batchData.courses[idx].complete.sectionCompleted >
-                      sectionIdx ? (
+                      {batchData.courses[idx].lessonVideo[sectionIdx]
+                        .sectionCompleted > sectionIdx ? (
                         <BsFillCheckCircleFill
                           fontSize={20}
                           className="text-[#1bca72]"
@@ -108,7 +108,8 @@ const Main = () => {
                           aria-controls="panel1a-content"
                           id="lesson">
                           <div className="flex items-center space-x-3">
-                            {lessonCount[idx] > sectionIdx + lessonIdx ? (
+                            {batchData.courses[idx].lessonVideo[sectionIdx]
+                              .lesson[lessonIdx].lessonCompleted ? (
                               <BsFillCheckCircleFill
                                 fontSize={20}
                                 className="text-[#1bca72]"

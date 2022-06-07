@@ -29,6 +29,9 @@ import {
   ADD_BATCH_LINK,
   ADMIN_LOGIN,
   LOGOUT,
+  GET_COURSES_LENGTH,
+  GET_ALL_STUDENT_LENGTH,
+  GET_ALL_ADMIN_LENGTH,
 } from "../actionTypes";
 
 const initialState = {
@@ -61,6 +64,9 @@ const initialState = {
   eventByCourseCode: [],
   allOrganizationName: [],
   batchLinkAdded: false,
+  coursesLength: 0,
+  studentsLength: 0,
+  adminsLength: 0,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -136,10 +142,20 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         allStudent: action.payload,
       };
+    case GET_ALL_STUDENT_LENGTH:
+      return {
+        ...state,
+        studentsLength: action.payload,
+      };
     case GET_ALL_ADMIN:
       return {
         ...state,
         allAdmin: action.payload,
+      };
+    case GET_ALL_ADMIN_LENGTH:
+      return {
+        ...state,
+        adminsLength: action.payload,
       };
     case GET_STUDENT:
       return {
@@ -155,6 +171,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         allCourse: action.payload,
+      };
+    case GET_COURSES_LENGTH:
+      return {
+        ...state,
+        coursesLength: action.payload,
       };
     case GET_ALL_ORGANIZATION_NAME:
       return {

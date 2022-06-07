@@ -51,7 +51,9 @@ const Main = () => {
     students: [],
     courses: [],
     organizationName: "",
+    subAdmin: user.result.email,
   });
+  console.log(values);
   const [emails, setEmails] = useState([]);
 
   useEffect(() => {
