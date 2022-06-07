@@ -686,6 +686,8 @@ export const addBatch = async (req, res) => {
             student.attendance.push({ courseCode: courses[j], attended: 0 });
           }
           stu.push(students[i][0]);
+          var d = Date(Date.now());
+          stu.dateOfJoining = d.toString();
           await student.save();
         }
       }
