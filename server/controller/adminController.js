@@ -1,4 +1,5 @@
 import Admin from "../models/admin.js";
+import DeleteQuery from "../models/deleteQuery.js";
 import Student from "../models/student.js";
 import Batch from "../models/batch.js";
 import Attendance from "../models/attendance.js";
@@ -174,6 +175,76 @@ export const addAdmin = async (req, res) => {
       message: "Admin registerd successfully",
       response: newAdmin,
     });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+export const addStudentQuery = async (req, res) => {
+  try {
+    const { code, subAdmin, avatar } = req.body;
+
+    const errors = { deleteQueryError: String };
+    const existingDeleteQuery = await DeleteQuery.findOne({ code, subAdmin });
+
+    if (existingDeleteQuery) {
+      errors.deleteQueryError = "Query already exists";
+      return res.status(400).json(errors);
+    }
+    const newDeleteQuery = await new DeleteQuery({
+      subAdmin,
+      code,
+      avatar,
+    });
+    await newDeleteQuery.save();
+    return res.status(200).json({
+      success: true,
+      message: "Delete Query Added successfully",
+      response: newDeleteQuery,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+export const updateDeleteQuery = async (req, res) => {
+  try {
+    const { code, subAdmin, status } = req.body;
+
+    const deleteQuery = await DeleteQuery.findOne({ code, subAdmin });
+    deleteQuery.status = status;
+    deleteQuery.updated = true;
+    await deleteQuery.save();
+    if (status === true) {
+      const student = await Student.findOneAndDelete({ email: code });
+      return res.status(200).json("Student Deleted");
+    }
+    return res.status(200).json("Query Updated");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+export const getAllDeleteQuery = async (req, res) => {
+  try {
+    const deleteQueries = await DeleteQuery.find();
+    const errors = { deleteQueryError: String };
+    if (deleteQueries.length === 0) {
+      errors.deleteQueryError = "No Delete Query Found";
+      return res.status(400).json(errors);
+    }
+    return res.status(200).json(deleteQueries);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+export const getAllDeleteQueryBySubAdmin = async (req, res) => {
+  try {
+    const { subAdmin } = req.body;
+    const deleteQueries = await DeleteQuery.find({ subAdmin });
+    const errors = { deleteQueryError: String };
+    if (deleteQueries.length === 0) {
+      errors.deleteQueryError = "No Query Found";
+      return res.status(400).json(errors);
+    }
+    return res.status(200).json(deleteQueries);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -758,6 +829,60 @@ export const addBatchLink = async (req, res) => {
     console.log("Backend Error", error);
   }
 };
+export const updateCourseData = async (req, res) => {
+  try {
+    const { lessonVideo, complete, batchCode, courseCode } = req.body;
+
+    const batch = await Batch.findOne({ batchCode });
+
+    let index = batch.courses.findIndex(
+      (course) => course.courseCode === courseCode
+    );
+    for (let i = 0; i < lessonVideo.length; i++) {
+      if (
+        lessonVideo[i].sectionCompleted !==
+        batch.courses[index].lessonVideo[i].sectionCompleted
+      ) {
+        batch.courses[index].lessonVideo[i].sectionCompleted =
+          lessonVideo[i].sectionCompleted;
+      }
+      for (let j = 0; j < lessonVideo[i].lesson.length; j++) {
+        if (
+          lessonVideo[i].lesson[j].lessonCompleted !==
+          batch.courses[index].lessonVideo[i].lesson[j].lessonCompleted
+        ) {
+          batch.courses[index].lessonVideo[i].lesson[j].lessonCompleted =
+            lessonVideo[i].lesson[j].lessonCompleted;
+        }
+        if (
+          lessonVideo[i].lesson[j].video !==
+          batch.courses[index].lessonVideo[i].lesson[j].video
+        ) {
+          batch.courses[index].lessonVideo[i].lesson[j].video =
+            lessonVideo[i].lesson[j].video;
+        }
+      }
+    }
+
+    if (
+      complete.sectionCompleted !==
+      batch.courses[index].complete.sectionCompleted
+    ) {
+      batch.courses[index].complete.sectionCompleted =
+        complete.sectionCompleted;
+    }
+    if (
+      complete.lessonCompleted !== batch.courses[index].complete.lessonCompleted
+    ) {
+      batch.courses[index].complete.lessonCompleted = complete.lessonCompleted;
+    }
+    await batch.save();
+
+    res.status(200).json("Course Updated");
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
 
 export const getBatchEvent = async (req, res) => {
   try {
@@ -809,6 +934,27 @@ export const getAttendance = async (req, res) => {
     const attendance = await Attendance.find({ batchCode, courseCode });
     // console.log(attendance);
     res.status(200).json(attendance);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const getAttendanceStatus = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    const attendance = await Attendance.find({ batchCode });
+    let LectureAttended = 0;
+    let totalClasses = 0;
+    for (let i = 0; i < attendance.length; i++) {
+      if (attendance[i].students.length !== 0) {
+        totalClasses++;
+      }
+      for (let j = 0; j < attendance[i].students.length; j++) {
+        if (attendance[i].students[j].present === true) {
+          LectureAttended++;
+        }
+      }
+    }
+    res.status(200).json({ LectureAttended, totalClasses });
   } catch (error) {
     console.log("Backend Error", error);
   }

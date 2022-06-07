@@ -15,6 +15,10 @@ API.interceptors.request.use((req) => {
 export const adminSignIn = (formData) => API.post("/api/admin/login", formData);
 
 export const addAdmin = (admin) => API.post("/api/admin/addadmin", admin);
+export const addStudentQuery = (data) =>
+  API.post("/api/admin/addstudentquery", data);
+export const updateDeleteQuery = (data) =>
+  API.post("/api/admin/updatedeletequery", data);
 export const getAdmin = (data) => API.post("/api/admin/getadmin", data);
 export const updateAdmin = (admin) => API.post("/api/admin/updateadmin", admin);
 export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
@@ -47,6 +51,9 @@ export const getAllCourse = () => API.get("/api/admin/getallcourse");
 export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);
 export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
 export const getCoursesLength = () => API.get("/api/admin/getcourseslength");
+export const getAllDeleteQuery = () => API.get("/api/admin/getalldeletequery");
+export const getAllDeleteQueryBySubAdmin = (data) =>
+  API.post("/api/admin/getalldeletequerybysubadmin", data);
 export const getBatchCodesByOrganizationName = (data) =>
   API.post("/api/admin/getbatchcodesbyorganizationname", data);
 export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
@@ -64,9 +71,13 @@ export const getAttendance = (data) =>
   API.post("/api/admin/getattendance", data);
 export const getAttendanceByBatchCodes = (allBatches) =>
   API.post("/api/admin/getattendancebybatchcodes", allBatches);
+export const getAttendanceStatus = (data) =>
+  API.post("/api/admin/getattendancestatus", data);
 export const addAssignment = (assignment) =>
   API.post("/api/admin/addassignment", assignment);
 export const addBatchLink = (data) => API.post("/api/admin/addbatchlink", data);
 export const getStudentByAssignmentCode = (data) =>
   API.post("/api/admin/getstudentbyassignmentcode", data);
 export const addScore = (formData) => API.post("/api/admin/addscore", formData);
+export const updateCourseData = (formData) =>
+  API.post("/api/admin/updatecoursedata", formData);
