@@ -21,6 +21,7 @@ import {
   GET_STUDENTS,
   UPLOAD_ATTENDANCE,
   GET_ATTENDANCE,
+  GET_ATTENDANCE_BY_BATCH_CODES,
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   ADD_SCORE,
@@ -208,6 +209,11 @@ const adminReducer = (state = initialState, action) => {
         attendanceUploaded: action.payload,
       };
     case GET_ATTENDANCE:
+      return {
+        ...state,
+        attendance: action.payload,
+      };
+    case GET_ATTENDANCE_BY_BATCH_CODES:
       return {
         ...state,
         attendance: action.payload,

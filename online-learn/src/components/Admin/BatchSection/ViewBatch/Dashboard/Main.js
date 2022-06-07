@@ -17,45 +17,10 @@ const Main = () => {
   const batchData = JSON.parse(localStorage.getItem("batch"));
   const [courseCode, setCourseCode] = useState("DS101");
   const [listData, setListData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
-  const attendances = useSelector((store) => store.admin.attendance);
-
-  const createList = () => {
-    let list = [];
-    for (let i = 0; i < attendances.length; i++) {
-      let cnt = 0;
-      for (let j = 0; j < attendances[i].students.length; j++) {
-        if (attendances[i].students[j].present === true) {
-          cnt++;
-        }
-      }
-      list.push({ x: attendances[i].date, y: cnt });
-    }
-
-    const newList = list.sort((a, b) => {
-      return new Date(a.x) - new Date(b.x);
-    });
-
-    // change the format of x axis
-    const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    for (let i = 0; i < newList.length; i++) {
-      newList[i].x = new Date(newList[i].x).getDate();
-    }
-
-    setListData(newList);
-  };
-
-  useEffect(() => {
-    dispatch(
-      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
-    );
-    createList();
-  }, [courseCode]);
-
-  // console.log("attend", attendances);
-  // console.log("xAxis", listData);
-  // console.log("courseCode", courseCode);
+  let attendances = useSelector((store) => store.admin.attendance);
 
   const lineCustomSeries2 = [
     {
@@ -88,6 +53,55 @@ const Main = () => {
     majorTickLines: { width: 0 },
     minorTickLines: { width: 0 },
   };
+
+  const createList = () => {
+    let list = [];
+    for (let i = 0; i < attendances.length; i++) {
+      let cnt = 0;
+      for (let j = 0; j < attendances[i].students.length; j++) {
+        if (attendances[i].students[j].present === true) {
+          cnt++;
+        }
+      }
+      list.push({ x: attendances[i].date, y: cnt });
+    }
+
+    const newList = list.sort((a, b) => {
+      return new Date(a.x) - new Date(b.x);
+    });
+
+    // change the format of x axis
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    for (let i = 0; i < newList.length; i++) {
+      newList[i].x = new Date(newList[i].x).getDate();
+    }
+
+    setListData(newList);
+  };
+
+  const handleChange = (event) => {
+    setLoading(true);
+    setCourseCode(event.target.value);
+    dispatch(
+      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
+    );
+    createList();
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    setCourseCode("DS101");
+    dispatch(
+      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
+    );
+    createList();
+    setLoading(false);
+  }, []);
+
+  console.log("attend", attendances);
+  console.log("listData", listData);
+  console.log("courseCode", courseCode);
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
@@ -203,22 +217,26 @@ const Main = () => {
                 id="demo-select-small"
                 value={courseCode}
                 label="Course"
-                onChange={(e) => setCourseCode(e.target.value)}
+                onChange={(e) => handleChange(e)}
               >
                 {batchData.courses.map((course) => (
-                  <MenuItem value={course.courseCode}>{course.courseCode}</MenuItem>
+                  <MenuItem value={course.courseCode}>
+                    {course.courseCode}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </div>
-          <LineGraph
-            lineCustomSeries={lineCustomSeries2}
-            LinePrimaryXAxis={LinePrimaryXAxis2}
-            LinePrimaryYAxis={LinePrimaryYAxis2}
-            chartId={"students"}
-            height={"420px"}
-            width={"560px"}
-          />
+          {!loading && (
+            <LineGraph
+              lineCustomSeries={lineCustomSeries2}
+              LinePrimaryXAxis={LinePrimaryXAxis2}
+              LinePrimaryYAxis={LinePrimaryYAxis2}
+              chartId={"students"}
+              height={"420px"}
+              width={"560px"}
+            />
+          )}
         </div>
       </div>
     </div>

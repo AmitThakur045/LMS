@@ -10,9 +10,9 @@ import {
   lineCustomSeries,
   LinePrimaryXAxis,
   LinePrimaryYAxis,
-  barCustomSeries,
-  barPrimaryXAxis,
-  barPrimaryYAxis,
+  // barCustomSeries,
+  // barPrimaryXAxis,
+  // barPrimaryYAxis,
   pieChartData as data,
 } from "./Data";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import {
   getStudentsLengthByOrganizationName,
   getAdminsLengthByOrganizationName,
   getAllAdminLength,
+  getAttendanceByBatchCodes,
 } from "../../../Redux/actions/adminActions";
 
 const Main = () => {
@@ -33,10 +34,13 @@ const Main = () => {
   const allCourses = useSelector((state) => state.admin.coursesLength);
   const allStudents = useSelector((state) => state.admin.studentsLength);
   const allAdmins = useSelector((state) => state.admin.adminsLength);
+  const attendances = useSelector((store) => store.admin.attendance);
   const [batches, setBatches] = useState(0);
   const [courses, setCourses] = useState(0);
   const [students, setStudents] = useState(0);
   const [admins, setAdmins] = useState(0);
+  const [barChartData, setBarChartData] = useState([]);
+
   useEffect(() => {
     if (allBatches.length !== 0) {
       setBatches(allBatches.length);
@@ -57,6 +61,7 @@ const Main = () => {
       setAdmins(allAdmins);
     }
   }, [allAdmins]);
+
   useEffect(() => {
     if (user.result.sub === "true") {
       dispatch(
@@ -83,6 +88,78 @@ const Main = () => {
     }
     dispatch(getCoursesLength());
   }, []);
+
+  const barCustomSeries = [
+    {
+      dataSource: barChartData,
+      xName: "x",
+      yName: "y",
+      name: "Attendance",
+      type: "Column",
+      marker: {
+        dataLabel: {
+          visible: true,
+          position: "Top",
+          font: { fontWeight: "600", color: "#ffffff" },
+        },
+      },
+    },
+  ];
+
+  const barPrimaryXAxis = {
+    valueType: "Category",
+    interval: 1,
+    majorGridLines: { width: 0 },
+  };
+  const barPrimaryYAxis = {
+    majorGridLines: { width: 0 },
+    majorTickLines: { width: 0 },
+    lineStyle: { width: 0 },
+    labelStyle: { color: "transparent" },
+  };
+
+  // const [index, setIndex] = useState(0);
+  const createList = () => {
+    let list = [
+      { x: "Jan", y: 0 },
+      { x: "Feb", y: 0 },
+      { x: "Mar", y: 0 },
+      { x: "Apr", y: 0 },
+      { x: "May", y: 0 },
+      { x: "Jun", y: 0 },
+      { x: "Jul", y: 0 },
+      { x: "Aug", y: 0 },
+      { x: "Sep", y: 0 },
+      { x: "Oct", y: 0 },
+      { x: "Nov", y: 0 },
+      { x: "Dec", y: 0 },
+    ];
+
+    attendances?.map((attendance) => {
+      let idx = new Date(attendance?.date).getMonth();
+      let count = 0;
+      attendance?.students?.map((student) => {
+        if (student.present === true) {
+          count++;
+        }
+      });
+      list[idx].y += count;
+    });
+
+    setBarChartData(list);
+  };
+
+  useEffect(() => {
+    if (allBatches.length !== 0) {
+      dispatch(getAttendanceByBatchCodes({ allBatches }));
+      createList();
+    }
+  }, [allBatches]);
+
+  // console.log("barchart", barChartData);
+  // console.log("index", index);
+  // console.log("attendance", attendances);
+  // console.log("allBatches", allBatches);
 
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
@@ -156,12 +233,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
@@ -177,12 +256,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
@@ -198,12 +279,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
@@ -219,12 +302,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
@@ -240,12 +325,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
@@ -261,12 +348,14 @@ const Main = () => {
               <div className="flex items-center space-x-6">
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                >
                   Approve
                 </button>
                 <button
                   type="button"
-                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                >
                   Decline
                 </button>
               </div>
