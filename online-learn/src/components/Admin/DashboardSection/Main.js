@@ -69,10 +69,10 @@ const Main = () => {
     if (allDeleteQueries.length !== 0) {
       setLoading(false);
       setDeleteQueries(allDeleteQueries);
-      let flag = false;
+      let flag = true;
       for (let i = 0; i < deleteQueries.length; i++) {
         if (deleteQueries[i].updated.false) {
-          flag = true;
+          flag = false;
         }
       }
 
@@ -189,9 +189,14 @@ const Main = () => {
   useEffect(() => {
     if (allBatches.length !== 0) {
       dispatch(getAttendanceByBatchCodes({ allBatches }));
-      createList();
     }
   }, [allBatches]);
+
+  useEffect(() => {
+    if (attendances.length !== 0) {
+      createList();
+    }
+  }, [attendances]);
 
   // console.log("barchart", barChartData);
   // console.log("index", index);
@@ -204,7 +209,7 @@ const Main = () => {
       dispatch({ type: UPDATE_DELETE_QUERY, payload: false });
     }
   }, [store.admin.deleteQueryUpdated]);
-  console.log(deleteQueries);
+  console.log(noQueryFound);
 
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">

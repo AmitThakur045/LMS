@@ -104,6 +104,12 @@ const Main = () => {
     minorTickLines: { width: 0 },
   };
 
+  useEffect(() => {
+    if (attendances.length !== 0) {
+      createList();
+    }
+  }, [attendances]);
+
   const createList = () => {
     let list = [];
     for (let i = 0; i < attendances.length; i++) {
@@ -140,12 +146,16 @@ const Main = () => {
   };
 
   useEffect(() => {
+    createList();
+  }, [courseCode]);
+
+  useEffect(() => {
     setLoading(true);
     setCourseCode("DS101");
     dispatch(
       getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
     );
-    createList();
+
     setLoading(false);
   }, []);
 
@@ -267,8 +277,7 @@ const Main = () => {
                 id="demo-select-small"
                 value={courseCode}
                 label="Course"
-                onChange={(e) => handleChange(e)}
-              >
+                onChange={(e) => handleChange(e)}>
                 {batchData.courses.map((course) => (
                   <MenuItem value={course.courseCode}>
                     {course.courseCode}
