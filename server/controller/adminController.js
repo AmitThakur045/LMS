@@ -7,6 +7,7 @@ import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
+import batch from "../models/batch.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -208,13 +209,24 @@ export const addStudentQuery = async (req, res) => {
 export const updateDeleteQuery = async (req, res) => {
   try {
     const { code, subAdmin, status } = req.body;
-
+    console.log();
     const deleteQuery = await DeleteQuery.findOne({ code, subAdmin });
     deleteQuery.status = status;
     deleteQuery.updated = true;
     await deleteQuery.save();
     if (status === true) {
-      const student = await Student.findOneAndDelete({ email: code });
+      const student = await Student.findOne({ email: code });
+      for (let i = 0; i < student.batchCode.length; i++) {
+        const batch = await Batch.findOne({ batchCode: student.batchCode[i] });
+        if (batch) {
+          let index = batch.students.findIndex((stu) => stu === code);
+          batch.students.splice(index, 1);
+        }
+        await batch.save();
+      }
+
+      student.remove();
+
       return res.status(200).json("Student Deleted");
     }
     return res.status(200).json("Query Updated");
