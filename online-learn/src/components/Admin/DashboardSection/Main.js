@@ -7,9 +7,9 @@ import LineGraph from "../../../Utils/LineGraph";
 import BarGraph from "../../../Utils/BarGraph";
 import PieChart from "../../../Utils/PieChart";
 import {
-  lineCustomSeries,
-  LinePrimaryXAxis,
-  LinePrimaryYAxis,
+  // lineCustomSeries,
+  // LinePrimaryXAxis,
+  // LinePrimaryYAxis,
   // barCustomSeries,
   // barPrimaryXAxis,
   // barPrimaryYAxis,
@@ -28,6 +28,7 @@ import {
   getAllDeleteQuery,
   updateDeleteQuery,
   getAllDeleteQueryBySubAdmin,
+  getAllStudent,
 } from "../../../Redux/actions/adminActions";
 import { Avatar } from "@mui/material";
 import Spinner from "../../../Utils/Spinner";
@@ -45,11 +46,13 @@ const Main = () => {
   const allAdmins = useSelector((state) => state.admin.adminsLength);
   const attendances = useSelector((store) => store.admin.attendance);
   const allDeleteQueries = useSelector((state) => state.admin.allDeleteQuery);
+  const everyStudent = useSelector((state) => state.admin.allStudent);
   const [batches, setBatches] = useState(0);
   const [courses, setCourses] = useState(0);
   const [students, setStudents] = useState(0);
   const [admins, setAdmins] = useState(0);
   const [barChartData, setBarChartData] = useState([]);
+  const [lineChartData, setLineChartData] = useState([]);
 
   const [deleteQueries, setDeleteQueries] = useState([]);
   const [noQueryFound, setNoQueryFound] = useState(false);
@@ -124,8 +127,90 @@ const Main = () => {
 
     dispatch(getCoursesLength());
     dispatch(getAllDeleteQuery());
+    dispatch(getAllStudent());
   }, []);
 
+  console.log("everyStudent", everyStudent);
+
+  // Line Graph
+  const lineCustomSeries = [
+    {
+      dataSource: lineChartData,
+      xName: "x",
+      yName: "y",
+      name: "Admission",
+      width: "2",
+      marker: { visible: true, width: 10, height: 10 },
+      type: "Line",
+    },
+  ];
+  const LinePrimaryXAxis = {
+    valueType: "Category",
+    labelFormat: "y",
+    intervalType: "Date",
+    edgeLabelPlacement: "Shift",
+    majorGridLines: { width: 0 },
+    background: "white",
+  };
+  const LinePrimaryYAxis = {
+    labelFormat: "{value}",
+    rangePadding: "None",
+    minimum: 0,
+    maximum: 10,
+    interval: 2,
+    lineStyle: { width: 0 },
+    majorTickLines: { width: 0 },
+    minorTickLines: { width: 0 },
+  };
+
+  useEffect(() => {
+    if (everyStudent.length !== 0) {
+      let list = [
+        { x: "Jan", y: 0 },
+        { x: "Feb", y: 0 },
+        { x: "Mar", y: 0 },
+        { x: "Apr", y: 0 },
+        { x: "May", y: 0 },
+        { x: "Jun", y: 0 },
+        { x: "Jul", y: 0 },
+        { x: "Aug", y: 0 },
+        { x: "Sep", y: 0 },
+        { x: "Oct", y: 0 },
+        { x: "Nov", y: 0 },
+        { x: "Dec", y: 0 },
+      ];
+      everyStudent.map((student) => {
+        let idx = new Date(student.dateOfJoining).getMonth();
+        list[idx].y += 1;
+      });
+
+      const newList = list.sort((a, b) => {
+        return new Date(a.x) - new Date(b.x);
+      });
+
+      setLineChartData(newList);
+    }
+  }, [everyStudent]);
+  console.log("newList", lineChartData);
+
+  // const barCustomSeries1 = [
+  //   {
+  //     dataSource: lineChartData,
+  //     xName: "x",
+  //     yName: "y",
+  //     name: "Attendance",
+  //     type: "Column",
+  //     marker: {
+  //       dataLabel: {
+  //         visible: true,
+  //         position: "Top",
+  //         font: { fontWeight: "600", color: "#ffffff" },
+  //       },
+  //     },
+  //   },
+  // ];
+
+  // Bar Graph
   const barCustomSeries = [
     {
       dataSource: barChartData,
@@ -142,7 +227,6 @@ const Main = () => {
       },
     },
   ];
-
   const barPrimaryXAxis = {
     valueType: "Category",
     interval: 1,
@@ -156,7 +240,7 @@ const Main = () => {
   };
 
   // const [index, setIndex] = useState(0);
-  const createList = () => {
+  const createBarGraphList = () => {
     let list = [
       { x: "Jan", y: 0 },
       { x: "Feb", y: 0 },
@@ -194,7 +278,7 @@ const Main = () => {
 
   useEffect(() => {
     if (attendances.length !== 0) {
-      createList();
+      createBarGraphList();
     }
   }, [attendances]);
 
@@ -244,14 +328,21 @@ const Main = () => {
         </div>
       </div>
       <div className="flex justify-between">
-        <LineGraph
-          lineCustomSeries={lineCustomSeries}
-          LinePrimaryXAxis={LinePrimaryXAxis}
-          LinePrimaryYAxis={LinePrimaryYAxis}
-          chartId={"TeacherStudents"}
-          height={"420px"}
-          width={"550px"}
-        />
+        {lineChartData.length !== 0 && (
+          <LineGraph
+            lineCustomSeries={lineCustomSeries}
+            LinePrimaryXAxis={LinePrimaryXAxis}
+            LinePrimaryYAxis={LinePrimaryYAxis}
+            chartId={"Admission"}
+            height={"420px"}
+            width={"550px"}
+          />
+        )}
+        {/* <BarGraph 
+          barCustomSeries={barCustomSeries1}
+          barPrimaryXAxis={barPrimaryXAxis}
+          barPrimaryYAxis={barPrimaryYAxis}
+        /> */}
         <BarGraph
           barCustomSeries={barCustomSeries}
           barPrimaryXAxis={barPrimaryXAxis}
@@ -303,7 +394,8 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                            >
                               Approve
                             </button>
                             <button
@@ -317,7 +409,8 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                            >
                               Decline
                             </button>
                           </div>
@@ -343,7 +436,8 @@ const Main = () => {
                           {query.status === true ? (
                             <button
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                            >
                               Approved
                             </button>
                           ) : (
@@ -351,13 +445,15 @@ const Main = () => {
                               {query.status === false ? (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                                >
                                   Declined
                                 </button>
                               ) : (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150">
+                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150"
+                                >
                                   Waiting
                                 </button>
                               )}
