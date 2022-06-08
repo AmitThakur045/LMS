@@ -46,6 +46,7 @@ import {
   getAllDeleteQuery,
   updateDeleteQuery,
   getAllDeleteQueryBySubAdmin,
+  getBatchesByBatchCode,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -110,4 +111,5 @@ router.post("/geteventbycoursecode", auth, getEventByCourseCode);
 router.post("/addscore", auth, addScore);
 router.post("/addbatchlink", auth, addBatchLink);
 router.post("/updatecoursedata", auth, updateCourseData);
+router.post("/getbatchesbybatchcode", auth, getBatchesByBatchCode);
 export default router;
