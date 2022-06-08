@@ -13,7 +13,7 @@ import {
   // barCustomSeries,
   // barPrimaryXAxis,
   // barPrimaryYAxis,
-  pieChartData as data,
+  // pieChartData as data,
 } from "./Data";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,6 +29,7 @@ import {
   updateDeleteQuery,
   getAllDeleteQueryBySubAdmin,
   getAllStudent,
+  getBatchesByBatchCode,
 } from "../../../Redux/actions/adminActions";
 import { Avatar } from "@mui/material";
 import Spinner from "../../../Utils/Spinner";
@@ -47,12 +48,14 @@ const Main = () => {
   const attendances = useSelector((store) => store.admin.attendance);
   const allDeleteQueries = useSelector((state) => state.admin.allDeleteQuery);
   const everyStudent = useSelector((state) => state.admin.allStudent);
+  const batchArray = useSelector((state) => state.admin.batchArray);
   const [batches, setBatches] = useState(0);
   const [courses, setCourses] = useState(0);
   const [students, setStudents] = useState(0);
   const [admins, setAdmins] = useState(0);
   const [barChartData, setBarChartData] = useState([]);
   const [lineChartData, setLineChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
 
   const [deleteQueries, setDeleteQueries] = useState([]);
   const [noQueryFound, setNoQueryFound] = useState(false);
@@ -130,8 +133,6 @@ const Main = () => {
     dispatch(getAllStudent());
   }, []);
 
-  console.log("everyStudent", everyStudent);
-
   // Line Graph
   const lineCustomSeries = [
     {
@@ -191,24 +192,7 @@ const Main = () => {
       setLineChartData(newList);
     }
   }, [everyStudent]);
-  console.log("newList", lineChartData);
-
-  // const barCustomSeries1 = [
-  //   {
-  //     dataSource: lineChartData,
-  //     xName: "x",
-  //     yName: "y",
-  //     name: "Attendance",
-  //     type: "Column",
-  //     marker: {
-  //       dataLabel: {
-  //         visible: true,
-  //         position: "Top",
-  //         font: { fontWeight: "600", color: "#ffffff" },
-  //       },
-  //     },
-  //   },
-  // ];
+  // console.log("newList", lineChartData);
 
   // Bar Graph
   const barCustomSeries = [
@@ -238,8 +222,6 @@ const Main = () => {
     lineStyle: { width: 0 },
     labelStyle: { color: "transparent" },
   };
-
-  // const [index, setIndex] = useState(0);
   const createBarGraphList = () => {
     let list = [
       { x: "Jan", y: 0 },
@@ -270,22 +252,44 @@ const Main = () => {
     setBarChartData(list);
   };
 
+  const createPieChartList = () => {
+    let list = [];
+    let totalStudent = 0;
+
+    batchArray.map((batch) => {
+      totalStudent += batch.students.length;
+    });
+
+    batchArray.map((batch) => {
+      let percentage = (batch.students.length / totalStudent) * 100;
+      list.push({
+        x: batch.batchCode,
+        y: batch.students.length,
+        text: percentage.toFixed(2) + "%",
+      });
+    });
+
+    // const newList = list.sort((a, b) => {
+    //   return a.x - b.x;
+    // });
+
+    setPieChartData(list);
+  };
+
   useEffect(() => {
     if (allBatches.length !== 0) {
       dispatch(getAttendanceByBatchCodes({ allBatches }));
+      dispatch(getBatchesByBatchCode({ allBatches }));
     }
   }, [allBatches]);
 
   useEffect(() => {
     if (attendances.length !== 0) {
       createBarGraphList();
+      createPieChartList();
     }
   }, [attendances]);
 
-  // console.log("barchart", barChartData);
-  // console.log("index", index);
-  // console.log("attendance", attendances);
-  // console.log("allBatches", allBatches);
   useEffect(() => {
     if (store.admin.deleteQueryUpdated) {
       setLoading(true);
@@ -293,7 +297,11 @@ const Main = () => {
       dispatch({ type: UPDATE_DELETE_QUERY, payload: false });
     }
   }, [store.admin.deleteQueryUpdated]);
-  console.log(noQueryFound);
+
+  // console.log(noQueryFound);
+  // console.log("allBatches", allBatches);
+  // console.log("batchArray", batchArray);
+  // console.log("pie", pieChartData);
 
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
@@ -338,11 +346,6 @@ const Main = () => {
             width={"550px"}
           />
         )}
-        {/* <BarGraph 
-          barCustomSeries={barCustomSeries1}
-          barPrimaryXAxis={barPrimaryXAxis}
-          barPrimaryYAxis={barPrimaryYAxis}
-        /> */}
         <BarGraph
           barCustomSeries={barCustomSeries}
           barPrimaryXAxis={barPrimaryXAxis}
@@ -354,7 +357,7 @@ const Main = () => {
           <h1 className="text-[#510B88] font-bold text-[18px]">Batch</h1>
           <hr />
           <div className="flex items-center space-x-20 justify-evenly">
-            <PieChart data={data} legendVisiblity />
+            <PieChart data={pieChartData} legendVisiblity />
           </div>
         </div>
         <div className="w-[40%] space-y-6">

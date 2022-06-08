@@ -19,9 +19,6 @@ const LineGraph = ({
   height,
   width,
 }) => {
-
-  console.log(lineCustomSeries);
-
   return (
     <ChartComponent
       id={chartId}

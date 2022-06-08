@@ -37,6 +37,7 @@ import {
   ADD_DELETE_QUERY,
   GET_ALL_DELETE_QUERY,
   UPDATE_DELETE_QUERY,
+  GET_BATCHES_BY_BATCH_CODE,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -320,6 +321,17 @@ export const getBatch = (formData) => async (dispatch) => {
   }
 };
 
+export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
+  try {
+    console.log("allBatchesForm", allBatches);
+    const { data } = await api.getBatchesByBatchCode(allBatches);
+    // console.log("dataForm", data);
+    dispatch({ type: GET_BATCHES_BY_BATCH_CODE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}
+
 export const getAllCourseCodes = () => async (dispatch) => {
   try {
     const { data } = await api.getAllCourseCodes();
@@ -395,7 +407,7 @@ export const getAttendanceStatus = (formData) => async (dispatch) => {
 export const getAttendanceByBatchCodes = (allBatches) => async (dispatch) => {
   try {
     const { data } = await api.getAttendanceByBatchCodes(allBatches);
-    console.log("data", data);
+    // console.log("data", data);
     dispatch({ type: GET_ATTENDANCE_BY_BATCH_CODES, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data }); 
