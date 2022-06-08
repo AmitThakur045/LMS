@@ -715,7 +715,6 @@ export const addBatch = async (req, res) => {
 };
 
 // get all batches
-
 export const getAllBatchCodes = async (req, res) => {
   try {
     const batches = await Batch.find();
@@ -736,6 +735,26 @@ export const getAllBatchCodes = async (req, res) => {
     res.status(500).json(errors);
   }
 };
+
+export const getBatchesByBatchCode = async (req, res) => {
+  try {
+    const { allBatches } = req.body;
+    // console.log("allBatches", allBatches);
+    let list = [];
+
+    for (let i = 0; i < allBatches.length; i++) {
+      const batch = await Batch.findOne({ batchCode: allBatches[i].value });
+      list.push(batch);
+    }
+
+    // console.log("list", list);
+    res.status(200).json(list);
+  } catch (error) {
+    const errors = { backendError: String };
+    errors.backendError = error;
+    res.status(500).json(errors);
+  }
+}
 
 export const getBatchCodesByOrganizationName = async (req, res) => {
   try {

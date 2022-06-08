@@ -38,6 +38,7 @@ import {
   ADD_DELETE_QUERY,
   GET_ALL_DELETE_QUERY,
   UPDATE_DELETE_QUERY,
+  GET_BATCHES_BY_BATCH_CODE,
 } from "../actionTypes";
 
 const initialState = {
@@ -78,6 +79,7 @@ const initialState = {
   deleteQuery: false,
   allDeleteQuery: [],
   deleteQueryUpdated: false,
+  batchArray: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -192,6 +194,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         batch: action.payload,
+      };
+    case GET_BATCHES_BY_BATCH_CODE: 
+      return {
+        ...state,
+        batchArray: action.payload,
       };
     case GET_ATTENDANCE_STATUS:
       return {
