@@ -63,6 +63,7 @@ export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
   API.post("/api/admin/getbatchevent", batchCode);
+export const getBatchesByBatchCode = (allBatches) => API.post("/api/admin/getbatchesbybatchcode", allBatches);
 export const getEventByCourseCode = (data) =>
   API.post("/api/admin/geteventbycoursecode", data);
 export const uploadAttendance = (attendanceRecord) =>
