@@ -7,10 +7,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Spinner from "../Utils/Spinner";
 import { addStudent } from "../Redux/actions/adminActions";
 import { ADD_STUDENT, SET_ERRORS } from "../Redux/actionTypes";
+import { studentSignIn } from "../Redux/actions/studentActions";
 
 const StudentLogin = () => {
   const [translate, setTranslate] = useState(false);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [value, setValue] = useState({
     firstName: "",
@@ -41,7 +42,7 @@ const StudentLogin = () => {
   const login = (e) => {
     e.preventDefault();
     setLoading(true);
-    // dispatch(adminSignIn({ username: username, password: password }, navigate));
+    dispatch(studentSignIn({ email: email, password: password }, navigate));
   };
 
   const signUp = (e) => {
@@ -52,7 +53,6 @@ const StudentLogin = () => {
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      // setValue({ ...value, email: "" });
     }
   }, [store.errors]);
 
@@ -82,7 +82,7 @@ const StudentLogin = () => {
   useEffect(() => {
     if (store.errors) {
       setLoading(false);
-      setUsername("");
+      setEmail("");
       setPassword("");
     }
   }, [store.errors]);
@@ -211,15 +211,15 @@ const StudentLogin = () => {
             }  duration-1000 transition-all space-y-6 rounded-3xl shadow-2xl`}>
             <h1 className="text-white text-3xl font-semibold">Student</h1>
             <div className="space-y-1">
-              <p className="text-[#515966] font-bold text-sm">Username</p>
+              <p className="text-[#515966] font-bold text-sm">Email</p>
               <div className="bg-[#515966] rounded-lg w-[14rem] flex  items-center">
                 <input
-                  onChange={(e) => setUsername(e.target.value)}
-                  value={username}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   type="text"
                   required
                   className="bg-[#515966] text-white px-2 outline-none py-2 rounded-lg placeholder:text-sm"
-                  placeholder="Username"
+                  placeholder="Email"
                 />
               </div>
             </div>
