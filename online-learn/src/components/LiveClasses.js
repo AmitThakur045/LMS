@@ -93,10 +93,17 @@ const LiveClasses = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="flex-[0.70] h-full p-2">
-            <Calender scheduleData={scheduleData} />
+          <div className="flex-[0.80] h-full p-1 m-0">
+            {/* <Calender scheduleData={scheduleData} /> */}
+            <Calendar
+              localizer={localizer}
+              // events={allEvents}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500, margin: "50px" }}
+            />
           </div>
-          <div className="flex-[0.3] mx-24 justify-center my-12 rounded-2xl shadow-lg h-[20rem]">
+          <div className="flex-[0.22] mx-24 justify-center my-12 rounded-2xl shadow-lg h-[20rem]">
             <div className="text-4xl mt-6 font-bold flex justify-center items-center">
               {newDate}
             </div>
