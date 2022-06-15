@@ -3,13 +3,13 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 export const studentLogin = async (req, res) => {
-  const { username, password } = req.body;
-  const errors = { usernameError: String, passwordError: String };
+  const { email, password } = req.body;
+  const errors = { emailError: String, passwordError: String };
 
   try {
-    const existingStudent = await Student.findOne({ username });
+    const existingStudent = await Student.findOne({ email });
     if (!existingStudent) {
-      errors.usernameError = "Student doesn't exist.";
+      errors.emailError = "Student doesn't exist.";
       return res.status(404).json(errors);
     }
 
@@ -29,12 +29,12 @@ export const studentLogin = async (req, res) => {
         id: existingStudent._id,
       },
       "sEcReT",
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     );
 
     res.status(200).json({ result: existingStudent, token: token });
   } catch (error) {
-    console.log(error);
+    res.status(500).json(error);
   }
 };
 
