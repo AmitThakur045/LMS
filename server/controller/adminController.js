@@ -739,7 +739,7 @@ export const getAllBatchCodes = async (req, res) => {
 export const getBatchesByBatchCode = async (req, res) => {
   try {
     const { allBatches } = req.body;
-    // console.log("allBatches", allBatches);
+    console.log("getBatchesByBatchCode", allBatches);
     let list = [];
 
     for (let i = 0; i < allBatches.length; i++) {
@@ -759,7 +759,21 @@ export const getBatchesByBatchCode = async (req, res) => {
 export const getBatchCodesByOrganizationName = async (req, res) => {
   try {
     const { organizationName, subAdmin } = req.body;
-    const batches = await Batch.find({ organizationName, subAdmin });
+    console.log("organizationName", organizationName);
+    // console.log("subAdmin", subAdmin);
+    const currAdmin = await Admin.findOne({ email: subAdmin });
+    let batches = [];
+
+    console.log("curr", currAdmin.sub);
+
+    if (currAdmin.sub === 'true') {
+      batches = await Batch.find({ organizationName, subAdmin });
+    } else {
+      batches = await Batch.find({ organizationName });
+    }
+
+    console.log("batches", batches);
+
     const errors = { noBatchError: String };
     let batchCodes = [];
 
@@ -769,9 +783,10 @@ export const getBatchCodesByOrganizationName = async (req, res) => {
         value: batches[i].batchCode,
       });
     }
-
+    console.log("batchCdes", batchCodes);
     res.status(200).json(batchCodes);
   } catch (error) {
+    console.log("error", error);
     const errors = { backendError: String };
     errors.backendError = error;
     res.status(500).json(errors);
@@ -996,7 +1011,8 @@ export const getAttendanceStatus = async (req, res) => {
 export const getAttendanceByBatchCodes = async (req, res) => {
   try {
     const { allBatches } = req.body;
-    // console.log("allBatches", allBatches);
+    
+    console.log("getAttendancebybatchCode", allBatches);
     let attendance = [];
     for (let i = 0; i < allBatches.length; i++) {
       const batch = await Attendance.find({ batchCode: allBatches[i].value });
@@ -1004,7 +1020,10 @@ export const getAttendanceByBatchCodes = async (req, res) => {
         attendance.push(batch);
       }
     }
-    // console.log(attendance[0]);
+    // if(attendance === undefined) {
+    //   attendance.push([]);
+    // }
+    console.log("attendance", attendance[0]);
     res.status(200).json(attendance[0]);
   } catch (error) {
     console.log("Backend Error", error);

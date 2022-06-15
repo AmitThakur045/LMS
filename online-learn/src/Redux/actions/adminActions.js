@@ -305,6 +305,7 @@ export const getAllDeleteQueryBySubAdmin = (formData) => async (dispatch) => {
 export const getBatchCodesByOrganizationName =
   (formData) => async (dispatch) => {
     try {
+      console.log("form", formData);
       const { data } = await api.getBatchCodesByOrganizationName(formData);
       dispatch({ type: GET_ALL_BATCH, payload: data });
     } catch (error) {
