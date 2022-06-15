@@ -754,25 +754,21 @@ export const getBatchesByBatchCode = async (req, res) => {
     errors.backendError = error;
     res.status(500).json(errors);
   }
-}
+};
 
 export const getBatchCodesByOrganizationName = async (req, res) => {
   try {
     const { organizationName, subAdmin } = req.body;
-    console.log("organizationName", organizationName);
     // console.log("subAdmin", subAdmin);
     const currAdmin = await Admin.findOne({ email: subAdmin });
-    let batches = [];
+    console.log(currAdmin.firstName);
+    // let batches = [];
 
-    console.log("curr", currAdmin.sub);
-
-    if (currAdmin.sub === 'true') {
-      batches = await Batch.find({ organizationName, subAdmin });
-    } else {
-      batches = await Batch.find({ organizationName });
-    }
-
-    console.log("batches", batches);
+    // if (currAdmin.sub === "true") {
+    const batches = await Batch.find({ organizationName, subAdmin });
+    // } else {
+    //   batches = await Batch.find({ organizationName });
+    // }
 
     const errors = { noBatchError: String };
     let batchCodes = [];
@@ -783,7 +779,6 @@ export const getBatchCodesByOrganizationName = async (req, res) => {
         value: batches[i].batchCode,
       });
     }
-    console.log("batchCdes", batchCodes);
     res.status(200).json(batchCodes);
   } catch (error) {
     console.log("error", error);
@@ -1011,7 +1006,7 @@ export const getAttendanceStatus = async (req, res) => {
 export const getAttendanceByBatchCodes = async (req, res) => {
   try {
     const { allBatches } = req.body;
-    
+
     console.log("getAttendancebybatchCode", allBatches);
     let attendance = [];
     for (let i = 0; i < allBatches.length; i++) {
