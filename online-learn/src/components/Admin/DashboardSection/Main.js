@@ -405,8 +405,7 @@ const Main = () => {
               id="demo-select-small"
               value={organizationName}
               label="Course"
-              onChange={(e) => handleOrganizationNameChange(e)}
-            >
+              onChange={(e) => handleOrganizationNameChange(e)}>
               {allOrganizationName.map((organization) => (
                 <MenuItem value={organization}>{organization}</MenuItem>
               ))}
@@ -476,8 +475,7 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
-                            >
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
                               Approve
                             </button>
                             <button
@@ -491,8 +489,7 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
-                            >
+                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
                               Decline
                             </button>
                           </div>
@@ -518,8 +515,7 @@ const Main = () => {
                           {query.status === true ? (
                             <button
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
-                            >
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
                               Approved
                             </button>
                           ) : (
@@ -527,15 +523,13 @@ const Main = () => {
                               {query.status === false ? (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
-                                >
+                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
                                   Declined
                                 </button>
                               ) : (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150"
-                                >
+                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150">
                                   Waiting
                                 </button>
                               )}
