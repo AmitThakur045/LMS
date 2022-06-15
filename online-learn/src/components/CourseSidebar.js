@@ -7,17 +7,19 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import { useDispatch } from "react-redux";
+import { LOGOUT } from "../Redux/actionTypes";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
 
 const CourseSidebar = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const logout = () => {
-    navigate("/login/adminLogin");
+    dispatch({ type: LOGOUT });
+    navigate("/login");
   };
-
   return (
     <div className="h-[45.5rem] flex-[0.07] flex flex-col  my-4 justify-between py-5">
       <NavLink

@@ -63,7 +63,8 @@ export const getBatch = (data) => API.post("/api/admin/getbatch", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
   API.post("/api/admin/getbatchevent", batchCode);
-export const getBatchesByBatchCode = (allBatches) => API.post("/api/admin/getbatchesbybatchcode", allBatches);
+export const getBatchesByBatchCode = (allBatches) =>
+  API.post("/api/admin/getbatchesbybatchcode", allBatches);
 export const getEventByCourseCode = (data) =>
   API.post("/api/admin/geteventbycoursecode", data);
 export const uploadAttendance = (attendanceRecord) =>
@@ -82,3 +83,8 @@ export const getStudentByAssignmentCode = (data) =>
 export const addScore = (formData) => API.post("/api/admin/addscore", formData);
 export const updateCourseData = (formData) =>
   API.post("/api/admin/updatecoursedata", formData);
+
+//Student
+
+export const studentSignIn = (formData) =>
+  API.post("/api/student/login", formData);

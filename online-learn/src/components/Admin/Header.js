@@ -3,13 +3,14 @@ import { AiOutlineBell, AiOutlineMessage } from "react-icons/ai";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LOGOUT } from "../../Redux/actionTypes";
 
 const Header = ({ title }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {
-    dispatch({ type: "LOGOUT" });
+    dispatch({ type: LOGOUT });
     navigate("/admin/login");
   };
   return (
