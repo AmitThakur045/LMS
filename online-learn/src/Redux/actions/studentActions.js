@@ -2,6 +2,7 @@ import {
   SET_ERRORS,
   STUDENT_LOGIN,
   GET_COURSE_BY_BATCH_CODE,
+  GET_ALL_EVENTS
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -17,10 +18,18 @@ export const studentSignIn = (formData, navigate) => async (dispatch) => {
 
 export const getCourseByBatchCode = (batchCode) => async (dispatch) => {
   try {
-    console.log("BatchCode", batchCode);
     const { data } = await api.getCourseByBatchCode(batchCode);
     dispatch({ type: GET_COURSE_BY_BATCH_CODE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const getAllEvents = (batchCode) => async (dispatch) => {
+  try {
+    const { data } = await api.getAllEvents(batchCode);
+    dispatch({ type: GET_ALL_EVENTS, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}
