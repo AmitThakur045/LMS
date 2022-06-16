@@ -1,7 +1,8 @@
-import { LOGOUT, STUDENT_LOGIN } from "../actionTypes";
+import { LOGOUT, STUDENT_LOGIN, GET_COURSE_BY_BATCH_CODE } from "../actionTypes";
 
 const initialState = {
   authData: null,
+  courseList: [],
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -12,7 +13,12 @@ const studentReducer = (state = initialState, action) => {
     case LOGOUT:
       localStorage.clear();
       return { ...state, authData: null };
-    default:
+    case GET_COURSE_BY_BATCH_CODE: 
+      return {
+        ...state,
+        courseList: action.payload,
+      };
+    default:  
       return state;
   }
 };

@@ -1,6 +1,8 @@
 import Student from "../models/student.js";
+import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Batch from "../models/batch.js";
 
 export const studentLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -34,6 +36,27 @@ export const studentLogin = async (req, res) => {
     );
 
     res.status(200).json({ result: existingStudent, token: token });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getCourseByBatchCode = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    console.log("batchCode", batchCode);
+    const courseCodeList = await Batch.findOne({ batchCode });
+
+    const data = [];
+    let len = courseCodeList.courses.length;
+
+    for(let i=0; i<len; i++) {
+      const course = await Course.findOne({ courseCode: courseCodeList.courses[i].courseCode });
+      data.push(course);
+    }
+
+    // console.log("data", data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json(error);
   }
