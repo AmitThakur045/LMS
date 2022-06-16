@@ -69,6 +69,11 @@ const CourseList = ({ currentList, courseCode }) => {
         });
       };
     }
+    // let newFile = atob(file);
+    // setValue({
+    //   ...value,
+    //   assignmentPdf: newFile,
+    // });
   };
 
   let assignmentStudent = useSelector((store) => store.admin.studentList);
