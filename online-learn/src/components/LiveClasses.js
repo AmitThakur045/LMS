@@ -32,7 +32,7 @@ const LiveClasses = () => {
   const dispatch = useDispatch();
   const learner = JSON.parse(localStorage.getItem("user"));
   const events = useSelector((state) => state.student.allEvents);
-  const [allEvents, setAllEvents] = useState(events);
+  const [allEvents, setAllEvents] = useState([]);
   const [value, setValue] = useState({
     start: "",
     end: "",
@@ -57,15 +57,11 @@ const LiveClasses = () => {
     "Dec",
   ];
 
-  let date = new Date();
-  let newDate = date.getDate();
-  let monthAndYear = new Date(date).toLocaleString("en-us", {
-    month: "short",
-    year: "numeric",
-  });
-
   useEffect(() => {
     dispatch(getAllEvents({ batchCode: learner.result.batchCode }));
+    if (events.length > 0) {
+      setAllEvents(events);
+    }
   }, []);
 
   return (
@@ -105,7 +101,6 @@ const LiveClasses = () => {
         </div>
         <div className="flex">
           <div className="flex-[0.80] h-full p-1 m-0">
-            {/* <Calender scheduleData={scheduleData} /> */}
             <Calendar
               localizer={localizer}
               events={allEvents}
@@ -121,7 +116,7 @@ const LiveClasses = () => {
                   link: e.link,
                   month: e.start.substr(5, 2),
                   year: e.start.substr(0, 4),
-                  date: e.start
+                  date: e.start,
                 });
                 console.log(value);
               }}
@@ -133,7 +128,7 @@ const LiveClasses = () => {
               {value.start}
             </div>
             <div className="flex justify-center items-center text-xl font-semibold">
-              {month[value.month-1]} {value.year}
+              {month[value.month - 1]} {value.year}
             </div>
             <div className="flex justify-center my-10 text-orange-900 items-center text-xl font-semibold">
               Class At: {value.date.substr(11)} PM IST
