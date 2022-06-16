@@ -3,12 +3,14 @@ import {
   STUDENT_LOGIN,
   GET_COURSE_BY_BATCH_CODE,
   GET_ALL_EVENTS,
+  GET_ASSIGNMENT_BY_BATCH_CODE,
 } from "../actionTypes";
 
 const initialState = {
   authData: null,
   courseList: [],
   allEvents: [],
+  assignment: [],
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -28,6 +30,11 @@ const studentReducer = (state = initialState, action) => {
       return {
         ...state,
         allEvents: action.payload,
+      };
+    case GET_ASSIGNMENT_BY_BATCH_CODE:
+      return {
+        ...state,
+        assignment: action.payload,
       };
     default:
       return state;

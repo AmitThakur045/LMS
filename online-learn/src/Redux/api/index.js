@@ -91,3 +91,5 @@ export const studentSignIn = (formData) =>
 export const getCourseByBatchCode = (batchCode) =>
   API.post("/api/student/getcoursebybatchcode", batchCode);
 export const getAllEvents = (batchCode) => API.post("/api/student/getallevents", batchCode); 
+export const getAssignmentByBatchCode = (batchCode) =>
+  API.post("/api/student/getassignmentbybatchcode", batchCode);
