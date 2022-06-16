@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Course1_img from "../Assests/Course1_img.svg";
 import Course2_img from "../Assests/Course2_img.svg";
 import Course3_img from "../Assests/Course3_img.jpg";
@@ -8,6 +8,8 @@ import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { NavLink, useNavigate } from "react-router-dom";
 import HomeSidebar from "./HomeSidebar";
+import { getCourseByBatchCode } from "../Redux/actions/studentActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const sampleDate = [
   {
@@ -96,9 +98,12 @@ var colors = ["#C87343", "#DFB23C", "#4F8834", "#345688", "#813488"];
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const learner = JSON.parse(localStorage.getItem("user"));
+  const courseList = useSelector((state) => state.student.courseList);
+  
   const [totalStars, setTotalStars] = useState([]);
-  const [openCourse, setOpenCourse] = useState(sampleDate[0]);
+  const [openCourse, setOpenCourse] = useState(courseList[0]);
   const calculateTotalStars = (stars) => {
     setTotalStars([]);
     const list = [];
@@ -107,7 +112,14 @@ const Home = () => {
     }
     setTotalStars(list);
   };
-  console.log(openCourse);
+  
+  useEffect(() => {
+    dispatch(getCourseByBatchCode({ batchCode: learner.result.batchCode[0] }));
+  }, []);
+  
+  // console.log(openCourse);
+  // console.log("courseList", courseList);
+  // console.log(learner);
 
   return (
     <div className="bg-black w-screen h-screen flex overflow-hidden">
@@ -121,16 +133,18 @@ const Home = () => {
             <p className="text-[#AAAAAA]">Completed</p>
           </div>
           <div className="space-y-4 px-[52px] scrollbar-thin scrollbar-track-white scrollbar-thumb-black overflow-y-auto">
-            {sampleDate.map((data, i) => (
+            {courseList.length !== 0 && courseList?.map((data, i) => (
               <div
                 onClick={() => setOpenCourse(data)}
                 key={i}
-                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white h-[9.125rem] shadow-md rounded-2xl p-3 ">
+                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white h-[9.125rem] shadow-md rounded-2xl p-3 "
+              >
                 <NavLink
                   to="/course"
-                  className="relative h-[7.8125rem] w-[17.125rem] bg-black">
+                  className="relative h-[7.8125rem] w-[17.125rem] bg-black"
+                >
                   <img
-                    src={data.img}
+                    src={data.courseImg}
                     className="hover:opacity-50 w-full h-full "
                     alt=""
                   />
@@ -140,7 +154,7 @@ const Home = () => {
                   />
                 </NavLink>
                 <div className="ml-5">
-                  <h4 className="font-bold text-[15px] mb-3">{data.title}</h4>
+                  <h4 className="font-bold text-[15px] mb-3">{data.courseName}</h4>
                   <p className="text-[12px] text-[#ADADAD]">
                     {data.description.slice(0, 100)}
                   </p>
@@ -183,7 +197,7 @@ const Home = () => {
           {openCourse && (
             <div className="w-full flex flex-col mt-4 scrollbar-thin scrollbar-track-white scrollbar-thumb-black overflow-y-auto">
               <img
-                src={openCourse.img}
+                src={openCourse.courseImg}
                 className="w-[45.75rem] h-[23.75rem] object-cover self-center rounded-2xl"
                 alt=""
               />
@@ -217,31 +231,33 @@ const Home = () => {
                   {openCourse.difficulty}
                 </p>
               </div>
-              <h1 className="mx-6 text-[24px] font-bold">{openCourse.title}</h1>
+              <h1 className="mx-6 text-[24px] font-bold">{openCourse.courseName}</h1>
               <p className="mx-6 text-[18px] my-5 text-[#A1A1A1]">
                 {openCourse.description}
               </p>
               <div className="mx-6">
                 <h1 className="font-bold text-[24px] mb-3">Course's Content</h1>
                 <div className="space-y-5">
-                  {openCourse.courseContent.map((content, i) => (
+                  {openCourse.section.map((content, i) => (
                     <div
                       key={i}
-                      className="h-[9.75rem] border-[1px] rounded-2xl flex">
+                      className="h-[9.75rem] border-[1px] rounded-2xl flex"
+                    >
                       <div
                         className={`w-full flex-[0.3] ${
                           i % 2 === 0 ? "bg-[#C87343]" : "bg-[#DFB23C]"
-                        } rounded-tl-2xl rounded-bl-2xl flex items-center justify-center space-x-3`}>
+                        } rounded-tl-2xl rounded-bl-2xl flex items-center justify-center space-x-3`}
+                      >
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
                         <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
                       </div>
                       <div className="flex-[0.7] px-5 py-5 space-y-2">
                         <h1 className="font-bold text-[18px]">
-                          {content.title}
+                          {content.sectionName}
                         </h1>
                         <p className="text-[#6F6F6F] text-[16px]">
-                          {content.description}
+                          {content?.description}
                         </p>
                       </div>
                     </div>
