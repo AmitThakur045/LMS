@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseSidebar from "./CourseSidebar";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
@@ -14,6 +14,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@mui/material";
 import Calender from "../Utils/Calender";
 import { scheduleData } from "./Data";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents } from "../Redux/actions/studentActions";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -26,39 +28,45 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const events = [
-  {
-    title: "Big Meeting",
-    allDay: true,
-    start: new Date(2022, 5, 0),
-    end: new Date(2022, 5, 0),
-  },
-  {
-    title: "Vacation",
-    start: new Date(2022, 5, 7),
-    end: new Date(2022, 5, 10),
-  },
-  {
-    title: "Conference",
-    start: new Date(2022, 5, 20),
-    end: new Date(2022, 5, 23),
-  },
-];
-
 const LiveClasses = () => {
-  const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
+  const dispatch = useDispatch();
+  const learner = JSON.parse(localStorage.getItem("user"));
+  const events = useSelector((state) => state.student.allEvents);
   const [allEvents, setAllEvents] = useState(events);
+  const [value, setValue] = useState({
+    start: "",
+    end: "",
+    link: "",
+    month: "",
+    year: "",
+    date: "",
+  });
 
-  function handleAddEvent() {
-    setAllEvents([...allEvents, newEvent]);
-  }
+  const month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-  var date = new Date();
+  let date = new Date();
   let newDate = date.getDate();
   let monthAndYear = new Date(date).toLocaleString("en-us", {
     month: "short",
     year: "numeric",
   });
+
+  useEffect(() => {
+    dispatch(getAllEvents({ batchCode: learner.result.batchCode }));
+  }, []);
 
   return (
     <div className="bg-black w-screen h-screen flex overflow-hidden">
@@ -74,19 +82,22 @@ const LiveClasses = () => {
           <div className="flex-[0.2] rounded-tr-2xl h-full flex">
             <NavLink
               to="/community"
-              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
+              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center"
+            >
               <PeopleIcon fontSize="medium" className="" />
               <p className="text-base">Community</p>
             </NavLink>
             <NavLink
               to="/help"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
+            >
               <HelpOutlineIcon fontSize="medium" className="" />
               <p className="text-base">Help</p>
             </NavLink>
             <NavLink
               to="/notes"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
+            >
               <FormatListNumberedIcon fontSize="medium" className="" />
               <p className="text-base">Notes</p>
             </NavLink>
@@ -97,21 +108,35 @@ const LiveClasses = () => {
             {/* <Calender scheduleData={scheduleData} /> */}
             <Calendar
               localizer={localizer}
-              // events={allEvents}
+              events={allEvents}
               startAccessor="start"
               endAccessor="end"
+              components={{
+                timeGutterHeader: function noRefCheck() {},
+              }}
+              onSelectEvent={function noRefCheck(e) {
+                setValue({
+                  start: e.start.substr(8, 2),
+                  end: e.end.substr(8, 2),
+                  link: e.link,
+                  month: e.start.substr(5, 2),
+                  year: e.start.substr(0, 4),
+                  date: e.start
+                });
+                console.log(value);
+              }}
               style={{ height: 500, margin: "50px" }}
             />
           </div>
           <div className="flex-[0.22] mx-24 justify-center my-12 rounded-2xl shadow-lg h-[20rem]">
             <div className="text-4xl mt-6 font-bold flex justify-center items-center">
-              {newDate}
+              {value.start}
             </div>
             <div className="flex justify-center items-center text-xl font-semibold">
-              {monthAndYear}
+              {month[value.month-1]} {value.year}
             </div>
             <div className="flex justify-center my-10 text-orange-900 items-center text-xl font-semibold">
-              Class At: 04:00 PM IST
+              Class At: {value.date.substr(11)} PM IST
             </div>
             <div className="flex justify-center items-center mt-4">
               <Button
@@ -125,8 +150,11 @@ const LiveClasses = () => {
                   height: "65px",
                   width: "160px",
                 }}
-                variant="contained">
-                Join
+                variant="contained"
+              >
+                <a href={value.link} target="_blank" rel="noreferrer">
+                  Join
+                </a>
               </Button>
             </div>
           </div>

@@ -3,6 +3,7 @@ import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
+import batch from "../models/batch.js";
 
 export const studentLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -50,9 +51,35 @@ export const getCourseByBatchCode = async (req, res) => {
     const data = [];
     let len = courseCodeList.courses.length;
 
-    for(let i=0; i<len; i++) {
-      const course = await Course.findOne({ courseCode: courseCodeList.courses[i].courseCode });
+    for (let i = 0; i < len; i++) {
+      const course = await Course.findOne({
+        courseCode: courseCodeList.courses[i].courseCode,
+      });
       data.push(course);
+    }
+
+    // console.log("data", data);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getAllEvents = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    console.log("batchCode", batchCode);
+
+    let len = batchCode.length;
+    let data = [];
+
+    console.log("len", len);
+    for (let i = 0; i < len; i++) {
+      console.log("code", batchCode[i]);
+      const batch = await Batch.findOne({ batchCode: batchCode[i] });
+      batch.schedule.forEach((element) => {
+        data.push(element);
+      });
     }
 
     // console.log("data", data);
