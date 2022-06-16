@@ -3,7 +3,7 @@ import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
-import batch from "../models/batch.js";
+import Assignment from "../models/assignment.js";
 
 export const studentLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -80,6 +80,27 @@ export const getAllEvents = async (req, res) => {
       batch.schedule.forEach((element) => {
         data.push(element);
       });
+    }
+
+    // console.log("data", data);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getAssignmentByBatchCode = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    // console.log("batchCode", batchCode);
+
+    let len = batchCode.length;
+    let data = [];
+    for(let i=0; i<len; i++) {
+      const assignment = await Assignment.find({ batchCode: batchCode[i] });
+      assignment.forEach((element) => {
+        data.push(element);
+      })
     }
 
     // console.log("data", data);
