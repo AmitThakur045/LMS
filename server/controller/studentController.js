@@ -91,17 +91,16 @@ export const getAllEvents = async (req, res) => {
 
 export const getAssignmentByBatchCode = async (req, res) => {
   try {
-    const { batchCode } = req.body;
+    const { batchCode, courseCode } = req.body;
     // console.log("batchCode", batchCode);
 
     let len = batchCode.length;
     let data = [];
-    for(let i=0; i<len; i++) {
-      const assignment = await Assignment.find({ batchCode: batchCode[i] });
-      assignment.forEach((element) => {
-        data.push(element);
-      })
-    }
+
+    const assignment = await Assignment.find({ batchCode, courseCode });
+    assignment.forEach((element) => {
+      data.push(element);
+    });
 
     // console.log("data", data);
     res.status(200).json(data);

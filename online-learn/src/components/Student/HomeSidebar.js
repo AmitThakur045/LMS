@@ -3,7 +3,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import PeopleIcon from "@mui/icons-material/People";
-import logo from "../../Assests/icons8-bbb.svg";
+import logo from "../../Assests/Learner_Logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
@@ -25,8 +25,9 @@ const HomeSidebar = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
+    } else {
+      dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
     }
-    dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
   }, []);
 
   return (

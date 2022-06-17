@@ -86,6 +86,7 @@ const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADMIN_LOGIN:
       localStorage.setItem("user", JSON.stringify({ ...action?.data }));
+      localStorage.setItem("admin", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action?.data };
     case LOGOUT:
       localStorage.clear();
@@ -195,7 +196,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         batch: action.payload,
       };
-    case GET_BATCHES_BY_BATCH_CODE: 
+    case GET_BATCHES_BY_BATCH_CODE:
       return {
         ...state,
         batchArray: action.payload,

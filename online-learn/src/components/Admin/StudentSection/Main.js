@@ -27,7 +27,7 @@ const style = {
   p: 4,
 };
 const Main = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});

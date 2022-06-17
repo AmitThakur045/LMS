@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../Assests/Logo.png";
+import logo from "../../Assests/Admin_Logo.png";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
@@ -15,7 +15,7 @@ const isActiveStyle =
   "flex justify-between items-center w-[75%] text-[#5C5892] bg-white px-5 h-[3.5rem] rounded-md";
 
 const Sidebar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {
@@ -32,19 +32,19 @@ const Sidebar = () => {
   //     if (decodedToken.exp * 1000 < new Date().getTime()) logout();
   //   }
 
-  //   setUser(JSON.parse(localStorage.getItem("user")));
+  //   setUser(JSON.parse(localStorage.getItem("admin")));
   // }, [navigate]);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("user")) === null) {
+    if (JSON.parse(localStorage.getItem("admin")) === null) {
       navigate("/admin/login");
     }
   }, []);
   return (
-    <div className="w-[18.75rem] bg-[#5C5892] flex flex-col  py-[28px] justify-between">
+    <div className="w-[18.75rem] bg-[#292828] flex flex-col  py-[28px] justify-between">
       <div className="space-y-8">
         <div className="flex items-center justify-center my-4 space-x-2">
-          <img className="h-12" src={logo} alt="" />
+          <img className="h-16" src={logo} alt="" />
         </div>
         <div className="space-y-4 flex flex-col items-center ">
           <NavLink

@@ -6,7 +6,7 @@ import Header from "./Dashboard/Header";
 import Main from "./Dashboard/Main";
 
 const ViewBatch = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   return (
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
       <Sidebar />

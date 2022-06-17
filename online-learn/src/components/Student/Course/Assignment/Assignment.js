@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import CourseHeader from "../CourseHeader";
 import CourseSidebar from "../CourseSidebar";
 import AssignmentMain from "./AssignmentMain";
 
 const Course = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+
   return (
     <div className="bg-black w-screen h-screen flex overflow-hidden">
       <CourseSidebar />
-      <AssignmentMain />
+      {user !== null && (
+        <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
+          <CourseHeader />
+          <AssignmentMain />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -7,8 +7,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT } from "../../../Redux/actionTypes";
+import { getBatch } from "../../../Redux/actions/adminActions";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
@@ -16,10 +17,21 @@ const isActiveStyle =
 const CourseSidebar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
   };
+  const batch = useSelector((state) => state.admin.batch);
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("learner")) === null) {
+      navigate("/login");
+    }
+
+    dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
+  }, []);
+
   return (
     <div className="h-[45.5rem] flex-[0.07] flex flex-col  my-4 justify-between py-5">
       <NavLink
