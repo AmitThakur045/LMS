@@ -38,6 +38,7 @@ import {
   GET_ALL_DELETE_QUERY,
   UPDATE_DELETE_QUERY,
   GET_BATCHES_BY_BATCH_CODE,
+  DASHBOARD_DATA,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -192,15 +193,14 @@ export const getAllStudentLength = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
-export const getStudentsLengthByOrganizationName =
-  (formData) => async (dispatch) => {
-    try {
-      const { data } = await api.getStudentsLengthByOrganizationName(formData);
-      dispatch({ type: GET_ALL_STUDENT_LENGTH, payload: data });
-    } catch (error) {
-      dispatch({ type: SET_ERRORS, payload: error.response.data });
-    }
-  };
+export const getStudentsLengthBySubAdmin = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getStudentsLengthBySubAdmin(formData);
+    dispatch({ type: GET_ALL_STUDENT_LENGTH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const getAllAdmin = () => async (dispatch) => {
   try {
     const { data } = await api.getAllAdmin();
@@ -302,23 +302,23 @@ export const getAllDeleteQueryBySubAdmin = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
-export const getBatchCodesByOrganizationName =
-  (formData) => async (dispatch) => {
-    try {
-      console.log("form", formData);
-      const { data } = await api.getBatchCodesByOrganizationName(formData);
-      dispatch({ type: GET_ALL_BATCH, payload: data });
-    } catch (error) {
-      dispatch({ type: SET_ERRORS, payload: error.response.data });
-    }
-  };
+export const getBatchCodesBySubAdmin = (formData) => async (dispatch) => {
+  try {
+    console.log("form", formData);
+    const { data } = await api.getBatchCodesBySubAdmin(formData);
+    dispatch({ type: GET_ALL_BATCH, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 
 export const getBatch = (formData) => async (dispatch) => {
   try {
+    console.log(formData);
     const { data } = await api.getBatch(formData);
     dispatch({ type: GET_BATCH, payload: data });
   } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data });
+    // dispatch({ type: SET_ERRORS, payload: error });
   }
 };
 
@@ -331,7 +331,7 @@ export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
 
 export const getAllCourseCodes = () => async (dispatch) => {
   try {
@@ -411,7 +411,7 @@ export const getAttendanceByBatchCodes = (allBatches) => async (dispatch) => {
     // console.log("data", data);
     dispatch({ type: GET_ATTENDANCE_BY_BATCH_CODES, payload: data });
   } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data }); 
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
 
@@ -460,6 +460,35 @@ export const updateCourseData = (formData) => async (dispatch) => {
     const { data } = await api.updateCourseData(formData);
     alert("Course Data Updated Successfully");
     dispatch({ type: UPDATE_COURSE_DATA, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getAdminDashboardDataBySubAdmin =
+  (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.getAdminDashboardDataBySubAdmin(formData);
+      dispatch({ type: DASHBOARD_DATA, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
+export const getAdminDashboardDataByOrganizationName =
+  (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.getAdminDashboardDataByOrganizationName(
+        formData
+      );
+      dispatch({ type: DASHBOARD_DATA, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
+export const getAllAdminDashboardData = () => async (dispatch) => {
+  try {
+    const { data } = await api.getAllAdminDashboardData();
+    dispatch({ type: DASHBOARD_DATA, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

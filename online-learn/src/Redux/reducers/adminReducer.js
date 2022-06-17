@@ -39,6 +39,7 @@ import {
   GET_ALL_DELETE_QUERY,
   UPDATE_DELETE_QUERY,
   GET_BATCHES_BY_BATCH_CODE,
+  DASHBOARD_DATA,
 } from "../actionTypes";
 
 const initialState = {
@@ -80,6 +81,7 @@ const initialState = {
   allDeleteQuery: [],
   deleteQueryUpdated: false,
   batchArray: [],
+  adminDashboardData: {},
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -280,6 +282,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         courseUpdated: action.payload,
+      };
+    case DASHBOARD_DATA:
+      return {
+        ...state,
+        adminDashboardData: action.payload,
       };
     default:
       return state;
