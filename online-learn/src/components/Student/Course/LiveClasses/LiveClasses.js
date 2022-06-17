@@ -35,7 +35,7 @@ const LiveClasses = () => {
     <div className="bg-black w-screen h-screen flex overflow-hidden">
       <CourseSidebar />
       {user !== null && (
-        <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
+        <div className="bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
           <CourseHeader />
           <LiveClassesMain />
         </div>
