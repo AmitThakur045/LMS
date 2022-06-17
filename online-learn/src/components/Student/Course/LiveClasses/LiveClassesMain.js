@@ -63,8 +63,8 @@ const LiveClassesMain = () => {
   }, []);
   console.log(allEvents);
   return (
-    <div className="flex">
-      <div className="flex-[0.80] h-full p-1 m-0">
+    <div className="flex lg:flex-row flex-col overflow-y-auto p-2 overflow-x-auto">
+      <div className="flex md:h-[35rem] h-[45rem] w-[85vw] lg:w-[45rem] p-1">
         <Calendar
           localizer={localizer}
           events={allEvents}
@@ -84,17 +84,17 @@ const LiveClassesMain = () => {
             });
             console.log(value);
           }}
-          style={{ height: 500, margin: "50px" }}
+          style={{ height: "32rem", margin: "10px" }}
         />
       </div>
-      <div className="flex-[0.22] mx-24 justify-center my-12 rounded-2xl shadow-lg h-[20rem]">
+      <div className="flex-col md:w-[20rem] justify-center md:my-12 rounded-2xl shadow-lg md:h-[20rem] pb-3">
         <div className="text-4xl mt-6 font-bold flex justify-center items-center">
           {value.start}
         </div>
         <div className="flex justify-center items-center text-xl font-semibold">
           {month[value.month - 1]} {value.year}
         </div>
-        <div className="flex justify-center my-10 text-orange-900 items-center text-xl font-semibold">
+        <div className="flex justify-center my-10 text-orange-900 items-center text-center sm:text-xl text-lg font-semibold">
           Class At: {value.date.substr(11)} PM IST
         </div>
         <div className="flex justify-center items-center mt-4">
