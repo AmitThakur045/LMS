@@ -5,7 +5,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CourseList from "./CourseList";
-import { sampleData } from "./Data";
+
 import Divider from "@mui/material/Divider";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_ERRORS } from "../../../../../Redux/actionTypes";

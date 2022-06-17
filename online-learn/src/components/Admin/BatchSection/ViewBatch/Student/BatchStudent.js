@@ -4,7 +4,7 @@ import Sidebar from "../Sidebar";
 import Main from "./Main";
 
 const BatchStudent = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   return (
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
       <Sidebar />

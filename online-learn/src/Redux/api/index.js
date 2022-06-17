@@ -6,7 +6,7 @@ const API = axios.create({ baseURL: "http://localhost:5000/" });
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("user")) {
     req.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("user")).token
+      JSON.parse(localStorage.getItem("admin")).token
     }`;
   }
   return req;
@@ -90,6 +90,7 @@ export const studentSignIn = (formData) =>
   API.post("/api/student/login", formData);
 export const getCourseByBatchCode = (batchCode) =>
   API.post("/api/student/getcoursebybatchcode", batchCode);
-export const getAllEvents = (batchCode) => API.post("/api/student/getallevents", batchCode); 
+export const getAllEvents = (batchCode) =>
+  API.post("/api/student/getallevents", batchCode);
 export const getAssignmentByBatchCode = (batchCode) =>
   API.post("/api/student/getassignmentbybatchcode", batchCode);

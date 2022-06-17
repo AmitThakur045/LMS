@@ -5,9 +5,6 @@ import Main from "./Main";
 
 const Home = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-  const navigate = useNavigate();
-  useEffect(() => {}, []);
-
   return (
     <div className="bg-black w-screen h-screen flex">
         <HomeSidebar />

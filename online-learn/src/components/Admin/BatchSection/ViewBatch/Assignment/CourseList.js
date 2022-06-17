@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ListItem from "@mui/material/ListItem";
 import StudentList from "./StudentList";
-import { assignment } from "./Data";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
