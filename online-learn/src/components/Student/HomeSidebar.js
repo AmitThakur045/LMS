@@ -32,7 +32,7 @@ const HomeSidebar = () => {
 
   return (
     <div className="flex-[0.07] flex flex-col lg:my-4 my-2 justify-between py-5">
-      <img className="lg:h-14 h-12" src={logo} alt="" />
+      <img className="lg:h-14 h-12 w-auto" src={logo} alt="" />
       <div className="flex flex-col lg:space-y-10 space-y-3">
         <NavLink
           to="/"
