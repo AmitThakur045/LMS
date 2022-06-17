@@ -1,73 +1,45 @@
-import React, { useEffect, useState } from "react";
-import currentIcon from "../../../Assests/currentIcon.svg";
-import sampleAvatar from "../../../Assests/sampleAvatar1.svg";
-import LineGraph from "../../../Utils/LineGraph";
-import BarGraph from "../../../Utils/BarGraph";
-import PieChart from "../../../Utils/PieChart";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-
-import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllBatchCodes,
-  getAllStudentLength,
-  getBatchCodesByOrganizationName,
-  getCoursesLength,
-  getStudentsLengthByOrganizationName,
-  getAdminsLengthByOrganizationName,
-  getAllAdminLength,
-  getAttendanceByBatchCodes,
+  Avatar,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import currentIcon from "../../../Assests/currentIcon.svg";
+import {
+  getAdminDashboardDataByOrganizationName,
+  getAdminDashboardDataBySubAdmin,
+  getAllAdminDashboardData,
   getAllDeleteQuery,
-  updateDeleteQuery,
   getAllDeleteQueryBySubAdmin,
-  getAllStudent,
-  getBatchesByBatchCode,
   getAllOrganizationName,
+  updateDeleteQuery,
 } from "../../../Redux/actions/adminActions";
-import { Avatar } from "@mui/material";
+import BarGraph from "../../../Utils/BarGraph";
+import LineGraph from "../../../Utils/LineGraph";
+import PieChart from "../../../Utils/PieChart";
 import Spinner from "../../../Utils/Spinner";
-import { UPDATE_DELETE_QUERY } from "../../../Redux/actionTypes";
 
 const Main = () => {
+  const user = JSON.parse(localStorage.getItem("admin"));
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
-  const user = JSON.parse(localStorage.getItem("admin"));
-  const allBatches = useSelector((state) => state.admin.allBatch);
+  const [dashboardData, setDashboardData] = useState({});
+  const [organizationName, setOrganizationName] = useState("All");
+
+  const [lineChartData, setLineChartData] = useState([]);
+  const [barChartData, setBarChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [deleteQueries, setDeleteQueries] = useState([]);
+  const [noQueryFound, setNoQueryFound] = useState(false);
+  const allDeleteQueries = useSelector((state) => state.admin.allDeleteQuery);
   const allOrganizationName = useSelector(
     (state) => state.admin.allOrganizationName
   );
-  const allCourses = useSelector((state) => state.admin.coursesLength);
-  const allStudents = useSelector((state) => state.admin.studentsLength);
-  const allAdmins = useSelector((state) => state.admin.adminsLength);
-  const attendances = useSelector((store) => store.admin.attendance);
-  const allDeleteQueries = useSelector((state) => state.admin.allDeleteQuery);
-  const everyStudent = useSelector((state) => state.admin.allStudent);
-  const batchArray = useSelector((state) => state.admin.batchArray);
-  const [batches, setBatches] = useState(0);
-  const [courses, setCourses] = useState(0);
-  const [students, setStudents] = useState(0);
-  const [admins, setAdmins] = useState(0);
-  const [organizationName, setOrganizationName] = useState("");
-  const [barChartData, setBarChartData] = useState([]);
-  const [lineChartData, setLineChartData] = useState([]);
-  const [pieChartData, setPieChartData] = useState([]);
-
-  const [deleteQueries, setDeleteQueries] = useState([]);
-  const [noQueryFound, setNoQueryFound] = useState(false);
-  useEffect(() => {
-    if (allBatches.length !== 0) {
-      setBatches(allBatches.length);
-      dispatch(getAttendanceByBatchCodes({ allBatches }));
-      dispatch(getBatchesByBatchCode({ allBatches }));
-      // dispatch(getAllStudent());
-    }
-  }, [allBatches]);
-
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setLoading(false);
@@ -89,55 +61,72 @@ const Main = () => {
     }
   }, [allDeleteQueries]);
   useEffect(() => {
-    if (allCourses.length !== 0) {
-      setCourses(allCourses);
-    }
-  }, [allCourses]);
-  useEffect(() => {
-    if (allStudents.length !== 0) {
-      setStudents(allStudents);
-    }
-  }, [allStudents]);
-  useEffect(() => {
-    if (allAdmins.length !== 0) {
-      setAdmins(allAdmins);
-    }
-  }, [allAdmins]);
-
-  useEffect(() => {
-    setLoading(true);
     if (user.result.sub === "true") {
       dispatch(
-        getBatchCodesByOrganizationName({
+        getAdminDashboardDataBySubAdmin({
           organizationName: user.result.organizationName,
-          subAdmin: user.result.email,
-        })
-      );
-      dispatch(
-        getStudentsLengthByOrganizationName({
-          organizationName: user.result.organizationName,
-          subAdmin: user.result.email,
-        })
-      );
-      dispatch(
-        getAdminsLengthByOrganizationName({
-          organizationName: user.result.organizationName,
+          email: user.result.email,
         })
       );
       dispatch(getAllDeleteQueryBySubAdmin({ subAdmin: user.result.email }));
     } else {
-      dispatch(getAllBatchCodes());
-      dispatch(getAllStudentLength());
-      dispatch(getAllAdminLength());
-    }
-
-    dispatch(getCoursesLength());
-    dispatch(getAllDeleteQuery());
-    dispatch(getAllStudent());
-    if (user.result.sub === "false") {
+      dispatch(getAllAdminDashboardData());
+      dispatch(getAllDeleteQuery());
       dispatch(getAllOrganizationName());
     }
   }, []);
+  const adminDashboardData = useSelector(
+    (state) => state.admin.adminDashboardData
+  );
+
+  useEffect(() => {
+    if (Object.keys(adminDashboardData).length !== 0) {
+      setDashboardData(adminDashboardData);
+      createBarGraphList();
+      createPieChartList();
+      if (adminDashboardData.dateOfJoinings.length !== 0) {
+        let list = [
+          { x: "Jan", y: 0 },
+          { x: "Feb", y: 0 },
+          { x: "Mar", y: 0 },
+          { x: "Apr", y: 0 },
+          { x: "May", y: 0 },
+          { x: "Jun", y: 0 },
+          { x: "Jul", y: 0 },
+          { x: "Aug", y: 0 },
+          { x: "Sep", y: 0 },
+          { x: "Oct", y: 0 },
+          { x: "Nov", y: 0 },
+          { x: "Dec", y: 0 },
+        ];
+        adminDashboardData.dateOfJoinings.forEach((student) => {
+          let idx = new Date(student).getMonth();
+          list[idx].y += 1;
+        });
+
+        const newList = list.sort((a, b) => {
+          return new Date(a.x) - new Date(b.x);
+        });
+
+        setLineChartData(newList);
+      } else {
+        setLineChartData([
+          { x: "Jan", y: 0 },
+          { x: "Feb", y: 0 },
+          { x: "Mar", y: 0 },
+          { x: "Apr", y: 0 },
+          { x: "May", y: 0 },
+          { x: "Jun", y: 0 },
+          { x: "Jul", y: 0 },
+          { x: "Aug", y: 0 },
+          { x: "Sep", y: 0 },
+          { x: "Oct", y: 0 },
+          { x: "Nov", y: 0 },
+          { x: "Dec", y: 0 },
+        ]);
+      }
+    }
+  }, [adminDashboardData]);
 
   const lineCustomSeries = [
     {
@@ -150,6 +139,7 @@ const Main = () => {
       type: "Line",
     },
   ];
+
   const LinePrimaryXAxis = {
     valueType: "Category",
     labelFormat: "y",
@@ -169,51 +159,6 @@ const Main = () => {
     minorTickLines: { width: 0 },
   };
 
-  useEffect(() => {
-    if (everyStudent.length !== 0) {
-      let list = [
-        { x: "Jan", y: 0 },
-        { x: "Feb", y: 0 },
-        { x: "Mar", y: 0 },
-        { x: "Apr", y: 0 },
-        { x: "May", y: 0 },
-        { x: "Jun", y: 0 },
-        { x: "Jul", y: 0 },
-        { x: "Aug", y: 0 },
-        { x: "Sep", y: 0 },
-        { x: "Oct", y: 0 },
-        { x: "Nov", y: 0 },
-        { x: "Dec", y: 0 },
-      ];
-      everyStudent.map((student) => {
-        let idx = new Date(student.dateOfJoining).getMonth();
-        list[idx].y += 1;
-      });
-
-      const newList = list.sort((a, b) => {
-        return new Date(a.x) - new Date(b.x);
-      });
-
-      setLineChartData(newList);
-    } else {
-      setLineChartData([
-        { x: "Jan", y: 0 },
-        { x: "Feb", y: 0 },
-        { x: "Mar", y: 0 },
-        { x: "Apr", y: 0 },
-        { x: "May", y: 0 },
-        { x: "Jun", y: 0 },
-        { x: "Jul", y: 0 },
-        { x: "Aug", y: 0 },
-        { x: "Sep", y: 0 },
-        { x: "Oct", y: 0 },
-        { x: "Nov", y: 0 },
-        { x: "Dec", y: 0 },
-      ]);
-    }
-  }, [everyStudent]);
-
-  // Bar Graph
   const barCustomSeries = [
     {
       dataSource: barChartData,
@@ -257,15 +202,15 @@ const Main = () => {
       { x: "Dec", y: 0 },
     ];
 
-    if (attendances === undefined) {
+    if (adminDashboardData?.attendances?.length === 0) {
       setBarChartData(list);
       return;
     }
 
-    attendances?.map((attendance) => {
-      let idx = new Date(attendance?.date).getMonth();
+    adminDashboardData?.attendances?.forEach((attendance) => {
+      let idx = new Date(attendance.date).getMonth();
       let count = 0;
-      attendance?.students?.map((student) => {
+      attendance?.students?.forEach((student) => {
         if (student.present === true) {
           count++;
         }
@@ -280,114 +225,61 @@ const Main = () => {
     let list = [];
     let totalStudent = 0;
 
-    batchArray.map((batch) => {
-      totalStudent += batch.students.length;
+    adminDashboardData.batchStrength?.forEach((batch) => {
+      totalStudent += batch.students;
     });
 
-    batchArray.map((batch) => {
-      let percentage = (batch.students.length / totalStudent) * 100;
+    adminDashboardData.batchStrength?.forEach((batch) => {
+      let percentage = (batch.students / totalStudent) * 100;
       list.push({
         x: batch.batchCode,
-        y: batch.students.length,
+        y: batch.students,
         text: percentage.toFixed(2) + "%",
       });
     });
 
     setPieChartData(list);
   };
-
-  // useEffect(() => {
-  //   if (allBatches.length !== 0) {
-  //     dispatch(getAttendanceByBatchCodes({ allBatches }));
-  //     dispatch(getBatchesByBatchCode({ allBatches }));
-  //   }
-  // }, [allBatches]);
-
-  useEffect(() => {
-    if (attendances.length !== 0) {
-      createBarGraphList();
-      createPieChartList();
-    } else {
-      setBarChartData([
-        { x: "Jan", y: 0 },
-        { x: "Feb", y: 0 },
-        { x: "Mar", y: 0 },
-        { x: "Apr", y: 0 },
-        { x: "May", y: 0 },
-        { x: "Jun", y: 0 },
-        { x: "Jul", y: 0 },
-        { x: "Aug", y: 0 },
-        { x: "Sep", y: 0 },
-        { x: "Oct", y: 0 },
-        { x: "Nov", y: 0 },
-        { x: "Dec", y: 0 },
-      ]);
-      setPieChartData([{ x: "No Data", y: 0, text: "0%" }]);
-    }
-  }, [attendances]);
-
-  useEffect(() => {
-    if (store.admin.deleteQueryUpdated) {
-      setLoading(true);
-      dispatch(getAllDeleteQuery());
-      dispatch({ type: UPDATE_DELETE_QUERY, payload: false });
-    }
-  }, [store.admin.deleteQueryUpdated]);
-
   const handleOrganizationNameChange = (e) => {
-    setLoading(true);
     setOrganizationName(e.target.value);
-    dispatch(
-      getBatchCodesByOrganizationName({
-        organizationName,
-        subAdmin: user.result.email,
-      })
-    );
-
-    // if (allBatches.length !== 0) {
-    //   dispatch(getAttendanceByBatchCodes({ allBatches }));
-    //   dispatch(getBatchesByBatchCode({ allBatches }));
-    // }
-    setLoading(false);
+    if (e.target.value === "All") {
+      dispatch(getAllAdminDashboardData());
+    } else {
+      dispatch(
+        getAdminDashboardDataByOrganizationName({
+          organizationName: e.target.value,
+        })
+      );
+    }
   };
-  // console.log("organizationName", organizationName);
-  // console.log(noQueryFound);
-  // console.log("allBatches", allBatches);
-  console.log("batchArray", batchArray);
-  console.log("pie", pieChartData);
-  console.log("attendence", attendances);
-  console.log("allBatches", allBatches);
-  console.log("pie", pieChartData);
-  console.log("line", lineChartData);
-
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
       <div className="flex justify-between">
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Batches</h1>
-            <p>{batches}</p>
+            <p>{dashboardData?.totalBatches}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Courses</h1>
-            <p>{courses}</p>
+            <p>{dashboardData?.totalCourses}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Students</h1>
-            <p>{students}</p>
+            <p>{dashboardData?.totalStudents}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
         <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Sub Admins</h1>
-            <p>{admins}</p>
+            <p>{dashboardData?.totalAdmins}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
@@ -402,6 +294,7 @@ const Main = () => {
               value={organizationName}
               label="Course"
               onChange={(e) => handleOrganizationNameChange(e)}>
+              <MenuItem value="All">All</MenuItem>
               {allOrganizationName.map((organization) => (
                 <MenuItem value={organization}>{organization}</MenuItem>
               ))}
@@ -410,7 +303,7 @@ const Main = () => {
         )}
       </div>
       <div className="flex justify-between">
-        {lineChartData.length !== 0 && !loading && (
+        {lineChartData.length !== 0 && (
           <LineGraph
             lineCustomSeries={lineCustomSeries}
             LinePrimaryXAxis={LinePrimaryXAxis}
