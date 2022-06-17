@@ -12,8 +12,6 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { addScore } from "../../../../../Redux/actions/adminActions";
 
-import SamplePdf from "../../../../../Assests/SamplePdf.pdf";
-
 const SingleStudent = ({ item, index, currentEmail }) => {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
@@ -48,7 +46,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-  
+
     dispatch(
       addScore({
         email: item.email,
@@ -71,7 +69,6 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   // useEffect(() => {
   //   setIsAdded(isMarked);
   // }, [isMarked === true]);
-
 
   return (
     <div
@@ -110,7 +107,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
           <div className="flex items-center space-x-2">
             <div>
               {/* <a href={item.assignment?.studentAnswer} download> */}
-              <a href={SamplePdf} download>
+              <a download>
                 <Button>
                   <CloudDownloadIcon />
                 </Button>

@@ -26,8 +26,9 @@ import Attendance from "./components/Admin/BatchSection/ViewBatch/Student/Attend
 import AdminLogin from "./components/Admin/AdminLogin";
 
 import Course from "./components/Student/Course/MyLearning/Course";
-import AssignmentMain from "./components/Student/Course/Assignment/AssignmentMain";
+
 import LiveClasses from "./components/Student/Course/LiveClasses/LiveClasses";
+import Assignment from "./components/Student/Course/Assignment/Assignment";
 import StudentLogin from "./components/Student/StudentLogin";
 import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
@@ -39,7 +40,7 @@ function App() {
       <Route path="/login" exact element={<StudentLogin />} />
       <Route path="/community" exact element={<Community />} />
       <Route path="/course" exact element={<Course />} />
-      <Route path="/assignment" exact element={<AssignmentMain />} />
+      <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />

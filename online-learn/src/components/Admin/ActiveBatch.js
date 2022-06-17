@@ -12,7 +12,7 @@ import { ADD_BATCH } from "../../Redux/actionTypes";
 
 const ActiveBatch = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("admin"));
   const store = useSelector((state) => state);
 
   const batch = useSelector((state) => state.admin.batch);
