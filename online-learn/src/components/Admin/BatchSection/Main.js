@@ -10,7 +10,7 @@ import Select from "react-select";
 import {
   getAllBatchCodes,
   getBatch,
-  getBatchCodesByOrganizationName,
+  getBatchCodesBySubAdmin,
   getCourses,
   getStudents,
 } from "../../../Redux/actions/adminActions";
@@ -44,7 +44,7 @@ const Main = () => {
   useEffect(() => {
     if (user.result.sub === "true") {
       dispatch(
-        getBatchCodesByOrganizationName({
+        getBatchCodesBySubAdmin({
           organizationName: user.result.organizationName,
         })
       );

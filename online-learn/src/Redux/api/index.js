@@ -35,8 +35,8 @@ export const addStudentInBatch = (student) =>
 export const getAllStudent = () => API.get("/api/admin/getallstudent");
 export const getAllStudentLength = () =>
   API.get("/api/admin/getallstudentlength");
-export const getStudentsLengthByOrganizationName = (data) =>
-  API.post("/api/admin/getstudentslengthbyorganizationname", data);
+export const getStudentsLengthBySubAdmin = (data) =>
+  API.post("/api/admin/getstudentslengthbysubadmin", data);
 export const getAllAdmin = () => API.get("/api/admin/getalladmin");
 export const getAllAdminLength = () => API.get("/api/admin/getalladminlength");
 export const getAdminsByOrganizationName = (data) =>
@@ -54,8 +54,8 @@ export const getCoursesLength = () => API.get("/api/admin/getcourseslength");
 export const getAllDeleteQuery = () => API.get("/api/admin/getalldeletequery");
 export const getAllDeleteQueryBySubAdmin = (data) =>
   API.post("/api/admin/getalldeletequerybysubadmin", data);
-export const getBatchCodesByOrganizationName = (data) =>
-  API.post("/api/admin/getbatchcodesbyorganizationname", data);
+export const getBatchCodesBySubAdmin = (data) =>
+  API.post("/api/admin/getbatchcodesbysubadmin", data);
 export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
 export const getAllOrganizationName = () =>
   API.get("/api/admin/getallorganizationname");
@@ -83,6 +83,12 @@ export const getStudentByAssignmentCode = (data) =>
 export const addScore = (formData) => API.post("/api/admin/addscore", formData);
 export const updateCourseData = (formData) =>
   API.post("/api/admin/updatecoursedata", formData);
+export const getAdminDashboardDataBySubAdmin = (formData) =>
+  API.post("/api/admin/getadmindashboarddatabysubadmin", formData);
+export const getAdminDashboardDataByOrganizationName = (formData) =>
+  API.post("/api/admin/getadmindashboarddatabyorganizationname", formData);
+export const getAllAdminDashboardData = (formData) =>
+  API.get("/api/admin/getalladmindashboarddata");
 
 //Student
 
