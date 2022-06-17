@@ -135,7 +135,7 @@ const Main = () => {
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll overflow-x-hidden h-full ">
       <div className="flex flex-col  space-y-3 w-[73rem] rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
         <div className="flex justify-center">
-          <div className="text-[18px] font-bold text-[#5848a4] mb-4">
+          <div className="text-[18px] font-bold text-primary mb-4">
             Attendance Report of {courseCode}
           </div>
         </div>
@@ -161,12 +161,12 @@ const Main = () => {
                 {eventDates?.map((date, idx) => (
                   <div key={idx} className="flex ">
                     {idx === 0 ? (
-                      <div className="shadow-md bg-white font-semibold text-[#5848e4] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
+                      <div className="shadow-md bg-white font-semibold text-primary w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
                         {student.firstName} {student.lastName}
                       </div>
                     ) : (
                       <input
-                        className="shadow-md bg-white font-semibold text-[#5848e4] w-[10rem] flex items-center px-3 justify-center h-[2.5rem]"
+                        className="shadow-md bg-white font-semibold text-primary w-[10rem] flex items-center px-3 justify-center h-[2.5rem]"
                         dt={new Date(date.year, date.month, date.day)}
                         em={student.email}
                         maxLength={1}

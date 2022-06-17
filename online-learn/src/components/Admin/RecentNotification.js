@@ -48,9 +48,9 @@ const RecentNotification = () => {
                 }`}>
                 <HiOutlineDocumentText />
               </div>
-              <p className="text-[#6F6EA5] text-[12px]">{not.title}</p>
+              <p className="text-primary text-[12px]">{not.title}</p>
             </div>
-            <p className="text-[#6F6EA5] text-[7px]">{not.size}</p>
+            <p className="text-primary text-[7px]">{not.size}</p>
           </div>
         ))}
       </div>
