@@ -41,7 +41,7 @@ const CourseSidebar = () => {
         <p className="lg:text-sm text-xs">Back</p>
       </NavLink>
 
-      <div className="flex flex-col space-y-4 ">
+      <div className="flex flex-col space-y-5 ">
         <NavLink
           to="/course"
           className={({ isActive }) =>
