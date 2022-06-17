@@ -110,21 +110,14 @@ const Main = () => {
             />
           </div>
           <div className="">
-            {user.result.sub === "false" ? (
+            {user.result.sub === "false" && (
               <Link
                 to="/admin/course/addcourse"
                 type="button"
-                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                className="bg-secondary hover:bg-secondaryHover transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
                 <IoIosAddCircleOutline fontSize={20} />
                 <h1>Add Course</h1>
               </Link>
-            ) : (
-              <button
-                onClick={() => setShowSubAdminModal(true)}
-                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
-                <IoIosAddCircleOutline fontSize={20} />
-                <h1>Add Course</h1>
-              </button>
             )}
           </div>
         </div>

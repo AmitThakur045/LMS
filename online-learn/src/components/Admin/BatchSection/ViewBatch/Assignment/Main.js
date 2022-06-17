@@ -60,15 +60,11 @@ const Main = () => {
     setCurrentList(item.assignment);
   };
 
-  // useEffect(() => {
-  //   handleClick(courseData[0].courseCode);
-  // }, [store.admin.assignmentAdded])
-
   return (
     <div className="flex h-full">
       <div className="w-[18rem] h-full overflow-y-auto">
         <div className="pt-2">
-          {batchData.courses?.map((item, index) => (
+          {batchData?.courses?.map((item, index) => (
             <div
               key={index}
               className={

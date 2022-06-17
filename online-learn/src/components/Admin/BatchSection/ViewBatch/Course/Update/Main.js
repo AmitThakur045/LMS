@@ -202,7 +202,7 @@ const Main = () => {
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between">
-          <h1 className="font-bold text-[#605C94]">
+          <h1 className="font-bold text-primary">
             {batchCourseData.courseName}
           </h1>
         </div>

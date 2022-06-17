@@ -127,7 +127,7 @@ const Main = () => {
             key={index}
             className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4">
             <div className="flex  ">
-              <h1 className="bg-[#605C94] text-white rounded-full px-2 py-1">
+              <h1 className="bg-primary text-white rounded-full px-2 py-1">
                 {problem.forum}
               </h1>
             </div>
@@ -137,7 +137,7 @@ const Main = () => {
                 aria-controls="panel1a-content"
                 id="lesson">
                 <div className="flex items-center space-x-3">
-                  <h1 className="py-2  text-[22px] font-bold text-[#605C94]">
+                  <h1 className="py-2  text-[22px] font-bold text-primary">
                     {problem.title}
                   </h1>
                 </div>

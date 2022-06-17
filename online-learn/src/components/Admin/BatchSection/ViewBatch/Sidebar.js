@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../../../Assests/Logo.png";
+import logo from "../../../../Assests/Admin_Logo.png";
 import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
@@ -41,10 +41,10 @@ const Sidebar = () => {
     }
   }, []);
   return (
-    <div className="w-[18.75rem] bg-[#5C5892] flex flex-col  py-[28px] justify-between">
+    <div className="w-[18.75rem] bg-[#292828] flex flex-col  py-[28px] justify-between">
       <div className="space-y-8">
         <div className="flex items-center justify-center my-4 space-x-2">
-          <img className="h-12" src={logo} alt="" />
+          <img className="h-16" src={logo} alt="" />
         </div>
         <div className="space-y-4 flex flex-col items-center ">
           <NavLink

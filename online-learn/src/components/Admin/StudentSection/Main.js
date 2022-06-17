@@ -104,7 +104,7 @@ const Main = () => {
           <Link
             to="/admin/student/addstudent"
             type="button"
-            className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+            className="bg-secondary hover:bg-secondaryHover transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
             <IoIosAddCircleOutline fontSize={20} />
             <h1>Add Student</h1>
           </Link>
@@ -198,16 +198,6 @@ const Main = () => {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}>
-                    <MenuItem
-                      onClick={() => {
-                        dispatch({
-                          type: GET_STUDENT,
-                          payload: students[index],
-                        });
-                        navigate("/admin/student/updatestudent");
-                      }}>
-                      Update Student
-                    </MenuItem>
                     <MenuItem
                       onClick={() => {
                         handleOpenDeleteModal();
