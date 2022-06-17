@@ -8,7 +8,7 @@ import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import { useDispatch } from "react-redux";
-import { LOGOUT } from "../Redux/actionTypes";
+import { LOGOUT } from "../../../Redux/actionTypes";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";

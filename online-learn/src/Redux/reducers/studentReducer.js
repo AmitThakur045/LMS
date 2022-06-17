@@ -17,6 +17,7 @@ const studentReducer = (state = initialState, action) => {
   switch (action.type) {
     case STUDENT_LOGIN:
       localStorage.setItem("user", JSON.stringify({ ...action?.data }));
+      localStorage.setItem("learner", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action?.data };
     case LOGOUT:
       localStorage.clear();

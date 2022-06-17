@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CourseSidebar from "./CourseSidebar";
+import CourseSidebar from "../CourseSidebar";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
@@ -12,10 +12,8 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@mui/material";
-import Calender from "../Utils/Calender";
-import { scheduleData } from "./Data";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents } from "../Redux/actions/studentActions";
+import { getAllEvents } from "../../../../Redux/actions/studentActions";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -30,7 +28,7 @@ const localizer = dateFnsLocalizer({
 
 const LiveClasses = () => {
   const dispatch = useDispatch();
-  const learner = JSON.parse(localStorage.getItem("user"));
+  const learner = JSON.parse(localStorage.getItem("learner"));
   const events = useSelector((state) => state.student.allEvents);
   const [allEvents, setAllEvents] = useState([]);
   const [value, setValue] = useState({
@@ -78,22 +76,19 @@ const LiveClasses = () => {
           <div className="flex-[0.2] rounded-tr-2xl h-full flex">
             <NavLink
               to="/community"
-              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
               <PeopleIcon fontSize="medium" className="" />
               <p className="text-base">Community</p>
             </NavLink>
             <NavLink
               to="/help"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
               <HelpOutlineIcon fontSize="medium" className="" />
               <p className="text-base">Help</p>
             </NavLink>
             <NavLink
               to="/notes"
-              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center"
-            >
+              className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
               <FormatListNumberedIcon fontSize="medium" className="" />
               <p className="text-base">Notes</p>
             </NavLink>
@@ -145,8 +140,7 @@ const LiveClasses = () => {
                   height: "65px",
                   width: "160px",
                 }}
-                variant="contained"
-              >
+                variant="contained">
                 <a href={value.link} target="_blank" rel="noreferrer">
                   Join
                 </a>

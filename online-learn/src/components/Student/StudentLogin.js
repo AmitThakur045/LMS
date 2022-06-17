@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Spinner from "../Utils/Spinner";
-import { addStudent } from "../Redux/actions/adminActions";
-import { ADD_STUDENT, SET_ERRORS } from "../Redux/actionTypes";
-import { studentSignIn } from "../Redux/actions/studentActions";
+import Spinner from "../../Utils/Spinner";
+import { addStudent } from "../../Redux/actions/adminActions";
+import { ADD_STUDENT, SET_ERRORS } from "../../Redux/actionTypes";
+import { studentSignIn } from "../../Redux/actions/studentActions";
 
 const StudentLogin = () => {
   const [translate, setTranslate] = useState(false);
