@@ -33,59 +33,59 @@ const CourseSidebar = () => {
   }, []);
 
   return (
-    <div className="h-[45.5rem] flex-[0.07] flex flex-col  my-4 justify-between py-5">
+    <div className="flex-[0.07] flex flex-col lg:my-4 my-2 justify-between py-5">
       <NavLink
         to="/"
         className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
-        <ArrowBackIcon className=" h-7" alt="" />
-        <p className="">Back</p>
+        <ArrowBackIcon className="lg:h-5 h-3" alt="" />
+        <p className="lg:text-sm text-xs">Back</p>
       </NavLink>
 
-      <div className="flex flex-col space-y-10">
+      <div className="flex flex-col space-y-4 ">
         <NavLink
           to="/course"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
           }>
-          <LibraryBooksIcon className=" h-7" alt="" />
-          <p className="">My Learning</p>
+          <LibraryBooksIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs text-center">My Learning</p>
         </NavLink>
         <NavLink
           to="/liveclass"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
           }>
-          <CalendarMonthIcon className=" h-7" alt="" />
-          <p className="">Live Class</p>
+          <CalendarMonthIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs">Live Class</p>
         </NavLink>
         <NavLink
           to="/lab"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
           }>
-          <ScienceIcon className=" h-7" alt="" />
-          <p className="">Lab</p>
+          <ScienceIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs">Lab</p>
         </NavLink>
         <NavLink
           to="/assignment"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
           }>
-          <AssignmentIcon className=" h-7" alt="" />
-          <p className="">Assignment</p>
+          <AssignmentIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs">Assignment</p>
         </NavLink>
         <NavLink
           to="/certificate"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
           }>
-          <WorkspacePremiumIcon className=" h-7" alt="" />
-          <p className="">Certificate</p>
+          <WorkspacePremiumIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs">Certificate</p>
         </NavLink>
       </div>
       <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
         <LogoutIcon onClick={logout} className="cursor-pointer h-10  " />
-        <p className="">Logout</p>
+        <p className="lg:text-sm text-xs">Logout</p>
       </div>
     </div>
   );

@@ -35,9 +35,9 @@ const CourseMain = () => {
   const handleVideo = (sectionIdx, lessonIdx) => {};
 
   return (
-    <div className="flex h-full">
+    <div className="flex md:flex-row flex-col h-full overflow-y-auto">
       <div className="flex-[0.4] bg-[#EDF0F5] flex flex-col pl-8 pr-1">
-        <div className="flex flex-col  mt-8 pr-4 pb-4  overflow-y-auto scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-transparent">
+        <div className="flex flex-col mt-8 pr-4 pb-4  overflow-y-auto scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-transparent">
           <div className="space-y-3">
             {Object.keys(batchData).length !== 0 && (
               <>

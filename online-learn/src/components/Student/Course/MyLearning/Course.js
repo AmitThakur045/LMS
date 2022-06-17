@@ -12,7 +12,7 @@ const Course = () => {
     <div className="bg-black w-screen h-screen flex overflow-hidden">
       <CourseSidebar />
       {user !== null && Object.keys(batch).length !== 0 && (
-        <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
+        <div className="bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
           <CourseHeader />
           <CourseMain />
         </div>
