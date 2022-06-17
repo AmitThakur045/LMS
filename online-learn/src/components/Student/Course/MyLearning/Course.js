@@ -1,6 +1,6 @@
 import React from "react";
 import CourseMain from "./CourseMain";
-import CourseSidebar from "./CourseSidebar";
+import CourseSidebar from "../CourseSidebar";
 
 const Course = () => {
   return (

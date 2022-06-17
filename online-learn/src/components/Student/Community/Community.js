@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import logo from "../Assests/icons8-bbb.svg";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import LogoutIcon from "@mui/icons-material/Logout";
-import DiamondIcon from "@mui/icons-material/Diamond";
-import PeopleIcon from "@mui/icons-material/People";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import HomeSidebar from "./HomeSidebar";
+import HomeSidebar from "../HomeSidebar";
 
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =

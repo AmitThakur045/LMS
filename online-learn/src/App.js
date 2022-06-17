@@ -1,9 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Community from "./components/Community";
-import Course from "./components/Course";
-import Assignment from "./components/Assignment";
-import LiveClasses from "./components/LiveClasses";
+
 import Dashboard from "./components/Admin/DashboardSection/Dashboard";
 import Batch from "./components/Admin/BatchSection/Batch";
 import AdminCourse from "./components/Admin/CourseSection/Course";
@@ -11,7 +7,7 @@ import Admin from "./components/Admin/AdminSection/Admin";
 import AddAdmin from "./components/Admin/AdminSection/AddAdmin/AddAdmin";
 
 import AddCourse from "./components/Admin/CourseSection/AddCourse/AddCourse";
-import StudentLogin from "./components/StudentLogin";
+
 import ViewAdmin from "./components/Admin/AdminSection/ViewAdmin/ViewAdmin";
 import UpdateAdmin from "./components/Admin/AdminSection/UpdateAdmin/UpdateAdmin";
 import ViewCourse from "./components/Admin/CourseSection/ViewCourse/ViewCourse";
@@ -29,6 +25,13 @@ import UpdateBatchCourse from "./components/Admin/BatchSection/ViewBatch/Course/
 import Attendance from "./components/Admin/BatchSection/ViewBatch/Student/Attendance/Attendance";
 import AdminLogin from "./components/Admin/AdminLogin";
 
+import Course from "./components/Student/Course/MyLearning/Course";
+import AssignmentMain from "./components/Student/Course/Assignment/AssignmentMain";
+import LiveClasses from "./components/Student/Course/LiveClasses/LiveClasses";
+import StudentLogin from "./components/Student/StudentLogin";
+import Home from "./components/Student/Home/Home";
+import Community from "./components/Student/Community/Community";
+
 function App() {
   return (
     <Routes>
@@ -36,7 +39,7 @@ function App() {
       <Route path="/login" exact element={<StudentLogin />} />
       <Route path="/community" exact element={<Community />} />
       <Route path="/course" exact element={<Course />} />
-      <Route path="/assignment" exact element={<Assignment />} />
+      <Route path="/assignment" exact element={<AssignmentMain />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />
