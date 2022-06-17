@@ -21,14 +21,15 @@ export default function PdfViewer(props) {
   };
 
   return (
-    <div className="pl-32">
+    <div className="flex items-center justify-center w-full overflow-auto px-4 sm:px-1">
       <div
         style={{
           position: "fixed",
           top: "116px",
           right: "50px",
           "z-index": "1",
-        }}>
+        }}
+      >
         <a href={pdf} onClick={saveFile} download>
           <DownloadForOfflineIcon
             style={{ fontSize: "3.5rem" }}
@@ -36,14 +37,17 @@ export default function PdfViewer(props) {
           />
         </a>
       </div>
-      <Document
-        file={pdf}
-        options={{ workerSrc: "/pdf.worker.js" }}
-        onLoadSuccess={onDocumentLoadSuccess}>
-        {Array.from(new Array(state), (el, index) => (
-          <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-        ))}
-      </Document>
+      <div className="overflow-auto">
+        <Document
+          file={pdf}
+          options={{ workerSrc: "/pdf.worker.js" }}
+          onLoadSuccess={onDocumentLoadSuccess}
+        >
+          {Array.from(new Array(state), (el, index) => (
+            <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+          ))}
+        </Document>
+      </div>
     </div>
   );
 }

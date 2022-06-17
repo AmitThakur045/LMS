@@ -38,7 +38,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
         setValue({
           ...value,
           selectedFile: fileReader.result,
-        });
+        })
       };
     }
     setIsSelected(true);
