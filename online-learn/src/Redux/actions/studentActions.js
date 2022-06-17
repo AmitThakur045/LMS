@@ -33,7 +33,7 @@ export const getAllEvents = (batchCode) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
 
 export const getAssignmentByBatchCode = (batchCode) => async (dispatch) => {
   try {
@@ -42,4 +42,4 @@ export const getAssignmentByBatchCode = (batchCode) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllBatchCodes,
   getBatch,
-  getBatchCodesByOrganizationName,
+  getBatchCodesBySubAdmin,
   getCourses,
   getStudents,
 } from "../../Redux/actions/adminActions";
@@ -28,7 +28,7 @@ const ActiveBatch = () => {
     if (store.admin.batchAdded) {
       if (user.result.sub === "true") {
         dispatch(
-          getBatchCodesByOrganizationName({
+          getBatchCodesBySubAdmin({
             organizationName: user.result.organizationName,
             subAdmin: user.result.email,
           })
@@ -43,7 +43,7 @@ const ActiveBatch = () => {
   useEffect(() => {
     if (user.result.sub === "true") {
       dispatch(
-        getBatchCodesByOrganizationName({
+        getBatchCodesBySubAdmin({
           organizationName: user.result.organizationName,
           subAdmin: user.result.email,
         })

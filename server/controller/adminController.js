@@ -354,7 +354,7 @@ export const getAllStudent = async (req, res) => {
     console.log("Backend Error", error);
   }
 };
-export const getStudentsLengthByOrganizationName = async (req, res) => {
+export const getStudentsLengthBySubAdmin = async (req, res) => {
   try {
     const { organizationName, subAdmin } = req.body;
     const batches = await Batch.find({ organizationName: organizationName });
@@ -759,7 +759,7 @@ export const getBatchesByBatchCode = async (req, res) => {
   }
 };
 
-export const getBatchCodesByOrganizationName = async (req, res) => {
+export const getBatchCodesBySubAdmin = async (req, res) => {
   try {
     const { organizationName, subAdmin } = req.body;
     // console.log("subAdmin", subAdmin);
@@ -802,11 +802,17 @@ export const getAllOrganizationName = async (req, res) => {
 
     for (let i = 0; i < admin.length; i++) {
       if (admin[i].organizationName) {
-        organizationName.push(admin[i].organizationName);
+        if (admin[i].organizationName !== "Super Admin") {
+          organizationName.push(admin[i].organizationName);
+        }
       }
     }
-
-    res.status(200).json(organizationName);
+    const unqiueOrganizationName = organizationName.filter(
+      (value, index, self) => {
+        return self.indexOf(value) === index;
+      }
+    );
+    res.status(200).json(unqiueOrganizationName);
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
@@ -835,7 +841,7 @@ export const getAllCourseCodes = async (req, res) => {
 export const getBatch = async (req, res) => {
   try {
     const { batchCode } = req.body;
-
+    console.log(batchCode);
     const errors = { noBatchError: String };
     const batch = await Batch.findOne({ batchCode });
     if (batch === null) {
@@ -1274,6 +1280,162 @@ export const addScore = async (req, res) => {
       message: "Marks Added successfully",
       response: student,
     });
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getAdminDashboardDataBySubAdmin = async (req, res) => {
+  try {
+    const { organizationName, email } = req.body;
+    let data = {
+      totalBatches: 0,
+      totalAdmins: 0,
+      totalStudents: 0,
+      totalCourses: 0,
+      dateOfJoinings: [],
+      attendances: [],
+      batchStrength: [],
+    };
+    const courses = await Course.find();
+    if (courses) {
+      data.totalCourses = courses.length;
+    }
+    const batches = await Batch.find({ subAdmin: email });
+    if (batches) {
+      data.totalBatches = batches.length;
+      let temp = [];
+      for (let i = 0; i < batches.length; i++) {
+        data.batchStrength.push({
+          batchCode: batches[i].batchCode,
+          students: batches[i].students.length,
+        });
+
+        data.totalStudents += batches[i].students.length;
+        for (let j = 0; j < batches[i].students.length; j++) {
+          const student = await Student.findOne({
+            email: batches[i].students[j],
+          });
+          temp.push(student.dateOfJoining);
+        }
+        const attendances = await Attendance.find({
+          batchCode: batches[i].batchCode,
+        });
+        attendances.forEach((att) => {
+          data.attendances.push(att);
+        });
+      }
+      data.dateOfJoinings = temp.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+    }
+    const admins = await Admin.find({ organizationName });
+    if (admins) {
+      data.totalAdmins = admins.length;
+    }
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const getAllAdminDashboardData = async (req, res) => {
+  try {
+    let data = {
+      totalBatches: 0,
+      totalAdmins: 0,
+      totalStudents: 0,
+      totalCourses: 0,
+      dateOfJoinings: [],
+      attendances: [],
+      batchStrength: [],
+    };
+
+    const courses = await Course.find();
+    if (courses) {
+      data.totalCourses = courses.length;
+    }
+    const students = await Student.find();
+    if (students) {
+      data.totalStudents = students.length;
+      students.forEach((student) => {
+        data.dateOfJoinings.push(student.dateOfJoining);
+      });
+    }
+    const batches = await Batch.find();
+    if (batches) {
+      data.totalBatches = batches.length;
+      batches.forEach((batch) => {
+        data.batchStrength.push({
+          batchCode: batch.batchCode,
+          students: batch.students.length,
+        });
+      });
+    }
+    const admins = await Admin.find();
+    if (admins) {
+      data.totalAdmins = admins.length;
+    }
+    const attendances = await Attendance.find();
+    if (attendances) {
+      data.attendances = attendances;
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getAdminDashboardDataByOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    let data = {
+      totalBatches: 0,
+      totalAdmins: 0,
+      totalStudents: 0,
+      totalCourses: 0,
+      dateOfJoinings: [],
+      attendances: [],
+      batchStrength: [],
+    };
+    const courses = await Course.find();
+    if (courses) {
+      data.totalCourses = courses.length;
+    }
+    const batches = await Batch.find({ organizationName });
+    if (batches) {
+      data.totalBatches = batches.length;
+      let temp = [];
+      for (let i = 0; i < batches.length; i++) {
+        data.batchStrength.push({
+          batchCode: batches[i].batchCode,
+          students: batches[i].students.length,
+        });
+
+        data.totalStudents += batches[i].students.length;
+        for (let j = 0; j < batches[i].students.length; j++) {
+          const student = await Student.findOne({
+            email: batches[i].students[j],
+          });
+          temp.push(student.dateOfJoining);
+        }
+        const attendances = await Attendance.find({
+          batchCode: batches[i].batchCode,
+        });
+
+        attendances.forEach((att) => {
+          data.attendances.push(att);
+        });
+      }
+      data.dateOfJoinings = temp.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+    }
+    const admins = await Admin.find({ organizationName });
+    if (admins) {
+      data.totalAdmins = admins.length;
+    }
+    return res.status(200).json(data);
   } catch (error) {
     console.log("Backend Error", error);
   }
