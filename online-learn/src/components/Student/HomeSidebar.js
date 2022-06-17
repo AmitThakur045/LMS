@@ -32,13 +32,16 @@ const HomeSidebar = () => {
 
   return (
     <div className="flex-[0.07] flex flex-col lg:my-4 my-2 justify-between py-5">
-      <img className="lg:h-14 h-12 w-auto" src={logo} alt="" />
+      <div className="flex justify-center">
+        <img className="lg:h-14 lg:w-14 h-12 w-12" src={logo} alt="" />
+      </div>
       <div className="flex flex-col lg:space-y-10 space-y-3">
         <NavLink
           to="/"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }>
+          }
+        >
           <MenuBookIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Courses</p>
         </NavLink>
@@ -46,7 +49,8 @@ const HomeSidebar = () => {
           to="/resources"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }>
+          }
+        >
           <DiamondIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Resources</p>
         </NavLink>
@@ -54,7 +58,8 @@ const HomeSidebar = () => {
           to="/community"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }>
+          }
+        >
           <PeopleIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Community</p>
         </NavLink>

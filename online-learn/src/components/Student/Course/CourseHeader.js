@@ -24,36 +24,36 @@ const CourseHeader = () => {
   }, [batch]);
 
   return (
-    <div className="h-24 bg-[#373737] w-full rounded-tl-2xl rounded-tr-2xl flex">
-      <div className="text-white text-[24px] space-y-1 flex-[0.8] pl-6 py-4">
+    <div className="bg-[#373737] w-full rounded-tl-2xl rounded-tr-2xl flex md:flex-row flex-col">
+      <div className="text-white text-[24px] space-y-1 md:flex-[0.8] flex-col pl-6 py-4">
         {Object.keys(batchData).length !== 0 && (
           <>
             <h1>{batchData?.courses[index]?.courseName}</h1>
-            <p className="text-[#E4BE34] text-[14px]">
+            <p className="text-[#E4BE34] lg:text-[14px] text-[12px]">
               0 Classes completed | 0% My-Learning videos watched | 0/1 Projects
               Done
             </p>
           </>
         )}
       </div>
-      <div className="flex-[0.2] rounded-tr-2xl h-full flex">
+      <div className="md:flex-[0.2] rounded-tr-2xl h-full flex">
         <NavLink
           to="/community"
           className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
           <PeopleIcon fontSize="medium" className="" />
-          <p className="text-base">Community</p>
+          <p className="text-sm lg:text-base">Community</p>
         </NavLink>
         <NavLink
           to="/help"
           className="text-white h-full flex flex-col items-center flex-[0.4] justify-center">
           <HelpOutlineIcon fontSize="medium" className="" />
-          <p className="text-base">Help</p>
+          <p className="text-sm lg:text-base">Help</p>
         </NavLink>
         <NavLink
           to="/notes"
           className="text-white  h-full flex flex-col items-center flex-[0.4] justify-center">
           <FormatListNumberedIcon fontSize="medium" className="" />
-          <p className="text-base">Notes</p>
+          <p className="text-sm lg:text-base">Notes</p>
         </NavLink>
       </div>
     </div>
