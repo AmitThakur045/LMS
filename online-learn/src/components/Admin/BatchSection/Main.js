@@ -113,13 +113,13 @@ const Main = () => {
       <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex  space-x-5">
         <Link
           to="/admin/batch/addbatch"
-          className="bg-[#5848a4] shadow-[#111111] h-[10rem] w-[50%] rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-[#352b66] transition-all duration-150">
+          className="bg-secondary shadow-[#111111] h-[10rem] w-[50%] rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150">
           <h1>Add Batch</h1>
           <IoIosAddCircleOutline />
         </Link>
         <div
           onClick={handleOpen}
-          className="bg-[#5848a4] shadow-[#111111] h-[10rem] w-[50%] rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-[#352b66] transition-all duration-150">
+          className="bg-secondary shadow-[#111111] h-[10rem] w-[50%] rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150">
           <h1>Search Batch</h1>
           <IoIosAddCircleOutline />
         </div>

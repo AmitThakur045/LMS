@@ -7,7 +7,14 @@ import { SET_ERRORS } from "../../../../Redux/actionTypes";
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
 
-import { TextField } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Spinner from "../../../../Utils/Spinner";
 import Collapsible from "react-collapsible";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -96,94 +103,82 @@ const Main = () => {
           </div>
         </div>
         {course.section?.map((sectionData, sectionIdx) => (
-          <div key={sectionIdx} className="flex flex-col cursor-pointer ">
-            <div className=" flex border-2 border-gray-300">
-              <Collapsible
-                open={false}
-                className="flex-1 w-full flex flex-col py-4"
-                openedClassName="w-full flex-1 flex flex-col py-4"
-                trigger={
-                  <div className="flex justify-between items-center px-10 font-bold text-xl">
-                    <h1>Section {sectionIdx + 1}</h1>
-                    <MdKeyboardArrowDown />
+          <div key={sectionIdx} className="flex flex-col  ">
+            <Accordion key={sectionIdx}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="course">
+                <div className="flex items-center space-x-10 ">
+                  <div className={` flex justify-center items-center`}>
+                    <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
                   </div>
-                }>
-                <div className="">
-                  <div className="flex space-x-3 mx-10 mt-3">
-                    <div className="space-y-1 flex justify-between w-full">
-                      <TextField
-                        aria-disabled
-                        type="text"
-                        id="outlined-basic"
-                        label="Section Name"
-                        variant="outlined"
-                        className="bg-white"
-                        value={course.section[sectionIdx].sectionName}
-                      />
-                    </div>
+                  <div className="w-full font-semibold">
+                    Section {sectionData.sectionNumber}
                   </div>
-                  {sectionData?.lesson.map((lessonData, lessonIdx) => (
-                    <div key={lessonIdx} className="">
-                      <div className="flex flex-col cursor-pointer mx-10 px-3 py-2 border-2 mt-3">
-                        <div className=" flex  ">
-                          <Collapsible
-                            open={false}
-                            className="flex-1 w-full flex flex-col py-4"
-                            openedClassName="w-full flex-1 flex flex-col py-4"
-                            trigger={
-                              <div className="flex justify-between items-center px-6 font-semibold text-lg">
-                                <h1>Lesson {lessonIdx + 1}</h1>
-                                <MdKeyboardArrowDown />
-                              </div>
-                            }>
-                            <div className="space-y-3 mx-6 mt-3">
-                              <div className="flex space-x-3">
-                                <div className="space-y-1 flex justify-between w-full">
-                                  <TextField
-                                    aria-disabled
-                                    name="lessonName"
-                                    type="text"
-                                    id="outlined-basic"
-                                    label="Lesson Name"
-                                    variant="outlined"
-                                    className="bg-white"
-                                    value={
-                                      course.section[sectionIdx].lesson[
-                                        lessonIdx
-                                      ].lessonName
-                                    }
-                                  />
-                                </div>
-                              </div>
-                              <div className="">
-                                <div className="space-y-1">
-                                  <TextField
-                                    aria-disabled
-                                    type="text"
-                                    name="lessonDescription"
-                                    id="outlined-multiline-flexible"
-                                    multiline
-                                    maxRows={6}
-                                    label="Lesson Description"
-                                    variant="outlined"
-                                    className="bg-white w-full"
-                                    value={
-                                      course.section[sectionIdx].lesson[
-                                        lessonIdx
-                                      ].lessonDescription
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </Collapsible>
+                </div>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className="flex flex-col space-y-4">
+                  <div className="flex">
+                    <TextField
+                      aria-disabled
+                      type="text"
+                      id="outlined-basic"
+                      label="Section Name"
+                      variant="outlined"
+                      className="bg-white w-"
+                      value={sectionData.sectionName}
+                    />
+                  </div>
+                  {sectionData.lesson.map((lessonData, lessonIdx) => (
+                    <Accordion key={lessonIdx}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="course">
+                        <div className="flex items-center space-x-10 ">
+                          <div className={` flex justify-center items-center`}>
+                            <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
+                          </div>
+                          <div className="w-full font-semibold">
+                            Lesson {lessonData.lessonNumber}
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <div className="flex flex-col space-y-5">
+                          <div className="flex">
+                            <TextField
+                              aria-disabled
+                              type="text"
+                              id="outlined-basic"
+                              label="Lesson Name"
+                              variant="outlined"
+                              className="bg-white w-"
+                              value={lessonData.lessonName}
+                            />
+                          </div>
+                          <div className="flex">
+                            <TextField
+                              aria-disabled
+                              type="text"
+                              id="outlined-multiline-flexible"
+                              multiline
+                              maxRows={6}
+                              label="Lesson Description"
+                              variant="outlined"
+                              className="bg-white w-full"
+                              value={lessonData.lessonDescription}
+                            />
+                          </div>
+                        </div>
+                      </AccordionDetails>
+                    </Accordion>
                   ))}
                 </div>
-              </Collapsible>
-            </div>
+              </AccordionDetails>
+            </Accordion>
           </div>
         ))}
 

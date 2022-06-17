@@ -17,8 +17,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const Main = () => {
-  const batchData = JSON.parse(localStorage.getItem("batch"));
-  const [courseCode, setCourseCode] = useState("DS101");
+  const [batchData, setBatchData] = useState({});
+  const [courseCode, setCourseCode] = useState();
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -29,9 +29,15 @@ const Main = () => {
   function courseStatus() {
     let lessonCompleted = 0;
     let totalLessons = 0;
-    for (let i = 0; i < batchData.courses.length; i++) {
-      lessonCompleted += batchData.courses[i].complete.lessonCompleted;
-      totalLessons += batchData.courses[i].complete.totalLesson;
+    for (
+      let i = 0;
+      i < JSON.parse(localStorage.getItem("batch"))?.courses.length;
+      i++
+    ) {
+      lessonCompleted += JSON.parse(localStorage.getItem("batch")).courses[i]
+        .complete.lessonCompleted;
+      totalLessons += JSON.parse(localStorage.getItem("batch")).courses[i]
+        .complete.totalLesson;
     }
     console.log(lessonCompleted, totalLessons);
     setCourseStatusNumber(Math.round((lessonCompleted / totalLessons) * 100));
@@ -42,8 +48,8 @@ const Main = () => {
   const [totalClassesHeld, setTotalClassesHeld] = useState(0);
   useEffect(() => {
     if (Object.keys(attendanceStatus).length !== 0) {
-      let totalClasses = batchData.schedule.length;
-      let totalStudents = batchData.students.length;
+      let totalClasses = batchData?.schedule.length;
+      let totalStudents = batchData?.students.length;
       let totalAttendance = totalClasses * totalStudents;
       setTotalAttendanceStatus(
         Math.round((attendanceStatus.LectureAttended / totalAttendance) * 100)
@@ -56,21 +62,29 @@ const Main = () => {
     }
   }, [attendanceStatus]);
   useEffect(() => {
-    courseStatus();
-    dispatch(getAttendanceStatus({ batchCode: batchData.batchCode }));
+    if (JSON.parse(localStorage.getItem("batch")) !== null) {
+      setBatchData(JSON.parse(localStorage.getItem("batch")));
+      setCourseCode(
+        JSON.parse(localStorage.getItem("batch")).courses[0].courseCode
+      );
+      courseStatus();
+      dispatch(
+        getAttendanceStatus({
+          batchCode: JSON.parse(localStorage.getItem("batch")).batchCode,
+        })
+      );
+    }
   }, []);
 
-  console.log(attendanceStatus);
+  console.log(JSON.parse(localStorage.getItem("batch")));
+
+  console.log(batchData);
   useEffect(() => {
     dispatch(
       getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
     );
     createList();
   }, [courseCode]);
-
-  // console.log("attend", attendances);
-  // console.log("xAxis", listData);
-  // console.log("courseCode", courseCode);
 
   const lineCustomSeries2 = [
     {
@@ -126,7 +140,6 @@ const Main = () => {
       return new Date(a.x) - new Date(b.x);
     });
 
-    // change the format of x axis
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     for (let i = 0; i < newList.length; i++) {
       newList[i].x = new Date(newList[i].x).getDate();
@@ -139,9 +152,12 @@ const Main = () => {
     setLoading(true);
     setCourseCode(event.target.value);
     dispatch(
-      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
+      getAttendance({
+        batchCode: batchData.batchCode,
+        courseCode: event.target.value,
+      })
     );
-    createList();
+
     setLoading(false);
   };
 
@@ -151,7 +167,6 @@ const Main = () => {
 
   useEffect(() => {
     setLoading(true);
-    setCourseCode("DS101");
     dispatch(
       getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
     );
@@ -159,145 +174,143 @@ const Main = () => {
     setLoading(false);
   }, []);
 
-  // console.log("attend", attendances);
-  // console.log("listData", listData);
-  // console.log("courseCode", courseCode);
-
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
-      <div className="flex justify-between mt-4 ">
-        <div className="w-[24%] py-3 flex flex-col space-y-3 bg-white shadow-md rounded-md">
-          <p className="self-center font-bold">Batch</p>
-          <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-[#605C94] pt-2">
-            <div className="flex space-x-2">
-              <h1 className="font-bold">Batch Code: </h1>
-              <p>{batchData?.batchCode}</p>
+      {Object.keys(batchData).length !== 0 && (
+        <>
+          <div className="flex justify-between mt-4 ">
+            <div className="w-[24%] py-3 flex flex-col space-y-3 bg-white shadow-md rounded-md">
+              <p className="self-center font-bold">Batch</p>
+              <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-primary pt-2">
+                <div className="flex space-x-2">
+                  <h1 className="font-bold">Batch Code: </h1>
+                  <p>{batchData?.batchCode}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="font-bold">Batch Name: </h1>
+                  <p>{batchData?.batchName}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="font-bold">Courses: </h1>
+                  <p>{batchData?.courses?.length}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="font-bold">Students: </h1>
+                  <p>{batchData?.students?.length}</p>
+                </div>
+              </div>
             </div>
-            <div className="flex space-x-2">
-              <h1 className="font-bold">Batch Name: </h1>
-              <p>{batchData?.batchName}</p>
+            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold  bg-white shadow-md rounded-md">
+              <ProgressBarComponent
+                id="course"
+                type="Circular"
+                height="160px"
+                width="100%"
+                style={{ progressColor: "#1111111" }}
+                trackThickness={14}
+                progressThickness={14}
+                value={courseStatusNumber}
+                enableRtl={false}
+                showProgressValue={true}
+                trackColor="#e6f8fe"
+                radius="100%"
+                progressColor="#046387"
+                animation={{
+                  enable: true,
+                  duration: 1000,
+                  delay: 0,
+                }}
+              />
+              <p className="self-center text-primary">Course Status</p>
             </div>
-            <div className="flex space-x-2">
-              <h1 className="font-bold">Courses: </h1>
-              <p>{batchData?.courses?.length}</p>
+            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+              <ProgressBarComponent
+                id="student"
+                type="Circular"
+                height="160px"
+                width="100%"
+                trackThickness={14}
+                progressThickness={14}
+                value={totalAttendanceStatus}
+                enableRtl={false}
+                showProgressValue={true}
+                trackColor="#e6f8fe"
+                radius="100%"
+                progressColor="#046387"
+                animation={{
+                  enable: true,
+                  duration: 1000,
+                  delay: 0,
+                }}
+              />
+              <p className="self-center text-primary">Attendance</p>
             </div>
-            <div className="flex space-x-2">
-              <h1 className="font-bold">Students: </h1>
-              <p>{batchData?.students?.length}</p>
+            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+              <ProgressBarComponent
+                id="classes"
+                type="Circular"
+                height="160px"
+                width="100%"
+                trackThickness={14}
+                progressThickness={14}
+                value={totalClassesHeld}
+                enableRtl={false}
+                showProgressValue={true}
+                trackColor="#e6f8fe"
+                radius="100%"
+                progressColor="#046387"
+                animation={{
+                  enable: true,
+                  duration: 1000,
+                  delay: 0,
+                }}
+              />
+              <p className="self-center text-primary">Classes Held</p>
             </div>
           </div>
-        </div>
-        <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold  bg-white shadow-md rounded-md">
-          <ProgressBarComponent
-            id="course"
-            type="Circular"
-            height="160px"
-            width="100%"
-            trackThickness={10}
-            progressThickness={10}
-            value={courseStatusNumber}
-            enableRtl={false}
-            showProgressValue={true}
-            trackColor="#F8C7D8"
-            radius="100%"
-            progressColor="#E3165B"
-            cornerRadius="Round"
-            animation={{
-              enable: true,
-              duration: 1000,
-              delay: 0,
-            }}
-          />
-          <p className="self-center">Course Status</p>
-        </div>
-        <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
-          <ProgressBarComponent
-            id="student"
-            type="Circular"
-            height="160px"
-            width="100%"
-            trackThickness={10}
-            progressThickness={10}
-            value={totalAttendanceStatus}
-            enableRtl={false}
-            showProgressValue={true}
-            trackColor="#c7f8d2"
-            radius="100%"
-            progressColor="#16e327"
-            cornerRadius="Round"
-            animation={{
-              enable: true,
-              duration: 1000,
-              delay: 0,
-            }}
-          />
-          <p className="self-center">Attendance</p>
-        </div>
-        <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
-          <ProgressBarComponent
-            id="classes"
-            type="Circular"
-            height="160px"
-            width="100%"
-            trackThickness={10}
-            progressThickness={10}
-            value={totalClassesHeld}
-            enableRtl={false}
-            showProgressValue={true}
-            trackColor="#c9c7f8"
-            radius="100%"
-            progressColor="#2016e3"
-            cornerRadius="Round"
-            animation={{
-              enable: true,
-              duration: 1000,
-              delay: 0,
-            }}
-          />
-          <p className="self-center">Classes Held</p>
-        </div>
-      </div>
-      <div className="flex space-x-4">
-        <div className="bg-white shadow-sm rounded-md p-2">
-          <LineGraph
-            lineCustomSeries={lineCustomSeries1}
-            LinePrimaryXAxis={LinePrimaryXAxis1}
-            LinePrimaryYAxis={LinePrimaryYAxis1}
-            chartId={"feedback"}
-            height={"420px"}
-            width={"560px"}
-          />
-        </div>
-        <div className="bg-white shadow-sm rounded-md p-2">
-          <div>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small">Course</InputLabel>
-              <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
-                value={courseCode}
-                label="Course"
-                onChange={(e) => handleChange(e)}>
-                {batchData.courses.map((course) => (
-                  <MenuItem value={course.courseCode}>
-                    {course.courseCode}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <div className="flex space-x-4">
+            <div className="bg-white shadow-sm rounded-md p-2">
+              <LineGraph
+                lineCustomSeries={lineCustomSeries1}
+                LinePrimaryXAxis={LinePrimaryXAxis1}
+                LinePrimaryYAxis={LinePrimaryYAxis1}
+                chartId={"feedback"}
+                height={"420px"}
+                width={"560px"}
+              />
+            </div>
+            <div className="bg-white shadow-sm rounded-md p-2">
+              <div>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small">Course</InputLabel>
+                  <Select
+                    labelId="demo-select-small"
+                    id="demo-select-small"
+                    value={courseCode}
+                    label="Course"
+                    onChange={(e) => handleChange(e)}>
+                    {batchData?.courses.map((course) => (
+                      <MenuItem value={course.courseCode}>
+                        {course.courseCode}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              {!loading && (
+                <LineGraph
+                  lineCustomSeries={lineCustomSeries2}
+                  LinePrimaryXAxis={LinePrimaryXAxis2}
+                  LinePrimaryYAxis={LinePrimaryYAxis2}
+                  chartId={"students"}
+                  height={"420px"}
+                  width={"560px"}
+                />
+              )}
+            </div>
           </div>
-          {!loading && (
-            <LineGraph
-              lineCustomSeries={lineCustomSeries2}
-              LinePrimaryXAxis={LinePrimaryXAxis2}
-              LinePrimaryYAxis={LinePrimaryYAxis2}
-              chartId={"students"}
-              height={"420px"}
-              width={"560px"}
-            />
-          )}
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

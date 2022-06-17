@@ -5,6 +5,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Spinner from "../../Utils/Spinner";
 import { adminSignIn } from "../../Redux/actions/adminActions";
+import { LOGOUT } from "../../Redux/actionTypes";
 
 const AdminLogin = () => {
   const [translate, setTranslate] = useState(false);
@@ -20,6 +21,7 @@ const AdminLogin = () => {
     setTimeout(() => {
       setTranslate(true);
     }, 1000);
+    dispatch({ type: LOGOUT });
   }, []);
 
   useEffect(() => {
