@@ -171,19 +171,19 @@ const Main = () => {
           <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-[#605C94] pt-2">
             <div className="flex space-x-2">
               <h1 className="font-bold">Batch Code: </h1>
-              <p>{batchData.batchCode}</p>
+              <p>{batchData?.batchCode}</p>
             </div>
             <div className="flex space-x-2">
               <h1 className="font-bold">Batch Name: </h1>
-              <p>{batchData.batchName}</p>
+              <p>{batchData?.batchName}</p>
             </div>
             <div className="flex space-x-2">
               <h1 className="font-bold">Courses: </h1>
-              <p>{batchData.courses?.length}</p>
+              <p>{batchData?.courses?.length}</p>
             </div>
             <div className="flex space-x-2">
               <h1 className="font-bold">Students: </h1>
-              <p>{batchData.students?.length}</p>
+              <p>{batchData?.students?.length}</p>
             </div>
           </div>
         </div>
