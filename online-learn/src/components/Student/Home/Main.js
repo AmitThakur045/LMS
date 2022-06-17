@@ -195,7 +195,7 @@ const Main = () => {
                     <AccordionSummary
                       sx={{
                         backgroundColor: `${
-                          i % 2 == 0 ? "#d2a1a1" : "#a1b9d2"
+                          i % 2 === 0 ? "#d2a1a1" : "#a1b9d2"
                         } `,
                       }}
                       expandIcon={<ExpandMoreIcon />}
