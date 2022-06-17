@@ -9,8 +9,8 @@ const Home = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className="bg-black w-screen h-screen flex overflow-hidden">
-      <HomeSidebar />
+    <div className="bg-black w-screen h-screen flex">
+        <HomeSidebar />
       {user !== null && <Main />}
     </div>
   );
