@@ -36,7 +36,7 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("admin"));
   const allBatches = useSelector((state) => state.admin.allBatch);
   const allOrganizationName = useSelector(
     (state) => state.admin.allOrganizationName
@@ -139,10 +139,6 @@ const Main = () => {
     }
   }, []);
 
-  // console.log("result", user.result);
-  console.log("organisation", allOrganizationName);
-
-  // Line Graph
   const lineCustomSeries = [
     {
       dataSource: lineChartData,

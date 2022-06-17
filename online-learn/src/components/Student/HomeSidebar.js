@@ -3,7 +3,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import PeopleIcon from "@mui/icons-material/People";
-import logo from "../../Assests/icons8-bbb.svg";
+import logo from "../../Assests/Learner_Logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
@@ -25,13 +25,14 @@ const HomeSidebar = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
+    } else {
+      dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
     }
-    dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
   }, []);
 
   return (
     <div className="h-[45.5rem] flex-[0.07] flex flex-col  my-4 justify-between py-5">
-      <img className="h-16" src={logo} alt="" />
+      <img className="object-contain h-14" src={logo} alt="" />
       <div className="flex flex-col space-y-10">
         <NavLink
           to="/"

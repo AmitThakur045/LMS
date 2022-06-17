@@ -49,7 +49,6 @@ const Main = () => {
   useEffect(() => {
     dispatch(getCourseByBatchCode({ batchCode: user.result.batchCode[0] }));
   }, []);
-  console.log(batchData);
   return (
     <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex">
       <div className="flex flex-col flex-[0.45] bg-[#F9F9F9] rounded-tl-2xl rounded-bl-2xl  pt-[53px]">
@@ -63,7 +62,10 @@ const Main = () => {
           {courseList.length !== 0 &&
             courseList?.map((data, i) => (
               <div
-                onClick={() => setOpenCourse(data)}
+                onClick={() => {
+                  setOpenCourse(data);
+                  localStorage.setItem("index", JSON.stringify(i));
+                }}
                 key={i}
                 className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white h-[9.125rem] shadow-md rounded-2xl p-3 ">
                 <NavLink
@@ -224,24 +226,6 @@ const Main = () => {
                       ))}
                     </AccordionDetails>
                   </Accordion>
-                  //   <div
-                  //     key={i}
-                  //     className="h-[9.75rem] border-[1px] rounded-2xl flex">
-                  //     <div
-                  //       className={`w-full flex-[0.3] ${
-                  //         i % 2 === 0 ? "bg-[#C87343]" : "bg-[#DFB23C]"
-                  //       } rounded-tl-2xl rounded-bl-2xl flex items-center justify-center space-x-3`}>
-                  //
-                  //     </div>
-                  //     <div className="flex-[0.7] px-5 py-5 space-y-2">
-                  //       <h1 className="font-bold text-[18px]">
-                  //         {content.sectionName}
-                  //       </h1>
-                  //       <p className="text-[#6F6F6F] text-[16px]">
-                  //         {content?.description}
-                  //       </p>
-                  //     </div>
-                  //   </div>
                 ))}
               </div>
             </div>

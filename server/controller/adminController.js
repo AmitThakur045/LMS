@@ -12,6 +12,7 @@ import batch from "../models/batch.js";
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
   const errors = { emailError: String, passwordError: String };
+  console.log(email);
 
   try {
     const existingAdmin = await Admin.findOne({ email });
@@ -209,7 +210,7 @@ export const addStudentQuery = async (req, res) => {
 export const updateDeleteQuery = async (req, res) => {
   try {
     const { code, subAdmin, status } = req.body;
-    console.log();
+
     const deleteQuery = await DeleteQuery.findOne({ code, subAdmin });
     deleteQuery.status = status;
     deleteQuery.updated = true;
@@ -654,6 +655,7 @@ export const addBatch = async (req, res) => {
         let temp1 = {
           sectionNumber: course.section[i].sectionNumber,
           sectionCompleted: false,
+          sectionName: course.section[i].sectionName,
           lesson: [],
         };
         sum += course.section[i].lesson.length;
@@ -662,6 +664,7 @@ export const addBatch = async (req, res) => {
             lessonNumber: course.section[i].lesson[j].lessonNumber,
             lessonCompleted: false,
             video: "",
+            lessonName: course.section[i].lesson[j].lessonName,
           };
           temp1.lesson.push(temp2);
         }
@@ -678,7 +681,7 @@ export const addBatch = async (req, res) => {
           let alreadyBatch = student.batchCode.find(
             (code) => code === batchCode
           );
-          console.log(alreadyBatch);
+
           if (alreadyBatch !== batchCode) {
             student.batchCode.push(batchCode);
           }
@@ -739,7 +742,7 @@ export const getAllBatchCodes = async (req, res) => {
 export const getBatchesByBatchCode = async (req, res) => {
   try {
     const { allBatches } = req.body;
-    console.log("getBatchesByBatchCode", allBatches);
+
     let list = [];
 
     for (let i = 0; i < allBatches.length; i++) {
@@ -761,7 +764,7 @@ export const getBatchCodesByOrganizationName = async (req, res) => {
     const { organizationName, subAdmin } = req.body;
     // console.log("subAdmin", subAdmin);
     const currAdmin = await Admin.findOne({ email: subAdmin });
-    console.log(currAdmin.firstName);
+
     // let batches = [];
 
     // if (currAdmin.sub === "true") {
@@ -1007,7 +1010,6 @@ export const getAttendanceByBatchCodes = async (req, res) => {
   try {
     const { allBatches } = req.body;
 
-    console.log("getAttendancebybatchCode", allBatches);
     let attendance = [];
     for (let i = 0; i < allBatches.length; i++) {
       const batch = await Attendance.find({ batchCode: allBatches[i].value });
@@ -1018,7 +1020,7 @@ export const getAttendanceByBatchCodes = async (req, res) => {
     // if(attendance === undefined) {
     //   attendance.push([]);
     // }
-    console.log("attendance", attendance[0]);
+
     res.status(200).json(attendance[0]);
   } catch (error) {
     console.log("Backend Error", error);
