@@ -31,12 +31,11 @@ import {
   getEventByCourseCode,
   getAllOrganizationName,
   addBatchLink,
-  getBatchCodesByOrganizationName,
   getAdminsByOrganizationName,
   getStudentsByOrganizationName,
   getCoursesLength,
   getAllStudentLength,
-  getStudentsLengthByOrganizationName,
+  getStudentsLengthBySubAdmin,
   getAllAdminLength,
   getAdminsLengthByOrganizationName,
   addStudentInBatch,
@@ -47,6 +46,10 @@ import {
   updateDeleteQuery,
   getAllDeleteQueryBySubAdmin,
   getBatchesByBatchCode,
+  getBatchCodesBySubAdmin,
+  getAdminDashboardDataBySubAdmin,
+  getAllAdminDashboardData,
+  getAdminDashboardDataByOrganizationName,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -56,7 +59,7 @@ router.post("/addstudentquery", auth, addStudentQuery);
 router.post("/updatedeletequery", auth, updateDeleteQuery);
 router.post("/getadmin", auth, getAdmin);
 router.get("/getalldeletequery", auth, getAllDeleteQuery);
-router.get("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
+router.post("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
 router.post("/updateadmin", auth, updateAdmin);
 router.post("/deleteadmin", auth, deleteAdmin);
 router.post("/addcourse", auth, addCourse);
@@ -67,11 +70,7 @@ router.post("/deletecourse", auth, deleteCourse);
 router.post("/addstudent", auth, addStudent);
 router.post("/addstudentinbatch", auth, addStudentInBatch);
 router.get("/getallstudentlength", auth, getAllStudentLength);
-router.post(
-  "/getstudentslengthbyorganizationname",
-  auth,
-  getStudentsLengthByOrganizationName
-);
+router.post("/getstudentslengthbysubadmin", auth, getStudentsLengthBySubAdmin);
 router.get("/getallstudent", auth, getAllStudent);
 router.get("/getalladmin", auth, getAllAdmin);
 router.post("/getadminsbyorganizationname", auth, getAdminsByOrganizationName);
@@ -92,11 +91,7 @@ router.get("/getallcourse", auth, getAllCourse);
 router.post("/addbatch", auth, addBatch);
 router.get("/getallorganizationname", auth, getAllOrganizationName);
 router.get("/getallbatchcodes", auth, getAllBatchCodes);
-router.post(
-  "/getbatchcodesbyorganizationname",
-  auth,
-  getBatchCodesByOrganizationName
-);
+router.post("/getbatchcodesbysubadmin", auth, getBatchCodesBySubAdmin);
 router.get("/getallcoursecodes", auth, getAllCourseCodes);
 router.post("/getbatch", auth, getBatch);
 router.post("/addevent", auth, addEvent);
@@ -112,4 +107,15 @@ router.post("/addscore", auth, addScore);
 router.post("/addbatchlink", auth, addBatchLink);
 router.post("/updatecoursedata", auth, updateCourseData);
 router.post("/getbatchesbybatchcode", auth, getBatchesByBatchCode);
+router.post(
+  "/getadmindashboarddatabysubadmin",
+  auth,
+  getAdminDashboardDataBySubAdmin
+);
+router.post(
+  "/getadmindashboarddatabyorganizationname",
+  auth,
+  getAdminDashboardDataByOrganizationName
+);
+router.get("/getalladmindashboarddata", auth, getAllAdminDashboardData);
 export default router;
