@@ -110,7 +110,7 @@ const Main = () => {
           setShowSubAdminModal={setShowSubAdminModal}
         />
       )}
-      <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
+      <div className="w-[80%] rounded-3xl shadow-inner bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
         <div className="flex items-center justify-between">
           <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
             <AiOutlineSearch fontSize={20} color="#696969" />
@@ -122,21 +122,14 @@ const Main = () => {
             />
           </div>
           <div className="">
-            {user.result.sub === "false" ? (
+            {user.result.sub === "false" && (
               <Link
                 to="/admin/admin/addadmin"
                 type="button"
-                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                className="bg-primary hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
                 <IoIosAddCircleOutline fontSize={20} />
                 <h1>Add Admin</h1>
               </Link>
-            ) : (
-              <button
-                onClick={() => setShowSubAdminModal(true)}
-                className="bg-[#4A47D2] hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
-                <IoIosAddCircleOutline fontSize={20} />
-                <h1>Add Admin</h1>
-              </button>
             )}
           </div>
         </div>
@@ -161,8 +154,8 @@ const Main = () => {
           </div>
         )}
         {!loading && Object.keys(error).length === 0 && admins.length !== 0 && (
-          <div className="overflow-y-auto space-y-2">
-            <div className="grid grid-cols-12 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+          <div className="overflow-y-auto space-y-2 pb-3">
+            <div className="grid grid-cols-12 h-[32px] bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
               <h1 className="col-span-3 text-[13px] font-bold">Admin Name</h1>
               <h1 className="col-span-3 text-[13px] font-bold">Email</h1>
               <h1 className="col-span-2 text-[13px] font-bold">
@@ -176,7 +169,7 @@ const Main = () => {
             {admins.map((ad, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-12 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+                className="grid grid-cols-12 h-[37px] bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
                 <div
                   onClick={() => {
                     navigate("/admin/admin/viewadmin");

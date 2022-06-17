@@ -71,7 +71,7 @@ const ActiveBatch = () => {
 
   return (
     <div className="h-[60%] rounded-t-3xl shadow-md bg-white flex flex-col py-3">
-      <h1 className="text-[#504F89] text-[16px] font-bold self-center">
+      <h1 className="text-primary text-[16px] font-bold self-center">
         Active Batch
       </h1>
       <div className=" mt-6 space-y-4 overflow-y-auto scrollbar-none">
@@ -88,9 +88,9 @@ const ActiveBatch = () => {
               <p className="bg-[#D5F8F9] h-[25px] w-[25px] flex items-center justify-center text-[12px] text-[#6F6EA5]">
                 B
               </p>
-              <p className="text-[#6F6EA5] text-[12px]">{batch.value}</p>
+              <p className="text-primary text-[12px]">{batch.value}</p>
             </div>
-            <AiFillEye color="#6F6EA5" />
+            <AiFillEye color="#046387" />
           </div>
         ))}
       </div>
