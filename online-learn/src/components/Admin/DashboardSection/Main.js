@@ -255,28 +255,28 @@ const Main = () => {
   return (
     <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
       <div className="flex justify-between">
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Batches</h1>
             <p>{dashboardData?.totalBatches}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Courses</h1>
             <p>{dashboardData?.totalCourses}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Students</h1>
             <p>{dashboardData?.totalStudents}</p>
           </div>
           <img src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-[#605C94] font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Sub Admins</h1>
             <p>{dashboardData?.totalAdmins}</p>
@@ -321,14 +321,14 @@ const Main = () => {
       </div>
       <div className="flex space-x-10">
         <div className="w-[60%] space-y-6">
-          <h1 className="text-[#510B88] font-bold text-[18px]">Batch</h1>
+          <h1 className="text-primary font-bold text-[18px]">Batch</h1>
           <hr />
           <div className="flex items-center space-x-20 justify-evenly">
             <PieChart data={pieChartData} legendVisiblity />
           </div>
         </div>
         <div className="w-[40%] space-y-6">
-          <h1 className="text-[#510B88] font-bold text-[18px]">
+          <h1 className="text-primary font-bold text-[18px]">
             Student Queries
           </h1>
           <hr />
