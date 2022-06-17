@@ -50,15 +50,19 @@ const Main = () => {
     dispatch(getCourseByBatchCode({ batchCode: user.result.batchCode[0] }));
   }, []);
   return (
-    <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex">
-      <div className="flex flex-col flex-[0.45] bg-[#F9F9F9] rounded-tl-2xl rounded-bl-2xl  pt-[53px]">
-        <h1 className="font-bold text-[40px] px-[52px]">Courses</h1>
-        <div className=" px-[52px] flex  mt-[15px] space-x-7 text-[16px] mb-10 ">
-          <p className="">All</p>
-          <p className="text-[#AAAAAA]">Active</p>
-          <p className="text-[#AAAAAA]">Completed</p>
+    <div className="bg-white flex-[0.93] md:flex-row flex-col my-4 rounded-2xl mr-4 flex md:overflow-hidden overflow-auto">
+      <div className="flex flex-col md:flex-[0.45] bg-[#f6f2f2] rounded-tl-2xl rounded-bl-2xl pt-[30px]">
+        <h1 className="font-bold text-[40px] lg:px-[52px] px-3">Courses</h1>
+        <div className="lg:px-[52px] px-3 flex mt-[15px] space-x-7 text-[16px] mb-10">
+          <p className="text-sm font-semibold">All</p>
+          <p className="text-sm text-[#AAAAAA] hover:cursor-pointer hover:text-black hover:font-semibold">
+            Active
+          </p>
+          <p className="text-sm text-[#AAAAAA] hover:cursor-pointer hover:text-black hover:font-semibold">
+            Completed
+          </p>
         </div>
-        <div className="space-y-4 px-[52px] scrollbar-thin pb-3 scrollbar-track-white scrollbar-thumb-black overflow-y-auto">
+        <div className="space-y-4 lg:px-[40px] px-3 scrollbar-thin pb-3 scrollbar-track-white scrollbar-thumb-black">
           {courseList.length !== 0 &&
             courseList?.map((data, i) => (
               <div
@@ -67,13 +71,15 @@ const Main = () => {
                   localStorage.setItem("index", JSON.stringify(i));
                 }}
                 key={i}
-                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white h-[9.125rem] shadow-md rounded-2xl p-3 ">
+                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start"
+              >
                 <NavLink
                   to="/course"
-                  className="relative h-[7.8125rem] w-[17.125rem] bg-black">
+                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg"
+                >
                   <img
                     src={data.courseImg}
-                    className="hover:opacity-50 w-full h-full "
+                    className="hover:opacity-50 w-full h-full rounded-lg"
                     alt=""
                   />
                   <div className="absolute text-white top-[50%] left-[50%]  -translate-x-[50%] -translate-y-[50%]">
@@ -108,14 +114,14 @@ const Main = () => {
                     />
                   </div>
                 </NavLink>
-                <div className="ml-5">
-                  <h4 className="font-bold text-[15px] mb-3">
+                <div className="ml-2">
+                  <h4 className="font-bold text-[15px] mb-2">
                     {data.courseName}
                   </h4>
                   <p className="text-[12px] text-[#ADADAD]">
-                    {data.description.slice(0, 100)}
+                    {data.description.slice(0, 80)}...
                   </p>
-                  <div className="flex justify-between items-center mt-6">
+                  <div className="flex justify-between items-center mt-3">
                     <div className="flex items-center space-x-2">
                       <div className="">
                         <StarIcon
@@ -150,14 +156,16 @@ const Main = () => {
             ))}
         </div>
       </div>
-      <div className="flex flex-[0.55] bg-white rounded-tr-2xl rounded-br-2xl">
+      <div className="flex md:flex-[0.55] bg-white rounded-tr-2xl rounded-br-2xl">
         {openCourse && (
-          <div className="w-full flex flex-col mt-4 scrollbar-thin scrollbar-track-white scrollbar-thumb-black overflow-y-auto pb-4">
-            <img
-              src={openCourse.courseImg}
-              className="w-[45.75rem] h-[23.75rem] object-cover self-center rounded-2xl"
-              alt=""
-            />
+          <div className="w-full flex flex-col mt-4 scrollbar-thin scrollbar-track-white scrollbar-thumb-black pb-4">
+            <div className="p-3">
+              <img
+                src={openCourse.courseImg}
+                className="w-full lg:h-[22rem] md:h-[15rem] object-cover self-center rounded-2xl"
+                alt=""
+              />
+            </div>
             <div className="flex items-center my-6 mx-6 space-x-10">
               <div className="flex items-center space-x-2">
                 <div className="">
@@ -192,7 +200,8 @@ const Main = () => {
                       }}
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
-                      id="section">
+                      id="section"
+                    >
                       <div className="flex items-center space-x-10 ">
                         <div className={` flex justify-center items-center`}>
                           <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
@@ -208,10 +217,12 @@ const Main = () => {
                           <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
-                            id="lesson">
+                            id="lesson"
+                          >
                             <div className="flex items-center space-x-10 ">
                               <div
-                                className={` flex justify-center items-center`}>
+                                className={` flex justify-center items-center`}
+                              >
                                 <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
                               </div>
                               <div className="w-full font-semibold">
