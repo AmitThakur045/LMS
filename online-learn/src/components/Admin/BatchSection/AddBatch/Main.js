@@ -229,7 +229,7 @@ const Main = () => {
         </div>
         <button
           type="submit"
-          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+          className="self-end bg-secondary h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-secondaryHover transition-all duration-150">
           Submit
         </button>
         {loading && <Spinner message="Adding Batch" />}

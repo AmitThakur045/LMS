@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { AiOutlineCheckCircle } from "react-icons/ai";
+import { AiOutlineCheckCircle, AiOutlineSearch } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ const Main = () => {
       {courseData?.map((course, idx) => (
         <div key={idx} className="space-y-4">
           <div className="flex justify-between">
-            <h1 className="font-bold text-[#605C94]">{course.courseName}</h1>
+            <h1 className="font-bold text-primary">{course.courseName}</h1>
             <Button
               onClick={() => {
                 navigate("/admin/batch/course/update");
