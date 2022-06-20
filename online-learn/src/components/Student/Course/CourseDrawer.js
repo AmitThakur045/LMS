@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DrawerSideBar = ({ isOpen, setIsOpen }) => {
+const CourseDrawer = ({ isOpen, setIsOpen }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -156,4 +156,4 @@ const DrawerSideBar = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default DrawerSideBar;
+export default CourseDrawer;
