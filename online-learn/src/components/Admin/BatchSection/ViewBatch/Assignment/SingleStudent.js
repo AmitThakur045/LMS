@@ -13,6 +13,8 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { addScore } from "../../../../../Redux/actions/adminActions";
 
 const SingleStudent = ({ item, index, currentEmail }) => {
+  const studentData = JSON.parse(localStorage.getItem("students"));
+  const [idx, setIdx] = useState({ studentIndex: 0, assignmentIndex: 0 });
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -38,11 +40,18 @@ const SingleStudent = ({ item, index, currentEmail }) => {
         setValue({
           ...value,
           selectedFile: fileReader.result,
-        })
+        });
       };
     }
     setIsSelected(true);
   };
+  useEffect(() => {
+    let studentIdx = studentData.findIndex((stu) => stu.email === item.email);
+    let assignmentIdx = studentData[studentIdx].assignment.findIndex(
+      (ass) => ass.assignmentCode === item.assignmentCode
+    );
+    setIdx({ studentIndex: studentIdx, assignmentIndex: assignmentIdx });
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -107,7 +116,12 @@ const SingleStudent = ({ item, index, currentEmail }) => {
           <div className="flex items-center space-x-2">
             <div>
               {/* <a href={item.assignment?.studentAnswer} download> */}
-              <a download>
+              <a
+                href={
+                  studentData[idx.studentIndex].assignment[idx.assignmentIndex]
+                    .studentAnswer
+                }
+                download>
                 <Button>
                   <CloudDownloadIcon />
                 </Button>

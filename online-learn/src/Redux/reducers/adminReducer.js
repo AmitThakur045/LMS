@@ -40,6 +40,10 @@ import {
   UPDATE_DELETE_QUERY,
   GET_BATCHES_BY_BATCH_CODE,
   DASHBOARD_DATA,
+  UPDATE_STUDENT,
+  TOTAL_ASSIGNMENT,
+  UPDATE_STATUS,
+  UPDATE_BATCH_ADMIN,
 } from "../actionTypes";
 
 const initialState = {
@@ -47,6 +51,7 @@ const initialState = {
   adminAdded: false,
   admin: {},
   adminUpdated: false,
+  studentUpdated: false,
   adminDeleted: false,
   courseAdded: false,
   course: {},
@@ -82,6 +87,9 @@ const initialState = {
   deleteQueryUpdated: false,
   batchArray: [],
   adminDashboardData: {},
+  totalAssignment: -1,
+  batchAdminUpdated: false,
+  statusUpdated: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -108,6 +116,11 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         deleteQueryUpdated: action.payload,
       };
+    case TOTAL_ASSIGNMENT:
+      return {
+        ...state,
+        totalAssignment: action.payload,
+      };
     case ADD_BATCH_LINK:
       return {
         ...state,
@@ -127,6 +140,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         adminUpdated: action.payload,
+      };
+    case UPDATE_STUDENT:
+      return {
+        ...state,
+        studentUpdated: action.payload,
       };
     case DELETE_ADMIN:
       return {
@@ -287,6 +305,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         adminDashboardData: action.payload,
+      };
+    case UPDATE_STATUS:
+      return {
+        ...state,
+        statusUpdated: action.payload,
+      };
+    case UPDATE_BATCH_ADMIN:
+      return {
+        ...state,
+        batchAdminUpdated: action.payload,
       };
     default:
       return state;

@@ -21,12 +21,16 @@ export const updateDeleteQuery = (data) =>
   API.post("/api/admin/updatedeletequery", data);
 export const getAdmin = (data) => API.post("/api/admin/getadmin", data);
 export const updateAdmin = (admin) => API.post("/api/admin/updateadmin", admin);
+export const updateStudent = (student) =>
+  API.post("/api/admin/updatestudent", student);
 export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
 
 export const addCourse = (course) => API.post("/api/admin/addcourse", course);
 export const getCourse = (data) => API.post("/api/admin/getcourse", data);
 export const getCourses = (data) => API.post("/api/admin/getcourses", data);
 export const getStudents = (data) => API.post("/api/admin/getstudents", data);
+export const totalAssignment = (data) =>
+  API.post("/api/admin/totalassignment", data);
 export const deleteCourse = (data) => API.post("/api/admin/deletecourse", data);
 export const addStudent = (student) =>
   API.post("/api/admin/addstudent", student);
@@ -87,8 +91,12 @@ export const getAdminDashboardDataBySubAdmin = (formData) =>
   API.post("/api/admin/getadmindashboarddatabysubadmin", formData);
 export const getAdminDashboardDataByOrganizationName = (formData) =>
   API.post("/api/admin/getadmindashboarddatabyorganizationname", formData);
-export const getAllAdminDashboardData = (formData) =>
+export const getAllAdminDashboardData = () =>
   API.get("/api/admin/getalladmindashboarddata");
+export const updateStatus = (formData) =>
+  API.post("/api/admin/updatestatus", formData);
+export const updateBatchAdmin = (formData) =>
+  API.post("/api/admin/updatebatchadmin", formData);
 
 //Student
 
@@ -98,5 +106,9 @@ export const getCourseByBatchCode = (batchCode) =>
   API.post("/api/student/getcoursebybatchcode", batchCode);
 export const getAllEvents = (batchCode) =>
   API.post("/api/student/getallevents", batchCode);
-export const getAssignmentByBatchCode = (batchCode) =>
-  API.post("/api/student/getassignmentbybatchcode", batchCode);
+export const getAssignmentByBatchCode = (data) =>
+  API.post("/api/student/getassignmentbybatchcode", data);
+export const submitAssignment = (formData) =>
+  API.post("/api/student/submitassignment", formData);
+export const studentSignUp = (formData) =>
+  API.post("/api/student/studentsignup", formData);

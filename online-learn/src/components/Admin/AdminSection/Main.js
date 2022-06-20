@@ -59,6 +59,9 @@ const Main = () => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
       setLoading(false);
+      if (store.errors.adminError) {
+        alert(store.errors.adminError);
+      }
     }
   }, [store.errors]);
 
@@ -81,8 +84,6 @@ const Main = () => {
       dispatch(getAllAdmin());
     }
     setLoading(true);
-
-    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   useEffect(() => {
@@ -126,14 +127,14 @@ const Main = () => {
               <Link
                 to="/admin/admin/addadmin"
                 type="button"
-                className="bg-primary hover:bg-[#13119a] transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                className="bg-secondary hover:bg-secondaryHover transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
                 <IoIosAddCircleOutline fontSize={20} />
                 <h1>Add Admin</h1>
               </Link>
             )}
           </div>
         </div>
-        {(loading || Object.keys(error).length !== 0) && (
+        {(loading || error.noAdminError) && (
           <div className="flex flex-col mt-10">
             <div className="flex items-center justify-center mt-5">
               {loading && (
@@ -153,7 +154,7 @@ const Main = () => {
             </div>
           </div>
         )}
-        {!loading && Object.keys(error).length === 0 && admins.length !== 0 && (
+        {!loading && !error.noAdminError && admins.length !== 0 && (
           <div className="overflow-y-auto space-y-2 pb-3">
             <div className="grid grid-cols-12 h-[32px] bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
               <h1 className="col-span-3 text-[13px] font-bold">Admin Name</h1>

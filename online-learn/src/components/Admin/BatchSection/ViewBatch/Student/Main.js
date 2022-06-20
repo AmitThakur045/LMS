@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addStudentInBatch,
   getStudents,
+  totalAssignment,
 } from "../../../../../Redux/actions/adminActions";
 import { ADD_STUDENT, SET_ERRORS } from "../../../../../Redux/actionTypes";
 import Spinner from "../../../../../Utils/Spinner";
@@ -58,6 +59,7 @@ const Main = () => {
   const [studentsData, setStudentsData] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [allCourses, setAllCourses] = useState([]);
+  const [totalAssignmentInBatch, setTotalAssignmentInBatch] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   function calTotalAttendance(attendance) {
@@ -75,12 +77,19 @@ const Main = () => {
     }
   }, [store.errors]);
 
+  const totalAssignments = useSelector((store) => store.admin.totalAssignment);
   const newStudents = useSelector((store) => store.admin.students);
   useEffect(() => {
     if (newStudents.length !== 0) {
       setStudentsData(newStudents);
     }
   }, [newStudents]);
+  useEffect(() => {
+    if (totalAssignments.length !== -1) {
+      setTotalAssignmentInBatch(totalAssignments);
+    }
+  }, [totalAssignments]);
+  console.log(newStudents);
 
   useEffect(() => {
     if (store.errors || store.admin.studentAdded) {
@@ -101,6 +110,7 @@ const Main = () => {
   }, [store.errors, store.admin.studentAdded]);
 
   useEffect(() => {
+    dispatch(getStudents({ emails: batchData.students }));
     let temp = 0;
     let temp2 = [];
     for (let i = 0; i < courseData.length; i++) {
@@ -112,7 +122,7 @@ const Main = () => {
     }
     setTotalClasses(temp);
     setAllCourses(temp2);
-    setStudentsData(studentData);
+    dispatch(totalAssignment({ batchCode: batchData.batchCode }));
   }, []);
 
   function calCourseCompleted(attendance) {
@@ -129,13 +139,50 @@ const Main = () => {
   }
   function calTotalAssignmentScore(assignment) {
     let score = 0;
-    let totalAssignment = assignment.length;
-    for (let i = 0; i < assignment.length; i++) {
-      score += assignment[i].score;
-    }
+    if (assignment.length !== 0) {
+      for (let i = 0; i < assignment.length; i++) {
+        score += assignment[i].score;
+      }
 
-    score = score / totalAssignment;
-    return score;
+      score = score / totalAssignmentInBatch;
+      return Math.round(score);
+    }
+    return 0;
+  }
+  function calPerformance(assignment) {
+    let score = 0;
+
+    if (assignment.length !== 0) {
+      for (let i = 0; i < assignment.length; i++) {
+        score += assignment[i].score;
+      }
+
+      score = score / totalAssignmentInBatch;
+    }
+    let per = score;
+    if (per >= 9.5) {
+      return "A+";
+    } else if (per < 9.5 && per >= 9) {
+      return "A";
+    } else if (per < 9 && per >= 8.5) {
+      return "B+";
+    } else if (per < 8.5 && per >= 8) {
+      return "B";
+    } else if (per < 8 && per >= 7.5) {
+      return "C+";
+    } else if (per < 7.5 && per >= 7) {
+      return "C";
+    } else if (per < 7 && per >= 6.5) {
+      return "D+";
+    } else if (per < 6.5 && per >= 6) {
+      return "D";
+    } else if (per < 6 && per >= 5.5) {
+      return "E+";
+    } else if (per < 5.5 && per >= 5) {
+      return "E";
+    } else {
+      return "F";
+    }
   }
   function calCourseWiseAttendance(courseCode, attended) {
     let total = 0;
@@ -307,10 +354,12 @@ const Main = () => {
                 </div>
                 <div className="col-span-2  font-semibold">{student.email}</div>
                 <div className="col-span-2">
-                  Total Attendance: {calTotalAttendance(student.attendance)}
+                  Total Attendance: {calTotalAttendance(student.attendance)}/
+                  {batchData.schedule.length}
                 </div>
                 <div className="col-span-2">
-                  Total Assignment: {calTotalAssignment(student.assignment)}
+                  Total Assignment: {calTotalAssignment(student.assignment)}/
+                  {totalAssignmentInBatch}
                 </div>
                 <div className="col-span-2">
                   Courses Completed: {calCourseCompleted(student.attendance)}%
@@ -333,7 +382,8 @@ const Main = () => {
                           </p>
                         </div>
                         <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAttendance(student.attendance)}
+                          {calTotalAttendance(student.attendance)}/
+                          {batchData.schedule.length}
                         </span>
                       </div>
                       <div className="flex w-full">
@@ -344,7 +394,8 @@ const Main = () => {
                           </p>
                         </div>
                         <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAssignment(student.assignment)}
+                          {calTotalAssignment(student.assignment)}/
+                          {totalAssignmentInBatch}
                         </span>
                       </div>
                       <div className="flex w-full">
@@ -355,7 +406,7 @@ const Main = () => {
                           </p>
                         </div>
                         <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAssignmentScore(student.assignment)}
+                          {calTotalAssignmentScore(student.assignment)}/10
                         </span>
                       </div>
                       <div className="flex w-full">
@@ -390,7 +441,7 @@ const Main = () => {
                             trailColor: "#431c36",
                           })}
                           value={75}
-                          text="B+"
+                          text={calPerformance(student.assignment)}
                         />
                       </div>
                     </div>

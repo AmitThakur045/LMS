@@ -141,6 +141,12 @@ const CourseList = ({ currentList, courseCode }) => {
   }, [currentList]);
 
   useEffect(() => {
+    if (currentList.length !== 0) {
+      setCurrentAssignmentCode(currentList[0].assignmentCode);
+    }
+  }, []);
+
+  useEffect(() => {
     dispatch(
       getStudentByAssignmentCode({ assignmentCode: currentAssignmentCode })
     );

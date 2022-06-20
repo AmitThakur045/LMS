@@ -6,7 +6,7 @@ import Main from "./Main";
 const Home = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   return (
-    <div className="bg-black w-screen h-screen flex">
+    <div className="bg-[#1a1a1a] w-screen h-screen flex">
       <HomeSidebar />
       {user !== null && <Main />}
     </div>

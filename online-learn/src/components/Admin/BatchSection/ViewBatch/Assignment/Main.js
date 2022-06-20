@@ -12,6 +12,7 @@ import { SET_ERRORS } from "../../../../../Redux/actionTypes";
 import {
   getBatch,
   getCourses,
+  getStudents,
 } from "../../../../../Redux/actions/adminActions";
 
 const Main = () => {
@@ -33,8 +34,9 @@ const Main = () => {
       setLoading(false);
     }
   }, [store.errors]);
-
+  console.log(batchDataLocal);
   useEffect(() => {
+    dispatch(getStudents({ emails: batchData.students }));
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getBatch({ batchCode: batchDataLocal.batchCode }));
     setLoading(true);

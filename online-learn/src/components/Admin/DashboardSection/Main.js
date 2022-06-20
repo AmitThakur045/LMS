@@ -60,6 +60,7 @@ const Main = () => {
       setNoQueryFound(flag);
     }
   }, [allDeleteQueries]);
+  console.log(allDeleteQueries);
   useEffect(() => {
     if (user.result.sub === "true") {
       dispatch(

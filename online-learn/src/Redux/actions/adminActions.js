@@ -39,6 +39,10 @@ import {
   UPDATE_DELETE_QUERY,
   GET_BATCHES_BY_BATCH_CODE,
   DASHBOARD_DATA,
+  UPDATE_STUDENT,
+  TOTAL_ASSIGNMENT,
+  UPDATE_STATUS,
+  UPDATE_BATCH_ADMIN,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -99,6 +103,16 @@ export const updateAdmin = (value, navigate) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const updateStudent = (value, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.updateStudent(value);
+    dispatch({ type: UPDATE_STUDENT, payload: true });
+    alert("Student Updated Successfully");
+    navigate("/admin/student");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 
 export const deleteAdmin = (formData) => async (dispatch) => {
   try {
@@ -142,6 +156,15 @@ export const getStudents = (formData) => async (dispatch) => {
     const { data } = await api.getStudents(formData);
     localStorage.setItem("students", JSON.stringify(data));
     dispatch({ type: GET_STUDENTS, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const totalAssignment = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.totalAssignment(formData);
+
+    dispatch({ type: TOTAL_ASSIGNMENT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -489,6 +512,24 @@ export const getAllAdminDashboardData = () => async (dispatch) => {
   try {
     const { data } = await api.getAllAdminDashboardData();
     dispatch({ type: DASHBOARD_DATA, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const updateStatus = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.updateStatus(formData);
+    alert("Batch Status Updated Successfully");
+    dispatch({ type: UPDATE_STATUS, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const updateBatchAdmin = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.updateBatchAdmin(formData);
+    alert("Batch Admin Updated Successfully");
+    dispatch({ type: UPDATE_BATCH_ADMIN, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

@@ -4,6 +4,8 @@ import {
   GET_COURSE_BY_BATCH_CODE,
   GET_ALL_EVENTS,
   GET_ASSIGNMENT_BY_BATCH_CODE,
+  SUBMIT_ASSIGNMENT,
+  SIGN_UP,
 } from "../actionTypes";
 
 const initialState = {
@@ -11,6 +13,8 @@ const initialState = {
   courseList: [],
   allEvents: [],
   assignment: [],
+  assignmentSubmitted: false,
+  studentSignedUp: false,
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -36,6 +40,16 @@ const studentReducer = (state = initialState, action) => {
       return {
         ...state,
         assignment: action.payload,
+      };
+    case SUBMIT_ASSIGNMENT:
+      return {
+        ...state,
+        assignmentSubmitted: action.payload,
+      };
+    case SIGN_UP:
+      return {
+        ...state,
+        studentSignedUp: action.payload,
       };
     default:
       return state;

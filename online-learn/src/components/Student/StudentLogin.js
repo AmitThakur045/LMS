@@ -5,8 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Spinner from "../../Utils/Spinner";
-import { addStudent } from "../../Redux/actions/adminActions";
-import { ADD_STUDENT, SET_ERRORS } from "../../Redux/actionTypes";
+import { studentSignUp } from "../../Redux/actions/studentActions";
+import {
+  ADD_STUDENT,
+  LOGOUT,
+  SET_ERRORS,
+  SIGN_UP,
+} from "../../Redux/actionTypes";
 import { studentSignIn } from "../../Redux/actions/studentActions";
 
 const StudentLogin = () => {
@@ -31,6 +36,7 @@ const StudentLogin = () => {
     setTimeout(() => {
       setTranslate(true);
     }, 1000);
+    dispatch({ type: LOGOUT });
   }, []);
 
   useEffect(() => {
@@ -48,7 +54,7 @@ const StudentLogin = () => {
   const signUp = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(addStudent(value));
+    dispatch(studentSignUp(value));
   };
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -60,9 +66,9 @@ const StudentLogin = () => {
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
   useEffect(() => {
-    if (store.errors || store.admin.studentAdded) {
+    if (store.errors || store.student.studentSignedUp) {
       setLoading(false);
-      if (store.admin.studentAdded) {
+      if (store.student.studentSignedUp) {
         setValue({
           firstName: "",
           lastName: "",
@@ -72,12 +78,12 @@ const StudentLogin = () => {
         });
 
         dispatch({ type: SET_ERRORS, payload: {} });
-        dispatch({ type: ADD_STUDENT, payload: false });
+        dispatch({ type: SIGN_UP, payload: false });
       }
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.admin.studentAdded]);
+  }, [store.errors, store.student.studentSignedUp]);
 
   useEffect(() => {
     if (store.errors) {
@@ -87,7 +93,7 @@ const StudentLogin = () => {
     }
   }, [store.errors]);
   return (
-    <div className="bg-[#04bd7d] h-screen w-screen flex items-center justify-center">
+    <div className="bg-primary h-screen w-screen flex items-center justify-center">
       <div className="grid grid-cols-2">
         <div
           className={`h-96 ${
@@ -269,9 +275,11 @@ const StudentLogin = () => {
                 messageColor="#fff"
               />
             )}
-            {(error.usernameError || error.passwordError) && (
+            {(error.usernameError ||
+              error.passwordError ||
+              error.batchError) && (
               <p className="text-red-500">
-                {error.usernameError || error.passwordError}
+                {error.usernameError || error.passwordError || error.batchError}
               </p>
             )}
           </form>

@@ -53,7 +53,7 @@ const studentSchema = new Schema({
   ],
   attendance: [
     {
-      courseCode: { type: String, required: true },
+      courseCode: { type: String },
       attended: { type: Number },
     },
   ],

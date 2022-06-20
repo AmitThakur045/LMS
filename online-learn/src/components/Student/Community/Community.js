@@ -74,9 +74,9 @@ const Community = () => {
   };
 
   return (
-    <div className="bg-black w-screen h-screen flex overflow-hidden">
+    <div className="bg-[#1a1a1a] w-screen h-screen flex overflow-hidden">
       <HomeSidebar />
-      <div className="h-[45.5rem] bg-white flex-[0.93] my-4 rounded-2xl mr-4 pl-[3.1rem] pr-[3.1rem] pt-[3rem]">
+      <div className=" bg-white flex-[0.93] my-4 rounded-2xl mr-4 px-[3.1rem] pt-[3rem]">
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>

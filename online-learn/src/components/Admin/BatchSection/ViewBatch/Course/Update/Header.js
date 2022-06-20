@@ -1,18 +1,11 @@
 import { Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
-import {
-  AiOutlineBell,
-  AiOutlineMenu,
-  AiOutlineMessage,
-  AiOutlineSearch,
-} from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineBell } from "react-icons/ai";
 import { IoMdHand } from "react-icons/io";
-import { RiArrowGoBackFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
-  const user = JSON.parse(localStorage.getItem("admin"));
+const Header = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {
@@ -28,14 +21,11 @@ const Header = () => {
     setAnchorEl(null);
   };
   return (
-    <div className="flex justify-between w-full pl-12 pr-12 py-10">
+    <div className="flex justify-between w-full  pl-12 pr-12 py-10">
       <div className="flex items-center space-x-48">
         <div className="flex items-center space-x-2">
-          <Link to="/admin/batch/course" className="cursor-pointer">
-            <RiArrowGoBackFill fontSize={20} className="" />
-          </Link>
+          <AiOutlineMenu />
           <h1>Hello {user?.result?.firstName}</h1>
-
           <IoMdHand color="#FFCD00" />
         </div>
       </div>

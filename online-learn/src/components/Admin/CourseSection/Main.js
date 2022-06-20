@@ -71,7 +71,6 @@ const Main = () => {
     dispatch({ type: SET_ERRORS, payload: {} });
     setLoading(true);
     dispatch(getAllCourse());
-    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   useEffect(() => {
@@ -121,7 +120,7 @@ const Main = () => {
             )}
           </div>
         </div>
-        {(loading || Object.keys(error).length !== 0) && (
+        {(loading || error.courseError) && (
           <div className="flex flex-col mt-10">
             <div className="flex items-center justify-center mt-5">
               {loading && (
@@ -141,7 +140,7 @@ const Main = () => {
             </div>
           </div>
         )}
-        {!loading && Object.keys(error).length === 0 && courses.length !== 0 && (
+        {!loading && !error.courseError && courses.length !== 0 && (
           <div className="overflow-y-auto space-y-2">
             <div className="grid grid-cols-11 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
               <h1 className="col-span-2 text-[13px] font-bold">Course Code</h1>

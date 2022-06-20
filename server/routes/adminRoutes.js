@@ -50,6 +50,10 @@ import {
   getAdminDashboardDataBySubAdmin,
   getAllAdminDashboardData,
   getAdminDashboardDataByOrganizationName,
+  updateStudent,
+  totalAssignment,
+  updateStatus,
+  updateBatchAdmin,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -61,6 +65,7 @@ router.post("/getadmin", auth, getAdmin);
 router.get("/getalldeletequery", auth, getAllDeleteQuery);
 router.post("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
 router.post("/updateadmin", auth, updateAdmin);
+router.post("/updatestudent", auth, updateStudent);
 router.post("/deleteadmin", auth, deleteAdmin);
 router.post("/addcourse", auth, addCourse);
 router.post("/getcourse", auth, getCourse);
@@ -69,6 +74,7 @@ router.post("/getstudents", auth, getStudents);
 router.post("/deletecourse", auth, deleteCourse);
 router.post("/addstudent", auth, addStudent);
 router.post("/addstudentinbatch", auth, addStudentInBatch);
+router.post("/totalassignment", auth, totalAssignment);
 router.get("/getallstudentlength", auth, getAllStudentLength);
 router.post("/getstudentslengthbysubadmin", auth, getStudentsLengthBySubAdmin);
 router.get("/getallstudent", auth, getAllStudent);
@@ -118,4 +124,6 @@ router.post(
   getAdminDashboardDataByOrganizationName
 );
 router.get("/getalladmindashboarddata", auth, getAllAdminDashboardData);
+router.post("/updatestatus", auth, updateStatus);
+router.post("/updatebatchadmin", auth, updateBatchAdmin);
 export default router;

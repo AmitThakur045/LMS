@@ -8,7 +8,8 @@ import { BsPerson } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { LOGOUT } from "../../Redux/actionTypes";
+import decode from "jwt-decode";
 const isNotActiveStyle =
   "flex justify-between items-center w-[75%] text-[#9C9BBC]  px-5 h-[3.5rem] hover:text-white duration-150 transition-all";
 const isActiveStyle =
@@ -20,20 +21,19 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const logout = () => {
     alert("OOPS! Your session expired. Please Login again");
-    dispatch({ type: "LOGOUT" });
-    navigate("/admin/login");
+    dispatch({ type: LOGOUT });
   };
-  console.log();
 
-  // useEffect(() => {
-  //   const token = user?.token;
-  //   if (token) {
-  //     const decodedToken = decode(token);
-  //     if (decodedToken.exp * 1000 < new Date().getTime()) logout();
-  //   }
-
-  //   setUser(JSON.parse(localStorage.getItem("admin")));
-  // }, [navigate]);
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logout();
+      }
+    }
+    setUser(JSON.parse(localStorage.getItem("admin")));
+  }, []);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("admin")) === null) {
