@@ -9,10 +9,10 @@ const Course = () => {
   const batch = useSelector((state) => state.admin.batch);
 
   return (
-    <div className="bg-[#1a1a1a] w-screen h-screen flex overflow-hidden">
+    <div className="bg-[#1a1a1a] w-full sm:w-screen h-screen flex overflow-hidden">
       <CourseSidebar />
       {user !== null && Object.keys(batch).length !== 0 && (
-        <div className="bg-white flex-[0.93] my-4 rounded-2xl mr-4 flex flex-col">
+        <div className="bg-white flex my-4 w-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col">
           <CourseHeader />
           <CourseMain />
         </div>

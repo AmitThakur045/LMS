@@ -64,7 +64,7 @@ const LiveClassesMain = () => {
   console.log(allEvents);
   return (
     <div className="flex lg:flex-row flex-col overflow-y-auto p-2 overflow-x-auto bg-white h-full">
-      <div className="flex md:h-[35rem] h-[45rem] w-[85vw] lg:w-[60rem] p-1">
+      <div className="flex md:h-[35rem] h-[45rem] w-[85vw] lg:w-[45rem] p-1">
         <Calendar
           localizer={localizer}
           events={allEvents}
@@ -84,7 +84,7 @@ const LiveClassesMain = () => {
             });
             console.log(value);
           }}
-          style={{ height: "32rem", margin: "10px", width: "52rem" }}
+          style={{ height: "32rem", margin: "10px" }}
         />
       </div>
       <div className="flex-col md:w-[20rem] justify-center md:my-12 rounded-2xl shadow-lg md:h-[20rem] pb-3">
