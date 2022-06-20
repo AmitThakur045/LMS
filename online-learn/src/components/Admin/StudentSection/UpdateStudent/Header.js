@@ -1,9 +1,10 @@
 import { Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
-import { AiOutlineMenu, AiOutlineBell } from "react-icons/ai";
-import { IoMdHand } from "react-icons/io";
+import { AiOutlineBell, AiOutlineMessage } from "react-icons/ai";
+import { RiArrowGoBackFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { GET_ADMIN } from "../../../../Redux/actionTypes";
 
 const Header = () => {
   const user = JSON.parse(localStorage.getItem("admin"));
@@ -23,11 +24,12 @@ const Header = () => {
   };
   return (
     <div className="flex justify-between w-full  pl-12 pr-12 py-10">
-      <div className="flex items-center space-x-48">
-        <div className="flex items-center space-x-2">
-          <AiOutlineMenu />
-          <h1>Hello {user?.result?.firstName}</h1>
-          <IoMdHand color="#FFCD00" />
+      <div className="flex items-center space-x-3">
+        <Link to="/admin/student" className="cursor-pointer">
+          <RiArrowGoBackFill fontSize={20} className="" />
+        </Link>
+        <div className="">
+          <h1 className="text-primary font-bold text-[26px]">Student</h1>
         </div>
       </div>
       <div className="flex space-x-5 items-center">
@@ -57,7 +59,14 @@ const Header = () => {
               MenuListProps={{
                 "aria-labelledby": "basic-button",
               }}>
-              <MenuItem onClick={() => logout()}>Log Out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  dispatch({ type: GET_ADMIN, payload: user.result });
+                  navigate("/admin/admin/viewadmin");
+                }}>
+                Profile
+              </MenuItem>
+              <MenuItem onClick={logout}>Log Out</MenuItem>
             </Menu>
           </div>
         </div>

@@ -12,7 +12,6 @@ import batch from "../models/batch.js";
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
   const errors = { emailError: String, passwordError: String };
-  console.log(email);
 
   try {
     const existingAdmin = await Admin.findOne({ email });
@@ -126,6 +125,39 @@ export const updateAdmin = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+export const updateStudent = async (req, res) => {
+  try {
+    const { firstName, lastName, contactNumber, avatar, email } = req.body;
+    const updatedStudent = await Student.findOne({ email });
+
+    if (firstName) {
+      updatedStudent.firstName = firstName;
+      await updatedStudent.save();
+    }
+    if (lastName) {
+      updatedStudent.lastName = lastName;
+      await updatedStudent.save();
+    }
+
+    if (contactNumber) {
+      updatedStudent.contactNumber = contactNumber;
+      await updatedStudent.save();
+    }
+
+    if (avatar) {
+      updatedStudent.avatar = avatar;
+      await updatedStudent.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Student updated successfully",
+      response: updatedStudent,
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
 
 export const addAdmin = async (req, res) => {
   try {
@@ -184,9 +216,13 @@ export const addAdmin = async (req, res) => {
 export const addStudentQuery = async (req, res) => {
   try {
     const { code, subAdmin, avatar } = req.body;
-
+    let updated = false;
     const errors = { deleteQueryError: String };
-    const existingDeleteQuery = await DeleteQuery.findOne({ code, subAdmin });
+    const existingDeleteQuery = await DeleteQuery.findOne({
+      code,
+      subAdmin,
+      updated,
+    });
 
     if (existingDeleteQuery) {
       errors.deleteQueryError = "Query already exists";
@@ -320,13 +356,27 @@ export const addStudentInBatch = async (req, res) => {
     let alreadyBatch = student.batchCode.find((code) => code === batchCode);
     if (alreadyBatch !== batchCode) {
       student.batchCode.push(batchCode);
+
       await student.save();
     }
+    console.log("1");
     const batch = await Batch.findOne({ batchCode });
+    let arr = [];
+
     let alreadyStudent = batch.students.find((em) => em === email);
     if (alreadyStudent !== email) {
       batch.students.push(email);
       await batch.save();
+      for (let j = 0; j < batch.courses.length; j++) {
+        student.attendance.push({
+          courseCode: batch.courses[j].courseCode,
+          attended: 0,
+        });
+      }
+      console.log("2");
+      var d = Date(Date.now());
+      student.dateOfJoining = d.toString();
+      await student.save();
     } else {
       errors.studentError = "Student Already Added";
       return res.status(400).json(errors);
@@ -594,11 +644,29 @@ export const getStudents = async (req, res) => {
     res.status(500).json(error);
   }
 };
+export const totalAssignment = async (req, res) => {
+  try {
+    const { batchCode } = req.body;
+    const assignments = await Assignment.find({ batchCode });
+
+    res.status(200).json(assignments.length);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 export const deleteAdmin = async (req, res) => {
   try {
     const { email } = req.body;
-    await Admin.findOneAndDelete({ email });
-    res.status(200).json({ message: "Admin Deleted" });
+    const batches = await Batch.find({ subAdmin: email });
+    const errors = { adminError: String };
+    if (batches.length === 0) {
+      await Admin.findOneAndDelete({ email });
+      res.status(200).json({ message: "Admin Deleted" });
+    } else {
+      errors.adminError =
+        "Batch Found under this admin. Please change Admin for the respective Batches";
+      return res.status(404).json(errors);
+    }
   } catch (error) {
     res.status(500).json(error);
   }
@@ -1436,6 +1504,40 @@ export const getAdminDashboardDataByOrganizationName = async (req, res) => {
       data.totalAdmins = admins.length;
     }
     return res.status(200).json(data);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const updateStatus = async (req, res) => {
+  try {
+    const { batchCode, status } = req.body;
+    const batch = await Batch.findOne({ batchCode });
+    if (batch) {
+      batch.status = status;
+      await batch.save();
+    }
+
+    return res.status(200).json("Batch Status Updated");
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const updateBatchAdmin = async (req, res) => {
+  try {
+    const { batchCode, adminEmail } = req.body;
+    const batch = await Batch.findOne({ batchCode });
+
+    const admin = await Admin.findOne({ email: adminEmail });
+    const errors = { noAdmin: String };
+
+    if (admin) {
+      batch.subAdmin = adminEmail;
+      await batch.save();
+      return res.status(200).json("Batch Admin Updated");
+    } else {
+      errors.noAdmin = "Admin does not exist";
+      return res.status(400).json(errors);
+    }
   } catch (error) {
     console.log("Backend Error", error);
   }

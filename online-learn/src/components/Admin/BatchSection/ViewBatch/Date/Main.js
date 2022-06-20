@@ -69,17 +69,20 @@ const Main = () => {
 
   const [newEvent, setNewEvent] = useState({
     title: "",
-    link: "",
+    link: batchData.batchLink !== "" ? batchData.batchLink : "",
     start: "",
     end: "",
     courseCode: "",
   });
 
   const [allEvents, setAllEvents] = useState([]);
-
+  console.log(newEvent);
   const handleAddEvent = (e) => {
     e.preventDefault();
-
+    if (batchData.batchLink === "") {
+      alert("Add Batch Link First!!!");
+      return;
+    }
     dispatch(addEvent(batchData.batchCode, newEvent));
   };
 
@@ -102,7 +105,6 @@ const Main = () => {
   useEffect(() => {
     setAllEvents(batchData.schedule);
   }, []);
-  console.log(allEvents);
 
   useEffect(() => {
     if (store.admin.eventAdded) {

@@ -73,7 +73,6 @@ const Main = () => {
       dispatch(getAllStudent());
     }
     setLoading(true);
-    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   const handleSearch = (event) => {
@@ -109,7 +108,7 @@ const Main = () => {
             <h1>Add Student</h1>
           </Link>
         </div>
-        {(loading || Object.keys(error).length !== 0) && (
+        {(loading || error.noStudentError) && (
           <div className="flex flex-col mt-10">
             <div className="flex items-center justify-center mt-5">
               {loading && (
@@ -129,7 +128,7 @@ const Main = () => {
             </div>
           </div>
         )}
-        {!loading && Object.keys(error).length === 0 && students.length !== 0 && (
+        {!loading && !error.noStudentError && students.length !== 0 && (
           <div className="overflow-y-auto space-y-2">
             <div className="grid grid-cols-12 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
               <h1 className="col-span-3 text-[13px] font-bold">Student Name</h1>
@@ -198,6 +197,16 @@ const Main = () => {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}>
+                    <MenuItem
+                      onClick={() => {
+                        dispatch({
+                          type: GET_STUDENT,
+                          payload: students[index],
+                        });
+                        navigate("/admin/student/updatestudent");
+                      }}>
+                      Update Student
+                    </MenuItem>
                     <MenuItem
                       onClick={() => {
                         handleOpenDeleteModal();

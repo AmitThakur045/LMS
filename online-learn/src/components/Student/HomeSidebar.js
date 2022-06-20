@@ -8,7 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
 import { getBatch } from "../../Redux/actions/adminActions";
-
+import decode from "jwt-decode";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
@@ -22,6 +22,21 @@ const HomeSidebar = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
   };
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    dispatch({ type: LOGOUT });
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
+  }, []);
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
@@ -40,8 +55,7 @@ const HomeSidebar = () => {
           to="/"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }
-        >
+          }>
           <MenuBookIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Courses</p>
         </NavLink>
@@ -49,8 +63,7 @@ const HomeSidebar = () => {
           to="/resources"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }
-        >
+          }>
           <DiamondIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Resources</p>
         </NavLink>
@@ -58,8 +71,7 @@ const HomeSidebar = () => {
           to="/community"
           className={({ isActive }) =>
             isActive ? isActiveStyle : isNotActiveStyle
-          }
-        >
+          }>
           <PeopleIcon className="lg:h-5 h-3" alt="" />
           <p className="lg:text-sm text-xs">Community</p>
         </NavLink>

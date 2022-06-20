@@ -16,9 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const Main = () => {
-  const [batchData, setBatchData] = useState({});
-  const [courseCode, setCourseCode] = useState();
+const Main = ({ user, batchData }) => {
+  const [courseCode, setCourseCode] = useState("");
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -29,15 +28,9 @@ const Main = () => {
   function courseStatus() {
     let lessonCompleted = 0;
     let totalLessons = 0;
-    for (
-      let i = 0;
-      i < JSON.parse(localStorage.getItem("batch"))?.courses.length;
-      i++
-    ) {
-      lessonCompleted += JSON.parse(localStorage.getItem("batch")).courses[i]
-        .complete.lessonCompleted;
-      totalLessons += JSON.parse(localStorage.getItem("batch")).courses[i]
-        .complete.totalLesson;
+    for (let i = 0; i < batchData.courses.length; i++) {
+      lessonCompleted += batchData.courses[i].complete.lessonCompleted;
+      totalLessons += batchData.courses[i].complete.totalLesson;
     }
     console.log(lessonCompleted, totalLessons);
     setCourseStatusNumber(Math.round((lessonCompleted / totalLessons) * 100));
@@ -46,44 +39,46 @@ const Main = () => {
   const attendanceStatus = useSelector((store) => store.admin.attendanceStatus);
   const [totalAttendanceStatus, setTotalAttendanceStatus] = useState(0);
   const [totalClassesHeld, setTotalClassesHeld] = useState(0);
+  console.log(attendanceStatus);
   useEffect(() => {
     if (Object.keys(attendanceStatus).length !== 0) {
       let totalClasses = batchData?.schedule.length;
       let totalStudents = batchData?.students.length;
       let totalAttendance = totalClasses * totalStudents;
-      setTotalAttendanceStatus(
-        Math.round((attendanceStatus.LectureAttended / totalAttendance) * 100)
-      );
-      setTotalClassesHeld(
-        Math.round(
-          (attendanceStatus.totalClasses / batchData.schedule.length) * 100
-        )
-      );
+      if (attendanceStatus.LectureAttended !== 0) {
+        setTotalAttendanceStatus(
+          Math.round((attendanceStatus.LectureAttended / totalAttendance) * 100)
+        );
+      }
+      if (attendanceStatus.totalClasses !== 0) {
+        setTotalClassesHeld(
+          Math.round(
+            (attendanceStatus.totalClasses / batchData.schedule.length) * 100
+          )
+        );
+      }
     }
   }, [attendanceStatus]);
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("batch")) !== null) {
-      setBatchData(JSON.parse(localStorage.getItem("batch")));
-      setCourseCode(
-        JSON.parse(localStorage.getItem("batch")).courses[0].courseCode
-      );
-      courseStatus();
-      dispatch(
-        getAttendanceStatus({
-          batchCode: JSON.parse(localStorage.getItem("batch")).batchCode,
-        })
-      );
-    }
+    setCourseCode(batchData.courses[0].courseCode);
+    courseStatus();
+    dispatch(
+      getAttendanceStatus({
+        batchCode: batchData.batchCode,
+      })
+    );
   }, []);
 
-  console.log(JSON.parse(localStorage.getItem("batch")));
-
-  console.log(batchData);
   useEffect(() => {
-    dispatch(
-      getAttendance({ batchCode: batchData.batchCode, courseCode: courseCode })
-    );
-    createList();
+    if (courseCode !== "") {
+      dispatch(
+        getAttendance({
+          batchCode: batchData.batchCode,
+          courseCode: courseCode,
+        })
+      );
+      createList();
+    }
   }, [courseCode]);
 
   const lineCustomSeries2 = [
@@ -187,7 +182,7 @@ const Main = () => {
                   <p>{batchData?.batchCode}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <h1 className="font-bold">Batch Name: </h1>
+                  <h1 className="font-bold truncate">Batch Name: </h1>
                   <p>{batchData?.batchName}</p>
                 </div>
                 <div className="flex space-x-2">
@@ -197,6 +192,10 @@ const Main = () => {
                 <div className="flex space-x-2">
                   <h1 className="font-bold">Students: </h1>
                   <p>{batchData?.students?.length}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="font-bold">Batch Status: </h1>
+                  <p>{batchData?.status === false ? "Closed" : "Active"}</p>
                 </div>
               </div>
             </div>

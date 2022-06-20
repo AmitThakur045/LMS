@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ProgressBarComponent } from "@syncfusion/ej2-react-progressbar";
+import { getBatch } from "../../../Redux/actions/adminActions";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -41,13 +42,22 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if (batch) {
+    if (Object.keys(batch).length !== 0) {
       setBatchData(batch);
     }
   }, [batch]);
 
   useEffect(() => {
-    dispatch(getCourseByBatchCode({ batchCode: user.result.batchCode[0] }));
+    dispatch(
+      getCourseByBatchCode({
+        batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+      })
+    );
+    dispatch(
+      getBatch({
+        batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+      })
+    );
   }, []);
   return (
     <div className="bg-white flex-[0.93] md:flex-row flex-col my-4 rounded-2xl mr-4 flex md:overflow-hidden overflow-auto">
@@ -71,12 +81,10 @@ const Main = () => {
                   localStorage.setItem("index", JSON.stringify(i));
                 }}
                 key={i}
-                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start"
-              >
+                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start">
                 <NavLink
                   to="/course"
-                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg"
-                >
+                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg">
                   <img
                     src={data.courseImg}
                     className="hover:opacity-50 w-full h-full rounded-lg"
@@ -98,13 +106,14 @@ const Main = () => {
                       enableRtl={false}
                       labelStyle={{
                         color: "#ffffff",
-                        textAlignment: "Center",
-                        size: "13px",
+                        fontWeight: 500,
+
+                        size: "12px",
                       }}
                       showProgressValue={true}
-                      trackColor="#F8C7D8"
+                      trackColor="#ffffff"
                       radius="100%"
-                      progressColor="#E3165B"
+                      progressColor="#111111"
                       cornerRadius="Round"
                       animation={{
                         enable: true,
@@ -200,8 +209,7 @@ const Main = () => {
                       }}
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
-                      id="section"
-                    >
+                      id="section">
                       <div className="flex items-center space-x-10 ">
                         <div className={` flex justify-center items-center`}>
                           <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
@@ -217,12 +225,10 @@ const Main = () => {
                           <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
-                            id="lesson"
-                          >
+                            id="lesson">
                             <div className="flex items-center space-x-10 ">
                               <div
-                                className={` flex justify-center items-center`}
-                              >
+                                className={` flex justify-center items-center`}>
                                 <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
                               </div>
                               <div className="w-full font-semibold">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Header from "../Header";
 import Sidebar from "../Sidebar";
-import Header from "./Header";
+
 import Main from "./Main";
 
 const BatchCourse = () => {

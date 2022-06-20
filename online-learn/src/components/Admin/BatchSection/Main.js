@@ -34,6 +34,7 @@ const Main = () => {
   const user = JSON.parse(localStorage.getItem("admin"));
 
   const allBatches = useSelector((state) => state.admin.allBatch);
+  console.log(allBatches);
   const batch = useSelector((state) => state.admin.batch);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -41,31 +42,21 @@ const Main = () => {
     setOpen(false);
     setSelectedBatch("");
   };
-  useEffect(() => {
-    if (user.result.sub === "true") {
-      dispatch(
-        getBatchCodesBySubAdmin({
-          organizationName: user.result.organizationName,
-        })
-      );
-    } else {
-      dispatch(getAllBatchCodes());
-    }
-  }, []);
 
   useEffect(() => {
-    localStorage.removeItem("batch");
-    localStorage.removeItem("courses");
-    localStorage.removeItem("students");
-    localStorage.removeItem("courseCode");
-    localStorage.setItem("batch", JSON.stringify(batch));
-    let temp = [];
-    for (let i = 0; i < batch.courses?.length; i++) {
-      temp.push(batch.courses[i].courseCode);
-    }
-    dispatch(getCourses(temp));
+    if (Object.keys(batch).length !== 0) {
+      localStorage.removeItem("courses");
+      localStorage.removeItem("students");
+      localStorage.removeItem("courseCode");
+      localStorage.setItem("batch", JSON.stringify(batch));
+      let temp = [];
+      for (let i = 0; i < batch.courses?.length; i++) {
+        temp.push(batch.courses[i].courseCode);
+      }
+      dispatch(getCourses(temp));
 
-    dispatch(getStudents({ emails: batch.students }));
+      dispatch(getStudents({ emails: batch.students }));
+    }
   }, [batch]);
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">

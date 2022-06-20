@@ -32,6 +32,7 @@ import Assignment from "./components/Student/Course/Assignment/Assignment";
 import StudentLogin from "./components/Student/StudentLogin";
 import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
+import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
 
 function App() {
   return (
@@ -53,6 +54,11 @@ function App() {
       <Route path="/admin/admin/viewadmin" exact element={<ViewAdmin />} />
       <Route path="/admin/admin/updateadmin" exact element={<UpdateAdmin />} />
       <Route path="/admin/student/addstudent" exact element={<AddStudent />} />
+      <Route
+        path="/admin/student/updatestudent"
+        exact
+        element={<UpdateStudent />}
+      />
 
       <Route path="/admin/course/addcourse" exact element={<AddCourse />} />
       <Route path="/admin/course/viewcourse" exact element={<ViewCourse />} />

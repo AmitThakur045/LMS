@@ -10,6 +10,8 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT } from "../../../Redux/actionTypes";
 import { getBatch } from "../../../Redux/actions/adminActions";
+import logo from "../../../Assests/Learner_Logo.png";
+import decode from "jwt-decode";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
@@ -22,6 +24,21 @@ const CourseSidebar = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
   };
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    dispatch({ type: LOGOUT });
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
+  }, []);
   const batch = useSelector((state) => state.admin.batch);
 
   useEffect(() => {
@@ -29,17 +46,26 @@ const CourseSidebar = () => {
       navigate("/login");
     }
 
-    dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
+    dispatch(
+      getBatch({
+        batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+      })
+    );
   }, []);
 
   return (
     <div className="flex-[0.07] flex flex-col lg:my-4 my-2 justify-between py-5">
-      <NavLink
-        to="/"
-        className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
-        <ArrowBackIcon className="lg:h-5 h-3" alt="" />
-        <p className="lg:text-sm text-xs">Back</p>
-      </NavLink>
+      <div className="flex flex-col items-center space-y-6">
+        <div className="">
+          <img className="lg:h-14 lg:w-14 h-12 w-12" src={logo} alt="" />
+        </div>
+        <NavLink
+          to="/"
+          className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
+          <ArrowBackIcon className="lg:h-5 h-3" alt="" />
+          <p className="lg:text-sm text-xs">Back</p>
+        </NavLink>
+      </div>
 
       <div className="flex flex-col space-y-5 ">
         <NavLink

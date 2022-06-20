@@ -108,7 +108,7 @@ const CourseMain = () => {
           </div>
         </div>
       </div>
-      <div className="flex-[0.6] bg-black flex items-center justify-center">
+      <div className="flex-[0.6] bg-white flex items-center justify-center">
         {showVideo && video && (
           <FullScreen className="w-full" handle={handle}>
             <ReactPlayer
