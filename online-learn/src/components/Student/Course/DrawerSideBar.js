@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Drawer, makeStyles } from "@material-ui/core";
 import { NavLink, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -12,28 +13,26 @@ import { LOGOUT } from "../../../Redux/actionTypes";
 import { getBatch } from "../../../Redux/actions/adminActions";
 import logo from "../../../Assests/Learner_Logo.png";
 import decode from "jwt-decode";
+
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
+const useStyles = makeStyles({
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
+  },
+  paper: {
+    background: "#373737",
+  },
+});
 
-const CourseSidebar = () => {
+const DrawerSideBar = ({ isOpen, setIsOpen }) => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isMobile, setIsMobile] = useState(false);
-
-  //choose the screen size
-  const handleResize = () => {
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
-
-  // create an event listener
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  });
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const logout = () => {
@@ -68,11 +67,14 @@ const CourseSidebar = () => {
       })
     );
   }, []);
-
   return (
-    <>
-      <div className="hidden sm:block">
-        <div className="flex-[0.07] flex flex-col lg:my-4 my-2 justify-between py-5">
+    <div className="w-[20rem] h-full bg-[#373737]">
+      <Drawer
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        classes={{ paper: classes.paper }}
+      >
+        <div className="flex flex-col lg:my-4 my-2 py-5 h-full justify-between">
           <div className="flex flex-col items-center space-y-6">
             <div className="">
               <img className="lg:h-14 lg:w-14 h-12 w-12" src={logo} alt="" />
@@ -86,9 +88,6 @@ const CourseSidebar = () => {
               </div>
               <p className="width-full text-center">Back</p>
             </NavLink>
-          </div>
-
-          <div className="lg:text-sm text-xs flex flex-col space-y-4 ">
             <NavLink
               to="/course"
               className={({ isActive }) =>
@@ -145,16 +144,16 @@ const CourseSidebar = () => {
               <p className="w-full text-center">Certificate</p>
             </NavLink>
           </div>
-          <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
+          <div className="flex flex-col items-center space-y-2 bottom-0 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
             <div className="md:px-5">
               <LogoutIcon onClick={logout} className="cursor-pointer" />
             </div>
             <p className="lg:text-sm text-xs w-full text-center">Logout</p>
           </div>
         </div>
-      </div>
-    </>
+      </Drawer>
+    </div>
   );
 };
 
-export default CourseSidebar;
+export default DrawerSideBar;
