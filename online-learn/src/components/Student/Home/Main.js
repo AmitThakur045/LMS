@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import MenuIcon from "@mui/icons-material/Menu";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +17,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ProgressBarComponent } from "@syncfusion/ej2-react-progressbar";
 import { getBatch } from "../../../Redux/actions/adminActions";
+import HomeDrawer from "../HomeDrawer";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -22,6 +25,23 @@ const Main = () => {
   const courses = useSelector((state) => state.student.courseList);
   const batch = useSelector((state) => state.admin.batch);
   const [batchData, setBatchData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 678) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, [window.innerWidth]);
+
   useEffect(() => {
     if (courses.length !== 0) {
       setCourseList(courses);
@@ -60,8 +80,18 @@ const Main = () => {
     );
   }, []);
   return (
-    <div className="bg-white flex-[0.93] md:flex-row flex-col my-4 rounded-2xl mr-4 flex md:overflow-hidden overflow-auto">
+    <div className="bg-white flex md:flex-row flex-col my-4 rounded-2xl sm:mr-4 mx-2 sm:mx-0 md:overflow-hidden overflow-auto">
       <div className="flex flex-col md:flex-[0.45] bg-[#f6f2f2] rounded-tl-2xl rounded-bl-2xl pt-[30px]">
+        {isMobile && (
+          <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
+            {isOpen ? (
+              <CancelIcon onClick={() => setIsOpen(false)} />
+            ) : (
+              <MenuIcon onClick={() => setIsOpen(true)} />
+            )}
+          </div>
+        )}
+        {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
         <h1 className="font-bold text-[40px] lg:px-[52px] px-3">Courses</h1>
         <div className="lg:px-[52px] px-3 flex mt-[15px] space-x-7 text-[16px] mb-10">
           <p className="text-sm font-semibold">All</p>
@@ -81,10 +111,12 @@ const Main = () => {
                   localStorage.setItem("index", JSON.stringify(i));
                 }}
                 key={i}
-                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start">
+                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start"
+              >
                 <NavLink
                   to="/course"
-                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg">
+                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg"
+                >
                   <img
                     src={data.courseImg}
                     className="hover:opacity-50 w-full h-full rounded-lg"
@@ -209,7 +241,8 @@ const Main = () => {
                       }}
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
-                      id="section">
+                      id="section"
+                    >
                       <div className="flex items-center space-x-10 ">
                         <div className={` flex justify-center items-center`}>
                           <div className="h-3 w-3 bg-[#D2D2D2] rounded-full"></div>
@@ -225,10 +258,12 @@ const Main = () => {
                           <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
-                            id="lesson">
+                            id="lesson"
+                          >
                             <div className="flex items-center space-x-10 ">
                               <div
-                                className={` flex justify-center items-center`}>
+                                className={` flex justify-center items-center`}
+                              >
                                 <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
                               </div>
                               <div className="w-full font-semibold">
