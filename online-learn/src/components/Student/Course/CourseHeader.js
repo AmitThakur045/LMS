@@ -6,7 +6,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import DrawerSideBar from "./DrawerSideBar";
+import CourseDrawer from "./CourseDrawer";
 
 const CourseHeader = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
@@ -43,7 +43,7 @@ const CourseHeader = () => {
     }
   }, [batch]);
 
-  console.log("isMobile", isMobile);
+  // console.log("isMobile", isMobile);
 
   return (
     <div className="bg-[#373737] w-full rounded-tl-2xl rounded-tr-2xl flex md:flex-row flex-col">
@@ -56,7 +56,7 @@ const CourseHeader = () => {
           )}
         </div>
       )}
-      {isOpen && <DrawerSideBar isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && <CourseDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
       <div className="text-white text-[24px] space-y-1 md:flex-[0.8] flex-col pl-6 py-4">
         {Object.keys(batchData).length !== 0 && (
           <>
