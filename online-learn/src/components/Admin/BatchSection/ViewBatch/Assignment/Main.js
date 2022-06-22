@@ -14,6 +14,7 @@ import {
   getCourses,
   getStudents,
 } from "../../../../../Redux/actions/adminActions";
+import Spinner from "../../../../../Utils/Spinner";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -34,14 +35,12 @@ const Main = () => {
       setLoading(false);
     }
   }, [store.errors]);
-  console.log(batchDataLocal);
   useEffect(() => {
-    dispatch(getStudents({ emails: batchData.students }));
+    setLoading(true);
+
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getBatch({ batchCode: batchDataLocal.batchCode }));
-    setLoading(true);
   }, []);
-
   useEffect(() => {
     if (store.admin.assignmentAdded) {
       dispatch(getBatch({ batchCode: batchDataLocal.batchCode }));
@@ -50,8 +49,9 @@ const Main = () => {
 
   useEffect(() => {
     if (Object.keys(batchData).length !== 0) {
-      console.log(batchData);
+      setLoading(false);
       setCurrentCourseCode(batchData.courses[0].courseCode);
+      dispatch(getStudents({ emails: batchData.students }));
       setCurrentList(batchData.courses[0].assignment);
     }
   }, [batchData]);
@@ -66,32 +66,35 @@ const Main = () => {
     <div className="flex h-full">
       <div className="w-[18rem] h-full overflow-y-auto">
         <div className="pt-2">
-          {batchData?.courses?.map((item, index) => (
-            <div
-              key={index}
-              className={
-                currentCourseCode === item.courseCode
-                  ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                  : ""
-              }>
-              <ListItem button key={index} onClick={() => handleClick(item)}>
-                <ListItemIcon>
-                  <img
-                    className="w-[20px] h-[20px] rounded-full"
-                    src={
-                      courseData.find(
-                        (course) => course.courseCode === item.courseCode
-                      ).courseImg
-                    }
-                    alt={item.courseCode}
-                  />
-                </ListItemIcon>
-                {/* <ListItemText primary={item.courseName} /> */}
-                <div className="py-1">{item.courseName}</div>
-              </ListItem>
-              <Divider />
-            </div>
-          ))}
+          {loading && <Spinner message={"Loading..."} />}
+          {!loading &&
+            Object.keys(batchData).length !== 0 &&
+            batchData.courses.map((item, index) => (
+              <div
+                key={index}
+                className={
+                  currentCourseCode === item.courseCode
+                    ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
+                    : ""
+                }>
+                <ListItem button key={index} onClick={() => handleClick(item)}>
+                  <ListItemIcon>
+                    <img
+                      className="w-[20px] h-[20px] rounded-full"
+                      src={
+                        courseData.find(
+                          (course) => course.courseCode === item.courseCode
+                        ).courseImg
+                      }
+                      alt={item.courseCode}
+                    />
+                  </ListItemIcon>
+
+                  <div className="py-1">{item.courseName}</div>
+                </ListItem>
+                <Divider />
+              </div>
+            ))}
         </div>
       </div>
 

@@ -633,10 +633,11 @@ export const getCourses = async (req, res) => {
 export const getStudents = async (req, res) => {
   try {
     const { emails } = req.body;
+    console.log(emails);
     const studentsData = [];
     for (let i = 0; i < emails.length; i++) {
       let email = emails[i];
-      let temp = await Student.findOne({ email });
+      const temp = await Student.findOne({ email });
       studentsData.push(temp);
     }
     res.status(200).json(studentsData);

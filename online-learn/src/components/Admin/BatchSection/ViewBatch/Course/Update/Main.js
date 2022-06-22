@@ -143,11 +143,9 @@ const Main = () => {
       setTempBatchData(temp);
     } else {
       if (
-        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[lessonIdx + 1]
-          .lessonCompleted === true
+        temp.courses[indexCounter].lessonVideo[sectionIdx].lesson.length - 1 ===
+        lessonIdx
       ) {
-        alert("Next Lesson is completed");
-      } else {
         const data = [...garbageData];
         data.push({ sectionIdx, lessonIdx, val: true });
         setGarbageData(data);
@@ -155,8 +153,29 @@ const Main = () => {
           lessonIdx
         ].lessonCompleted = false;
         temp.courses[indexCounter].complete.lessonCompleted--;
-
+        temp.courses[indexCounter].lessonVideo[
+          sectionIdx
+        ].sectionCompleted = false;
+        temp.courses[indexCounter].complete.sectionCompleted--;
         setTempBatchData(temp);
+      } else {
+        if (
+          temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+            lessonIdx + 1
+          ].lessonCompleted === true
+        ) {
+          alert("Next Lesson is completed");
+        } else {
+          const data = [...garbageData];
+          data.push({ sectionIdx, lessonIdx, val: true });
+          setGarbageData(data);
+          temp.courses[indexCounter].lessonVideo[sectionIdx].lesson[
+            lessonIdx
+          ].lessonCompleted = false;
+          temp.courses[indexCounter].complete.lessonCompleted--;
+
+          setTempBatchData(temp);
+        }
       }
     }
   };
@@ -295,30 +314,6 @@ const Main = () => {
                             <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
                               Upload Another Video
                             </div>
-
-                            //   <>
-                            //     {uploadingVideo ? (
-                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            //         Uploading...
-                            //       </div>
-                            //     ) : (
-                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            //         Upload Video
-                            //       </div>
-                            //     )}
-                            //   </>
-                            // ) : (
-                            //   <>
-                            //     {uploadingVideo ? (
-                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            //         Uploading...
-                            //       </div>
-                            //     ) : (
-                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            //         Upload Another Video
-                            //       </div>
-                            //     )}
-                            //   </>
                           )}
                         </label>
                         <input
