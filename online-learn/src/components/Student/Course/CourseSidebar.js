@@ -12,9 +12,9 @@ import { LOGOUT } from "../../../Redux/actionTypes";
 import { getBatch } from "../../../Redux/actions/adminActions";
 import logo from "../../../Assests/Learner_Logo.png";
 import decode from "jwt-decode";
-const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
+const isNotActiveStyle = "text-[#555555] flex flex-col items-center px-3";
 const isActiveStyle =
-  "border-r-2 border-white  text-white flex flex-col items-center";
+  "border-r-2 border-white  text-white flex flex-col items-center px-3";
 
 const CourseSidebar = () => {
   const navigate = useNavigate();
@@ -72,15 +72,14 @@ const CourseSidebar = () => {
   return (
     <>
       <div className="hidden sm:block">
-        <div className="flex-[0.07] flex flex-col lg:my-4 my-2 h-full justify-between py-5">
+        <div className=" flex flex-col lg:my-4 my-2 h-full justify-between py-5">
           <div className="flex flex-col items-center space-y-6">
             <div className="">
               <img className="lg:h-14 lg:w-14 h-12 w-12" src={logo} alt="" />
             </div>
             <NavLink
               to="/"
-              className="text-[#555555] hover:text-white transition-all duration-200 mx-auto"
-            >
+              className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
               <div className="md:px-5">
                 <ArrowBackIcon className="" alt="" />
               </div>
@@ -93,8 +92,7 @@ const CourseSidebar = () => {
               to="/course"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <LibraryBooksIcon className="" alt="" />
               </div>
@@ -104,8 +102,7 @@ const CourseSidebar = () => {
               to="/liveclass"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <CalendarMonthIcon className="" sx={{ width: "20px" }} alt="" />
               </div>
@@ -115,8 +112,7 @@ const CourseSidebar = () => {
               to="/lab"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <ScienceIcon className="" alt="" />
               </div>
@@ -126,8 +122,7 @@ const CourseSidebar = () => {
               to="/assignment"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <AssignmentIcon className="" alt="" />
               </div>
@@ -137,8 +132,7 @@ const CourseSidebar = () => {
               to="/certificate"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <WorkspacePremiumIcon className="" alt="" />
               </div>
