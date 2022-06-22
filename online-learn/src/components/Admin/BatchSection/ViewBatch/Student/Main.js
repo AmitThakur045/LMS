@@ -49,7 +49,6 @@ const style = {
 };
 const Main = () => {
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const studentData = JSON.parse(localStorage.getItem("students"));
@@ -82,6 +81,7 @@ const Main = () => {
   useEffect(() => {
     if (newStudents.length !== 0) {
       setStudentsData(newStudents);
+      setLoading(false);
     }
   }, [newStudents]);
   useEffect(() => {
@@ -110,6 +110,7 @@ const Main = () => {
   }, [store.errors, store.admin.studentAdded]);
 
   useEffect(() => {
+    setLoading(true);
     dispatch(getStudents({ emails: batchData.students }));
     let temp = 0;
     let temp2 = [];
@@ -336,153 +337,157 @@ const Main = () => {
         </div>
       </div>
       <div className="">
-        {studentsData.map((student, idx) => (
-          <Accordion key={student.email}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <div className="grid grid-cols-12 w-full">
-                <div className="col-span-2 font-semibold flex items-center space-x-2">
-                  <Avatar
-                    src={student?.avatar}
-                    sx={{ height: 20, width: 20 }}
-                  />
-                  <div className="">
-                    {student.firstName} {student.lastName}
-                  </div>
-                </div>
-                <div className="col-span-2  font-semibold">{student.email}</div>
-                <div className="col-span-2">
-                  Total Attendance: {calTotalAttendance(student.attendance)}/
-                  {batchData.schedule.length}
-                </div>
-                <div className="col-span-2">
-                  Total Assignment: {calTotalAssignment(student.assignment)}/
-                  {totalAssignmentInBatch}
-                </div>
-                <div className="col-span-2">
-                  Courses Completed: {calCourseCompleted(student.attendance)}%
-                </div>
-              </div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="flex space-x-2 bg-[#fdfdfd]">
-                <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-3">
-                  <h1 className="font-semibold text-[#fe4492] text-[20px]">
-                    {student.firstName}'s Stats
-                  </h1>
-                  <div className="flex ">
-                    <div className="flex-[0.6] space-y-1">
-                      <div className="flex w-full">
-                        <div className="flex flex-[0.8] space-x-2 items-center">
-                          <BsPersonCheck className="text-[#eede49]" />
-                          <p className="text-[#47ada8] font-bold">
-                            Total Attendance:
-                          </p>
-                        </div>
-                        <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAttendance(student.attendance)}/
-                          {batchData.schedule.length}
-                        </span>
-                      </div>
-                      <div className="flex w-full">
-                        <div className="flex flex-[0.8] space-x-2 items-center">
-                          <BsPersonCheck className="text-[#eede49]" />
-                          <p className="text-[#47ada8] font-bold">
-                            Total Assignment:
-                          </p>
-                        </div>
-                        <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAssignment(student.assignment)}/
-                          {totalAssignmentInBatch}
-                        </span>
-                      </div>
-                      <div className="flex w-full">
-                        <div className="flex flex-[0.8] space-x-2 items-center">
-                          <BsPersonCheck className="text-[#eede49]" />
-                          <p className="text-[#47ada8] font-bold">
-                            Total Assignment Score:
-                          </p>
-                        </div>
-                        <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calTotalAssignmentScore(student.assignment)}/10
-                        </span>
-                      </div>
-                      <div className="flex w-full">
-                        <div className="flex flex-[0.8] space-x-2 items-center">
-                          <BsPersonCheck className="text-[#eede49]" />
-                          <p className="text-[#47ada8] font-bold">
-                            Courses Completed:
-                          </p>
-                        </div>
-                        <span className="text-[#47ada8] font-bold flex-[0.2]">
-                          {calCourseCompleted(student.attendance)}%
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex-[0.4] flex items-center justify-center">
-                      <div className="w-[7rem] h-[7rem]">
-                        <CircularProgressbar
-                          styles={buildStyles({
-                            path: {
-                              transition: "stroke-dashoffset 0.5s ease 0s",
-                            },
-                            // Text size
-                            text: {
-                              fontWeight: "600",
-
-                              fontSize: "16px",
-                            },
-
-                            // Colors
-                            pathColor: "#dc3b7e",
-                            textColor: "#47ada8",
-                            trailColor: "#431c36",
-                          })}
-                          value={75}
-                          text={calPerformance(student.assignment)}
-                        />
-                      </div>
+        {loading && <Spinner message={"Loading..."} />}
+        {!loading &&
+          studentsData.map((student, idx) => (
+            <Accordion key={student.email}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                <div className="grid grid-cols-12 w-full">
+                  <div className="col-span-2 font-semibold flex items-center space-x-2">
+                    <Avatar
+                      src={student?.avatar}
+                      sx={{ height: 20, width: 20 }}
+                    />
+                    <div className="">
+                      {student.firstName} {student.lastName}
                     </div>
                   </div>
+                  <div className="col-span-2  font-semibold">
+                    {student.email}
+                  </div>
+                  <div className="col-span-2">
+                    Total Attendance: {calTotalAttendance(student.attendance)}/
+                    {batchData.schedule.length}
+                  </div>
+                  <div className="col-span-2">
+                    Total Assignment: {calTotalAssignment(student.assignment)}/
+                    {totalAssignmentInBatch}
+                  </div>
+                  <div className="col-span-2">
+                    Courses Completed: {calCourseCompleted(student.attendance)}%
+                  </div>
                 </div>
-                <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-4">
-                  <h1 className="font-semibold text-[#fe4492] text-[20px]">
-                    Course Wise Attendance
-                  </h1>
-                  <div className="space-y-2 overflow-y-auto h-[8rem]">
-                    {student.attendance.map((course, idx) => (
-                      <div key={course.courseCode} className="flex flex-col">
-                        <h1 className="text-[#47ada8] text-[12px]">
-                          {course.courseCode}
-                        </h1>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-[70%]">
-                            <BorderLinearProgress
-                              variant="determinate"
-                              value={calCourseWiseAttendance(
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className="flex space-x-2 bg-[#fdfdfd]">
+                  <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-3">
+                    <h1 className="font-semibold text-[#fe4492] text-[20px]">
+                      {student.firstName}'s Stats
+                    </h1>
+                    <div className="flex ">
+                      <div className="flex-[0.6] space-y-1">
+                        <div className="flex w-full">
+                          <div className="flex flex-[0.8] space-x-2 items-center">
+                            <BsPersonCheck className="text-[#eede49]" />
+                            <p className="text-[#47ada8] font-bold">
+                              Total Attendance:
+                            </p>
+                          </div>
+                          <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            {calTotalAttendance(student.attendance)}/
+                            {batchData.schedule.length}
+                          </span>
+                        </div>
+                        <div className="flex w-full">
+                          <div className="flex flex-[0.8] space-x-2 items-center">
+                            <BsPersonCheck className="text-[#eede49]" />
+                            <p className="text-[#47ada8] font-bold">
+                              Total Assignment:
+                            </p>
+                          </div>
+                          <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            {calTotalAssignment(student.assignment)}/
+                            {totalAssignmentInBatch}
+                          </span>
+                        </div>
+                        <div className="flex w-full">
+                          <div className="flex flex-[0.8] space-x-2 items-center">
+                            <BsPersonCheck className="text-[#eede49]" />
+                            <p className="text-[#47ada8] font-bold">
+                              Total Assignment Score:
+                            </p>
+                          </div>
+                          <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            {calTotalAssignmentScore(student.assignment)}/10
+                          </span>
+                        </div>
+                        <div className="flex w-full">
+                          <div className="flex flex-[0.8] space-x-2 items-center">
+                            <BsPersonCheck className="text-[#eede49]" />
+                            <p className="text-[#47ada8] font-bold">
+                              Courses Completed:
+                            </p>
+                          </div>
+                          <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            {calCourseCompleted(student.attendance)}%
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-[0.4] flex items-center justify-center">
+                        <div className="w-[7rem] h-[7rem]">
+                          <CircularProgressbar
+                            styles={buildStyles({
+                              path: {
+                                transition: "stroke-dashoffset 0.5s ease 0s",
+                              },
+                              // Text size
+                              text: {
+                                fontWeight: "600",
+
+                                fontSize: "16px",
+                              },
+
+                              // Colors
+                              pathColor: "#dc3b7e",
+                              textColor: "#47ada8",
+                              trailColor: "#431c36",
+                            })}
+                            value={75}
+                            text={calPerformance(student.assignment)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-4">
+                    <h1 className="font-semibold text-[#fe4492] text-[20px]">
+                      Course Wise Attendance
+                    </h1>
+                    <div className="space-y-2 overflow-y-auto h-[8rem]">
+                      {student.attendance.map((course, idx) => (
+                        <div key={course.courseCode} className="flex flex-col">
+                          <h1 className="text-[#47ada8] text-[12px]">
+                            {course.courseCode}
+                          </h1>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-[70%]">
+                              <BorderLinearProgress
+                                variant="determinate"
+                                value={calCourseWiseAttendance(
+                                  course.courseCode,
+                                  course.attended
+                                )}
+                              />
+                            </div>
+                            <p className="text-[#47ada8] text-[12px]">
+                              {calCourseWiseAttendance(
                                 course.courseCode,
                                 course.attended
                               )}
-                            />
+                              %
+                            </p>
                           </div>
-                          <p className="text-[#47ada8] text-[12px]">
-                            {calCourseWiseAttendance(
-                              course.courseCode,
-                              course.attended
-                            )}
-                            %
-                          </p>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+              </AccordionDetails>
+            </Accordion>
+          ))}
       </div>
     </div>
   );

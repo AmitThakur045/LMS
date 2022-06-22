@@ -238,12 +238,12 @@ const Header = () => {
             <p>{user?.result?.sub === "true" ? "Sub Admin" : "Super Admin"}</p>
           </div>
           <div className="">
-            <img
+            <div
               onClick={(event) => handleClick(event)}
-              src={user?.result?.avatar}
-              className="object-cover cursor-pointer w-[1.8rem] h-[1.8rem]"
-              alt=""
-            />
+              className="object-cover cursor-pointer bg-[#f48320] text-white items-center flex justify-center w-[1.8rem] h-[1.8rem]"
+              alt="">
+              {user.result.firstName.slice(0, 1)}
+            </div>
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
