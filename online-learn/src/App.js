@@ -33,6 +33,7 @@ import StudentLogin from "./components/Student/StudentLogin";
 import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
 import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
+import Certificate from "./components/Student/Course/Certificate/Certificate";
 import Profile from "./components/Student/Profile/Profile";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <Route path="/course" exact element={<Course />} />
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
+      <Route path="/certificate" exact element={<Certificate />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
