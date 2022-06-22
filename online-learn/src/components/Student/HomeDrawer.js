@@ -12,9 +12,9 @@ import { getBatch } from "../../Redux/actions/adminActions";
 import decode from "jwt-decode";
 import { BsFillPersonFill } from "react-icons/bs";
 
-const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
+const isNotActiveStyle = "text-[#555555] flex flex-col items-center px-3";
 const isActiveStyle =
-  "border-r-2 border-white  text-white flex flex-col items-center";
+  "border-r-2 border-white  text-white flex flex-col items-center px-3";
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -69,7 +69,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
         open={isOpen}
         onClose={() => setIsOpen(false)}
         classes={{ paper: classes.paper }}>
-        <div className="flex flex-col lg:my-4 my-2 py-5 h-full justify-between">
+        <div className="flex flex-col lg:my-4 my-2 py-5 px-0 h-full justify-between">
           <div className="flex flex-col items-center space-y-6">
             <div className="">
               <img className="lg:h-14 lg:w-14 h-12 w-12" src={logo} alt="" />
