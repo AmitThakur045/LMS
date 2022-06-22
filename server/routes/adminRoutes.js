@@ -54,6 +54,7 @@ import {
   totalAssignment,
   updateStatus,
   updateBatchAdmin,
+  addOrganizationName,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -126,4 +127,5 @@ router.post(
 router.get("/getalladmindashboarddata", auth, getAllAdminDashboardData);
 router.post("/updatestatus", auth, updateStatus);
 router.post("/updatebatchadmin", auth, updateBatchAdmin);
+router.post("/addorganizationname", auth, addOrganizationName);
 export default router;

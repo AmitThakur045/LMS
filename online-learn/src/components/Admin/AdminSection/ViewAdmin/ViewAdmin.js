@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../../Sidebar";
 
-import Header from "./Header";
+import Header from "../../Header";
 
 import Main from "./Main";
 
@@ -10,7 +10,7 @@ const ViewAdmin = () => {
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
       <Sidebar />
       <div className="flex flex-col  w-full">
-        <Header />
+        <Header title={"Admin"} back={true} nav={"admin"} />
         <Main />
       </div>
     </div>

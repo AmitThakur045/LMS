@@ -44,6 +44,7 @@ import {
   TOTAL_ASSIGNMENT,
   UPDATE_STATUS,
   UPDATE_BATCH_ADMIN,
+  ADD_ORGANIZATION,
 } from "../actionTypes";
 
 const initialState = {
@@ -90,6 +91,7 @@ const initialState = {
   totalAssignment: -1,
   batchAdminUpdated: false,
   statusUpdated: false,
+  organizationAdded: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -315,6 +317,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         batchAdminUpdated: action.payload,
+      };
+    case ADD_ORGANIZATION:
+      return {
+        ...state,
+        organizationAdded: action.payload,
       };
     default:
       return state;

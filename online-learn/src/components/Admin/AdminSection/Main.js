@@ -178,10 +178,10 @@ const Main = () => {
                   }}
                   className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
                   <Avatar
-                    sx={{ height: 20, width: 20 }}
-                    src={ad.avatar}
-                    alt=""
-                  />
+                    sx={{ height: 20, width: 20, bgcolor: "#f48320" }}
+                    alt="">
+                    <p className="text-[12px]">{ad.firstName.slice(0, 1)}</p>
+                  </Avatar>
                   <p className="">
                     {ad.firstName} {ad.lastName}
                   </p>

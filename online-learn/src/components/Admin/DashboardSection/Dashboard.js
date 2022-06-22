@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
 
-import Header from "./Header";
+import Header from "../Header";
 
 import Main from "./Main";
 
@@ -13,7 +13,7 @@ const Dashboard = () => {
       <Sidebar />
       {user !== null && (
         <div className="flex flex-col  w-full">
-          <Header />
+          <Header type="Dashboard" />
           <Main />
         </div>
       )}

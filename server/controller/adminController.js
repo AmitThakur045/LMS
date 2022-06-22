@@ -7,7 +7,7 @@ import Course from "../models/course.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
-import batch from "../models/batch.js";
+import Organization from "../models/organization.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -860,27 +860,9 @@ export const getBatchCodesBySubAdmin = async (req, res) => {
 };
 export const getAllOrganizationName = async (req, res) => {
   try {
-    const admin = await Admin.find();
-    const errors = { noAdminError: String };
-    if (admin.length === 0) {
-      errors.noAdminError = "No Admin found";
-      return res.status(400).json(errors);
-    }
-    let organizationName = [];
+    const organizations = await Organization.find();
 
-    for (let i = 0; i < admin.length; i++) {
-      if (admin[i].organizationName) {
-        if (admin[i].organizationName !== "Super Admin") {
-          organizationName.push(admin[i].organizationName);
-        }
-      }
-    }
-    const unqiueOrganizationName = organizationName.filter(
-      (value, index, self) => {
-        return self.indexOf(value) === index;
-      }
-    );
-    res.status(200).json(unqiueOrganizationName);
+    res.status(200).json(organizations);
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;
@@ -1538,6 +1520,26 @@ export const updateBatchAdmin = async (req, res) => {
       errors.noAdmin = "Admin does not exist";
       return res.status(400).json(errors);
     }
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const addOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    const organization = await Organization.findOne({ organizationName });
+    const errors = { organizationNameError: String };
+    if (organization) {
+      errors.organizationNameError = "Organization Already Added";
+      return res.status(400).json(errors);
+    }
+    const newOrganization = await new Organization({ organizationName });
+    await newOrganization.save();
+    return res.status(200).json({
+      success: true,
+      message: "Organization Added successfully",
+      response: newOrganization,
+    });
   } catch (error) {
     console.log("Backend Error", error);
   }

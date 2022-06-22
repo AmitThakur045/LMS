@@ -3,20 +3,36 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ADD_ADMIN, SET_ERRORS } from "../../../../Redux/actionTypes";
-import { addAdmin } from "../../../../Redux/actions/adminActions";
+import {
+  addAdmin,
+  getAllOrganizationName,
+} from "../../../../Redux/actions/adminActions";
 
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
 import { MdOutlineFileUpload } from "react-icons/md";
 import {
+  Checkbox,
   FormControl,
   InputLabel,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@mui/material";
 import Spinner from "../../../../Utils/Spinner";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
@@ -28,32 +44,9 @@ const Main = () => {
     lastName: "",
     email: "",
     dob: "",
-    contactNumber: "",
-    avatar: "",
     sub: "",
     organizationName: "",
   });
-
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setValue({ ...value, avatar: base64 });
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -61,7 +54,9 @@ const Main = () => {
       setValue({ ...value, email: "" });
     }
   }, [store.errors]);
-
+  const allOrganizationName = useSelector(
+    (state) => state.admin.allOrganizationName
+  );
   useEffect(() => {
     if (store.errors || store.admin.adminAdded) {
       setLoading(false);
@@ -71,10 +66,9 @@ const Main = () => {
           lastName: "",
           email: "",
           dob: "",
-          contactNumber: "",
-          avatar: "",
+
           sub: "",
-          organizationName: "",
+          organizationName: "s",
         });
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_ADMIN, payload: false });
@@ -93,6 +87,7 @@ const Main = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
+    dispatch(getAllOrganizationName());
   }, []);
 
   return (
@@ -101,128 +96,90 @@ const Main = () => {
         onSubmit={handleSubmit}
         className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">Add Admin</p>
-        <div className="flex space-x-16">
-          <div className="w-[40%] flex items-center justify-center">
-            <div className="w-[250px] h-[227px] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
-              {value.avatar !== "" ? (
-                <img
-                  src={value.avatar}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-              ) : (
-                <div className="">
-                  <label
-                    className="flex items-center justify-center flex-col space-y-3"
-                    for="image">
-                    <MdOutlineFileUpload
-                      className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
-                      fontSize={35}
-                    />
-                    <p>Upload Profile Picture</p>
-                  </label>
-                  <input
-                    id="image"
-                    type="file"
-                    className="hidden"
-                    onChange={(e) => {
-                      uploadImage(e);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+
+        <div className="flex flex-col w-[60%] space-y-6">
+          <div className="flex justify-between space-x-4 ">
+            <TextField
+              required
+              type="text"
+              id="outlined-basic"
+              label="First Name"
+              variant="outlined"
+              className="bg-white w-full"
+              value={value.firstName}
+              onChange={(e) =>
+                setValue({ ...value, firstName: e.target.value })
+              }
+            />
+            <TextField
+              required
+              type="text"
+              id="outlined-basic"
+              label="Last Name"
+              variant="outlined"
+              className="bg-white w-full"
+              value={value.lastName}
+              onChange={(e) => setValue({ ...value, lastName: e.target.value })}
+            />
           </div>
-          <div className="flex flex-col w-[60%] space-y-6">
-            <div className="flex justify-between ">
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="First Name"
-                variant="outlined"
-                className="bg-white"
-                value={value.firstName}
-                onChange={(e) =>
-                  setValue({ ...value, firstName: e.target.value })
-                }
-              />
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="Last Name"
-                variant="outlined"
-                className="bg-white"
-                value={value.lastName}
-                onChange={(e) =>
-                  setValue({ ...value, lastName: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex">
-              <TextField
-                required
-                type="email"
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                className="bg-white w-full"
-                value={value.email}
-                onChange={(e) => setValue({ ...value, email: e.target.value })}
-              />
-            </div>
-            <div className="flex justify-between space-x-8">
-              <TextField
-                required
-                type="date"
-                id="outlined-basic"
-                variant="outlined"
-                className="bg-white w-[40%]"
-                value={value.dob}
-                onChange={(e) => setValue({ ...value, dob: e.target.value })}
-              />
-              <TextField
-                type="number"
-                id="outlined-basic"
-                label="Contact Number"
-                variant="outlined"
-                className="bg-white w-[60%]"
-                value={value.contactNumber}
-                onChange={(e) =>
-                  setValue({ ...value, contactNumber: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex space-x-8 ">
+          <div className="flex">
+            <TextField
+              required
+              type="email"
+              id="outlined-basic"
+              label="Email"
+              variant="outlined"
+              className="bg-white w-full"
+              value={value.email}
+              onChange={(e) => setValue({ ...value, email: e.target.value })}
+            />
+          </div>
+          <div className="flex justify-between space-x-8">
+            <TextField
+              required
+              type="date"
+              id="outlined-basic"
+              variant="outlined"
+              className="bg-white w-[40%]"
+              value={value.dob}
+              onChange={(e) => setValue({ ...value, dob: e.target.value })}
+            />
+          </div>
+          <div className="flex space-x-8 ">
+            <FormControl required className="w-[50%]">
+              <InputLabel id="demo-simple-select-label">Sub Admin</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={value.sub}
+                label="Sub Admin"
+                onChange={(e) => setValue({ ...value, sub: e.target.value })}>
+                <MenuItem value="true">Yes</MenuItem>
+                <MenuItem value="false">No</MenuItem>
+              </Select>
+            </FormControl>
+            {value.sub === "true" && (
               <FormControl required className="w-[50%]">
                 <InputLabel id="demo-simple-select-label">Sub Admin</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={value.sub}
-                  label="Sub Admin"
-                  onChange={(e) => setValue({ ...value, sub: e.target.value })}>
-                  <MenuItem value="true">Yes</MenuItem>
-                  <MenuItem value="false">No</MenuItem>
-                </Select>
-              </FormControl>
-              {value.sub === "true" && (
-                <TextField
-                  type="text"
-                  id="outlined-basic"
-                  label="Organization Name"
-                  variant="outlined"
-                  className="bg-white w-[50%]"
                   value={value.organizationName}
+                  label="Sub Admin"
                   onChange={(e) =>
                     setValue({ ...value, organizationName: e.target.value })
-                  }
-                />
-              )}
-            </div>
+                  }>
+                  {allOrganizationName.map((organization) => (
+                    <MenuItem value={organization.organizationName}>
+                      {organization.organizationName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
           </div>
         </div>
+
         <button
           type="submit"
           className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
