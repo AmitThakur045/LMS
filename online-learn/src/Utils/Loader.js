@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
 
-const BookLoader = ({ isLoading }) => {
+const Loader = ({ isLoading }) => {
   const override = `
   display: block;
   margin: 0 auto;
@@ -10,4 +10,4 @@ const BookLoader = ({ isLoading }) => {
   return <BeatLoader color={"#13426e"} isLoading={isLoading} css={override} />;
 };
 
-export default BookLoader;
+export default Loader;
