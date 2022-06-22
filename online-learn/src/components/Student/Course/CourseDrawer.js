@@ -14,9 +14,9 @@ import { getBatch } from "../../../Redux/actions/adminActions";
 import logo from "../../../Assests/Learner_Logo.png";
 import decode from "jwt-decode";
 
-const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
+const isNotActiveStyle = "text-[#555555] flex flex-col items-center px-3";
 const isActiveStyle =
-  "border-r-2 border-white  text-white flex flex-col items-center";
+  "border-r-2 border-white  text-white flex flex-col items-center px-3";
 const useStyles = makeStyles({
   list: {
     width: 250,

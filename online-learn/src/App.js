@@ -34,6 +34,7 @@ import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
 import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
 import Profile from "./components/Student/Profile/Profile";
+import Labs from "./components/Student/Course/Labs/Labs";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
       <Route path="/community" exact element={<Community />} />
       <Route path="/profile" exact element={<Profile />} />
       <Route path="/course" exact element={<Course />} />
+      <Route path="/lab" exact element={<Labs />} />
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
 
