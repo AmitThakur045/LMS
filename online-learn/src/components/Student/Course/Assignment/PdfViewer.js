@@ -21,7 +21,7 @@ export default function PdfViewer(props) {
   };
 
   return (
-    <div className="flex items-center justify-center w-full overflow-auto px-4 sm:px-1">
+    <div className="flex items-center justify-center w-full px-4 sm:px-1">
       <div
         style={{
           position: "fixed",
@@ -30,14 +30,14 @@ export default function PdfViewer(props) {
           "z-index": "1",
         }}
       >
-        <a href={pdf} onClick={saveFile} download>
+        <a href={pdf} download>
           <DownloadForOfflineIcon
             style={{ fontSize: "3.5rem" }}
             color="action"
           />
         </a>
       </div>
-      <div className="overflow-auto">
+      <div className="">
         <Document
           file={pdf}
           options={{ workerSrc: "/pdf.worker.js" }}
