@@ -34,6 +34,7 @@ import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
 import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
 import Certificate from "./components/Student/Course/Certificate/Certificate";
+import Profile from "./components/Student/Profile/Profile";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
       <Route path="/*" element={<Home />} />
       <Route path="/login" exact element={<StudentLogin />} />
       <Route path="/community" exact element={<Community />} />
+      <Route path="/profile" exact element={<Profile />} />
       <Route path="/course" exact element={<Course />} />
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
