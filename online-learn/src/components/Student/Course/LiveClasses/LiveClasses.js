@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllEvents } from "../../../../Redux/actions/studentActions";
 import CourseHeader from "../CourseHeader";
 import LiveClassesMain from "./LiveClassesMain";
+import Loader from "../../../../Utils/Loader";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -30,17 +31,32 @@ const localizer = dateFnsLocalizer({
 
 const LiveClasses = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
 
   return (
-    <div className="bg-[#1a1a1a] w-full sm:w-screen h-screen flex overflow-hidden">
-      <CourseSidebar />
-      {user !== null && (
-        <div className="bg-white flex my-4 w-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col">
-          <CourseHeader />
-          <LiveClassesMain />
+    <>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-screen w-full">
+          <Loader isLoading={isLoading} />
+        </div>
+      ) : (
+        <div className="bg-[#1a1a1a] w-full sm:w-screen h-screen flex overflow-hidden">
+          <CourseSidebar />
+          {user !== null && (
+            <div className="bg-white flex my-4 w-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col">
+              <CourseHeader />
+              <LiveClassesMain />
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
