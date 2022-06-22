@@ -48,7 +48,7 @@ const studentSchema = new Schema({
       assignmentCode: { type: String },
       studentAnswer: { type: String },
       checkedAssignment: { type: String },
-      score: { type: String },
+      score: { type: Number, default: 0 },
     },
   ],
   attendance: [
