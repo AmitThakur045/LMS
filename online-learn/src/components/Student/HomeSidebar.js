@@ -90,7 +90,7 @@ const HomeSidebar = () => {
             <p className="lg:text-sm text-xs">Profile</p>
           </NavLink>
         </div>
-        <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
+        <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150 pb-5">
           <LogoutIcon onClick={logout} className="cursor-pointer lg:h-5 h-4" />
           <p className="lg:text-sm text-xs">Logout</p>
         </div>

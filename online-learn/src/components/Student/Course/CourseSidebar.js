@@ -139,7 +139,7 @@ const CourseSidebar = () => {
               <p className="w-full text-center">Certificate</p>
             </NavLink>
           </div>
-          <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">
+          <div className="flex flex-col items-center space-y-2 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150 pb-5">
             <div className="md:px-5">
               <LogoutIcon onClick={logout} className="cursor-pointer" />
             </div>
