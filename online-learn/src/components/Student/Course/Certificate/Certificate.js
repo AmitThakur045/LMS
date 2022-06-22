@@ -8,7 +8,7 @@ const Certificate = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const batch = useSelector((state) => state.admin.batch);
 
-  console.log("userCertificate", user);
+  // console.log("userCertificate", user);
 
   return (
     <div className="bg-[#1a1a1a] w-full sm:w-screen h-screen flex overflow-hidden">
