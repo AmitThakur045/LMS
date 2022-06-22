@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
 import { getBatch } from "../../Redux/actions/adminActions";
 import decode from "jwt-decode";
+import { BsFillPersonFill } from "react-icons/bs";
 
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
@@ -55,7 +56,11 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      dispatch(getBatch({ batchCode: user.result.batchCode[0] }));
+      dispatch(
+        getBatch({
+          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+        })
+      );
     }
   }, []);
   return (
@@ -63,8 +68,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
       <Drawer
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        classes={{ paper: classes.paper }}
-      >
+        classes={{ paper: classes.paper }}>
         <div className="flex flex-col lg:my-4 my-2 py-5 h-full justify-between">
           <div className="flex flex-col items-center space-y-6">
             <div className="">
@@ -74,8 +78,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
               to="/"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <MenuBookIcon className="lg:h-5 h-3" alt="" />
               <p className="lg:text-sm text-xs">Courses</p>
             </NavLink>
@@ -83,8 +86,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
               to="/resources"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <DiamondIcon className="lg:h-5 h-3" alt="" />
               <p className="lg:text-sm text-xs">Resources</p>
             </NavLink>
@@ -92,10 +94,17 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
               to="/community"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <PeopleIcon className="lg:h-5 h-3" alt="" />
               <p className="lg:text-sm text-xs">Community</p>
+            </NavLink>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? isActiveStyle : isNotActiveStyle
+              }>
+              <BsFillPersonFill className="lg:h-5 h-3" alt="" />
+              <p className="lg:text-sm text-xs">Profile</p>
             </NavLink>
           </div>
           <div className="flex flex-col items-center space-y-2 bottom-0 text-[#555555] hover:text-white hover:scale-110 transition-all duration-150">

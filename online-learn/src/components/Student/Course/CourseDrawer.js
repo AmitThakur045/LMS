@@ -72,8 +72,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
       <Drawer
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        classes={{ paper: classes.paper }}
-      >
+        classes={{ paper: classes.paper }}>
         <div className="flex flex-col lg:my-4 my-2 py-5 h-full justify-between">
           <div className="flex flex-col items-center space-y-6">
             <div className="">
@@ -81,8 +80,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
             </div>
             <NavLink
               to="/"
-              className="text-[#555555] hover:text-white transition-all duration-200 mx-auto"
-            >
+              className="text-[#555555] hover:text-white transition-all duration-200 mx-auto">
               <div className="md:px-5">
                 <ArrowBackIcon className="" alt="" />
               </div>
@@ -92,8 +90,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
               to="/course"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <LibraryBooksIcon className="" alt="" />
               </div>
@@ -103,8 +100,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
               to="/liveclass"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <CalendarMonthIcon className="" sx={{ width: "20px" }} alt="" />
               </div>
@@ -114,8 +110,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
               to="/lab"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <ScienceIcon className="" alt="" />
               </div>
@@ -125,8 +120,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
               to="/assignment"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <AssignmentIcon className="" alt="" />
               </div>
@@ -136,8 +130,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
               to="/certificate"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-              }
-            >
+              }>
               <div className="md:px-5">
                 <WorkspacePremiumIcon className="" alt="" />
               </div>
