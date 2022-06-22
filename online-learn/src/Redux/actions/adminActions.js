@@ -43,6 +43,7 @@ import {
   TOTAL_ASSIGNMENT,
   UPDATE_STATUS,
   UPDATE_BATCH_ADMIN,
+  ADD_ORGANIZATION,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -530,6 +531,15 @@ export const updateBatchAdmin = (formData) => async (dispatch) => {
     const { data } = await api.updateBatchAdmin(formData);
     alert("Batch Admin Updated Successfully");
     dispatch({ type: UPDATE_BATCH_ADMIN, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addOrganizationName = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addOrganizationName(formData);
+    alert("Organization Added Successfully");
+    dispatch({ type: ADD_ORGANIZATION, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

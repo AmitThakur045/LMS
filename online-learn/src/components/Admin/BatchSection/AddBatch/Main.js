@@ -53,7 +53,6 @@ const Main = () => {
     organizationName: "",
     subAdmin: user.result.email,
   });
-  console.log(values);
   const [emails, setEmails] = useState([]);
 
   useEffect(() => {
@@ -109,9 +108,6 @@ const Main = () => {
       courses: typeof value === "string" ? value.split(",") : value,
     });
   };
-  if (emails.length !== 0) {
-    console.log("Yo");
-  }
 
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
@@ -174,8 +170,10 @@ const Main = () => {
                     setValues({ ...values, organizationName: e.target.value })
                   }>
                   {allOrganizationName?.map((organizationName, idx) => (
-                    <MenuItem key={idx} value={organizationName}>
-                      {organizationName}
+                    <MenuItem
+                      key={idx}
+                      value={organizationName.organizationName}>
+                      {organizationName.organizationName}
                     </MenuItem>
                   ))}
                 </Select>

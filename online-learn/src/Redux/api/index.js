@@ -97,6 +97,8 @@ export const updateStatus = (formData) =>
   API.post("/api/admin/updatestatus", formData);
 export const updateBatchAdmin = (formData) =>
   API.post("/api/admin/updatebatchadmin", formData);
+export const addOrganizationName = (formData) =>
+  API.post("/api/admin/addorganizationname", formData);
 
 //Student
 

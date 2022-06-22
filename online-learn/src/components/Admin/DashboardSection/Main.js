@@ -17,6 +17,7 @@ import {
   getAllOrganizationName,
   updateDeleteQuery,
 } from "../../../Redux/actions/adminActions";
+import { SET_ERRORS } from "../../../Redux/actionTypes";
 import BarGraph from "../../../Utils/BarGraph";
 import LineGraph from "../../../Utils/LineGraph";
 import PieChart from "../../../Utils/PieChart";
@@ -62,6 +63,7 @@ const Main = () => {
   }, [allDeleteQueries]);
   console.log(allDeleteQueries);
   useEffect(() => {
+    dispatch({ type: SET_ERRORS, payload: {} });
     if (user.result.sub === "true") {
       dispatch(
         getAdminDashboardDataBySubAdmin({
@@ -288,7 +290,7 @@ const Main = () => {
       <div>
         {user.result.sub === "false" && (
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small">Batch</InputLabel>
+            <InputLabel id="demo-select-small">Organizations</InputLabel>
             <Select
               labelId="demo-select-small"
               id="demo-select-small"
@@ -297,7 +299,9 @@ const Main = () => {
               onChange={(e) => handleOrganizationNameChange(e)}>
               <MenuItem value="All">All</MenuItem>
               {allOrganizationName.map((organization) => (
-                <MenuItem value={organization}>{organization}</MenuItem>
+                <MenuItem value={organization.organizationName}>
+                  {organization.organizationName}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
