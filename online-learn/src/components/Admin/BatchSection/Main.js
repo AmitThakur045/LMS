@@ -34,7 +34,6 @@ const Main = () => {
   const user = JSON.parse(localStorage.getItem("admin"));
 
   const allBatches = useSelector((state) => state.admin.allBatch);
-  console.log(allBatches);
   const batch = useSelector((state) => state.admin.batch);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -49,6 +48,7 @@ const Main = () => {
       localStorage.removeItem("students");
       localStorage.removeItem("courseCode");
       localStorage.setItem("batch", JSON.stringify(batch));
+      handleClose();
       let temp = [];
       for (let i = 0; i < batch.courses?.length; i++) {
         temp.push(batch.courses[i].courseCode);
@@ -58,6 +58,15 @@ const Main = () => {
       dispatch(getStudents({ emails: batch.students }));
     }
   }, [batch]);
+
+  const [openTab, setOpenTab] = useState(false);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("batch")) && openTab) {
+      window.open("/admin/batch/viewbatch");
+      setOpenTab(false);
+    }
+  }, [JSON.parse(localStorage.getItem("batch"))]);
+
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <Modal
@@ -88,8 +97,7 @@ const Main = () => {
                 disabled={selectedBatch !== "" ? false : true}
                 onClick={() => {
                   dispatch(getBatch({ batchCode: selectedBatch }));
-                  handleClose();
-                  window.open("/admin/batch/viewbatch");
+                  setOpenTab(true);
                 }}
                 className="w-[25%]"
                 variant="contained"

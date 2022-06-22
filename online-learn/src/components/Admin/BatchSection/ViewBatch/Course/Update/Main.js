@@ -13,8 +13,13 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { Button } from "@mui/material";
-import { GET_BATCH, SET_ERRORS } from "../../../../../../Redux/actionTypes";
+import {
+  GET_BATCH,
+  SET_ERRORS,
+  UPDATE_COURSE_DATA,
+} from "../../../../../../Redux/actionTypes";
 import { updateCourseData } from "../../../../../../Redux/actions/adminActions";
+import Spinner from "../../../../../../Utils/Spinner";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -30,6 +35,8 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 const Main = () => {
   const batchData = JSON.parse(localStorage.getItem("batch"));
+  const store = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
   const courseData = JSON.parse(localStorage.getItem("courses"));
   const [tempBatchData, setTempBatchData] = useState({});
   const [lessonCount, setLessonCount] = useState([]);
@@ -37,10 +44,7 @@ const Main = () => {
   const indexCounter = useSelector((store) => store.admin.index);
   const [completionUpdates, setCompletionUpdates] = useState({});
   const [garbageData, setGarbageData] = useState([]);
-  const [sectionLessonNumber, setSectionLessonNumber] = useState({
-    sectionNumber: 0,
-    lessonNumber: 0,
-  });
+  const [sectionLessonNumber, setSectionLessonNumber] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [batchCourseData, SetBatchCourseData] = useState({});
@@ -158,6 +162,7 @@ const Main = () => {
   };
 
   const handleVideoUploadButton = async (e) => {
+    setUploadingVideo(true);
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setUploadedVideo(base64);
@@ -167,13 +172,15 @@ const Main = () => {
     if (uploadedVideo !== "") {
       const temp = tempBatchData;
       temp.courses[indexCounter].lessonVideo[
-        sectionLessonNumber.sectionIdx
-      ].lesson[sectionLessonNumber.lessonIdx].video = uploadedVideo;
+        sectionLessonNumber.sectionNumber
+      ].lesson[sectionLessonNumber.lessonNumber].video = uploadedVideo;
       setTempBatchData(temp);
+
+      setUploadingVideo(false);
       setUploadedVideo("");
     }
   }, [uploadedVideo]);
-
+  console.log(sectionLessonNumber);
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -189,6 +196,7 @@ const Main = () => {
     });
   };
   const updateChanges = () => {
+    setLoading(true);
     localStorage.setItem("batch", JSON.stringify(tempBatchData));
     dispatch(
       updateCourseData({
@@ -199,6 +207,14 @@ const Main = () => {
       })
     );
   };
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+  useEffect(() => {
+    if (store.admin.courseUpdated) {
+      setLoading(false);
+      dispatch({ type: UPDATE_COURSE_DATA, payload: false });
+    }
+  }, [store.admin.courseUpdated]);
+
   return (
     <>
       {Object.keys(tempBatchData).length !== 0 && (
@@ -268,7 +284,7 @@ const Main = () => {
                           )}
                           <Typography>{lessonData.lessonName}</Typography>
                         </div>
-                        <label htmlFor="video">
+                        <label htmlFor={`video-${sectionIdx}-${lessonIdx}`}>
                           {tempBatchData.courses[indexCounter].lessonVideo[
                             sectionIdx
                           ].lesson[lessonIdx].video === "" ? (
@@ -276,22 +292,45 @@ const Main = () => {
                               Upload Video
                             </div>
                           ) : (
-                            <div className="text-white bg-[#1976d2] px-3 h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
                               Upload Another Video
                             </div>
+
+                            //   <>
+                            //     {uploadingVideo ? (
+                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            //         Uploading...
+                            //       </div>
+                            //     ) : (
+                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            //         Upload Video
+                            //       </div>
+                            //     )}
+                            //   </>
+                            // ) : (
+                            //   <>
+                            //     {uploadingVideo ? (
+                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            //         Uploading...
+                            //       </div>
+                            //     ) : (
+                            //       <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            //         Upload Another Video
+                            //       </div>
+                            //     )}
+                            //   </>
                           )}
                         </label>
                         <input
                           className="hidden"
-                          id="video"
+                          id={`video-${sectionIdx}-${lessonIdx}`}
                           type="file"
                           onChange={(e) => {
-                            handleVideoUploadButton(e);
                             setSectionLessonNumber({
-                              ...sectionLessonNumber,
-                              sectionIdx: sectionIdx,
-                              lessonIdx: lessonIdx,
+                              sectionNumber: sectionIdx,
+                              lessonNumber: lessonIdx,
                             });
+                            handleVideoUploadButton(e);
                           }}
                         />
                       </div>
@@ -309,6 +348,7 @@ const Main = () => {
               variant="contained">
               Submit
             </Button>
+            {loading && <Spinner message="Updating Course" />}
           </div>
         </div>
       )}

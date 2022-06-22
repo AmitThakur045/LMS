@@ -26,6 +26,7 @@ import {
   UPDATE_BATCH_ADMIN,
   UPDATE_STATUS,
 } from "../../../../Redux/actionTypes";
+import Spinner from "../../../../Utils/Spinner";
 const style = {
   position: "absolute",
   top: "50%",
@@ -57,6 +58,7 @@ const Header = () => {
   }, [store.errors]);
 
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const logout = () => {
     dispatch({ type: "LOGOUT" });
@@ -94,7 +96,9 @@ const Header = () => {
       data.status = status;
       localStorage.setItem("batch", JSON.stringify(data));
       handleStatusModalClose();
+      handleClose();
       dispatch({ type: UPDATE_STATUS, payload: false });
+      setLoading(false);
     }
   }, [store.admin.statusUpdated]);
   useEffect(() => {
@@ -103,16 +107,20 @@ const Header = () => {
       data.subAdmin = adminEmail;
       localStorage.setItem("batch", JSON.stringify(data));
       handleAdminModalClose();
+      handleClose();
       dispatch({ type: UPDATE_BATCH_ADMIN, payload: false });
+      setLoading(false);
     }
   }, [store.admin.batchAdminUpdated]);
 
   const updateadmin = (e) => {
     e.preventDefault();
+    setLoading(true);
     dispatch(updateBatchAdmin({ batchCode: batchData.batchCode, adminEmail }));
   };
   const updatestatus = (e) => {
     e.preventDefault();
+    setLoading(true);
     dispatch(updateStatus({ batchCode: batchData.batchCode, status }));
   };
   return (
@@ -154,6 +162,7 @@ const Header = () => {
                 color="primary">
                 Update
               </Button>
+              {loading && <Spinner message="Updating Admin" />}
               {error.noAdmin && (
                 <p className="text-red-500 flex self-center">{error.noAdmin}</p>
               )}
@@ -204,6 +213,7 @@ const Header = () => {
                 color="primary">
                 Update
               </Button>
+              {loading && <Spinner message="Updating Status" />}
             </form>
           </div>
         </Box>

@@ -171,145 +171,143 @@ const Main = ({ user, batchData }) => {
 
   return (
     <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
-      {Object.keys(batchData).length !== 0 && (
-        <>
-          <div className="flex justify-between mt-4 ">
-            <div className="w-[24%] py-3 flex flex-col space-y-3 bg-white shadow-md rounded-md">
-              <p className="self-center font-bold">Batch</p>
-              <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-primary pt-2">
-                <div className="flex space-x-2">
-                  <h1 className="font-bold">Batch Code: </h1>
-                  <p>{batchData?.batchCode}</p>
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="font-bold truncate">Batch Name: </h1>
-                  <p>{batchData?.batchName}</p>
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="font-bold">Courses: </h1>
-                  <p>{batchData?.courses?.length}</p>
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="font-bold">Students: </h1>
-                  <p>{batchData?.students?.length}</p>
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="font-bold">Batch Status: </h1>
-                  <p>{batchData?.status === false ? "Closed" : "Active"}</p>
-                </div>
+      <>
+        <div className="flex justify-between mt-4 ">
+          <div className="w-[24%] py-3 flex flex-col space-y-3 bg-white shadow-md rounded-md">
+            <p className="self-center font-bold">Batch</p>
+            <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-primary pt-2">
+              <div className="flex space-x-2">
+                <h1 className="font-bold">Batch Code: </h1>
+                <p>{batchData?.batchCode}</p>
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="font-bold truncate">Batch Name: </h1>
+                <p>{batchData?.batchName}</p>
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="font-bold">Courses: </h1>
+                <p>{batchData?.courses?.length}</p>
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="font-bold">Students: </h1>
+                <p>{batchData?.students?.length}</p>
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="font-bold">Batch Status: </h1>
+                <p>{batchData?.status === false ? "Closed" : "Active"}</p>
               </div>
             </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold  bg-white shadow-md rounded-md">
-              <ProgressBarComponent
-                id="course"
-                type="Circular"
-                height="160px"
-                width="100%"
-                style={{ progressColor: "#1111111" }}
-                trackThickness={14}
-                progressThickness={14}
-                value={courseStatusNumber}
-                enableRtl={false}
-                showProgressValue={true}
-                trackColor="#e6f8fe"
-                radius="100%"
-                progressColor="#046387"
-                animation={{
-                  enable: true,
-                  duration: 1000,
-                  delay: 0,
-                }}
-              />
-              <p className="self-center text-primary">Course Status</p>
-            </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
-              <ProgressBarComponent
-                id="student"
-                type="Circular"
-                height="160px"
-                width="100%"
-                trackThickness={14}
-                progressThickness={14}
-                value={totalAttendanceStatus}
-                enableRtl={false}
-                showProgressValue={true}
-                trackColor="#e6f8fe"
-                radius="100%"
-                progressColor="#046387"
-                animation={{
-                  enable: true,
-                  duration: 1000,
-                  delay: 0,
-                }}
-              />
-              <p className="self-center text-primary">Attendance</p>
-            </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
-              <ProgressBarComponent
-                id="classes"
-                type="Circular"
-                height="160px"
-                width="100%"
-                trackThickness={14}
-                progressThickness={14}
-                value={totalClassesHeld}
-                enableRtl={false}
-                showProgressValue={true}
-                trackColor="#e6f8fe"
-                radius="100%"
-                progressColor="#046387"
-                animation={{
-                  enable: true,
-                  duration: 1000,
-                  delay: 0,
-                }}
-              />
-              <p className="self-center text-primary">Classes Held</p>
-            </div>
           </div>
-          <div className="flex space-x-4">
-            <div className="bg-white shadow-sm rounded-md p-2">
+          <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold  bg-white shadow-md rounded-md">
+            <ProgressBarComponent
+              id="course"
+              type="Circular"
+              height="160px"
+              width="100%"
+              style={{ progressColor: "#1111111" }}
+              trackThickness={14}
+              progressThickness={14}
+              value={courseStatusNumber}
+              enableRtl={false}
+              showProgressValue={true}
+              trackColor="#e6f8fe"
+              radius="100%"
+              progressColor="#046387"
+              animation={{
+                enable: true,
+                duration: 1000,
+                delay: 0,
+              }}
+            />
+            <p className="self-center text-primary">Course Status</p>
+          </div>
+          <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <ProgressBarComponent
+              id="student"
+              type="Circular"
+              height="160px"
+              width="100%"
+              trackThickness={14}
+              progressThickness={14}
+              value={totalAttendanceStatus}
+              enableRtl={false}
+              showProgressValue={true}
+              trackColor="#e6f8fe"
+              radius="100%"
+              progressColor="#046387"
+              animation={{
+                enable: true,
+                duration: 1000,
+                delay: 0,
+              }}
+            />
+            <p className="self-center text-primary">Attendance</p>
+          </div>
+          <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <ProgressBarComponent
+              id="classes"
+              type="Circular"
+              height="160px"
+              width="100%"
+              trackThickness={14}
+              progressThickness={14}
+              value={totalClassesHeld}
+              enableRtl={false}
+              showProgressValue={true}
+              trackColor="#e6f8fe"
+              radius="100%"
+              progressColor="#046387"
+              animation={{
+                enable: true,
+                duration: 1000,
+                delay: 0,
+              }}
+            />
+            <p className="self-center text-primary">Classes Held</p>
+          </div>
+        </div>
+        <div className="flex space-x-4">
+          <div className="bg-white shadow-sm rounded-md p-2">
+            <LineGraph
+              lineCustomSeries={lineCustomSeries1}
+              LinePrimaryXAxis={LinePrimaryXAxis1}
+              LinePrimaryYAxis={LinePrimaryYAxis1}
+              chartId={"feedback"}
+              height={"420px"}
+              width={"560px"}
+            />
+          </div>
+          <div className="bg-white shadow-sm rounded-md p-2">
+            <div>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small">Course</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={courseCode}
+                  label="Course"
+                  onChange={(e) => handleChange(e)}>
+                  {batchData?.courses.map((course) => (
+                    <MenuItem value={course.courseCode}>
+                      {course.courseCode}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            {!loading && (
               <LineGraph
-                lineCustomSeries={lineCustomSeries1}
-                LinePrimaryXAxis={LinePrimaryXAxis1}
-                LinePrimaryYAxis={LinePrimaryYAxis1}
-                chartId={"feedback"}
+                lineCustomSeries={lineCustomSeries2}
+                LinePrimaryXAxis={LinePrimaryXAxis2}
+                LinePrimaryYAxis={LinePrimaryYAxis2}
+                chartId={"students"}
                 height={"420px"}
                 width={"560px"}
               />
-            </div>
-            <div className="bg-white shadow-sm rounded-md p-2">
-              <div>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small">Course</InputLabel>
-                  <Select
-                    labelId="demo-select-small"
-                    id="demo-select-small"
-                    value={courseCode}
-                    label="Course"
-                    onChange={(e) => handleChange(e)}>
-                    {batchData?.courses.map((course) => (
-                      <MenuItem value={course.courseCode}>
-                        {course.courseCode}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-              {!loading && (
-                <LineGraph
-                  lineCustomSeries={lineCustomSeries2}
-                  LinePrimaryXAxis={LinePrimaryXAxis2}
-                  LinePrimaryYAxis={LinePrimaryYAxis2}
-                  chartId={"students"}
-                  height={"420px"}
-                  width={"560px"}
-                />
-              )}
-            </div>
+            )}
           </div>
-        </>
-      )}
+        </div>
+      </>
     </div>
   );
 };

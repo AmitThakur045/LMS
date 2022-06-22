@@ -68,6 +68,13 @@ const ActiveBatch = () => {
       dispatch(getStudents({ emails: batch.students }));
     }
   }, [batch]);
+  const [openTab, setOpenTab] = useState(false);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("batch")) && openTab) {
+      window.open("/admin/batch/viewbatch");
+      setOpenTab(false);
+    }
+  }, [JSON.parse(localStorage.getItem("batch"))]);
 
   return (
     <div className="h-[60%] rounded-t-3xl shadow-md bg-white flex flex-col py-3">
@@ -80,8 +87,7 @@ const ActiveBatch = () => {
             key={idx}
             onClick={() => {
               dispatch(getBatch({ batchCode: batch.value }));
-
-              window.open("/admin/batch/viewbatch");
+              setOpenTab(true);
             }}
             className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all">
             <div className="flex items-center space-x-4">
