@@ -14,15 +14,17 @@ const ViewBatch = () => {
   }, []);
 
   return (
-    <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
-      <Sidebar />
+    <>
       {user !== null && batch !== null && (
-        <div className="flex flex-col  w-full">
-          <Header />
-          <Main batchData={batch} user={user} />
+        <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
+          <Sidebar />
+          <div className="flex flex-col  w-full">
+            <Header />
+            <Main batchData={batch} user={user} />
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
