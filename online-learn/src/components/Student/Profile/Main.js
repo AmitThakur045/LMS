@@ -105,20 +105,21 @@ const Main = () => {
         {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
         {Object.keys(batch).length !== 0 &&
           Object.keys(courseList).length !== 0 && (
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 p-5 text-primary">
-              <div className="flex flex-col bg-white  py-5 rounded-xl space-y-6 overflow-hidden">
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 p-2 text-primary">
+              <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 overflow-hidden">
                 <Avatar
                   className="self-center"
-                  sx={{ width: 160, height: 160 }}
+                  sx={{ width: 120, height: 120 }}
                   src={user.result.avatar}
                   alt=""
                 />
                 <h1 className="self-center font-bold text-lg">My Profile</h1>
                 <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10">
-                  <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
+                  <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0">
                     <TextField
                       aria-disabled
                       type="text"
+                      size="small"
                       id="outlined-basic"
                       label="First Name"
                       variant="outlined"
@@ -128,6 +129,7 @@ const Main = () => {
                     <TextField
                       aria-disabled
                       type="text"
+                      size="small"
                       id="outlined-basic"
                       label="Last Name"
                       variant="outlined"
@@ -139,6 +141,7 @@ const Main = () => {
                     <TextField
                       aria-disabled
                       type="date"
+                      size="small"
                       id="outlined-basic"
                       label="DOB"
                       variant="outlined"
@@ -148,6 +151,7 @@ const Main = () => {
                     <TextField
                       aria-disabled
                       type="number"
+                      size="small"
                       id="outlined-basic"
                       label="Contact Number"
                       variant="outlined"
@@ -159,6 +163,7 @@ const Main = () => {
                     <TextField
                       aria-disabled
                       type="email"
+                      size="small"
                       id="outlined-basic"
                       label="Email"
                       variant="outlined"
@@ -168,6 +173,7 @@ const Main = () => {
                     <TextField
                       aria-disabled
                       type="text"
+                      size="small"
                       id="outlined-basic"
                       label="Batch Code"
                       variant="outlined"
@@ -177,7 +183,7 @@ const Main = () => {
                       }
                     />
                   </div>
-                  <div className="border-[1px] border-[#848484] flex flex-col space-y-4 py-4 px-5 text-[14px] sm:text-[16px]">
+                  <div className="border-[1px] border-[#848484] flex flex-col space-y-2 py-3 px-5 text-[14px] sm:text-[16px]">
                     <div className="flex items-center space-x-4">
                       <AiFillStar className="text-[#cbbc4a]" />
 
@@ -212,7 +218,7 @@ const Main = () => {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-5 grid-rows-2 overflow-hidden ">
+              <div className="grid grid-cols-1 gap-2 grid-rows-2 overflow-hidden ">
                 <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
                   <h1 className="self-center font-bold text-lg">
                     Course Wise Attendance
