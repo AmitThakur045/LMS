@@ -15,7 +15,7 @@ const Certificate = () => {
       setIsLoading(false);
     }, 800);
   }, []);
-  
+
   return (
     <>
       {isLoading ? (
@@ -28,7 +28,7 @@ const Certificate = () => {
           {user !== null && Object.keys(batch).length !== 0 && (
             <div className="bg-white flex my-4 w-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col overflow-hidden">
               <CourseHeader />
-              <CertificateMain user={user} />
+              <CertificateMain />
             </div>
           )}
         </div>
