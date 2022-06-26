@@ -77,7 +77,7 @@ const ActiveBatch = () => {
   }, [JSON.parse(localStorage.getItem("batch"))]);
 
   return (
-    <div className="h-[60%] rounded-t-3xl shadow-md bg-white flex flex-col py-3">
+    <div className="lg:h-[60%] w-full h-[50%] rounded-b-3xl shadow-md bg-white flex flex-col py-3">
       <h1 className="text-primary text-[16px] font-bold self-center">
         Active Batch
       </h1>
