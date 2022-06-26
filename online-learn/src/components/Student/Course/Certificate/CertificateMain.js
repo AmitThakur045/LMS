@@ -3,19 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStudent } from "../../../../Redux/actions/adminActions";
 import PdfViewer from "../Assignment/PdfViewer";
 
-const CertificateMain = () => {
+const CertificateMain = ({ allAssignment }) => {
   const dispatch = useDispatch();
-  const [allAssignment, setAllAssignment] = useState({});
+
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-  const student = useSelector((state) => state.admin.student);
+
   const [selectedPdf, setSelectedPdf] = useState("");
   useEffect(() => {
-    if (Object.keys(student).length !== 0) {
-      setAllAssignment(student.assignment);
-      setSelectedPdf(student.assignment[0].checkedAssignment);
-    }
-  }, [student]);
-
+    setSelectedPdf(allAssignment[0].checkedAssignment);
+  }, []);
   const [keyId, setKeyId] = useState(0);
   useEffect(() => {
     dispatch(getStudent({ email: user.result.email }));

@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import StarIcon from "@mui/icons-material/Star";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { NavLink, useNavigate } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import { getCourseByBatchCode } from "../../../Redux/actions/studentActions";
+import { NavLink } from "react-router-dom";
 import {
   Accordion,
   AccordionDetails,
@@ -16,15 +11,10 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ProgressBarComponent } from "@syncfusion/ej2-react-progressbar";
-import { getBatch } from "../../../Redux/actions/adminActions";
+
 import HomeDrawer from "../HomeDrawer";
 
-const Main = () => {
-  const dispatch = useDispatch();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-  const courses = useSelector((state) => state.student.courseList);
-  const batch = useSelector((state) => state.admin.batch);
-  const [batchData, setBatchData] = useState({});
+const Main = ({ courseList, batchData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -42,43 +32,8 @@ const Main = () => {
     window.addEventListener("resize", handleResize);
   }, [window.innerWidth]);
 
-  useEffect(() => {
-    if (courses.length !== 0) {
-      setCourseList(courses);
-      setOpenCourse(courses[0]);
-    }
-  }, [courses]);
-  const [courseList, setCourseList] = useState([]);
+  const [openCourse, setOpenCourse] = useState(courseList[0]);
 
-  const [totalStars, setTotalStars] = useState([]);
-  const [openCourse, setOpenCourse] = useState();
-  const calculateTotalStars = (stars) => {
-    setTotalStars([]);
-    const list = [];
-    for (let index = 0; index < stars; index++) {
-      list.push(StarIcon);
-    }
-    setTotalStars(list);
-  };
-
-  useEffect(() => {
-    if (Object.keys(batch).length !== 0) {
-      setBatchData(batch);
-    }
-  }, [batch]);
-
-  useEffect(() => {
-    dispatch(
-      getCourseByBatchCode({
-        batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-      })
-    );
-    dispatch(
-      getBatch({
-        batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-      })
-    );
-  }, []);
   return (
     <div className="bg-white flex md:flex-row flex-col mt-4 rounded-t-2xl sm:mr-4 mx-2 sm:mx-0 md:overflow-hidden overflow-auto">
       <div className="flex flex-col md:flex-[0.45] bg-[#f6f2f2] rounded-tl-2xl rounded-bl-2xl pt-[30px]">
@@ -103,97 +58,95 @@ const Main = () => {
           </p>
         </div>
         <div className="space-y-4 lg:px-[40px] px-3 scrollbar-thin pb-3 scrollbar-track-white scrollbar-thumb-black">
-          {courseList.length !== 0 &&
-            Object.keys(batchData).length !== 0 &&
-            courseList?.map((data, i) => (
-              <div
-                onClick={() => {
-                  setOpenCourse(data);
-                  localStorage.setItem("index", JSON.stringify(i));
-                }}
-                key={i}
-                className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start">
-                <NavLink
-                  to="/course"
-                  className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg">
-                  <img
-                    src={data.courseImg}
-                    className="hover:opacity-50 w-full h-full rounded-lg"
-                    alt=""
-                  />
-                  <div className="absolute text-white top-[50%] left-[50%]  -translate-x-[50%] -translate-y-[50%]">
-                    <ProgressBarComponent
-                      id={`course-${i + 1}`}
-                      type="Circular"
-                      height="70px"
-                      width="100%"
-                      trackThickness={5}
-                      progressThickness={5}
-                      value={
-                        (batchData.courses[i].complete.lessonCompleted /
-                          batchData.courses[i].complete.totalLesson) *
-                        100
-                      }
-                      enableRtl={false}
-                      labelStyle={{
-                        color: "#ffffff",
-                        fontWeight: 500,
+          {courseList.map((data, i) => (
+            <div
+              onClick={() => {
+                setOpenCourse(data);
+                localStorage.setItem("index", JSON.stringify(i));
+              }}
+              key={i}
+              className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start">
+              <NavLink
+                to="/course"
+                className="relative lg:h-[7.8125rem] md:h-[8rem] h-[8rem] w-auto bg-black rounded-lg">
+                <img
+                  src={data.courseImg}
+                  className="hover:opacity-50 w-full h-full rounded-lg"
+                  alt=""
+                />
+                <div className="absolute text-white top-[50%] left-[50%]  -translate-x-[50%] -translate-y-[50%]">
+                  <ProgressBarComponent
+                    id={`course-${i + 1}`}
+                    type="Circular"
+                    height="70px"
+                    width="100%"
+                    trackThickness={5}
+                    progressThickness={5}
+                    value={
+                      (batchData.courses[i].complete.lessonCompleted /
+                        batchData.courses[i].complete.totalLesson) *
+                      100
+                    }
+                    enableRtl={false}
+                    labelStyle={{
+                      color: "#ffffff",
+                      fontWeight: 500,
 
-                        size: "12px",
-                      }}
-                      showProgressValue={true}
-                      trackColor="#ffffff"
-                      radius="100%"
-                      progressColor="#111111"
-                      cornerRadius="Round"
-                      animation={{
-                        enable: true,
-                        duration: 1000,
-                        delay: 0,
-                      }}
-                    />
-                  </div>
-                </NavLink>
-                <div className="ml-2">
-                  <h4 className="font-bold text-[15px] mb-2">
-                    {data.courseName}
-                  </h4>
-                  <p className="text-[12px] text-[#ADADAD]">
-                    {data.description.slice(0, 80)}...
-                  </p>
-                  <div className="flex justify-between items-center mt-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="">
-                        <StarIcon
-                          sx={{ fontSize: 15 }}
-                          className="text-[#ED8A19]"
-                        />
-                        <StarIcon
-                          sx={{ fontSize: 15 }}
-                          className="text-[#ED8A19]"
-                        />
-                        <StarIcon
-                          sx={{ fontSize: 15 }}
-                          className="text-[#ED8A19]"
-                        />
-                        <StarIcon
-                          sx={{ fontSize: 15 }}
-                          className="text-[#ED8A19]"
-                        />
-                        <StarIcon
-                          sx={{ fontSize: 15 }}
-                          className="text-[#ED8A19]"
-                        />
-                      </div>
-                      <p>5</p>
+                      size: "12px",
+                    }}
+                    showProgressValue={true}
+                    trackColor="#ffffff"
+                    radius="100%"
+                    progressColor="#111111"
+                    cornerRadius="Round"
+                    animation={{
+                      enable: true,
+                      duration: 1000,
+                      delay: 0,
+                    }}
+                  />
+                </div>
+              </NavLink>
+              <div className="ml-2">
+                <h4 className="font-bold text-[15px] mb-2">
+                  {data.courseName}
+                </h4>
+                <p className="text-[12px] text-[#ADADAD]">
+                  {data.description.slice(0, 80)}...
+                </p>
+                <div className="flex justify-between items-center mt-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="">
+                      <StarIcon
+                        sx={{ fontSize: 15 }}
+                        className="text-[#ED8A19]"
+                      />
+                      <StarIcon
+                        sx={{ fontSize: 15 }}
+                        className="text-[#ED8A19]"
+                      />
+                      <StarIcon
+                        sx={{ fontSize: 15 }}
+                        className="text-[#ED8A19]"
+                      />
+                      <StarIcon
+                        sx={{ fontSize: 15 }}
+                        className="text-[#ED8A19]"
+                      />
+                      <StarIcon
+                        sx={{ fontSize: 15 }}
+                        className="text-[#ED8A19]"
+                      />
                     </div>
-                    <p className="text-xs text-[#8B8B8B] bg-[#EEEEEE] py-1 px-2 rounded-md ">
-                      {data.difficulty}
-                    </p>
+                    <p>5</p>
                   </div>
+                  <p className="text-xs text-[#8B8B8B] bg-[#EEEEEE] py-1 px-2 rounded-md ">
+                    {data.difficulty}
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
       <div className="flex md:flex-[0.55] bg-white rounded-tr-2xl rounded-br-2xl">

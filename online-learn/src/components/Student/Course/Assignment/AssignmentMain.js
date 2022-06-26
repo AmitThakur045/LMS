@@ -9,46 +9,20 @@ import {
 
 import { SUBMIT_ASSIGNMENT } from "../../../../Redux/actionTypes";
 
-const AssignmentMain = () => {
+const AssignmentMain = ({ batchData, allAssignment }) => {
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
   const learner = JSON.parse(localStorage.getItem("learner"));
-  const assignment = useSelector((state) => state.student.assignment);
   const store = useSelector((state) => state);
 
-  const [allAssignmet, setAllAssignment] = useState([]);
   const [selectedPdf, setSelectedPdf] = useState("");
-  const batch = useSelector((state) => state.admin.batch);
-  const [batchData, setBatchData] = useState({});
   const [value, setValue] = useState("");
   const [isSelected, setIsSelected] = useState([]);
-  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (assignment.length !== 0) {
-      setAllAssignment(assignment);
-      setSelectedPdf(assignment[0].assignmentPdf);
-      let arr = new Array(assignment.length).fill(false);
-      setIsSelected(arr);
-    }
-  }, [assignment]);
-
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("index"))) {
-      setIndex(JSON.parse(localStorage.getItem("index")));
-    }
+    setSelectedPdf(allAssignment[0].assignmentPdf);
+    let arr = new Array(allAssignment.length).fill(false);
+    setIsSelected(arr);
   }, []);
-  useEffect(() => {
-    if (Object.keys(batch).length !== 0) {
-      dispatch(
-        getAssignmentByBatchCode({
-          batchCode: learner.result.batchCode[0],
-          courseCode: batch.courses[index].courseCode,
-        })
-      );
-      setBatchData(batch);
-    }
-  }, [batch]);
 
   const changeHandler = (event, i) => {
     const file = event.target.files[0];
@@ -70,7 +44,7 @@ const AssignmentMain = () => {
     if (value !== "") {
       dispatch(
         submitAssignment({
-          assignmentCode: allAssignmet[i].assignmentCode,
+          assignmentCode: allAssignment[i].assignmentCode,
           studentAnswer: value,
           email: learner.result.email,
         })
@@ -83,7 +57,7 @@ const AssignmentMain = () => {
   useEffect(() => {
     if (store.student.assignmentSubmitted) {
       setValue(false);
-      let arr = new Array(assignment.length).fill(false);
+      let arr = new Array(allAssignment.length).fill(false);
       setIsSelected(arr);
       dispatch({ type: SUBMIT_ASSIGNMENT, payload: false });
     }
@@ -97,7 +71,7 @@ const AssignmentMain = () => {
             <h1 className="ml-6 mt-7 font-semibold text-2xl">Assignment</h1>
 
             <div className="flex flex-col space-y-4 mt-4 lg:h-[75vh] h-[50vh] overflow-y-auto">
-              {allAssignmet.map((data, i) => (
+              {allAssignment.map((data, i) => (
                 <div
                   className="bg-[#127FED] h-[10rem] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between overflow-auto hover:cursor-pointer"
                   key={i}
@@ -138,7 +112,7 @@ const AssignmentMain = () => {
                   </div>
                 </div>
               ))}
-              {allAssignmet.length === 0 && (
+              {allAssignment.length === 0 && (
                 <div className="text-red-500 text-[20px]  font-bold self-center">
                   <p>No Assignment Found</p>
                 </div>
@@ -146,7 +120,7 @@ const AssignmentMain = () => {
             </div>
           </div>
           <div className="lg:flex-[0.6] bg-[#F9F9F9] w-full overflow-y-auto ">
-            {allAssignmet.length === 0 ? (
+            {allAssignment.length === 0 ? (
               <div className=""></div>
             ) : (
               <PdfViewer pdf={selectedPdf} />

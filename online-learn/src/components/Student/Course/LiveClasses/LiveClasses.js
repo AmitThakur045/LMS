@@ -17,7 +17,8 @@ import { getAllEvents } from "../../../../Redux/actions/studentActions";
 import CourseHeader from "../CourseHeader";
 import LiveClassesMain from "./LiveClassesMain";
 import Loader from "../../../../Utils/Loader";
-
+import { getBatch } from "../../../../Redux/actions/adminActions";
+import { useNavigate } from "react-router-dom";
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
 };
@@ -32,11 +33,41 @@ const localizer = dateFnsLocalizer({
 const LiveClasses = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [allEvents, setAllEvents] = useState([]);
+  const events = useSelector((state) => state.student.allEvents);
+  const batch = useSelector((state) => state.admin.batch);
+  const [batchData, setBatchData] = useState({});
+  useEffect(() => {
+    if (events.length !== 0) {
+      if (Object.keys(batch).length !== 0) {
+        setIsLoading(false);
+      }
+      setAllEvents(events);
+    }
+  }, [events]);
+  useEffect(() => {
+    if (Object.keys(batch).length !== 0) {
+      if (events.length !== 0) {
+        setIsLoading(false);
+      }
+      setBatchData(batch);
+    }
+  }, [batch]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    if (JSON.parse(localStorage.getItem("learner")) === null) {
+      navigate("/login");
+    } else {
+      dispatch(getAllEvents({ batchCode: user.result.batchCode }));
+
+      dispatch(
+        getBatch({
+          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+        })
+      );
+    }
   }, []);
 
   return (
@@ -50,8 +81,8 @@ const LiveClasses = () => {
           <CourseSidebar />
           {user !== null && (
             <div className="bg-white flex my-4 w-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col">
-              <CourseHeader />
-              <LiveClassesMain />
+              <CourseHeader batchData={batchData} />
+              <LiveClassesMain allEvents={allEvents} />
             </div>
           )}
         </div>

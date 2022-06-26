@@ -12,25 +12,18 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-const CourseMain = () => {
+const CourseMain = ({ batchData }) => {
   const [playVideo, setPlayVideo] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const handle = useFullScreenHandle();
-  const batch = useSelector((state) => state.admin.batch);
-  const [batchData, setBatchData] = useState({});
+
   const [index, setIndex] = useState(0);
   const [video, setVideo] = useState("");
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("index"))) {
       setIndex(JSON.parse(localStorage.getItem("index")));
     }
-    setBatchData(batch);
   }, []);
-  useEffect(() => {
-    if (batch) {
-      setBatchData(batch);
-    }
-  }, [batch]);
 
   const handleVideo = (sectionIdx, lessonIdx) => {};
 

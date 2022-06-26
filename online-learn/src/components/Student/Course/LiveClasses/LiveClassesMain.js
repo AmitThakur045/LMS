@@ -5,15 +5,11 @@ import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { NavLink } from "react-router-dom";
-import PeopleIcon from "@mui/icons-material/People";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents } from "../../../../Redux/actions/studentActions";
+
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
 };
@@ -25,11 +21,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const LiveClassesMain = () => {
-  const dispatch = useDispatch();
-  const learner = JSON.parse(localStorage.getItem("learner"));
-  const events = useSelector((state) => state.student.allEvents);
-  const [allEvents, setAllEvents] = useState([]);
+const LiveClassesMain = ({ allEvents }) => {
   const [value, setValue] = useState({
     start: "",
     end: "",
@@ -53,15 +45,7 @@ const LiveClassesMain = () => {
     "Nov",
     "Dec",
   ];
-  useEffect(() => {
-    if (events.length > 0) {
-      setAllEvents(events);
-    }
-  }, [events]);
-  useEffect(() => {
-    dispatch(getAllEvents({ batchCode: learner.result.batchCode }));
-  }, []);
-  console.log(allEvents);
+
   return (
     <div className="flex lg:flex-row flex-col overflow-y-auto p-2 overflow-x-auto bg-white h-full">
       <div className="flex md:h-[35rem] h-[45rem] w-[85vw] lg:w-[45rem] p-1">

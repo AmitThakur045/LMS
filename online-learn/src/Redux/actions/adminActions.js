@@ -329,7 +329,6 @@ export const getAllDeleteQueryBySubAdmin = (formData) => async (dispatch) => {
 };
 export const getBatchCodesBySubAdmin = (formData) => async (dispatch) => {
   try {
-    console.log("form", formData);
     const { data } = await api.getBatchCodesBySubAdmin(formData);
     dispatch({ type: GET_ALL_BATCH, payload: data });
   } catch (error) {
@@ -339,7 +338,6 @@ export const getBatchCodesBySubAdmin = (formData) => async (dispatch) => {
 
 export const getBatch = (formData) => async (dispatch) => {
   try {
-    console.log(formData);
     const { data } = await api.getBatch(formData);
     dispatch({ type: GET_BATCH, payload: data });
   } catch (error) {
@@ -349,7 +347,6 @@ export const getBatch = (formData) => async (dispatch) => {
 
 export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
   try {
-    console.log("allBatchesForm", allBatches);
     const { data } = await api.getBatchesByBatchCode(allBatches);
     // console.log("dataForm", data);
     dispatch({ type: GET_BATCHES_BY_BATCH_CODE, payload: data });

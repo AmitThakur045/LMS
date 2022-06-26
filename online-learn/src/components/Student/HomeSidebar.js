@@ -8,7 +8,7 @@ import logo from "../../Assests/Learner_Logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
-import { getBatch } from "../../Redux/actions/adminActions";
+
 import decode from "jwt-decode";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center px-3";
 const isActiveStyle =
@@ -36,17 +36,6 @@ const HomeSidebar = () => {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         logOut();
       }
-    }
-  }, []);
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
-      navigate("/login");
-    } else {
-      dispatch(
-        getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
     }
   }, []);
 

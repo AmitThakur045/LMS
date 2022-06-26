@@ -4,13 +4,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { AiFillStar } from "react-icons/ai";
 import HomeDrawer from "../HomeDrawer";
 import { Avatar, TextField } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
-import { getCourseByBatchCode } from "../../../Redux/actions/studentActions";
-import { getStudent } from "../../../Redux/actions/adminActions";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -24,24 +21,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "light" ? "#0d136c" : "#308fe8",
   },
 }));
-const Main = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-  const dispatch = useDispatch();
-  const courses = useSelector((state) => state.student.courseList);
-  const student = useSelector((state) => state.admin.student);
-  const [courseList, setCourseList] = useState([]);
-  const [learner, setLearner] = useState({});
-  useEffect(() => {
-    if (Object.keys(student).length !== 0) {
-      setLearner(student);
-    }
-  }, [student]);
-  useEffect(() => {
-    if (courses.length !== 0) {
-      setCourseList(courses);
-    }
-  }, [courses]);
-
+const Main = ({ courseList, learner, batch }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleResize = () => {
@@ -54,16 +34,7 @@ const Main = () => {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
   }, [window.innerWidth]);
-  useEffect(() => {
-    dispatch(
-      getCourseByBatchCode({
-        batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-      })
-    );
-    dispatch(getStudent({ email: user.result.email }));
-  }, []);
 
-  const batch = useSelector((state) => state.admin.batch);
   function calculateAssignmentScore() {
     let score = 0;
 
@@ -115,181 +86,178 @@ const Main = () => {
           </div>
         )}
         {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
-        {Object.keys(batch).length !== 0 &&
-          Object.keys(learner).length !== 0 &&
-          Object.keys(courseList).length !== 0 && (
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 p-2 text-primary">
-              <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 overflow-hidden">
-                <Avatar
-                  className="self-center"
-                  sx={{ width: 120, height: 120 }}
-                  src={learner.avatar}
-                  alt=""
-                />
-                <h1 className="self-center font-bold text-lg">My Profile</h1>
-                <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10">
-                  <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0">
-                    <TextField
-                      aria-disabled
-                      type="text"
-                      size="small"
-                      id="outlined-basic"
-                      label="First Name"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.firstName}
-                    />
-                    <TextField
-                      aria-disabled
-                      type="text"
-                      size="small"
-                      id="outlined-basic"
-                      label="Last Name"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.lastName}
-                    />
-                  </div>
-                  <div className="flex space-x-6">
-                    <TextField
-                      aria-disabled
-                      type="date"
-                      size="small"
-                      id="outlined-basic"
-                      label="DOB"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.dob}
-                    />
-                    <TextField
-                      aria-disabled
-                      type="number"
-                      size="small"
-                      id="outlined-basic"
-                      label="Contact Number"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.contactNumber}
-                    />
-                  </div>
-                  <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
-                    <TextField
-                      aria-disabled
-                      type="email"
-                      size="small"
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.email}
-                    />
-                    <TextField
-                      aria-disabled
-                      type="text"
-                      size="small"
-                      id="outlined-basic"
-                      label="Batch Code"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={learner.batchCode[learner.batchCode.length - 1]}
-                    />
-                  </div>
-                  <div className="border-[1px] border-[#848484] flex flex-col space-y-2 py-3 px-5 text-[14px] sm:text-[16px]">
-                    <div className="flex items-center space-x-4">
-                      <AiFillStar className="text-[#cbbc4a]" />
-
-                      <h1 className="font-semibold">Performance:</h1>
-                      <p>{learner.performance}</p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <AiFillStar className="text-[#cbbc4a]" />
-
-                      <h1 className="font-semibold">Total Attendance:</h1>
-                      <p>
-                        {calculateTotalAttendance()}/{batch.schedule.length}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <AiFillStar className="text-[#cbbc4a]" />
-
-                      <h1 className="font-semibold">
-                        Total Assignments Submitted:
-                      </h1>
-                      <p>
-                        {learner.assignment.length}/
-                        {calculateTotalAssignments()}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <AiFillStar className="text-[#cbbc4a]" />
-
-                      <h1 className="font-semibold">Total Assignment Score:</h1>
-                      <p>{calculateAssignmentScore()}</p>
-                    </div>
-                  </div>
+        {
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 p-2 text-primary">
+            <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 overflow-hidden">
+              <Avatar
+                className="self-center"
+                sx={{ width: 120, height: 120 }}
+                src={learner.avatar}
+                alt=""
+              />
+              <h1 className="self-center font-bold text-lg">My Profile</h1>
+              <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10">
+                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0">
+                  <TextField
+                    aria-disabled
+                    type="text"
+                    size="small"
+                    id="outlined-basic"
+                    label="First Name"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.firstName}
+                  />
+                  <TextField
+                    aria-disabled
+                    type="text"
+                    size="small"
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.lastName}
+                  />
                 </div>
-              </div>
-              <div className="grid grid-cols-1 gap-2 grid-rows-2 overflow-hidden ">
-                <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
-                  <h1 className="self-center font-bold text-lg">
-                    Course Wise Attendance
-                  </h1>
-                  <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {learner.attendance.map((course, idx) => (
-                      <div key={course.courseCode} className="flex flex-col">
-                        <h1 className="text-primary text-[12px]">
-                          {course.courseCode}
-                        </h1>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-full">
-                            <BorderLinearProgress
-                              variant="determinate"
-                              value={calCourseWiseAttendance(
-                                course.courseCode,
-                                course.attended
-                              )}
-                            />
-                          </div>
-                          <p className="text-primary text-[12px]">
-                            {calCourseWiseAttendance(
-                              course.courseCode,
-                              course.attended
-                            )}
-                            %
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div className="flex space-x-6">
+                  <TextField
+                    aria-disabled
+                    type="date"
+                    size="small"
+                    id="outlined-basic"
+                    label="DOB"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.dob}
+                  />
+                  <TextField
+                    aria-disabled
+                    type="number"
+                    size="small"
+                    id="outlined-basic"
+                    label="Contact Number"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.contactNumber}
+                  />
                 </div>
-                <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
-                  <h1 className="self-center font-bold text-lg">
-                    Assignment Wise Score
-                  </h1>
-                  <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {learner.assignment.map((assignment, idx) => (
-                      <div key={idx} className="flex flex-col">
-                        <h1 className="text-primary text-[12px]">
-                          {assignment.assignmentCode}
-                        </h1>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-full">
-                            <BorderLinearProgress
-                              variant="determinate"
-                              value={assignment.score}
-                            />
-                          </div>
-                          <p className="text-primary text-[12px]">
-                            {assignment.score}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
+                  <TextField
+                    aria-disabled
+                    type="email"
+                    size="small"
+                    id="outlined-basic"
+                    label="Email"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.email}
+                  />
+                  <TextField
+                    aria-disabled
+                    type="text"
+                    size="small"
+                    id="outlined-basic"
+                    label="Batch Code"
+                    variant="outlined"
+                    className="bg-white w-full"
+                    value={learner.batchCode[learner.batchCode.length - 1]}
+                  />
+                </div>
+                <div className="border-[1px] border-[#848484] flex flex-col space-y-2 py-3 px-5 text-[14px] sm:text-[16px]">
+                  <div className="flex items-center space-x-4">
+                    <AiFillStar className="text-[#cbbc4a]" />
+
+                    <h1 className="font-semibold">Performance:</h1>
+                    <p>{learner.performance}</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <AiFillStar className="text-[#cbbc4a]" />
+
+                    <h1 className="font-semibold">Total Attendance:</h1>
+                    <p>
+                      {calculateTotalAttendance()}/{batch.schedule.length}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <AiFillStar className="text-[#cbbc4a]" />
+
+                    <h1 className="font-semibold">
+                      Total Assignments Submitted:
+                    </h1>
+                    <p>
+                      {learner.assignment.length}/{calculateTotalAssignments()}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <AiFillStar className="text-[#cbbc4a]" />
+
+                    <h1 className="font-semibold">Total Assignment Score:</h1>
+                    <p>{calculateAssignmentScore()}</p>
                   </div>
                 </div>
               </div>
             </div>
-          )}
+            <div className="grid grid-cols-1 gap-2 grid-rows-2 overflow-hidden ">
+              <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
+                <h1 className="self-center font-bold text-lg">
+                  Course Wise Attendance
+                </h1>
+                <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
+                  {learner.attendance.map((course, idx) => (
+                    <div key={course.courseCode} className="flex flex-col">
+                      <h1 className="text-primary text-[12px]">
+                        {course.courseCode}
+                      </h1>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-full">
+                          <BorderLinearProgress
+                            variant="determinate"
+                            value={calCourseWiseAttendance(
+                              course.courseCode,
+                              course.attended
+                            )}
+                          />
+                        </div>
+                        <p className="text-primary text-[12px]">
+                          {calCourseWiseAttendance(
+                            course.courseCode,
+                            course.attended
+                          )}
+                          %
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
+                <h1 className="self-center font-bold text-lg">
+                  Assignment Wise Score
+                </h1>
+                <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
+                  {learner.assignment.map((assignment, idx) => (
+                    <div key={idx} className="flex flex-col">
+                      <h1 className="text-primary text-[12px]">
+                        {assignment.assignmentCode}
+                      </h1>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-full">
+                          <BorderLinearProgress
+                            variant="determinate"
+                            value={assignment.score}
+                          />
+                        </div>
+                        <p className="text-primary text-[12px]">
+                          {assignment.score}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     </>
   );

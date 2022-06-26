@@ -2,18 +2,36 @@ import React, { useState, useEffect } from "react";
 import CourseMain from "./CourseMain";
 import CourseSidebar from "../CourseSidebar";
 import CourseHeader from "../CourseHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Utils/Loader";
+import { getBatch } from "../../../../Redux/actions/adminActions";
+import { useNavigate } from "react-router-dom";
 
 const Course = () => {
-  const batch = useSelector((state) => state.admin.batch);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const batch = useSelector((state) => state.admin.batch);
+  const [batchData, setBatchData] = useState({});
 
   useEffect(() => {
-    setTimeout(() => {
+    if (Object.keys(batch).length !== 0) {
       setIsLoading(false);
-    }, 800);
+      setBatchData(batch);
+    }
+  }, [batch]);
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("learner")) === null) {
+      navigate("/login");
+    } else {
+      dispatch(
+        getBatch({
+          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+        })
+      );
+    }
   }, []);
 
   return (
@@ -25,10 +43,10 @@ const Course = () => {
       ) : (
         <div className="bg-[#1a1a1a] w-full sm:w-screen h-screen flex overflow-hidden">
           <CourseSidebar />
-          {user !== null && Object.keys(batch).length !== 0 && (
+          {user !== null && (
             <div className="bg-white flex my-4 w-full h-full rounded-2xl mx-2 sm:mx-0 sm:mr-4 flex-col">
-              <CourseHeader />
-              <CourseMain />
+              <CourseHeader batchData={batchData} />
+              <CourseMain batchData={batchData} />
             </div>
           )}
         </div>
