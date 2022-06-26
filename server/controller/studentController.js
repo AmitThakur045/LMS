@@ -79,7 +79,15 @@ export const studentLogin = async (req, res) => {
       { expiresIn: "10h" }
     );
 
-    res.status(200).json({ result: existingStudent, token: token });
+    res.status(200).json({
+      result: {
+        firstName: existingStudent.firstName,
+        lastName: existingStudent.lastName,
+        batchCode: existingStudent.batchCode,
+        email: existingStudent.email,
+      },
+      token: token,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
