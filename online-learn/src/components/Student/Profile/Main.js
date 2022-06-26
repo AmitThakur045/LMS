@@ -10,6 +10,8 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { getCourseByBatchCode } from "../../../Redux/actions/studentActions";
+import { getStudent } from "../../../Redux/actions/adminActions";
+
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -26,12 +28,20 @@ const Main = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.student.courseList);
+  const student = useSelector((state) => state.admin.student);
   const [courseList, setCourseList] = useState([]);
+  const [learner, setLearner] = useState({});
+  useEffect(() => {
+    if (Object.keys(student).length !== 0) {
+      setLearner(student);
+    }
+  }, [student]);
   useEffect(() => {
     if (courses.length !== 0) {
       setCourseList(courses);
     }
   }, [courses]);
+
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleResize = () => {
@@ -50,16 +60,18 @@ const Main = () => {
         batchCode: user.result.batchCode[user.result.batchCode.length - 1],
       })
     );
+    dispatch(getStudent({ email: user.result.email }));
   }, []);
+
   const batch = useSelector((state) => state.admin.batch);
   function calculateAssignmentScore() {
     let score = 0;
 
-    if (user.result.assignment.length !== 0) {
+    if (learner.assignment.length !== 0) {
       let total = 0;
-      for (let i = 0; i < user.result.assignment.length; i++) {
-        if (user.result.assignment[i].checkedAssignment) {
-          score += user.result.assignment[i].score;
+      for (let i = 0; i < learner.assignment.length; i++) {
+        if (learner.assignment[i].checkedAssignment) {
+          score += learner.assignment[i].score;
           total++;
         }
       }
@@ -71,8 +83,8 @@ const Main = () => {
   }
   function calculateTotalAttendance() {
     let total = 0;
-    for (let i = 0; i < user.result.attendance.length; i++) {
-      total += user.result.attendance[i].attended;
+    for (let i = 0; i < learner.attendance.length; i++) {
+      total += learner.attendance[i].attended;
     }
     return total;
   }
@@ -104,13 +116,14 @@ const Main = () => {
         )}
         {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
         {Object.keys(batch).length !== 0 &&
+          Object.keys(learner).length !== 0 &&
           Object.keys(courseList).length !== 0 && (
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 p-2 text-primary">
               <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 overflow-hidden">
                 <Avatar
                   className="self-center"
                   sx={{ width: 120, height: 120 }}
-                  src={user.result.avatar}
+                  src={learner.avatar}
                   alt=""
                 />
                 <h1 className="self-center font-bold text-lg">My Profile</h1>
@@ -124,7 +137,7 @@ const Main = () => {
                       label="First Name"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={user.result.firstName}
+                      value={learner.firstName}
                     />
                     <TextField
                       aria-disabled
@@ -134,7 +147,7 @@ const Main = () => {
                       label="Last Name"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={user.result.lastName}
+                      value={learner.lastName}
                     />
                   </div>
                   <div className="flex space-x-6">
@@ -146,7 +159,7 @@ const Main = () => {
                       label="DOB"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={user.result.dob}
+                      value={learner.dob}
                     />
                     <TextField
                       aria-disabled
@@ -156,7 +169,7 @@ const Main = () => {
                       label="Contact Number"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={user.result.contactNumber}
+                      value={learner.contactNumber}
                     />
                   </div>
                   <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
@@ -168,7 +181,7 @@ const Main = () => {
                       label="Email"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={user.result.email}
+                      value={learner.email}
                     />
                     <TextField
                       aria-disabled
@@ -178,9 +191,7 @@ const Main = () => {
                       label="Batch Code"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={
-                        user.result.batchCode[user.result.batchCode.length - 1]
-                      }
+                      value={learner.batchCode[learner.batchCode.length - 1]}
                     />
                   </div>
                   <div className="border-[1px] border-[#848484] flex flex-col space-y-2 py-3 px-5 text-[14px] sm:text-[16px]">
@@ -188,7 +199,7 @@ const Main = () => {
                       <AiFillStar className="text-[#cbbc4a]" />
 
                       <h1 className="font-semibold">Performance:</h1>
-                      <p>{user.result.performance}</p>
+                      <p>{learner.performance}</p>
                     </div>
                     <div className="flex items-center space-x-4">
                       <AiFillStar className="text-[#cbbc4a]" />
@@ -205,7 +216,7 @@ const Main = () => {
                         Total Assignments Submitted:
                       </h1>
                       <p>
-                        {user.result.assignment.length}/
+                        {learner.assignment.length}/
                         {calculateTotalAssignments()}
                       </p>
                     </div>
@@ -224,7 +235,7 @@ const Main = () => {
                     Course Wise Attendance
                   </h1>
                   <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {user.result.attendance.map((course, idx) => (
+                    {learner.attendance.map((course, idx) => (
                       <div key={course.courseCode} className="flex flex-col">
                         <h1 className="text-primary text-[12px]">
                           {course.courseCode}
@@ -256,7 +267,7 @@ const Main = () => {
                     Assignment Wise Score
                   </h1>
                   <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {user.result.assignment.map((assignment, idx) => (
+                    {learner.assignment.map((assignment, idx) => (
                       <div key={idx} className="flex flex-col">
                         <h1 className="text-primary text-[12px]">
                           {assignment.assignmentCode}

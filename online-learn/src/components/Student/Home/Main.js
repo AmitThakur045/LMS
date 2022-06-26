@@ -104,6 +104,7 @@ const Main = () => {
         </div>
         <div className="space-y-4 lg:px-[40px] px-3 scrollbar-thin pb-3 scrollbar-track-white scrollbar-thumb-black">
           {courseList.length !== 0 &&
+            Object.keys(batchData).length !== 0 &&
             courseList?.map((data, i) => (
               <div
                 onClick={() => {
