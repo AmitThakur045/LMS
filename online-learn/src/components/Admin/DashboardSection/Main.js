@@ -31,6 +31,7 @@ const Main = () => {
   const [dashboardData, setDashboardData] = useState({});
   const [organizationName, setOrganizationName] = useState("All");
 
+  const [width, setWidth] = useState("420px");
   const [lineChartData, setLineChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
@@ -81,6 +82,26 @@ const Main = () => {
   const adminDashboardData = useSelector(
     (state) => state.admin.adminDashboardData
   );
+
+  function handleSizeChange() {
+    if (window.innerWidth > 1424) {
+      setWidth("600px");
+    } else if (window.innerWidth > 1300) {
+      setWidth("500px");
+    } else if (window.innerWidth > 1024) {
+      setWidth("420px");
+    } else if (window.innerWidth > 868) {
+      setWidth("650px");
+    } else if (window.innerWidth > 600) {
+      setWidth("550px");
+    } else {
+      setWidth(toString(window.innerWidth * 0.6) + "px");
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleSizeChange);
+  }, [window.innerWidth]);
 
   useEffect(() => {
     if (Object.keys(adminDashboardData).length !== 0) {
@@ -255,39 +276,40 @@ const Main = () => {
       );
     }
   };
+
   return (
-    <div className="mt-4 pb-12 px-12 space-y-16 overflow-y-scroll">
-      <div className="flex justify-between">
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
+    <div className="mt-4 pb-12 lg:px-12 px-3 space-y-16 w-auto overflow-y-auto">
+      <div className="flex flex-col sm:flex-row justify-between md:text-[0.9rem] text-[0.8rem] w-full overflow-y-auto">
+        <div className="flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Batches</h1>
             <p>{dashboardData?.totalBatches}</p>
           </div>
-          <img src={currentIcon} alt="" />
+          <img className="hidden lg:block" src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Courses</h1>
             <p>{dashboardData?.totalCourses}</p>
           </div>
-          <img src={currentIcon} alt="" />
+          <img className="hidden lg:block" src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Students</h1>
             <p>{dashboardData?.totalStudents}</p>
           </div>
-          <img src={currentIcon} alt="" />
+          <img className="hidden lg:block" src={currentIcon} alt="" />
         </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 w-[13rem] text-primary font-bold">
+        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
           <div className="flex flex-col">
             <h1 className="items-start">Sub Admins</h1>
             <p>{dashboardData?.totalAdmins}</p>
           </div>
-          <img src={currentIcon} alt="" />
+          <img className="hidden lg:block" src={currentIcon} alt="" />
         </div>
       </div>
-      <div>
+      <div className="w-full flex justify-start items-center">
         {user.result.sub === "false" && (
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="demo-select-small">Organizations</InputLabel>
@@ -296,7 +318,8 @@ const Main = () => {
               id="demo-select-small"
               value={organizationName}
               label="Course"
-              onChange={(e) => handleOrganizationNameChange(e)}>
+              onChange={(e) => handleOrganizationNameChange(e)}
+            >
               <MenuItem value="All">All</MenuItem>
               {allOrganizationName.map((organization) => (
                 <MenuItem value={organization.organizationName}>
@@ -307,25 +330,31 @@ const Main = () => {
           </FormControl>
         )}
       </div>
-      <div className="flex justify-between">
-        {lineChartData.length !== 0 && (
-          <LineGraph
-            lineCustomSeries={lineCustomSeries}
-            LinePrimaryXAxis={LinePrimaryXAxis}
-            LinePrimaryYAxis={LinePrimaryYAxis}
-            chartId={"Admission"}
+      <div className="flex flex-col justify-center lg:flex-row lg:items-center lg:justify-between overflow-y-auto">
+        <div className="">
+          {lineChartData.length !== 0 && (
+            <LineGraph
+              lineCustomSeries={lineCustomSeries}
+              LinePrimaryXAxis={LinePrimaryXAxis}
+              LinePrimaryYAxis={LinePrimaryYAxis}
+              chartId={"Admission"}
+              height={"420px"}
+              width={width}
+            />
+          )}
+        </div>
+        <div className="lg:flex lg:justify-end">
+          <BarGraph
+            barCustomSeries={barCustomSeries}
+            barPrimaryXAxis={barPrimaryXAxis}
+            barPrimaryYAxis={barPrimaryYAxis}
             height={"420px"}
-            width={"550px"}
+            width={width}
           />
-        )}
-        <BarGraph
-          barCustomSeries={barCustomSeries}
-          barPrimaryXAxis={barPrimaryXAxis}
-          barPrimaryYAxis={barPrimaryYAxis}
-        />
+        </div>
       </div>
-      <div className="flex space-x-10">
-        <div className="w-[60%] space-y-6">
+      <div className="flex lg:flex-row flex-col space-x-10">
+        <div className="lg:w-[60%] w-full space-y-6">
           <h1 className="text-primary font-bold text-[18px]">Batch</h1>
           <hr />
           <div className="flex items-center space-x-20 justify-evenly">
@@ -369,7 +398,8 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                            >
                               Approve
                             </button>
                             <button
@@ -383,7 +413,8 @@ const Main = () => {
                                 )
                               }
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                            >
                               Decline
                             </button>
                           </div>
@@ -409,7 +440,8 @@ const Main = () => {
                           {query.status === true ? (
                             <button
                               type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
+                            >
                               Approved
                             </button>
                           ) : (
@@ -417,13 +449,15 @@ const Main = () => {
                               {query.status === false ? (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
+                                >
                                   Declined
                                 </button>
                               ) : (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150">
+                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150"
+                                >
                                   Waiting
                                 </button>
                               )}
