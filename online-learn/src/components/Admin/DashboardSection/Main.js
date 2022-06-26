@@ -93,9 +93,9 @@ const Main = () => {
     } else if (window.innerWidth > 868) {
       setWidth("650px");
     } else if (window.innerWidth > 600) {
-      setWidth("600px");
+      setWidth("550px");
     } else {
-      setWidth(toString(window.innerWidth) + "px");
+      setWidth(toString(window.innerWidth * 0.6) + "px");
     }
   }
 
