@@ -8,9 +8,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../../Redux/actionTypes";
-import { getBatch } from "../../../Redux/actions/adminActions";
+
 import logo from "../../../Assests/Learner_Logo.png";
 import decode from "jwt-decode";
 
@@ -54,18 +54,11 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
       }
     }
   }, []);
-  const batch = useSelector((state) => state.admin.batch);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     }
-
-    dispatch(
-      getBatch({
-        batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
-      })
-    );
   }, []);
   return (
     <div className="w-[20rem] h-full bg-[#373737]">

@@ -30,11 +30,9 @@ const style = {
   borderRadius: "3px",
   p: 4,
 };
-const CourseHeader = () => {
+const CourseHeader = ({ batchData }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
 
-  const batch = useSelector((state) => state.admin.batch);
-  const [batchData, setBatchData] = useState({});
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -69,15 +67,11 @@ const CourseHeader = () => {
     if (JSON.parse(localStorage.getItem("index"))) {
       setIndex(JSON.parse(localStorage.getItem("index")));
     }
-    setBatchData(batch);
   }, []);
   useEffect(() => {
-    if (Object.keys(batch).length !== 0) {
-      setBatchData(batch);
-      setValue({ ...value, batchCode: batch.batchCode });
-      setValue({ ...value, student: user.result.email });
-    }
-  }, [batch]);
+    setValue({ ...value, batchCode: batchData.batchCode });
+    setValue({ ...value, student: user.result.email });
+  }, []);
 
   const addhelpquery = (e) => {
     e.preventDefault();
