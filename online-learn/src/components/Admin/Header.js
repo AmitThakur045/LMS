@@ -93,7 +93,7 @@ const Header = ({ title, type, nav, back }) => {
   return (
     <div
       className={`flex justify-between w-full ${
-        back ? "pl-12" : "pl-20"
+        back ? "pl-12" : "lg:pl-20 pl-2"
       }  pr-12 py-10`}>
       <Modal
         open={openOrganizationModal}

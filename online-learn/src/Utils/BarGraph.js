@@ -11,10 +11,12 @@ import {
   DataLabel,
 } from "@syncfusion/ej2-react-charts";
 
-const BarGraph = ({ barCustomSeries, barPrimaryXAxis, barPrimaryYAxis }) => {
+const BarGraph = ({ barCustomSeries, barPrimaryXAxis, barPrimaryYAxis, height, width }) => {
   return (
     <ChartComponent
       id="charts"
+      height={height}
+      width={width}
       primaryXAxis={barPrimaryXAxis}
       primaryYAxis={barPrimaryYAxis}
       chartArea={{ border: { width: 0 } }}
