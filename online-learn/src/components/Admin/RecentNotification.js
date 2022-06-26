@@ -32,7 +32,7 @@ const data = [
 ];
 const RecentNotification = () => {
   return (
-    <div className="h-[40%] rounded-b-3xl shadow-md bg-white flex flex-col py-3">
+    <div className="lg:h-[40%] w-full h-[50%] rounded-b-3xl shadow-md bg-white flex flex-col lg:py-3 py-0">
       <h1 className="text-[#504F89] text-[16px] font-bold self-center">
         Recent Notifications
       </h1>
