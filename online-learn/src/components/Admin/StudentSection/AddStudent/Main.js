@@ -6,6 +6,8 @@ import { ADD_STUDENT, SET_ERRORS } from "../../../../Redux/actionTypes";
 import {
   addStudent,
   getAllBatchCodes,
+  getAllStudent,
+  getStudentsByOrganizationName,
 } from "../../../../Redux/actions/adminActions";
 
 import ActiveBatch from "../../ActiveBatch";
@@ -36,6 +38,8 @@ const MenuProps = {
 };
 
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -85,6 +89,16 @@ const Main = () => {
     if (store.errors || store.admin.studentAdded) {
       setLoading(false);
       if (store.admin.studentAdded) {
+        if (user.result.sub === "true") {
+          dispatch(
+            getStudentsByOrganizationName({
+              organizationName: user.result.organizationName,
+              subAdmin: user.result.email,
+            })
+          );
+        } else {
+          dispatch(getAllStudent());
+        }
         setValues({
           firstName: "",
           lastName: "",

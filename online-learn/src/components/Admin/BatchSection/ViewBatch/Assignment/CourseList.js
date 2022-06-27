@@ -76,10 +76,11 @@ const CourseList = ({ currentList, courseCode }) => {
   };
 
   let assignmentStudent = useSelector((store) => store.admin.studentList);
+  let batchData = useSelector((store) => store.admin.batch);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const batchData = JSON.parse(localStorage.getItem("batch"));
+
     const batchCode = batchData.batchCode;
 
     let assignmentNo = currentList.length + 1;
@@ -99,18 +100,6 @@ const CourseList = ({ currentList, courseCode }) => {
 
   useEffect(() => {
     if (store.admin.assignmentAdded) {
-      console.log(value);
-      const data = JSON.parse(localStorage.getItem("batch"));
-      for (let i = 0; i < data.courses.length; i++) {
-        if (data.courses[i].courseCode === value.courseCode) {
-          data.courses[i].assignment.push({
-            assignmentCode: value.assignmentCode,
-            assignmentName: value.assignmentName,
-            assignmentPdf: value.assignmentPdf,
-          });
-        }
-      }
-      localStorage.setItem("batch", JSON.stringify(data));
       setOpen(false);
       dispatch({ type: ADD_ASSIGNMENT, payload: false });
       setValue({
@@ -126,7 +115,9 @@ const CourseList = ({ currentList, courseCode }) => {
   }, [store.admin.assignmentAdded]);
 
   useEffect(() => {
-    setStudentList(assignmentStudent);
+    if (assignmentStudent.length !== 0) {
+      setStudentList(assignmentStudent);
+    }
     // console.log("studentList", studentList);
   }, [assignmentStudent]);
 

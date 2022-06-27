@@ -15,9 +15,12 @@ import {
   getStudents,
 } from "../../../../../Redux/actions/adminActions";
 import Spinner from "../../../../../Utils/Spinner";
+import Loader from "../../../../../Utils/Loader";
+import { Avatar } from "@mui/material";
 
 const Main = () => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [courseList, setCourseList] = useState([]);
@@ -26,30 +29,26 @@ const Main = () => {
 
   const store = useSelector((state) => state);
   const courseData = JSON.parse(localStorage.getItem("courses"));
-  const batchDataLocal = JSON.parse(localStorage.getItem("batch"));
   const batchData = useSelector((store) => store.admin.batch);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [store.errors]);
   useEffect(() => {
-    setLoading(true);
-
     dispatch({ type: SET_ERRORS, payload: {} });
-    dispatch(getBatch({ batchCode: batchDataLocal.batchCode }));
   }, []);
   useEffect(() => {
     if (store.admin.assignmentAdded) {
-      dispatch(getBatch({ batchCode: batchDataLocal.batchCode }));
+      dispatch(getBatch({ batchCode: batchData.batchCode }));
     }
   }, [store.admin.assignmentAdded]);
 
   useEffect(() => {
     if (Object.keys(batchData).length !== 0) {
-      setLoading(false);
+      setIsLoading(false);
       setCurrentCourseCode(batchData.courses[0].courseCode);
       dispatch(getStudents({ emails: batchData.students }));
       setCurrentList(batchData.courses[0].assignment);
@@ -63,43 +62,57 @@ const Main = () => {
   };
 
   return (
-    <div className="flex h-full">
-      <div className="w-[18rem] h-full overflow-y-auto">
-        <div className="pt-2">
-          {loading && <Spinner message={"Loading..."} />}
-          {!loading &&
-            Object.keys(batchData).length !== 0 &&
-            batchData.courses.map((item, index) => (
-              <div
-                key={index}
-                className={
-                  currentCourseCode === item.courseCode
-                    ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                    : ""
-                }>
-                <ListItem button key={index} onClick={() => handleClick(item)}>
-                  <ListItemIcon>
-                    <img
-                      className="w-[20px] h-[20px] rounded-full"
-                      src={
-                        courseData.find(
-                          (course) => course.courseCode === item.courseCode
-                        ).courseImg
-                      }
-                      alt={item.courseCode}
-                    />
-                  </ListItemIcon>
-
-                  <div className="py-1">{item.courseName}</div>
-                </ListItem>
-                <Divider />
-              </div>
-            ))}
+    <>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <Loader isLoading={isLoading} />
         </div>
-      </div>
+      ) : (
+        <div className="flex h-full">
+          <div className="w-[18rem] h-full overflow-y-auto">
+            <div className="pt-2">
+              {loading && <Spinner message={"Loading..."} />}
+              {!loading &&
+                Object.keys(batchData).length !== 0 &&
+                batchData.courses.map((item, index) => (
+                  <div
+                    key={index}
+                    className={
+                      currentCourseCode === item.courseCode
+                        ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
+                        : ""
+                    }>
+                    <ListItem
+                      button
+                      key={index}
+                      onClick={() => handleClick(item)}>
+                      <ListItemIcon>
+                        <Avatar
+                          className="w-[20px] h-[20px] rounded-full"
+                          src={
+                            courseData.find(
+                              (course) => course.courseCode === item.courseCode
+                            )?.courseImg
+                          }
+                          alt={item.courseCode}
+                        />
+                      </ListItemIcon>
 
-      <CourseList currentList={currentList} courseCode={currentCourseCode} />
-    </div>
+                      <div className="py-1">{item.courseName}</div>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <CourseList
+            currentList={currentList}
+            courseCode={currentCourseCode}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

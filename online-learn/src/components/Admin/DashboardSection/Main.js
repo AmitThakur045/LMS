@@ -20,12 +20,14 @@ import {
 import { SET_ERRORS } from "../../../Redux/actionTypes";
 import BarGraph from "../../../Utils/BarGraph";
 import LineGraph from "../../../Utils/LineGraph";
+import Loader from "../../../Utils/Loader";
 import PieChart from "../../../Utils/PieChart";
 import Spinner from "../../../Utils/Spinner";
 
 const Main = () => {
   const user = JSON.parse(localStorage.getItem("admin"));
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const [dashboardData, setDashboardData] = useState({});
@@ -45,12 +47,12 @@ const Main = () => {
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setLoading(false);
+      setIsLoading(false);
       setError(store.errors);
     }
   }, [store.errors]);
   useEffect(() => {
     if (allDeleteQueries.length !== 0) {
-      setLoading(false);
       setDeleteQueries(allDeleteQueries);
       let flag = true;
       for (let i = 0; i < deleteQueries.length; i++) {
@@ -58,8 +60,10 @@ const Main = () => {
           flag = false;
         }
       }
-
       setNoQueryFound(flag);
+      if (Object.keys(adminDashboardData).length !== 0) {
+        setIsLoading(false);
+      }
     }
   }, [allDeleteQueries]);
   console.log(allDeleteQueries);
@@ -148,6 +152,9 @@ const Main = () => {
           { x: "Nov", y: 0 },
           { x: "Dec", y: 0 },
         ]);
+      }
+      if (allDeleteQueries.length !== 0) {
+        setIsLoading(false);
       }
     }
   }, [adminDashboardData]);
@@ -278,211 +285,215 @@ const Main = () => {
   };
 
   return (
-    <div className="mt-4 pb-12 lg:px-12 px-3 space-y-16 w-auto overflow-y-auto">
-      <div className="flex flex-col sm:flex-row justify-between md:text-[0.9rem] text-[0.8rem] w-full overflow-y-auto">
-        <div className="flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
-          <div className="flex flex-col">
-            <h1 className="items-start">Batches</h1>
-            <p>{dashboardData?.totalBatches}</p>
+    <>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <Loader isLoading={isLoading} />
+        </div>
+      ) : (
+        <div className="mt-4 pb-12 lg:px-12 px-3 space-y-16 w-auto overflow-y-auto">
+          <div className="flex flex-col sm:flex-row justify-between md:text-[0.9rem] text-[0.8rem] w-full overflow-y-auto">
+            <div className="flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
+              <div className="flex flex-col">
+                <h1 className="items-start">Batches</h1>
+                <p>{dashboardData?.totalBatches}</p>
+              </div>
+              <img className="hidden lg:block" src={currentIcon} alt="" />
+            </div>
+            <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
+              <div className="flex flex-col">
+                <h1 className="items-start">Courses</h1>
+                <p>{dashboardData?.totalCourses}</p>
+              </div>
+              <img className="hidden lg:block" src={currentIcon} alt="" />
+            </div>
+            <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
+              <div className="flex flex-col">
+                <h1 className="items-start">Students</h1>
+                <p>{dashboardData?.totalStudents}</p>
+              </div>
+              <img className="hidden lg:block" src={currentIcon} alt="" />
+            </div>
+            <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
+              <div className="flex flex-col">
+                <h1 className="items-start">Sub Admins</h1>
+                <p>{dashboardData?.totalAdmins}</p>
+              </div>
+              <img className="hidden lg:block" src={currentIcon} alt="" />
+            </div>
           </div>
-          <img className="hidden lg:block" src={currentIcon} alt="" />
-        </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
-          <div className="flex flex-col">
-            <h1 className="items-start">Courses</h1>
-            <p>{dashboardData?.totalCourses}</p>
+          <div className="w-full flex justify-start items-center">
+            {user.result.sub === "false" && (
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small">Organizations</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={organizationName}
+                  label="Course"
+                  onChange={(e) => handleOrganizationNameChange(e)}>
+                  <MenuItem value="All">All</MenuItem>
+                  {allOrganizationName.map((organization) => (
+                    <MenuItem value={organization.organizationName}>
+                      {organization.organizationName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
           </div>
-          <img className="hidden lg:block" src={currentIcon} alt="" />
-        </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
-          <div className="flex flex-col">
-            <h1 className="items-start">Students</h1>
-            <p>{dashboardData?.totalStudents}</p>
+          <div className="flex flex-col justify-center lg:flex-row lg:items-center lg:justify-between overflow-y-auto">
+            <div className="">
+              {lineChartData.length !== 0 && (
+                <LineGraph
+                  lineCustomSeries={lineCustomSeries}
+                  LinePrimaryXAxis={LinePrimaryXAxis}
+                  LinePrimaryYAxis={LinePrimaryYAxis}
+                  chartId={"Admission"}
+                  height={"420px"}
+                  width={width}
+                />
+              )}
+            </div>
+            <div className="lg:flex lg:justify-end">
+              <BarGraph
+                barCustomSeries={barCustomSeries}
+                barPrimaryXAxis={barPrimaryXAxis}
+                barPrimaryYAxis={barPrimaryYAxis}
+                height={"420px"}
+                width={width}
+              />
+            </div>
           </div>
-          <img className="hidden lg:block" src={currentIcon} alt="" />
-        </div>
-        <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
-          <div className="flex flex-col">
-            <h1 className="items-start">Sub Admins</h1>
-            <p>{dashboardData?.totalAdmins}</p>
-          </div>
-          <img className="hidden lg:block" src={currentIcon} alt="" />
-        </div>
-      </div>
-      <div className="w-full flex justify-start items-center">
-        {user.result.sub === "false" && (
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small">Organizations</InputLabel>
-            <Select
-              labelId="demo-select-small"
-              id="demo-select-small"
-              value={organizationName}
-              label="Course"
-              onChange={(e) => handleOrganizationNameChange(e)}
-            >
-              <MenuItem value="All">All</MenuItem>
-              {allOrganizationName.map((organization) => (
-                <MenuItem value={organization.organizationName}>
-                  {organization.organizationName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      </div>
-      <div className="flex flex-col justify-center lg:flex-row lg:items-center lg:justify-between overflow-y-auto">
-        <div className="">
-          {lineChartData.length !== 0 && (
-            <LineGraph
-              lineCustomSeries={lineCustomSeries}
-              LinePrimaryXAxis={LinePrimaryXAxis}
-              LinePrimaryYAxis={LinePrimaryYAxis}
-              chartId={"Admission"}
-              height={"420px"}
-              width={width}
-            />
-          )}
-        </div>
-        <div className="lg:flex lg:justify-end">
-          <BarGraph
-            barCustomSeries={barCustomSeries}
-            barPrimaryXAxis={barPrimaryXAxis}
-            barPrimaryYAxis={barPrimaryYAxis}
-            height={"420px"}
-            width={width}
-          />
-        </div>
-      </div>
-      <div className="flex lg:flex-row flex-col space-x-10">
-        <div className="lg:w-[60%] w-full space-y-6">
-          <h1 className="text-primary font-bold text-[18px]">Batch</h1>
-          <hr />
-          <div className="flex items-center space-x-20 justify-evenly">
-            <PieChart data={pieChartData} legendVisiblity />
-          </div>
-        </div>
-        <div className="w-[40%] space-y-6">
-          <h1 className="text-primary font-bold text-[18px]">
-            Student Queries
-          </h1>
-          <hr />
-          <div className="flex flex-col space-y-4 overflow-y-auto h-[25rem] ">
-            {deleteQueries.length !== 0 &&
-              deleteQueries.map((query) => (
-                <>
-                  {user.result.sub === "false" ? (
+          <div className="flex lg:flex-row flex-col space-x-10">
+            <div className="lg:w-[60%] w-full space-y-6">
+              <h1 className="text-primary font-bold text-[18px]">Batch</h1>
+              <hr />
+              <div className="flex items-center space-x-20 justify-evenly">
+                <PieChart data={pieChartData} legendVisiblity />
+              </div>
+            </div>
+            <div className="w-[40%] space-y-6">
+              <h1 className="text-primary font-bold text-[18px]">
+                Student Queries
+              </h1>
+              <hr />
+              <div className="flex flex-col space-y-4 overflow-y-auto h-[25rem] ">
+                {deleteQueries.length !== 0 &&
+                  deleteQueries.map((query) => (
                     <>
-                      {query.updated === false && (
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-6">
-                            <Avatar src={query.avatar} alt="" />
-                            <div className="flex flex-col items-start ">
-                              <h1 className="text-[#4A1E90] text-[16px]">
-                                {query.code}
-                              </h1>
-                              <p className="text-[#7A5488] text-[12px]">
-                                {query.subAdmin}
-                              </p>
+                      {user.result.sub === "false" ? (
+                        <>
+                          {query.updated === false && (
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-6">
+                                <Avatar src={query.avatar} alt="" />
+                                <div className="flex flex-col items-start ">
+                                  <h1 className="text-[#4A1E90] text-[16px]">
+                                    {query.code}
+                                  </h1>
+                                  <p className="text-[#7A5488] text-[12px]">
+                                    {query.subAdmin}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center space-x-6">
+                                <button
+                                  onClick={() =>
+                                    dispatch(
+                                      updateDeleteQuery({
+                                        code: query.code,
+                                        subAdmin: query.subAdmin,
+                                        status: true,
+                                      })
+                                    )
+                                  }
+                                  type="button"
+                                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                                  Approve
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    dispatch(
+                                      updateDeleteQuery({
+                                        code: query.code,
+                                        subAdmin: query.subAdmin,
+                                        status: false,
+                                      })
+                                    )
+                                  }
+                                  type="button"
+                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                                  Decline
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-6">
+                              <Avatar src={query.avatar} alt="" />
+                              <div className="flex flex-col items-start ">
+                                <h1 className="text-[#4A1E90] text-[16px]">
+                                  {query.code}
+                                </h1>
+                                <p className="text-[#7A5488] text-[12px]">
+                                  {query.subAdmin}
+                                </p>
+                              </div>
+                            </div>
 
-                          <div className="flex items-center space-x-6">
-                            <button
-                              onClick={() =>
-                                dispatch(
-                                  updateDeleteQuery({
-                                    code: query.code,
-                                    subAdmin: query.subAdmin,
-                                    status: true,
-                                  })
-                                )
-                              }
-                              type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() =>
-                                dispatch(
-                                  updateDeleteQuery({
-                                    code: query.code,
-                                    subAdmin: query.subAdmin,
-                                    status: false,
-                                  })
-                                )
-                              }
-                              type="button"
-                              className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
-                            >
-                              Decline
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-6">
-                          <Avatar src={query.avatar} alt="" />
-                          <div className="flex flex-col items-start ">
-                            <h1 className="text-[#4A1E90] text-[16px]">
-                              {query.code}
-                            </h1>
-                            <p className="text-[#7A5488] text-[12px]">
-                              {query.subAdmin}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center space-x-6">
-                          {query.status === true ? (
-                            <button
-                              type="button"
-                              className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150"
-                            >
-                              Approved
-                            </button>
-                          ) : (
-                            <>
-                              {query.status === false ? (
+                            <div className="flex items-center space-x-6">
+                              {query.status === true ? (
                                 <button
                                   type="button"
-                                  className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150"
-                                >
-                                  Declined
+                                  className="h-[24px] w-[73px] bg-[#D4F8F8] text-[#6CD1CB] text-[12px] rounded-md hover:text-[#38b6ad]  transition-all duration-150">
+                                  Approved
                                 </button>
                               ) : (
-                                <button
-                                  type="button"
-                                  className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150"
-                                >
-                                  Waiting
-                                </button>
+                                <>
+                                  {query.status === false ? (
+                                    <button
+                                      type="button"
+                                      className="h-[24px] w-[73px] bg-[#FBE7E8] text-[#ED5C6C] text-[12px] rounded-md hover:text-[#e73045]  transition-all duration-150">
+                                      Declined
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="h-[24px] w-[73px] bg-[#ece7fb] text-[#5c61ed] text-[12px] rounded-md hover:text-[#5230e7]  transition-all duration-150">
+                                      Waiting
+                                    </button>
+                                  )}
+                                </>
                               )}
-                            </>
-                          )}
-                        </div>
-                      </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </>
-                  )}
-                </>
-              ))}
+                  ))}
 
-            {loading && <Spinner message="Loading" />}
-            {error.deleteQueryError && (
-              <p className="text-red-500 flex self-center">
-                {error.noQueryFound}
-              </p>
-            )}
-            {noQueryFound && user.result.sub === "false" && (
-              <p className="text-red-500 flex self-center">No Query Found</p>
-            )}
+                {loading && <Spinner message="Loading" />}
+                {error.deleteQueryError && (
+                  <p className="text-red-500 flex self-center">
+                    {error.noQueryFound}
+                  </p>
+                )}
+                {noQueryFound && user.result.sub === "false" && (
+                  <p className="text-red-500 flex self-center">
+                    No Query Found
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -94,7 +94,7 @@ export const getAdmin = async (req, res) => {
 
 export const updateAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, contactNumber, avatar, email } = req.body;
+    const { firstName, lastName, email } = req.body;
     const updateAdmin = await Admin.findOne({ email });
 
     if (firstName) {
@@ -103,16 +103,6 @@ export const updateAdmin = async (req, res) => {
     }
     if (lastName) {
       updateAdmin.lastName = lastName;
-      await updateAdmin.save();
-    }
-
-    if (contactNumber) {
-      updateAdmin.contactNumber = contactNumber;
-      await updateAdmin.save();
-    }
-
-    if (avatar) {
-      updateAdmin.avatar = avatar;
       await updateAdmin.save();
     }
 
@@ -166,7 +156,7 @@ export const addAdmin = async (req, res) => {
       lastName,
       dob,
       contactNumber,
-      avatar,
+
       email,
       sub,
       organizationName,
@@ -197,7 +187,7 @@ export const addAdmin = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      avatar,
+
       contactNumber,
       dob,
       sub,
@@ -634,11 +624,16 @@ export const getStudents = async (req, res) => {
   try {
     const { emails } = req.body;
     console.log(emails);
+    const errors = { noStudentError: String };
     const studentsData = [];
     for (let i = 0; i < emails.length; i++) {
       let email = emails[i];
       const temp = await Student.findOne({ email });
       studentsData.push(temp);
+    }
+    if (studentsData.length === 0) {
+      errors.noStudentError = "No Student Found";
+      return res.status(400).json(errors);
     }
     res.status(200).json(studentsData);
   } catch (error) {
@@ -798,6 +793,11 @@ export const getAllBatchCodes = async (req, res) => {
         label: batches[i].batchCode,
         value: batches[i].batchCode,
       });
+    }
+
+    if (batchCodes.length === 0) {
+      errors.noBatchError = "No Batch Found";
+      res.status(400).json(errors);
     }
 
     res.status(200).json(batchCodes);
@@ -1035,8 +1035,13 @@ export const getAttendance = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
     const attendance = await Attendance.find({ batchCode, courseCode });
-    // console.log(attendance);
-    res.status(200).json(attendance);
+    const errors = { noAttendanceError: String };
+
+    if (attendance.length === 0) {
+      errors.noAttendanceError = "No Attendance Found";
+      return res.status(400).json(errors);
+    }
+    return res.status(200).json(attendance);
   } catch (error) {
     console.log("Backend Error", error);
   }
@@ -1078,7 +1083,7 @@ export const getAttendanceByBatchCodes = async (req, res) => {
     //   attendance.push([]);
     // }
 
-    res.status(200).json(attendance[0]);
+    return res.status(200).json(attendance[0]);
   } catch (error) {
     console.log("Backend Error", error);
   }
@@ -1263,13 +1268,8 @@ export const getStudentByAssignmentCode = async (req, res) => {
   try {
     const { assignmentCode } = req.body;
 
-    const errors = { noAssignmentError: String };
+    const errors = { noStudentError: String };
     const assignment = await Assignment.findOne({ assignmentCode });
-    if (assignment === null) {
-      errors.noAssignmentError = "No Assignment Found";
-
-      return res.status(404).json(errors);
-    }
 
     let StudentList = [];
     for (let i = 0; i < assignment.student.length; i++) {
@@ -1294,6 +1294,12 @@ export const getStudentByAssignmentCode = async (req, res) => {
         StudentList.push(tmp);
       }
     }
+    if (StudentList.length === 0) {
+      errors.noStudentError = "No Student Found";
+
+      return res.status(400).json(errors);
+    }
+
     res.status(200).json(StudentList);
   } catch (error) {
     console.log("Backend Error", error);

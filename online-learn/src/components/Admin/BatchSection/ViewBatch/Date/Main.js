@@ -31,6 +31,7 @@ import {
   SET_ERRORS,
 } from "../../../../../Redux/actionTypes";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import Loader from "../../../../../Utils/Loader";
 
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
@@ -61,15 +62,15 @@ const Main = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
-  const batchData = JSON.parse(localStorage.getItem("batch"));
+  const [isLoading, setIsLoading] = useState(true);
+  const batch = useSelector((state) => state.admin.batch);
+  const [batchData, setBatchData] = useState({});
 
   const [error, setError] = useState({});
-  const scheduleData = useSelector((state) => state.admin.batchEvent);
-  const batch = useSelector((state) => state.admin.batch);
 
   const [newEvent, setNewEvent] = useState({
     title: "",
-    link: batchData.batchLink !== "" ? batchData.batchLink : "",
+    link: "",
     start: "",
     end: "",
     courseCode: "",
@@ -79,6 +80,7 @@ const Main = () => {
   console.log(newEvent);
   const handleAddEvent = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (batchData.batchLink === "") {
       alert("Add Batch Link First!!!");
       return;
@@ -95,50 +97,54 @@ const Main = () => {
       })
     );
   };
-  useEffect(() => {
-    if (scheduleData.length !== 0) {
-      setAllEvents(scheduleData);
-      setLoading(false);
-    }
-  }, [scheduleData]);
 
   useEffect(() => {
-    setAllEvents(batchData.schedule);
+    if (Object.keys(batch).length !== 0) {
+      if (batch.batchLink) {
+        setNewEvent({ ...newEvent, link: batch.batchLink });
+      }
+      setBatchData(batch);
+      setAllEvents(batch.schedule);
+      setIsLoading(false);
+    }
+  }, [batch]);
+
+  useEffect(() => {
+    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   useEffect(() => {
     if (store.admin.eventAdded) {
-      const data = JSON.parse(localStorage.getItem("batch"));
-      data.schedule.push(newEvent);
-      localStorage.setItem("batch", JSON.stringify(data));
-      setAllEvents(data.schedule);
+      setLoading(false);
+      let temp = [...allEvents];
+      temp.push(newEvent);
+      setAllEvents(temp);
       dispatch({ type: ADD_EVENT, payload: false });
-      setNewEvent({ title: "", start: "", end: "", courseCode: "" });
+      setNewEvent({
+        title: "",
+        start: "",
+        end: "",
+        courseCode: "",
+        link: batchData.batchLink,
+      });
     }
   }, [store.admin.eventAdded]);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [store.errors]);
 
   useEffect(() => {
     if (store.admin.batchLinkAdded) {
-      const data = { ...JSON.parse(localStorage.getItem("batch")), ...link };
-      localStorage.setItem("batch", JSON.stringify(data));
-
       setNewEvent({ ...newEvent, link: link.batchLink });
       dispatch({ type: ADD_BATCH_LINK, payload: false });
       handleClose();
     }
   }, [store.admin.batchLinkAdded]);
 
-  useEffect(() => {
-    dispatch({ type: SET_ERRORS, payload: {} });
-    setLoading(true);
-  }, []);
   const [open, setOpen] = useState(false);
   const [link, setLink] = useState({ batchLink: "" });
   const handleOpen = () => setOpen(true);
@@ -148,165 +154,177 @@ const Main = () => {
   };
 
   return (
-    <div className="">
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <div className="flex flex-col space-y-4 h-[9rem]">
-            <div className="flex items-center">
-              <div className="self-center w-[95%] font-bold">
-                Add Batch Link
-              </div>
-              <div
-                onClick={handleClose}
-                className="self-end cursor-pointer w-[5%]">
-                <AiOutlineCloseCircle
-                  className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
-                  fontSize={23}
-                />
-              </div>
-            </div>
-            <form onSubmit={addLink} className="flex flex-col space-y-3">
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="Batch Link"
-                variant="outlined"
-                className="bg-white w-full"
-                value={link.batchLink}
-                onChange={(e) =>
-                  setLink({ ...link, batchLink: e.target.value })
-                }
-              />
-              <Button
-                type="submit"
-                className="self-end"
-                color="error"
-                variant="contained">
-                Submit
-              </Button>
-            </form>
-          </div>
-        </Box>
-      </Modal>
-      <div className="flex flex-col">
-        <div className="flex ml-[50px]">
-          <Button onClick={handleOpen} variant="contained">
-            {batchData.batchLink ? "Update Batch Link" : "Add Batch Link"}
-          </Button>
+    <>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <Loader isLoading={isLoading} />
         </div>
-        <div className="flex">
-          <div className="overflow-y-auto flex-[0.7]">
-            <Calendar
-              localizer={localizer}
-              events={allEvents}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 500, margin: "50px" }}
-            />
-          </div>
-          <div className="flex-[0.3]">
-            <form
-              onSubmit={handleAddEvent}
-              className="w-full h-full space-x-5 px-10 mb-5">
-              <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
-              <div className="flex flex-col w-[100%] space-y-6">
-                <div className="flex justify-between w-full">
+      ) : (
+        <div className="">
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <Box sx={style}>
+              <div className="flex flex-col space-y-4 h-[9rem]">
+                <div className="flex items-center">
+                  <div className="self-center w-[95%] font-bold">
+                    Add Batch Link
+                  </div>
+                  <div
+                    onClick={handleClose}
+                    className="self-end cursor-pointer w-[5%]">
+                    <AiOutlineCloseCircle
+                      className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
+                      fontSize={23}
+                    />
+                  </div>
+                </div>
+                <form onSubmit={addLink} className="flex flex-col space-y-3">
                   <TextField
                     required
                     type="text"
                     id="outlined-basic"
-                    label="Title"
+                    label="Batch Link"
                     variant="outlined"
                     className="bg-white w-full"
-                    value={newEvent.title}
+                    value={link.batchLink}
                     onChange={(e) =>
-                      setNewEvent({ ...newEvent, title: e.target.value })
+                      setLink({ ...link, batchLink: e.target.value })
                     }
                   />
-                </div>
-                <div className="flex justify-between">
-                  <TextField
-                    required
-                    aria-disabled
-                    type="text"
-                    id="outlined-basic"
-                    label="Link"
-                    variant="outlined"
-                    className="bg-white w-full"
-                    value={batchData.batchLink}
-                  />
-                </div>
-                <div className="flex-col space-x-8">
-                  <div>
-                    <p className="text-[#8d91b1]">Start Time</p>
-                  </div>
-                  <div>
-                    <TextField
-                      required
-                      type="datetime-local"
-                      id="outlined-basic"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={newEvent.start}
-                      onChange={(e) =>
-                        setNewEvent({ ...newEvent, start: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="flex-col space-x-8">
-                  <div>
-                    <p className="text-[#8d91b1]">End Time</p>
-                  </div>
-                  <div>
-                    <TextField
-                      required
-                      type="datetime-local"
-                      id="outlined-basic"
-                      variant="outlined"
-                      className="bg-white w-full"
-                      value={newEvent.end}
-                      onChange={(e) =>
-                        setNewEvent({ ...newEvent, end: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-                <FormControl required className="">
-                  <InputLabel id="demo-simple-select-label">
-                    Course Code
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={newEvent.courseCode}
-                    label="Course Code"
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, courseCode: e.target.value })
-                    }>
-                    {batchData.courses.map((course, idx) => (
-                      <MenuItem value={course.courseCode}>
-                        {course.courseCode}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                  <Button
+                    type="submit"
+                    className="self-end"
+                    color="error"
+                    variant="contained">
+                    Submit
+                  </Button>
+                </form>
               </div>
-              <button
-                type="submit"
-                className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
-                Submit
-              </button>
-            </form>
+            </Box>
+          </Modal>
+          <div className="flex flex-col">
+            <div className="flex ml-[50px]">
+              <Button onClick={handleOpen} variant="contained">
+                {newEvent.link ? "Update Batch Link" : "Add Batch Link"}
+              </Button>
+            </div>
+            <div className="flex">
+              <div className="overflow-y-auto flex-[0.7]">
+                <Calendar
+                  localizer={localizer}
+                  events={allEvents}
+                  startAccessor="start"
+                  endAccessor="end"
+                  style={{ height: 500, margin: "50px" }}
+                />
+              </div>
+              <div className="flex-[0.3]">
+                <form
+                  onSubmit={handleAddEvent}
+                  className="w-full h-full space-x-5 px-10 mb-5">
+                  <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
+                  <div className="flex flex-col w-[100%] space-y-6">
+                    <div className="flex justify-between w-full">
+                      <TextField
+                        required
+                        type="text"
+                        id="outlined-basic"
+                        label="Title"
+                        variant="outlined"
+                        className="bg-white w-full"
+                        value={newEvent.title}
+                        onChange={(e) =>
+                          setNewEvent({ ...newEvent, title: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="flex justify-between">
+                      <TextField
+                        required
+                        aria-disabled
+                        type="text"
+                        id="outlined-basic"
+                        label="Link"
+                        variant="outlined"
+                        className="bg-white w-full"
+                        value={newEvent.link}
+                      />
+                    </div>
+                    <div className="flex-col space-x-8">
+                      <div>
+                        <p className="text-[#8d91b1]">Start Time</p>
+                      </div>
+                      <div>
+                        <TextField
+                          required
+                          type="datetime-local"
+                          id="outlined-basic"
+                          variant="outlined"
+                          className="bg-white w-full"
+                          value={newEvent.start}
+                          onChange={(e) =>
+                            setNewEvent({ ...newEvent, start: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-col space-x-8">
+                      <div>
+                        <p className="text-[#8d91b1]">End Time</p>
+                      </div>
+                      <div>
+                        <TextField
+                          required
+                          type="datetime-local"
+                          id="outlined-basic"
+                          variant="outlined"
+                          className="bg-white w-full"
+                          value={newEvent.end}
+                          onChange={(e) =>
+                            setNewEvent({ ...newEvent, end: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <FormControl required className="">
+                      <InputLabel id="demo-simple-select-label">
+                        Course Code
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={newEvent.courseCode}
+                        label="Course Code"
+                        onChange={(e) =>
+                          setNewEvent({
+                            ...newEvent,
+                            courseCode: e.target.value,
+                          })
+                        }>
+                        {batchData.courses.map((course, idx) => (
+                          <MenuItem value={course.courseCode}>
+                            {course.courseCode}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <button
+                    type="submit"
+                    className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                    Submit
+                  </button>
+                  {loading && <Spinner message="Adding Event" />}
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
