@@ -42,7 +42,7 @@ const Main = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col sm:w-[60%] space-y-6">
+          <div className="flex flex-col sm:w-[60%] w-full space-y-6">
             <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
               <TextField
                 aria-disabled
