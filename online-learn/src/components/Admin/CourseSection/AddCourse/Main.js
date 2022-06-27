@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RiAddLine } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { ADD_COURSE, SET_ERRORS } from "../../../../Redux/actionTypes";
-import { addCourse } from "../../../../Redux/actions/adminActions";
+import {
+  addCourse,
+  getAllCourse,
+} from "../../../../Redux/actions/adminActions";
 
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
@@ -77,6 +80,7 @@ const Main = () => {
 
   useEffect(() => {
     if (store.errors || store.admin.courseAdded) {
+      dispatch(getAllCourse());
       setLoading(false);
       if (store.admin.courseAdded) {
         setValue({

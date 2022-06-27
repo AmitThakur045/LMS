@@ -6,21 +6,15 @@ import Header from "./Header";
 
 const ViewBatch = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
-  const [batch, setBatch] = useState(JSON.parse(localStorage.getItem("batch")));
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("batch")) !== null) {
-      setBatch(JSON.parse(localStorage.getItem("batch")));
-    }
-  }, []);
 
   return (
     <>
-      {user !== null && batch !== null && (
+      {user !== null && (
         <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
           <Sidebar />
           <div className="flex flex-col  w-full">
             <Header />
-            <Main batchData={batch} user={user} />
+            <Main />
           </div>
         </div>
       )}

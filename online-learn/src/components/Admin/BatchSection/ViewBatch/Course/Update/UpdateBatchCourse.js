@@ -11,7 +11,7 @@ const UpdateBatchCourse = () => {
       <Sidebar />
       {user !== null && (
         <div className="flex flex-col  w-full">
-          <Header />
+          <Header back={true} nav={"course"} />
           <Main />
         </div>
       )}

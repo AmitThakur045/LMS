@@ -84,6 +84,7 @@ const problems = [
   },
 ];
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   const [openLounge, setOpenLounge] = useState(false);
   const [reply, setReply] = useState([""]);
   const [problemData, setProblemData] = useState(problems);
@@ -101,9 +102,9 @@ const Main = () => {
     let data = [...problemData];
 
     data[index].replyData.push({
-      name: "TheBrad",
+      name: user.result.firstName + user.result.lastName,
       description: reply,
-      profileColor: "#abc43c",
+      profileColor: "#f48320",
     });
     setProblemData(data);
     setReply([""]);

@@ -20,6 +20,7 @@ import {
 } from "../../../../../../Redux/actionTypes";
 import { updateCourseData } from "../../../../../../Redux/actions/adminActions";
 import Spinner from "../../../../../../Utils/Spinner";
+import Loader from "../../../../../../Utils/Loader";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -34,44 +35,53 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const Main = () => {
-  const batchData = JSON.parse(localStorage.getItem("batch"));
+  const [batchData, setBatchData] = useState({});
   const store = useSelector((state) => state);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const courseData = JSON.parse(localStorage.getItem("courses"));
+  const [isLoading, setIsLoading] = useState(true);
   const [tempBatchData, setTempBatchData] = useState({});
   const [lessonCount, setLessonCount] = useState([]);
-  const batchCourse = useSelector((store) => store.admin.batch);
   const indexCounter = useSelector((store) => store.admin.index);
+  const course = useSelector((store) => store.admin.course);
   const [completionUpdates, setCompletionUpdates] = useState({});
   const [garbageData, setGarbageData] = useState([]);
   const [sectionLessonNumber, setSectionLessonNumber] = useState({});
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [batchCourseData, SetBatchCourseData] = useState({});
+  const [courseData, setCourseData] = useState({});
+  const batch = useSelector((state) => state.admin.batch);
   useEffect(() => {
-    let temp = [...lessonCount];
-    for (let i = 0; i < batchData.courses.length; i++) {
-      if (i === 0) {
-        temp[i] = batchData.courses[i].complete.lessonCompleted;
-      } else {
-        temp.push(batchData.courses[i].complete.lessonCompleted);
+    if (Object.keys(batch).length !== 0) {
+      setBatchData(batch);
+      let temp = [...lessonCount];
+      for (let i = 0; i < batch.courses.length; i++) {
+        if (i === 0) {
+          temp[i] = batch.courses[i].complete.lessonCompleted;
+        } else {
+          temp.push(batch.courses[i].complete.lessonCompleted);
+        }
+      }
+      setTempBatchData(batch);
+      setLessonCount(temp);
+      if (Object.keys(course).length !== 0) {
+        setIsLoading(false);
       }
     }
-    setLessonCount(temp);
-  }, []);
+  }, [batch]);
   useEffect(() => {
-    SetBatchCourseData(batchCourse);
-  }, [batchCourse]);
+    if (Object.keys(course).length !== 0) {
+      if (Object.keys(batch).length !== 0) {
+        setIsLoading(false);
+      }
+      setCourseData(course);
+    }
+  }, [course]);
 
   useEffect(() => {
-    dispatch({ type: SET_ERRORS, payload: {} });
-    if (Object.keys(batchCourse).length === 0) {
+    if (Object.keys(course).length === 0) {
       navigate("/admin/batch/course");
     }
-    // else {
-    //   SetBatchCourseData(batchCourse);
-    // }
-    setTempBatchData(batchData);
+    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   const [uploadedVideo, setUploadedVideo] = useState("");
@@ -199,7 +209,6 @@ const Main = () => {
       setUploadedVideo("");
     }
   }, [uploadedVideo]);
-  console.log(sectionLessonNumber);
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -216,7 +225,7 @@ const Main = () => {
   };
   const updateChanges = () => {
     setLoading(true);
-    localStorage.setItem("batch", JSON.stringify(tempBatchData));
+
     dispatch(
       updateCourseData({
         lessonVideo: tempBatchData.courses[indexCounter].lessonVideo,
@@ -233,15 +242,19 @@ const Main = () => {
       dispatch({ type: UPDATE_COURSE_DATA, payload: false });
     }
   }, [store.admin.courseUpdated]);
-
+  console.log(tempBatchData);
   return (
     <>
-      {Object.keys(tempBatchData).length !== 0 && (
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <Loader isLoading={isLoading} />
+        </div>
+      ) : (
         <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
           <div className="flex flex-col space-y-4">
             <div className="flex justify-between">
               <h1 className="font-bold text-primary">
-                {batchCourseData.courseName}
+                {courseData.courseName}
               </h1>
             </div>
             <BorderLinearProgress
@@ -256,83 +269,80 @@ const Main = () => {
               <h1 className="mb-7">
                 Click on Tick Icon to mark it's completion
               </h1>
-              {courseData[indexCounter].section?.map(
-                (sectionData, sectionIdx) => (
-                  <div
-                    key={sectionIdx}
-                    className="shadow-sm rounded-sm shadow-gray-400 py-6 px-4">
-                    <div className="flex items-center space-x-3 mb-7">
-                      {tempBatchData.courses[indexCounter].lessonVideo[
-                        sectionIdx
-                      ].sectionCompleted ? (
-                        <BsFillCheckCircleFill
-                          fontSize={20}
-                          className="text-[#1bca72]"
-                        />
-                      ) : (
-                        <AiOutlineCheckCircle
-                          fontSize={20}
-                          className="text-[#]"
-                        />
-                      )}
-                      <Typography>{sectionData.sectionName}</Typography>
-                    </div>
-                    {sectionData.lesson?.map((lessonData, lessonIdx) => (
-                      <div
-                        key={lessonIdx}
-                        className="flex justify-between shadow-sm rounded-sm shadow-gray-400 py-4 px-4">
-                        <div className="flex items-center space-x-3">
-                          {tempBatchData.courses[indexCounter].lessonVideo[
-                            sectionIdx
-                          ].lesson[lessonIdx].lessonCompleted ? (
-                            <BsFillCheckCircleFill
-                              onClick={() =>
-                                handleIconClickDecrease(sectionIdx, lessonIdx)
-                              }
-                              fontSize={20}
-                              className="text-[#1bca72]"
-                            />
-                          ) : (
-                            <AiOutlineCheckCircle
-                              onClick={() =>
-                                handleIconClickIncrease(sectionIdx, lessonIdx)
-                              }
-                              fontSize={20}
-                              className="text-[#]"
-                            />
-                          )}
-                          <Typography>{lessonData.lessonName}</Typography>
-                        </div>
-                        <label htmlFor={`video-${sectionIdx}-${lessonIdx}`}>
-                          {tempBatchData.courses[indexCounter].lessonVideo[
-                            sectionIdx
-                          ].lesson[lessonIdx].video === "" ? (
-                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                              Upload Video
-                            </div>
-                          ) : (
-                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                              Upload Another Video
-                            </div>
-                          )}
-                        </label>
-                        <input
-                          className="hidden"
-                          id={`video-${sectionIdx}-${lessonIdx}`}
-                          type="file"
-                          onChange={(e) => {
-                            setSectionLessonNumber({
-                              sectionNumber: sectionIdx,
-                              lessonNumber: lessonIdx,
-                            });
-                            handleVideoUploadButton(e);
-                          }}
-                        />
-                      </div>
-                    ))}
+              {courseData.section.map((sectionData, sectionIdx) => (
+                <div
+                  key={sectionIdx}
+                  className="shadow-sm rounded-sm shadow-gray-400 py-6 px-4">
+                  <div className="flex items-center space-x-3 mb-7">
+                    {tempBatchData.courses[indexCounter].lessonVideo[sectionIdx]
+                      .sectionCompleted ? (
+                      <BsFillCheckCircleFill
+                        fontSize={20}
+                        className="text-[#1bca72]"
+                      />
+                    ) : (
+                      <AiOutlineCheckCircle
+                        fontSize={20}
+                        className="text-[#]"
+                      />
+                    )}
+                    <Typography>{sectionData.sectionName}</Typography>
                   </div>
-                )
-              )}
+                  {sectionData.lesson?.map((lessonData, lessonIdx) => (
+                    <div
+                      key={lessonIdx}
+                      className="flex justify-between shadow-sm rounded-sm shadow-gray-400 py-4 px-4">
+                      <div className="flex items-center space-x-3">
+                        {tempBatchData.courses[indexCounter].lessonVideo[
+                          sectionIdx
+                        ].lesson[lessonIdx].lessonCompleted ? (
+                          <BsFillCheckCircleFill
+                            onClick={() =>
+                              handleIconClickDecrease(sectionIdx, lessonIdx)
+                            }
+                            fontSize={20}
+                            className="text-[#1bca72]"
+                          />
+                        ) : (
+                          <AiOutlineCheckCircle
+                            onClick={() =>
+                              handleIconClickIncrease(sectionIdx, lessonIdx)
+                            }
+                            fontSize={20}
+                            className="text-[#]"
+                          />
+                        )}
+                        <Typography>{lessonData.lessonName}</Typography>
+                      </div>
+                      <label htmlFor={`video-${sectionIdx}-${lessonIdx}`}>
+                        {tempBatchData.courses[indexCounter].lessonVideo[
+                          sectionIdx
+                        ].lesson[lessonIdx].video === "" ? (
+                          <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            Upload Video
+                          </div>
+                        ) : (
+                          <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                            Upload Another Video
+                          </div>
+                        )}
+                      </label>
+                      <input
+                        className="hidden"
+                        id={`video-${sectionIdx}-${lessonIdx}`}
+                        type="file"
+                        onChange={(e) => {
+                          setSectionLessonNumber({
+                            sectionNumber: sectionIdx,
+                            lessonNumber: lessonIdx,
+                          });
+                          handleVideoUploadButton(e);
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
             <Button
               size="large"

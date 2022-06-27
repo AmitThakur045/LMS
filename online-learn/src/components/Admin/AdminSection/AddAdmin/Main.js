@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_ADMIN, SET_ERRORS } from "../../../../Redux/actionTypes";
 import {
   addAdmin,
+  getAdminsByOrganizationName,
+  getAllAdmin,
   getAllOrganizationName,
 } from "../../../../Redux/actions/adminActions";
 
@@ -34,6 +36,7 @@ const MenuProps = {
   },
 };
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -61,6 +64,15 @@ const Main = () => {
     if (store.errors || store.admin.adminAdded) {
       setLoading(false);
       if (store.admin.adminAdded) {
+        if (user.result.sub === "true") {
+          dispatch(
+            getAdminsByOrganizationName({
+              organizationName: user.result.organizationName,
+            })
+          );
+        } else {
+          dispatch(getAllAdmin());
+        }
         setValue({
           firstName: "",
           lastName: "",
@@ -94,8 +106,7 @@ const Main = () => {
     <div className="flex flex-col lg:flex-row overflow-hidden space-x-5 lg:px-12 px-2 mb-5 overflow-y-auto">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
-      >
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">Add Admin</p>
 
         <div className="flex flex-col xl:w-[60%] lg:w-[80%] w-full space-y-6">
@@ -160,8 +171,7 @@ const Main = () => {
                 id="demo-simple-select"
                 value={value.sub}
                 label="Sub Admin"
-                onChange={(e) => setValue({ ...value, sub: e.target.value })}
-              >
+                onChange={(e) => setValue({ ...value, sub: e.target.value })}>
                 <MenuItem value="true">Yes</MenuItem>
                 <MenuItem value="false">No</MenuItem>
               </Select>
@@ -178,8 +188,7 @@ const Main = () => {
                   label="Sub Admin"
                   onChange={(e) =>
                     setValue({ ...value, organizationName: e.target.value })
-                  }
-                >
+                  }>
                   {allOrganizationName.map((organization) => (
                     <MenuItem value={organization.organizationName}>
                       {organization.organizationName}
@@ -191,8 +200,7 @@ const Main = () => {
           </div>
           <button
             type="submit"
-            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-          >
+            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
             Submit
           </button>
           {loading && <Spinner message="Adding Admin" />}

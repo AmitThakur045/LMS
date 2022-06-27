@@ -7,9 +7,10 @@ import { VscLibrary } from "react-icons/vsc";
 import { BsPerson } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import decode from "jwt-decode";
 import { LOGOUT } from "../../../../Redux/actionTypes";
+import { getBatch } from "../../../../Redux/actions/adminActions";
 const isNotActiveStyle =
   "flex justify-between items-center w-[75%] text-[#9C9BBC]  px-5 h-[3.5rem] hover:text-white duration-150 transition-all";
 const isActiveStyle =
@@ -17,12 +18,22 @@ const isActiveStyle =
 
 const Sidebar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const batch = useSelector((state) => state.admin.batch);
   const logout = () => {
     alert("OOPS! Your session expired. Please Login again");
     dispatch({ type: LOGOUT });
   };
+
+  useEffect(() => {
+    if (batchCode !== null) {
+      dispatch(getBatch({ batchCode }));
+    }
+  }, []);
 
   useEffect(() => {
     const token = user?.token;
@@ -54,7 +65,7 @@ const Sidebar = () => {
             <div className="flex items-center space-x-6">
               <AiOutlineAppstore fontSize={20} />
               <p className="text-[14px]">
-                {JSON.parse(localStorage.getItem("batch"))?.batchCode}
+                {Object.keys(batch).length !== 0 ? batch.batchCode : "Batch"}
               </p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />

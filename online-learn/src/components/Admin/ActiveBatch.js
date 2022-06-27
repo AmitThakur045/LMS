@@ -8,18 +8,28 @@ import {
   getCourses,
   getStudents,
 } from "../../Redux/actions/adminActions";
-import { ADD_BATCH } from "../../Redux/actionTypes";
+import { ADD_BATCH, SET_ERRORS } from "../../Redux/actionTypes";
+import Spinner from "../../Utils/Spinner";
 
 const ActiveBatch = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("admin"));
+  const [error, setError] = useState({});
   const store = useSelector((state) => state);
-
+  const [loading, setLoading] = useState(true);
   const batch = useSelector((state) => state.admin.batch);
   const allBatches = useSelector((state) => state.admin.allBatch);
   const [batches, setBatches] = useState([]);
   useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setError(store.errors);
+
+      setLoading(false);
+    }
+  }, [store.errors]);
+  useEffect(() => {
     if (allBatches.length !== 0) {
+      setLoading(false);
       setBatches(allBatches);
     }
   }, [allBatches]);
@@ -41,6 +51,7 @@ const ActiveBatch = () => {
   }, [store.admin.batchAdded]);
 
   useEffect(() => {
+    dispatch({ type: SET_ERRORS, payload: {} });
     if (user.result.sub === "true") {
       dispatch(
         getBatchCodesBySubAdmin({
@@ -54,27 +65,11 @@ const ActiveBatch = () => {
   }, []);
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
-      localStorage.removeItem("batch");
-      localStorage.removeItem("courses");
-      localStorage.removeItem("students");
+      localStorage.removeItem("batchCode");
       localStorage.removeItem("courseCode");
-      localStorage.setItem("batch", JSON.stringify(batch));
-      let temp = [];
-      for (let i = 0; i < batch.courses?.length; i++) {
-        temp.push(batch.courses[i].courseCode);
-      }
-      dispatch(getCourses(temp));
-
-      dispatch(getStudents({ emails: batch.students }));
+    } else {
     }
   }, [batch]);
-  const [openTab, setOpenTab] = useState(false);
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("batch")) && openTab) {
-      window.open("/admin/batch/viewbatch");
-      setOpenTab(false);
-    }
-  }, [JSON.parse(localStorage.getItem("batch"))]);
 
   return (
     <div className="lg:h-[60%] w-full h-[50%] rounded-b-3xl shadow-md bg-white flex flex-col py-3">
@@ -86,8 +81,8 @@ const ActiveBatch = () => {
           <div
             key={idx}
             onClick={() => {
-              dispatch(getBatch({ batchCode: batch.value }));
-              setOpenTab(true);
+              localStorage.setItem("batchCode", JSON.stringify(batch.value));
+              window.open("/admin/batch/viewbatch");
             }}
             className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all">
             <div className="flex items-center space-x-4">
@@ -99,6 +94,24 @@ const ActiveBatch = () => {
             <AiFillEye color="#046387" />
           </div>
         ))}
+        {(loading || error.noBatchError) && (
+          <>
+            {loading && (
+              <Spinner
+                message="Loading"
+                height={50}
+                width={150}
+                color="#111111"
+                messageColor="blue"
+              />
+            )}
+            {error.noBatchError && (
+              <p className="text-red-500 text-2xl font-bold">
+                {error.noBatchError}
+              </p>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

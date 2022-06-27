@@ -17,11 +17,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addStudentInBatch,
+  getCourses,
   getStudents,
   totalAssignment,
 } from "../../../../../Redux/actions/adminActions";
 import { ADD_STUDENT, SET_ERRORS } from "../../../../../Redux/actionTypes";
 import Spinner from "../../../../../Utils/Spinner";
+import Loader from "../../../../../Utils/Loader";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -51,30 +53,68 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
-  const studentData = JSON.parse(localStorage.getItem("students"));
-  const batchData = JSON.parse(localStorage.getItem("batch"));
-  const courseData = JSON.parse(localStorage.getItem("courses"));
+  const [isLoading, setIsLoading] = useState(true);
   const [totalClasses, setTotalClasses] = useState(0);
   const [studentsData, setStudentsData] = useState([]);
+  const [courseData, setCourseData] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [allCourses, setAllCourses] = useState([]);
   const [totalAssignmentInBatch, setTotalAssignmentInBatch] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  function calTotalAttendance(attendance) {
-    let att = 0;
-    for (let i = 0; i < attendance.length; i++) {
-      att += attendance[i].attended;
-    }
+  const batch = useSelector((state) => state.admin.batch);
+  const students = useSelector((state) => state.admin.students);
+  const courses = useSelector((state) => state.admin.courses);
+  const [batchData, setBatchData] = useState({});
 
-    return att;
-  }
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
+      setIsLoading(false);
       setStudentEmail("");
     }
   }, [store.errors]);
+
+  useEffect(() => {
+    if (Object.keys(batch).length !== 0) {
+      setBatchData(batch);
+
+      let temp = [];
+      for (let i = 0; i < batch.courses?.length; i++) {
+        temp.push(batch.courses[i].courseCode);
+      }
+      dispatch(getCourses(temp));
+      dispatch(getStudents({ emails: batch.students }));
+      dispatch(totalAssignment({ batchCode: batchData.batchCode }));
+    }
+  }, [batch]);
+  useEffect(() => {
+    if (courses.length !== 0) {
+      setCourseData(courses);
+      let temp = 0;
+      let temp2 = [];
+      for (let i = 0; i < courses.length; i++) {
+        temp += courses[i].totalLectures;
+        temp2.push({
+          label: courses[i].courseCode,
+          value: courses[i].courseCode,
+        });
+      }
+      setTotalClasses(temp);
+      setAllCourses(temp2);
+      if (students.length !== 0 && totalAssignments.length !== -1) {
+        setIsLoading(false);
+      }
+    }
+  }, [courses]);
+  useEffect(() => {
+    if (students.length !== 0) {
+      setStudentsData(students);
+      if (courses.length !== 0 && totalAssignments.length !== -1) {
+        setIsLoading(false);
+      }
+    }
+  }, [students]);
 
   const totalAssignments = useSelector((store) => store.admin.totalAssignment);
   const newStudents = useSelector((store) => store.admin.students);
@@ -87,19 +127,19 @@ const Main = () => {
   useEffect(() => {
     if (totalAssignments.length !== -1) {
       setTotalAssignmentInBatch(totalAssignments);
+      if (students.length !== 0 && courses.length !== 0) {
+        setIsLoading(false);
+      }
     }
   }, [totalAssignments]);
-  console.log(newStudents);
 
   useEffect(() => {
     if (store.errors || store.admin.studentAdded) {
       setLoading(false);
       if (store.admin.studentAdded) {
-        const data = JSON.parse(localStorage.getItem("batch"));
-        data.students.push(studentEmail);
-        localStorage.setItem("batch", JSON.stringify(data));
-        dispatch(getStudents({ emails: data.students }));
-
+        let temp = batchData.students;
+        temp.push(studentEmail);
+        dispatch(getStudents({ emails: temp }));
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_STUDENT, payload: false });
         handleAddStudentClose();
@@ -109,27 +149,21 @@ const Main = () => {
     }
   }, [store.errors, store.admin.studentAdded]);
 
-  useEffect(() => {
-    setLoading(true);
-    dispatch(getStudents({ emails: batchData.students }));
-    let temp = 0;
-    let temp2 = [];
-    for (let i = 0; i < courseData.length; i++) {
-      temp += courseData[i].totalLectures;
-      temp2.push({
-        label: courseData[i].courseCode,
-        value: courseData[i].courseCode,
-      });
+  function calTotalAttendance(attendance) {
+    let att = 0;
+    for (let i = 0; i < attendance.length; i++) {
+      att += attendance[i].attended;
     }
-    setTotalClasses(temp);
-    setAllCourses(temp2);
-    dispatch(totalAssignment({ batchCode: batchData.batchCode }));
-  }, []);
 
+    return att;
+  }
   function calCourseCompleted(attendance) {
     let att = 0;
     for (let i = 0; i < attendance.length; i++) {
       att += attendance[i].attended;
+    }
+    if (att === 0) {
+      return 0;
     }
     return Math.round((att / totalClasses) * 100);
   }
@@ -194,7 +228,7 @@ const Main = () => {
     let value = event.target.value.toLowerCase();
 
     let result = [];
-    result = studentData.filter((data) => {
+    result = studentsData.filter((data) => {
       return data.email.search(value) !== -1;
     });
     setStudentsData(result);
@@ -223,273 +257,291 @@ const Main = () => {
   };
 
   return (
-    <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
-      <Modal
-        open={openAddStudent}
-        onClose={handleAddStudentClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <div className="flex flex-col space-y-4 h-[15rem]">
-            <div className="flex items-center">
-              <h1 className="self-center w-[95%] font-bold">Add Student</h1>
-              <div
-                onClick={handleAddStudentClose}
-                className="self-end cursor-pointer w-[5%]">
-                <AiOutlineCloseCircle
-                  className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
-                  fontSize={23}
-                />
-              </div>
-            </div>
-            <form onSubmit={addstudent} className="flex flex-col space-y-3  ">
-              <TextField
-                required
-                type="email"
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                className="bg-white"
-                value={studentEmail}
-                onChange={(e) => setStudentEmail(e.target.value)}
-              />
-              <Button
-                disabled={studentEmail !== "" ? false : true}
-                type="submit"
-                className=""
-                variant="contained"
-                color="primary">
-                Add
-              </Button>
-              {loading && <Spinner message="Adding Student" />}
-              {error.studentError && (
-                <p className="text-red-500 flex self-center">
-                  {error.studentError}
-                </p>
-              )}
-            </form>
-          </div>
-        </Box>
-      </Modal>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <div className="flex flex-col space-y-4 h-[15rem]">
-            <div className="flex items-center">
-              <h1 className="self-center w-[95%] font-bold">Select Course</h1>
-              <div
-                onClick={handleClose}
-                className="self-end cursor-pointer w-[5%]">
-                <AiOutlineCloseCircle
-                  className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
-                  fontSize={23}
-                />
-              </div>
-            </div>
-            <div className="flex space-x-3  ">
-              <Select
-                className="w-[75%]"
-                options={allCourses}
-                onChange={(e) => setSelectedCourse(e.value)}
-              />
-              <Button
-                disabled={selectedCourse !== "" ? false : true}
-                onClick={() => {
-                  localStorage.setItem(
-                    "courseCode",
-                    JSON.stringify(selectedCourse)
-                  );
-                  navigate("/admin/batch/student/attendance");
-                  handleClose();
-                }}
-                className="w-[25%]"
-                variant="contained"
-                color="primary">
-                Search
-              </Button>
-            </div>
-          </div>
-        </Box>
-      </Modal>
-      <div className="flex items-center justify-between">
-        <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
-          <AiOutlineSearch fontSize={20} color="#696969" />
-          <input
-            onChange={(event) => handleSearch(event)}
-            placeholder="Quick Search Student"
-            className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
-            type="text"
-          />
+    <>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <Loader isLoading={isLoading} />
         </div>
-        <div className="space-x-3">
-          <Button
-            color="success"
-            onClick={handleAddStudentOpen}
-            variant="contained">
-            Add Student
-          </Button>
-          <Button onClick={handleOpen} variant="contained">
-            Mark Attendance
-          </Button>
-        </div>
-      </div>
-      <div className="">
-        {loading && <Spinner message={"Loading..."} />}
-        {!loading &&
-          studentsData.map((student, idx) => (
-            <Accordion key={student.email}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header">
-                <div className="grid grid-cols-12 w-full">
-                  <div className="col-span-2 font-semibold flex items-center space-x-2">
-                    <Avatar
-                      src={student?.avatar}
-                      sx={{ height: 20, width: 20 }}
+      ) : (
+        <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
+          <Modal
+            open={openAddStudent}
+            onClose={handleAddStudentClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <Box sx={style}>
+              <div className="flex flex-col space-y-4 h-[15rem]">
+                <div className="flex items-center">
+                  <h1 className="self-center w-[95%] font-bold">Add Student</h1>
+                  <div
+                    onClick={handleAddStudentClose}
+                    className="self-end cursor-pointer w-[5%]">
+                    <AiOutlineCloseCircle
+                      className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
+                      fontSize={23}
                     />
-                    <div className="">
-                      {student.firstName} {student.lastName}
-                    </div>
-                  </div>
-                  <div className="col-span-2  font-semibold">
-                    {student.email}
-                  </div>
-                  <div className="col-span-2">
-                    Total Attendance: {calTotalAttendance(student.attendance)}/
-                    {batchData.schedule.length}
-                  </div>
-                  <div className="col-span-2">
-                    Total Assignment: {calTotalAssignment(student.assignment)}/
-                    {totalAssignmentInBatch}
-                  </div>
-                  <div className="col-span-2">
-                    Courses Completed: {calCourseCompleted(student.attendance)}%
                   </div>
                 </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="flex space-x-2 bg-[#fdfdfd]">
-                  <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-3">
-                    <h1 className="font-semibold text-[#fe4492] text-[20px]">
-                      {student.firstName}'s Stats
-                    </h1>
-                    <div className="flex ">
-                      <div className="flex-[0.6] space-y-1">
-                        <div className="flex w-full">
-                          <div className="flex flex-[0.8] space-x-2 items-center">
-                            <BsPersonCheck className="text-[#eede49]" />
-                            <p className="text-[#47ada8] font-bold">
-                              Total Attendance:
-                            </p>
-                          </div>
-                          <span className="text-[#47ada8] font-bold flex-[0.2]">
-                            {calTotalAttendance(student.attendance)}/
-                            {batchData.schedule.length}
-                          </span>
-                        </div>
-                        <div className="flex w-full">
-                          <div className="flex flex-[0.8] space-x-2 items-center">
-                            <BsPersonCheck className="text-[#eede49]" />
-                            <p className="text-[#47ada8] font-bold">
-                              Total Assignment:
-                            </p>
-                          </div>
-                          <span className="text-[#47ada8] font-bold flex-[0.2]">
-                            {calTotalAssignment(student.assignment)}/
-                            {totalAssignmentInBatch}
-                          </span>
-                        </div>
-                        <div className="flex w-full">
-                          <div className="flex flex-[0.8] space-x-2 items-center">
-                            <BsPersonCheck className="text-[#eede49]" />
-                            <p className="text-[#47ada8] font-bold">
-                              Total Assignment Score:
-                            </p>
-                          </div>
-                          <span className="text-[#47ada8] font-bold flex-[0.2]">
-                            {calTotalAssignmentScore(student.assignment)}/10
-                          </span>
-                        </div>
-                        <div className="flex w-full">
-                          <div className="flex flex-[0.8] space-x-2 items-center">
-                            <BsPersonCheck className="text-[#eede49]" />
-                            <p className="text-[#47ada8] font-bold">
-                              Courses Completed:
-                            </p>
-                          </div>
-                          <span className="text-[#47ada8] font-bold flex-[0.2]">
-                            {calCourseCompleted(student.attendance)}%
-                          </span>
-                        </div>
+                <form
+                  onSubmit={addstudent}
+                  className="flex flex-col space-y-3  ">
+                  <TextField
+                    required
+                    type="email"
+                    id="outlined-basic"
+                    label="Email"
+                    variant="outlined"
+                    className="bg-white"
+                    value={studentEmail}
+                    onChange={(e) => setStudentEmail(e.target.value)}
+                  />
+                  <Button
+                    disabled={studentEmail !== "" ? false : true}
+                    type="submit"
+                    className=""
+                    variant="contained"
+                    color="primary">
+                    Add
+                  </Button>
+                  {loading && <Spinner message="Adding Student" />}
+                  {error.studentError && (
+                    <p className="text-red-500 flex self-center">
+                      {error.studentError}
+                    </p>
+                  )}
+                </form>
+              </div>
+            </Box>
+          </Modal>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <Box sx={style}>
+              <div className="flex flex-col space-y-4 h-[15rem]">
+                <div className="flex items-center">
+                  <h1 className="self-center w-[95%] font-bold">
+                    Select Course
+                  </h1>
+                  <div
+                    onClick={handleClose}
+                    className="self-end cursor-pointer w-[5%]">
+                    <AiOutlineCloseCircle
+                      className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
+                      fontSize={23}
+                    />
+                  </div>
+                </div>
+                <div className="flex space-x-3  ">
+                  <Select
+                    className="w-[75%]"
+                    options={allCourses}
+                    onChange={(e) => setSelectedCourse(e.value)}
+                  />
+                  <Button
+                    disabled={selectedCourse !== "" ? false : true}
+                    onClick={() => {
+                      localStorage.setItem(
+                        "courseCode",
+                        JSON.stringify(selectedCourse)
+                      );
+                      navigate("/admin/batch/student/attendance");
+                      handleClose();
+                    }}
+                    className="w-[25%]"
+                    variant="contained"
+                    color="primary">
+                    Search
+                  </Button>
+                </div>
+              </div>
+            </Box>
+          </Modal>
+          <div className="flex items-center justify-between">
+            <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
+              <AiOutlineSearch fontSize={20} color="#696969" />
+              <input
+                onChange={(event) => handleSearch(event)}
+                placeholder="Quick Search Student"
+                className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
+                type="text"
+              />
+            </div>
+            <div className="space-x-3">
+              <Button
+                color="success"
+                onClick={handleAddStudentOpen}
+                variant="contained">
+                Add Student
+              </Button>
+              <Button onClick={handleOpen} variant="contained">
+                Mark Attendance
+              </Button>
+            </div>
+          </div>
+          <div className="">
+            {studentsData.map((student, idx) => (
+              <Accordion key={student.email}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header">
+                  <div className="grid grid-cols-12 w-full">
+                    <div className="col-span-2 font-semibold flex items-center space-x-2">
+                      <Avatar
+                        src={student?.avatar}
+                        sx={{ height: 20, width: 20 }}
+                      />
+                      <div className="">
+                        {student.firstName} {student.lastName}
                       </div>
-                      <div className="flex-[0.4] flex items-center justify-center">
-                        <div className="w-[7rem] h-[7rem]">
-                          <CircularProgressbar
-                            styles={buildStyles({
-                              path: {
-                                transition: "stroke-dashoffset 0.5s ease 0s",
-                              },
-                              // Text size
-                              text: {
-                                fontWeight: "600",
+                    </div>
+                    <div className="col-span-2  font-semibold">
+                      {student.email}
+                    </div>
+                    <div className="col-span-2">
+                      Total Attendance: {calTotalAttendance(student.attendance)}
+                      /{batchData.schedule.length}
+                    </div>
+                    <div className="col-span-2">
+                      Total Assignment: {calTotalAssignment(student.assignment)}
+                      /{totalAssignmentInBatch}
+                    </div>
+                    <div className="col-span-2">
+                      Courses Completed:{" "}
+                      {calCourseCompleted(student.attendance)}%
+                    </div>
+                  </div>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div className="flex space-x-2 bg-[#fdfdfd]">
+                    <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-3">
+                      <h1 className="font-semibold text-[#fe4492] text-[20px]">
+                        {student.firstName}'s Stats
+                      </h1>
+                      <div className="flex ">
+                        <div className="flex-[0.6] space-y-1">
+                          <div className="flex w-full">
+                            <div className="flex flex-[0.8] space-x-2 items-center">
+                              <BsPersonCheck className="text-[#eede49]" />
+                              <p className="text-[#47ada8] font-bold">
+                                Total Attendance:
+                              </p>
+                            </div>
+                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                              {calTotalAttendance(student.attendance)}/
+                              {batchData.schedule.length}
+                            </span>
+                          </div>
+                          <div className="flex w-full">
+                            <div className="flex flex-[0.8] space-x-2 items-center">
+                              <BsPersonCheck className="text-[#eede49]" />
+                              <p className="text-[#47ada8] font-bold">
+                                Total Assignment:
+                              </p>
+                            </div>
+                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                              {calTotalAssignment(student.assignment)}/
+                              {totalAssignmentInBatch}
+                            </span>
+                          </div>
+                          <div className="flex w-full">
+                            <div className="flex flex-[0.8] space-x-2 items-center">
+                              <BsPersonCheck className="text-[#eede49]" />
+                              <p className="text-[#47ada8] font-bold">
+                                Total Assignment Score:
+                              </p>
+                            </div>
+                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                              {calTotalAssignmentScore(student.assignment)}/10
+                            </span>
+                          </div>
+                          <div className="flex w-full">
+                            <div className="flex flex-[0.8] space-x-2 items-center">
+                              <BsPersonCheck className="text-[#eede49]" />
+                              <p className="text-[#47ada8] font-bold">
+                                Courses Completed:
+                              </p>
+                            </div>
+                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                              {calCourseCompleted(student.attendance)}%
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex-[0.4] flex items-center justify-center">
+                          <div className="w-[7rem] h-[7rem]">
+                            <CircularProgressbar
+                              styles={buildStyles({
+                                path: {
+                                  transition: "stroke-dashoffset 0.5s ease 0s",
+                                },
+                                // Text size
+                                text: {
+                                  fontWeight: "600",
 
-                                fontSize: "16px",
-                              },
+                                  fontSize: "16px",
+                                },
 
-                              // Colors
-                              pathColor: "#dc3b7e",
-                              textColor: "#47ada8",
-                              trailColor: "#431c36",
-                            })}
-                            value={75}
-                            text={calPerformance(student.assignment)}
-                          />
+                                // Colors
+                                pathColor: "#dc3b7e",
+                                textColor: "#47ada8",
+                                trailColor: "#431c36",
+                              })}
+                              value={75}
+                              text={calPerformance(student.assignment)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-4">
-                    <h1 className="font-semibold text-[#fe4492] text-[20px]">
-                      Course Wise Attendance
-                    </h1>
-                    <div className="space-y-2 overflow-y-auto h-[8rem]">
-                      {student.attendance.map((course, idx) => (
-                        <div key={course.courseCode} className="flex flex-col">
-                          <h1 className="text-[#47ada8] text-[12px]">
-                            {course.courseCode}
-                          </h1>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-[70%]">
-                              <BorderLinearProgress
-                                variant="determinate"
-                                value={calCourseWiseAttendance(
+                    <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md pl-6 py-4 pb-14 space-y-4">
+                      <h1 className="font-semibold text-[#fe4492] text-[20px]">
+                        Course Wise Attendance
+                      </h1>
+                      <div className="space-y-2 overflow-y-auto h-[8rem]">
+                        {student.attendance.map((course, idx) => (
+                          <div
+                            key={course.courseCode}
+                            className="flex flex-col">
+                            <h1 className="text-[#47ada8] text-[12px]">
+                              {course.courseCode}
+                            </h1>
+                            <div className="flex items-center space-x-2">
+                              <div className="w-[70%]">
+                                <BorderLinearProgress
+                                  variant="determinate"
+                                  value={calCourseWiseAttendance(
+                                    course.courseCode,
+                                    course.attended
+                                  )}
+                                />
+                              </div>
+                              <p className="text-[#47ada8] text-[12px]">
+                                {calCourseWiseAttendance(
                                   course.courseCode,
                                   course.attended
                                 )}
-                              />
+                                %
+                              </p>
                             </div>
-                            <p className="text-[#47ada8] text-[12px]">
-                              {calCourseWiseAttendance(
-                                course.courseCode,
-                                course.attended
-                              )}
-                              %
-                            </p>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-      </div>
-    </div>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+            {error.noStudentError && (
+              <p className="font-bold text-red-500 flex justify-center ">
+                {error.noStudentError}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
