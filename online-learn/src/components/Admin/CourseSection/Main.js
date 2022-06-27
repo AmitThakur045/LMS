@@ -95,21 +95,21 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
+        <div className="flex flex-col lg:flex-row overflow-hidden h-full space-x-5 lg:px-10 px-2 mb-5 overflow-y-auto">
           {showSubAdminModal && (
             <SubAdminModal
               showSubAdminModal={showSubAdminModal}
               setShowSubAdminModal={setShowSubAdminModal}
             />
           )}
-          <div className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-20">
+          <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
                 <AiOutlineSearch fontSize={20} color="#696969" />
                 <input
                   onChange={(event) => handleSearch(event)}
                   placeholder="Quick Search Course"
-                  className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
+                  className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full h-full outline-none "
                   type="text"
                 />
               </div>
@@ -137,9 +137,9 @@ const Main = () => {
               </div>
             )}
             {!error.courseError && courses.length !== 0 && (
-              <div className="overflow-y-auto space-y-2">
-                <div className="grid grid-cols-11 h-[32px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
-                  <h1 className="col-span-2 text-[13px] font-bold">
+              <div className="overflow-y-auto space-y-2 pb-3">
+                <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4 py-1">
+                  <h1 className="col-span-3 text-[13px] font-bold">
                     Course Code
                   </h1>
                   <h1 className="col-span-3 text-[13px] font-bold">
@@ -157,13 +157,13 @@ const Main = () => {
                 {courses.map((ad, idx) => (
                   <div
                     key={idx}
-                    className="grid grid-cols-11 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+                    className="grid grid-cols-12 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
                     <div
                       onClick={() => {
                         navigate("/admin/course/viewcourse");
                         dispatch({ type: GET_COURSE, payload: ad });
                       }}
-                      className="col-span-2 font-semibold text-[13px] cursor-pointer flex space-x-2">
+                      className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
                       <Avatar
                         sx={{ height: 20, width: 20 }}
                         src={ad.courseImg}
@@ -234,7 +234,7 @@ const Main = () => {
               </div>
             )}
           </div>
-          <div className="bg-[#FAFBFF] w-[20%] flex flex-col px-5 py-5 rounded-3xl space-y-5">
+          <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col flex-row lg:items-center items-start lg:pl-5 py-5 rounded-3xl lg:space-y-5 space-x-3 lg:space-x-0">
             <ActiveBatch />
             <RecentNotification />
           </div>

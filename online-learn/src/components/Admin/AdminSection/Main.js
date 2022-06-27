@@ -118,14 +118,14 @@ const Main = () => {
               setShowSubAdminModal={setShowSubAdminModal}
             />
           )}
-          <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-20">
+          <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
                 <AiOutlineSearch fontSize={20} color="#696969" />
                 <input
                   onChange={(event) => handleSearch(event)}
                   placeholder="Quick Search Admin"
-                  className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[10px] flex w-full outline-none "
+                  className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
                   type="text"
                 />
               </div>
@@ -154,7 +154,7 @@ const Main = () => {
             )}
             {!error.noAdminError && admins.length !== 0 && (
               <div className="overflow-y-auto space-y-2 pb-3">
-                <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+                <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4 py-1">
                   <h1 className="col-span-3 text-[13px] font-bold">
                     Admin Name
                   </h1>
