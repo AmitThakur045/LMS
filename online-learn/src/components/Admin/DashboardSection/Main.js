@@ -102,10 +102,10 @@ const Main = () => {
       setWidth(toString(window.innerWidth * 0.6) + "px");
     }
   }
-
+  console.log(width);
   useEffect(() => {
     window.addEventListener("resize", handleSizeChange);
-  }, [window.innerWidth]);
+  }, []);
 
   useEffect(() => {
     if (Object.keys(adminDashboardData).length !== 0) {
