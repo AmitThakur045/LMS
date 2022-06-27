@@ -228,14 +228,15 @@ const Main = () => {
   };
 
   return (
-    <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
+    <div className="flex flex-col lg:flex-row overflow-hidden space-x-5 lg:px-12 px-2 mb-5 overflow-y-auto">
       <form
         onSubmit={handleSubmit}
-        className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-4 pb-16 overflow-y-scroll">
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
+      >
         <p className="text-[#8d91b1]">Add Course</p>
-        <div className="flex space-x-16 ">
+        <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="w-[40%] flex items-start justify-center">
-            <div className="w-[250px] h-[227px] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
+            <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
               {value.courseImg !== "" ? (
                 <img
                   src={value.courseImg}
@@ -245,13 +246,14 @@ const Main = () => {
               ) : (
                 <div className="">
                   <label
-                    className="flex items-center justify-center flex-col space-y-3"
-                    htmlFor="image">
+                    className="flex items-center justify-center flex-col space-y-3 w-full"
+                    htmlFor="image"
+                  >
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
                     />
-                    <p>Upload Course Image</p>
+                    <p className="w-full text-center">Upload Course Image</p>
                   </label>
                   <input
                     id="image"
@@ -265,8 +267,8 @@ const Main = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col w-[60%] space-y-6">
-            <div className="flex justify-between ">
+          <div className="flex flex-col xl:w-[60%] lg:w-[80%] w-full space-y-6">
+            <div className="flex justify-between space-x-4 w-full">
               <TextField
                 required
                 type="text"
@@ -292,7 +294,7 @@ const Main = () => {
                 }
               />
             </div>
-            <div className="flex justify-between ">
+            <div className="flex justify-between space-x-4 w-full">
               <TextField
                 required
                 type="number"
@@ -348,9 +350,10 @@ const Main = () => {
                     <h1>Section {sectionIdx + 1}</h1>
                     <MdKeyboardArrowDown />
                   </div>
-                }>
+                }
+              >
                 <div className="">
-                  <div className="flex space-x-3 mx-10 mt-3">
+                  <div className="flex space-x-3 md:mx-10 mx-3 mt-3">
                     <div className="space-y-1 flex justify-between w-full">
                       <TextField
                         disabled={
@@ -374,7 +377,8 @@ const Main = () => {
                           className="h-[2rem] w-[10rem]"
                           disableElevation
                           variant="contained"
-                          color="success">
+                          color="success"
+                        >
                           Section Added
                         </Button>
                       ) : (
@@ -387,7 +391,8 @@ const Main = () => {
                           onClick={() => {
                             sectionToggler(sectionIdx);
                             setValue({ ...value, section: [...section] });
-                          }}>
+                          }}
+                        >
                           Add Section
                         </Button>
                       )}
@@ -395,19 +400,20 @@ const Main = () => {
                   </div>
                   {sectionData?.lesson.map((lessonData, lessonIdx) => (
                     <div key={lessonIdx} className="">
-                      <div className="flex flex-col cursor-pointer mx-10 px-3 py-2 border-2 mt-3">
+                      <div className="flex flex-col cursor-pointer md:mx-10 mx-3 md:px-3 px-1 py-2 border-2 mt-3">
                         <div className=" flex  ">
                           <Collapsible
                             open={true}
                             className="flex-1 w-full flex flex-col py-4"
                             openedClassName="w-full flex-1 flex flex-col py-4"
                             trigger={
-                              <div className="flex justify-between items-center px-6 font-semibold text-lg">
+                              <div className="flex justify-between items-center md:px-6 px-2 font-semibold text-lg">
                                 <h1>Lesson {lessonIdx + 1}</h1>
                                 <MdKeyboardArrowDown />
                               </div>
-                            }>
-                            <div className="space-y-3 mx-6 mt-3">
+                            }
+                          >
+                            <div className="space-y-3 md:mx-6 mx-2 mt-3">
                               <div className="flex space-x-3">
                                 <div className="space-y-1 flex justify-between w-full">
                                   <TextField
@@ -442,7 +448,8 @@ const Main = () => {
                                       className="h-[2rem] w-[10rem]"
                                       disableElevation
                                       color="success"
-                                      variant="contained">
+                                      variant="contained"
+                                    >
                                       Lesson Added
                                     </Button>
                                   ) : (
@@ -454,7 +461,8 @@ const Main = () => {
                                       variant="contained"
                                       onClick={() =>
                                         lessonToggler(sectionIdx, lessonIdx)
-                                      }>
+                                      }
+                                    >
                                       Add Lesson
                                     </Button>
                                   )}
@@ -497,14 +505,15 @@ const Main = () => {
                       </div>
                     </div>
                   ))}
-                  <div className="px-10">
+                  <div className="px-10 mt-2">
                     <button
                       type="button"
                       className="flex w-full self-center space-x-3 mb-4 bg-gray-800 hover:bg-black transition-all duration-150 text-white  items-center justify-center h-10 rounded-md"
                       disabled={section[sectionIdx].sectionAdded ? true : false}
                       onClick={() => {
                         addNewLesson(sectionIdx);
-                      }}>
+                      }}
+                    >
                       <h1 className="text-base">Lessons</h1>
                       <RiAddLine className=" " />
                     </button>
@@ -520,7 +529,8 @@ const Main = () => {
             className="bg-gray-800 h-[2.5rem] rounded-md hover:bg-black transition-all duration-150 w-full text-white flex items-center justify-center  "
             onClick={() => {
               addNewSection(sectionCount - 1);
-            }}>
+            }}
+          >
             <h1 className="text-base">Sections</h1>
             <RiAddLine className="" />
           </button>
@@ -528,13 +538,15 @@ const Main = () => {
         <div className="w-full h-[3rem] flex justify-end space-x-4">
           <button
             type="submit"
-            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+          >
             Submit
           </button>
           <button
             type="button"
             onClick={clearForm}
-            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
+            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
+          >
             Clear
           </button>
         </div>
@@ -546,7 +558,7 @@ const Main = () => {
         )}
       </form>
 
-      <div className="bg-[#FAFBFF] w-[20%] flex flex-col px-5 py-5 rounded-3xl space-y-5">
+      <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col flex-row lg:items-center items-start lg:pl-5 py-5 rounded-3xl lg:space-y-5 space-x-3 lg:space-x-0">
         <ActiveBatch />
         <RecentNotification />
       </div>

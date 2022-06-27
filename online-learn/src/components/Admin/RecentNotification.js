@@ -33,7 +33,7 @@ const data = [
 const RecentNotification = () => {
   return (
     <div className="lg:h-[40%] w-full h-[50%] rounded-b-3xl shadow-md bg-white flex flex-col lg:py-3 py-0">
-      <h1 className="text-[#504F89] text-[16px] font-bold self-center">
+      <h1 className="text-[#504F89] text-[16px] font-bold text-center w-full">
         Recent Notifications
       </h1>
       <div className="px-4 mt-6 space-y-4 overflow-y-auto scrollbar-none">
