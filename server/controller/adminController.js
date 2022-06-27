@@ -784,7 +784,8 @@ export const addBatch = async (req, res) => {
 // get all batches
 export const getAllBatchCodes = async (req, res) => {
   try {
-    const batches = await Batch.find();
+    const batches = await Batch.find({}, { batchCode: 1 });
+    console.log(batches);
     const errors = { noBatchError: String };
     let batchCodes = [];
 
@@ -1407,18 +1408,18 @@ export const getAllAdminDashboardData = async (req, res) => {
       batchStrength: [],
     };
 
-    const courses = await Course.find();
+    const courses = await Course.find({}, { courseCode: 1 });
     if (courses) {
       data.totalCourses = courses.length;
     }
-    const students = await Student.find();
+    const students = await Student.find({}, { dateOfJoining: 1 });
     if (students) {
       data.totalStudents = students.length;
       students.forEach((student) => {
         data.dateOfJoinings.push(student.dateOfJoining);
       });
     }
-    const batches = await Batch.find();
+    const batches = await Batch.find({}, { batchCode: 1, students: 1 });
     if (batches) {
       data.totalBatches = batches.length;
       batches.forEach((batch) => {
@@ -1428,7 +1429,7 @@ export const getAllAdminDashboardData = async (req, res) => {
         });
       });
     }
-    const admins = await Admin.find();
+    const admins = await Admin.find({}, { email: 1 });
     if (admins) {
       data.totalAdmins = admins.length;
     }
