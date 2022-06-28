@@ -47,6 +47,29 @@ const Main = () => {
   const attendanceStatus = useSelector((store) => store.admin.attendanceStatus);
   const [totalAttendanceStatus, setTotalAttendanceStatus] = useState(0);
   const [totalClassesHeld, setTotalClassesHeld] = useState(0);
+  const [width, setWidth] = useState("420px");
+
+  // Resize the width of line graph using window width
+  function handleSizeChange() {
+    if (window.innerWidth > 1424) {
+      setWidth("600px");
+    } else if (window.innerWidth > 1300) {
+      setWidth("500px");
+    } else if (window.innerWidth > 1024) {
+      setWidth("420px");
+    } else if (window.innerWidth > 868) {
+      setWidth("650px");
+    } else if (window.innerWidth > 600) {
+      setWidth("550px");
+    } else {
+      setWidth(toString(window.innerWidth * 0.6) + "px");
+    }
+  }
+  console.log(width);
+  useEffect(() => {
+    window.addEventListener("resize", handleSizeChange);
+  }, []);
+
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setIsLoading(false);
@@ -192,38 +215,38 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-auto bg-[#f4f4f4] h-full">
-          <div className="flex justify-between mt-4 ">
-            <div className="w-[24%] py-3 flex flex-col space-y-3 bg-white shadow-md rounded-md">
+        <div className="mt-4 pb-12 lg:px-12 px-3 space-y-16 w-auto overflow-y-auto">
+          <div className="flex flex-wrap justify-between justify-items-center mt-2 w-full">
+            <div className="lg:w-[24%] py-3 my-3 flex flex-col space-y-3 text-[0.9rem] bg-white shadow-md rounded-md">
               <p className="self-center font-bold">Batch</p>
               <div className="self-start px-6 flex flex-col justify-between h-full pb-4 text-primary pt-2">
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <h1 className="font-bold">Batch Code: </h1>
                   <p>{batchData?.batchCode}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <h1 className="font-bold truncate">Batch Name: </h1>
                   <p>{batchData?.batchName}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <h1 className="font-bold">Courses: </h1>
                   <p>{batchData?.courses?.length}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <h1 className="font-bold">Students: </h1>
                   <p>{batchData?.students?.length}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <h1 className="font-bold">Batch Status: </h1>
                   <p>{batchData?.status === false ? "Closed" : "Active"}</p>
                 </div>
               </div>
             </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold  bg-white shadow-md rounded-md">
+            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="course"
                 type="Circular"
-                height="160px"
+                height="130px"
                 width="100%"
                 style={{ progressColor: "#1111111" }}
                 trackThickness={14}
@@ -242,11 +265,11 @@ const Main = () => {
               />
               <p className="self-center text-primary">Course Status</p>
             </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="student"
                 type="Circular"
-                height="160px"
+                height="130px"
                 width="100%"
                 trackThickness={14}
                 progressThickness={14}
@@ -264,11 +287,11 @@ const Main = () => {
               />
               <p className="self-center text-primary">Attendance</p>
             </div>
-            <div className="w-[24%] py-3 flex flex-col space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="classes"
                 type="Circular"
-                height="160px"
+                height="130px"
                 width="100%"
                 trackThickness={14}
                 progressThickness={14}
@@ -287,7 +310,7 @@ const Main = () => {
               <p className="self-center text-primary">Classes Held</p>
             </div>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 justify-between md:flex-row flex-col">
             <div className="bg-white shadow-sm rounded-md p-2">
               <LineGraph
                 lineCustomSeries={lineCustomSeries1}
@@ -295,7 +318,7 @@ const Main = () => {
                 LinePrimaryYAxis={LinePrimaryYAxis1}
                 chartId={"feedback"}
                 height={"420px"}
-                width={"560px"}
+                width={width}
               />
             </div>
             <div className="bg-white shadow-sm rounded-md p-2">
@@ -307,7 +330,8 @@ const Main = () => {
                     id="demo-select-small"
                     value={courseCode}
                     label="Course"
-                    onChange={(e) => handleChange(e)}>
+                    onChange={(e) => handleChange(e)}
+                  >
                     {batchData.courses.map((course) => (
                       <MenuItem value={course.courseCode}>
                         {course.courseCode}
@@ -323,7 +347,7 @@ const Main = () => {
                   LinePrimaryYAxis={LinePrimaryYAxis2}
                   chartId={"students"}
                   height={"420px"}
-                  width={"560px"}
+                  width={width}
                 />
               }
             </div>
