@@ -68,9 +68,9 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="flex h-full">
-          <div className="w-[18rem] h-full overflow-y-auto">
-            <div className="pt-2">
+        <div className="flex h-full w-full">
+          <div className="lg:w-[18rem] w-[15rem] h-full overflow-y-auto">
+            <div className="pt-2 w-full">
               {loading && <Spinner message={"Loading..."} />}
               {!loading &&
                 Object.keys(batchData).length !== 0 &&
@@ -79,7 +79,7 @@ const Main = () => {
                     key={index}
                     className={
                       currentCourseCode === item.courseCode
-                        ? "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
+                        ? "bg-slate-200 w-full shadow-xl font-semibold transition-all duration-100"
                         : ""
                     }>
                     <ListItem
@@ -98,7 +98,7 @@ const Main = () => {
                         />
                       </ListItemIcon>
 
-                      <div className="py-1">{item.courseName}</div>
+                      <div className="py-1 w-full">{item.courseName}</div>
                     </ListItem>
                     <Divider />
                   </div>
