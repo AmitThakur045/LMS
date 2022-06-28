@@ -86,7 +86,7 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
+        <div className="mt-4 flex flex-col pb-12 lg:px-12 px-2 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
           {courseData?.map((course, idx) => (
             <div key={idx} className="space-y-4">
               <div className="flex justify-between">
