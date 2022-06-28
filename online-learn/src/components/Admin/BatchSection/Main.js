@@ -42,31 +42,6 @@ const Main = () => {
     setSelectedBatch("");
   };
 
-  useEffect(() => {
-    if (Object.keys(batch).length !== 0) {
-      localStorage.removeItem("courses");
-      localStorage.removeItem("students");
-      localStorage.removeItem("courseCode");
-      localStorage.setItem("batch", JSON.stringify(batch));
-      handleClose();
-      let temp = [];
-      for (let i = 0; i < batch.courses?.length; i++) {
-        temp.push(batch.courses[i].courseCode);
-      }
-      dispatch(getCourses(temp));
-
-      dispatch(getStudents({ emails: batch.students }));
-    }
-  }, [batch]);
-
-  const [openTab, setOpenTab] = useState(false);
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("batch")) && openTab) {
-      window.open("/admin/batch/viewbatch");
-      setOpenTab(false);
-    }
-  }, [JSON.parse(localStorage.getItem("batch"))]);
-
   return (
     <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
       <Modal
@@ -96,8 +71,11 @@ const Main = () => {
               <Button
                 disabled={selectedBatch !== "" ? false : true}
                 onClick={() => {
-                  dispatch(getBatch({ batchCode: selectedBatch }));
-                  setOpenTab(true);
+                  localStorage.setItem(
+                    "batchCode",
+                    JSON.stringify(selectedBatch)
+                  );
+                  window.open("/admin/batch/viewbatch");
                 }}
                 className="w-[25%]"
                 variant="contained"

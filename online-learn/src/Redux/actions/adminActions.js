@@ -44,6 +44,7 @@ import {
   UPDATE_STATUS,
   UPDATE_BATCH_ADMIN,
   ADD_ORGANIZATION,
+  GET_BATCH_LESSON_VIDEO,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -341,7 +342,16 @@ export const getBatch = (formData) => async (dispatch) => {
     const { data } = await api.getBatch(formData);
     dispatch({ type: GET_BATCH, payload: data });
   } catch (error) {
-    // dispatch({ type: SET_ERRORS, payload: error });
+    dispatch({ type: SET_ERRORS, payload: error });
+  }
+};
+
+export const getBatchLessonVideo = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getBatchLessonVideo(formData);
+    dispatch({ type: GET_BATCH_LESSON_VIDEO, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error });
   }
 };
 

@@ -18,7 +18,10 @@ import {
   SET_ERRORS,
   UPDATE_COURSE_DATA,
 } from "../../../../../../Redux/actionTypes";
-import { updateCourseData } from "../../../../../../Redux/actions/adminActions";
+import {
+  getBatchLessonVideo,
+  updateCourseData,
+} from "../../../../../../Redux/actions/adminActions";
 import Spinner from "../../../../../../Utils/Spinner";
 import Loader from "../../../../../../Utils/Loader";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -36,6 +39,9 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 const Main = () => {
   const [batchData, setBatchData] = useState({});
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const store = useSelector((state) => state);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -49,7 +55,7 @@ const Main = () => {
   const [sectionLessonNumber, setSectionLessonNumber] = useState({});
   const dispatch = useDispatch();
   const [courseData, setCourseData] = useState({});
-  const batch = useSelector((state) => state.admin.batch);
+  const batch = useSelector((state) => state.admin.batchLessonVideo);
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
       setBatchData(batch);
@@ -81,6 +87,7 @@ const Main = () => {
     if (Object.keys(course).length === 0) {
       navigate("/admin/batch/course");
     }
+    dispatch(getBatchLessonVideo({ batchCode }));
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
