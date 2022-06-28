@@ -121,12 +121,13 @@ const Main = () => {
   };
 
   return (
-    <div className="mt-4 flex pb-12 px-12 space-x-6 overflow-y-scroll h-full overflow-x-hidden">
-      <div className="flex-[0.7] flex flex-col space-y-5">
+    <div className="mt-4 flex lg:flex-row flex-col-reverse pb-12 lg:px-12 px-2 lg:space-x-6 overflow-y-scroll h-full overflow-x-hidden">
+      <div className="lg:flex-[0.7] flex flex-col space-y-5">
         {problemData.map((problem, index) => (
           <div
             key={index}
-            className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4">
+            className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4"
+          >
             <div className="flex  ">
               <h1 className="bg-primary text-white rounded-full px-2 py-1">
                 {problem.forum}
@@ -136,7 +137,8 @@ const Main = () => {
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
-                id="lesson">
+                id="lesson"
+              >
                 <div className="flex items-center space-x-3">
                   <h1 className="py-2  text-[22px] font-bold text-primary">
                     {problem.title}
@@ -158,7 +160,8 @@ const Main = () => {
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
-                        id="lesson">
+                        id="lesson"
+                      >
                         <div className="flex justify-between items-center">
                           <div className="flex items-center space-x-2">
                             <Avatar
@@ -180,7 +183,8 @@ const Main = () => {
                 </div>
                 <form
                   onSubmit={(e) => addReply(e, index)}
-                  className="flex border-2 px-2 py-2 border-gray-300">
+                  className="flex border-2 px-2 py-2 border-gray-300"
+                >
                   <input
                     required
                     placeholder="Write a reply..."
@@ -191,7 +195,8 @@ const Main = () => {
                   />
                   <button
                     type="submit"
-                    className="text-blue-400 flex-[0.1] cursor-pointer hover:text-blue-600 duration-150 transition-all">
+                    className="text-blue-400 flex-[0.1] cursor-pointer hover:text-blue-600 duration-150 transition-all"
+                  >
                     Reply
                   </button>
                 </form>
@@ -207,7 +212,7 @@ const Main = () => {
           </div>
         ))}
       </div>
-      <div className="flex-[0.3] rounded-lg shadow-md shadow-gray-400 px-5 py-4 pb-5 space-y-4 h-fit min-h-[10rem]">
+      <div className="lg:flex-[0.3] rounded-lg shadow-md shadow-gray-400 px-5 py-4 pb-5 space-y-4 h-fit min-h-[10rem]">
         <div className="flex space-x-3 items-center ">
           <MdForum size={40} />
           <h1 className="font-bold text-[25px]">Forums</h1>
@@ -227,7 +232,8 @@ const Main = () => {
           <h1 className="text-gray-600">Lounge - General</h1>
         </div>
         <div
-          className={` ${openLounge ? "flex" : "hidden"} flex-col space-y-3`}>
+          className={` ${openLounge ? "flex" : "hidden"} flex-col space-y-3`}
+        >
           {forumData.map((data, idx) => (
             <div className="flex space-x-3 items-center">
               <AiFillDelete
@@ -236,14 +242,16 @@ const Main = () => {
               />
               <h1
                 key={idx}
-                className="ml-7 bg-gray-200 w-[10rem] truncate py-1 px-2 rounded-md">
+                className="ml-7 bg-gray-200 w-[10rem] truncate py-1 px-2 rounded-md"
+              >
                 {data}
               </h1>
             </div>
           ))}
           <form
             onSubmit={(e) => addOption(e)}
-            className="flex space-x-3 items-center">
+            className="flex space-x-3 items-center"
+          >
             <RiAddFill
               onClick={(e) => addOption(e)}
               type="button"
