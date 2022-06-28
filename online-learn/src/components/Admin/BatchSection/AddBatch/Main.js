@@ -110,14 +110,15 @@ const Main = () => {
   };
 
   return (
-    <div className="flex overflow-hidden h-full space-x-5 px-12 mb-5">
+    <div className="flex lg:flex-row flex-col overflow-y-auto h-full space-x-5 lg:px-12 px-2 mb-5">
       <form
         onSubmit={handleSubmit}
-        className="w-[80%] rounded-3xl bg-[#FAFBFF] px-10 py-5 flex flex-col space-y-4">
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
+      >
         <p className="text-[#8d91b1]">Add Batch</p>
-        <div className="flex space-x-16">
-          <div className="flex flex-col w-[100%] space-y-6">
-            <div className="flex space-x-8 ">
+        <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
+          <div className="flex flex-col sm:w-[90%] md:w-[60%] w-full space-y-6">
+            <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
               <TextField
                 required
                 type="text"
@@ -155,7 +156,8 @@ const Main = () => {
                   label="Organization Name"
                   onChange={(e) =>
                     setValues({ ...values, organizationName: e.target.value })
-                  }>
+                  }
+                >
                   <MenuItem value={user.result.organizationName}>
                     {user.result.organizationName}
                   </MenuItem>
@@ -168,11 +170,13 @@ const Main = () => {
                   label="Organization Name"
                   onChange={(e) =>
                     setValues({ ...values, organizationName: e.target.value })
-                  }>
+                  }
+                >
                   {allOrganizationName?.map((organizationName, idx) => (
                     <MenuItem
                       key={idx}
-                      value={organizationName.organizationName}>
+                      value={organizationName.organizationName}
+                    >
                       {organizationName.organizationName}
                     </MenuItem>
                   ))}
@@ -193,7 +197,8 @@ const Main = () => {
                   onChange={handleCourse}
                   input={<OutlinedInput label="Batch" />}
                   renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}>
+                  MenuProps={MenuProps}
+                >
                   {courses.map((course) => (
                     <MenuItem key={course.value} value={course.value}>
                       <Checkbox
@@ -205,7 +210,7 @@ const Main = () => {
                 </Select>
               </FormControl>
             </div>
-            <div className="flex border-[1px] border-gray-300 items-center justify-between px-4 h-[3.5rem] w-[40%]">
+            <div className="flex border-[1px] border-gray-300 items-center justify-between px-4 h-[3.5rem] w-full">
               <h1 className="">Students</h1>
               <CSVReader
                 className=""
@@ -227,7 +232,8 @@ const Main = () => {
         </div>
         <button
           type="submit"
-          className="self-end bg-secondary h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-secondaryHover transition-all duration-150">
+          className="self-end bg-secondary h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-secondaryHover transition-all duration-150"
+        >
           Submit
         </button>
         {loading && <Spinner message="Adding Batch" />}
@@ -236,7 +242,7 @@ const Main = () => {
         )}
       </form>
 
-      <div className="bg-[#FAFBFF] w-[20%] flex flex-col px-5 py-5 rounded-3xl space-y-5">
+      <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col flex-row lg:items-center items-start lg:pl-5 py-5 rounded-3xl lg:space-y-5 space-x-3 lg:space-x-0">
         <ActiveBatch />
         <RecentNotification />
       </div>
