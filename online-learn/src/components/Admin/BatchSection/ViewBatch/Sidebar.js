@@ -51,20 +51,21 @@ const Sidebar = () => {
     }
   }, []);
   return (
-    <div className="w-[18.75rem] bg-[#292828] flex flex-col  py-[28px] justify-between">
+    <div className="bg-[#292828] h-screen flex flex-col py-[20px] justify-between">
       <div className="space-y-8">
-        <div className="flex items-center justify-center my-4 space-x-2">
+        <div className="flex items-center justify-center my-2 space-x-2">
           <img className="h-16" src={logo} alt="" />
         </div>
-        <div className="space-y-4 flex flex-col items-center ">
+        <div className="w-full space-y-3 flex flex-col items-center p-0">
           <NavLink
             to="/admin/batch/viewbatch"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <AiOutlineAppstore fontSize={20} />
-              <p className="text-[14px]">
+              <p className="text-[12px]">
                 {Object.keys(batch).length !== 0 ? batch.batchCode : "Batch"}
               </p>
             </div>
@@ -74,10 +75,11 @@ const Sidebar = () => {
             to="/admin/batch/course"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <RiAdminLine fontSize={20} />
-              <p className="text-[14px]">Course</p>
+              <p className="text-[12px]">Course</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
@@ -85,10 +87,11 @@ const Sidebar = () => {
             to="/admin/batch/date"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <AiOutlineCalendar fontSize={20} />
-              <p className="text-[14px]">Date</p>
+              <p className="text-[12px]">Date</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
@@ -96,10 +99,11 @@ const Sidebar = () => {
             to="/admin/batch/student"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <VscLibrary fontSize={20} />
-              <p className="text-[14px]">Student</p>
+              <p className="text-[12px]">Student</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
@@ -107,10 +111,11 @@ const Sidebar = () => {
             to="/admin/batch/assignment"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <BsPerson fontSize={20} />
-              <p className="text-[14px]">Assignment</p>
+              <p className="text-[12px]">Assignment</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
@@ -118,18 +123,21 @@ const Sidebar = () => {
             to="/admin/batch/community"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
-            <div className="flex items-center space-x-6">
+            }
+          >
+            <div className="flex items-center space-x-2">
               <HiOutlineUserGroup fontSize={20} />
-              <p className="text-[14px]">Community</p>
+              <p className="text-[12px]">Community</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>
         </div>
       </div>
-      <div className="flex items-center flex-col  text-white">
-        <h1 className="font-bold">Bessalani LMS Admin</h1>
-        <p>@ 2022 All right reserved</p>
+      <div className="flex items-center flex-col text-[0.92rem] text-white w-full">
+        <h1 className="font-bold w-full text-center">Bessalani LMS Admin</h1>
+        <p className="w-full text-center">
+          @ {new Date().getFullYear()} All right reserved
+        </p>
       </div>
     </div>
   );
