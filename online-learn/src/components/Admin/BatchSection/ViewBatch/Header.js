@@ -129,7 +129,7 @@ const Header = ({ back, nav }) => {
   return (
     <>
       {!isLoading && (
-        <div className="flex justify-between w-full  pl-12 pr-12 py-10">
+        <div className="flex justify-between w-full pl-12 pr-12 py-10">
           <Modal
             open={openAdminModal}
             onClose={handleAdminModalClose}
@@ -232,7 +232,7 @@ const Header = ({ back, nav }) => {
             </Box>
           </Modal>
 
-          <div className="flex items-center space-x-48">
+          <div className="flex items-center space-x-5">
             <div className="flex items-center space-x-2">
               {back ? (
                 <Link to={`/admin/batch/${nav}`} className="cursor-pointer">
