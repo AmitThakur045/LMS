@@ -160,7 +160,7 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="">
+        <div className="overflow-y-auto">
           <Modal
             open={open}
             onClose={handleClose}
@@ -205,28 +205,28 @@ const Main = () => {
               </div>
             </Box>
           </Modal>
-          <div className="flex flex-col">
-            <div className="flex ml-[50px]">
+          <div className="flex flex-col lg:px-10 px-2">
+            <div className="flex">
               <Button onClick={handleOpen} variant="contained">
                 {newEvent.link ? "Update Batch Link" : "Add Batch Link"}
               </Button>
             </div>
-            <div className="flex">
-              <div className="overflow-y-auto flex-[0.7]">
+            <div className="flex lg:flex-row flex-col w-full mt-4">
+              <div className="overflow-y-auto lg:flex-[0.7] flex lg:justify-start justify-center w-full">
                 <Calendar
                   localizer={localizer}
                   events={allEvents}
                   startAccessor="start"
                   endAccessor="end"
-                  style={{ height: 500, margin: "50px" }}
+                  style={{ height: 500 }}
                 />
               </div>
-              <div className="flex-[0.3]">
+              <div className="lg:flex-[0.3] flex flex-col items-center pr-3">
                 <form
                   onSubmit={handleAddEvent}
-                  className="w-full h-full space-x-5 px-10 mb-5">
+                  className="w-full h-full space-x-5 px-2 mb-5">
                   <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
-                  <div className="flex flex-col w-[100%] space-y-6">
+                  <div className="flex flex-col w-full space-y-6">
                     <div className="flex justify-between w-full">
                       <TextField
                         required
