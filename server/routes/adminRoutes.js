@@ -55,6 +55,7 @@ import {
   updateStatus,
   updateBatchAdmin,
   addOrganizationName,
+  getBatchLessonVideo,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -101,6 +102,7 @@ router.get("/getallbatchcodes", auth, getAllBatchCodes);
 router.post("/getbatchcodesbysubadmin", auth, getBatchCodesBySubAdmin);
 router.get("/getallcoursecodes", auth, getAllCourseCodes);
 router.post("/getbatch", auth, getBatch);
+router.post("/getbatchlessonvideo", auth, getBatchLessonVideo);
 router.post("/addevent", auth, addEvent);
 router.post("/getbatchevent", auth, getBatchEvent);
 router.post("/uploadattendance", auth, uploadAttendance);

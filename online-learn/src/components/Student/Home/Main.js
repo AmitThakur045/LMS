@@ -62,7 +62,10 @@ const Main = ({ courseList, batchData }) => {
             <div
               onClick={() => {
                 setOpenCourse(data);
-                localStorage.setItem("index", JSON.stringify(i));
+                localStorage.setItem(
+                  "courseCode",
+                  JSON.stringify(data.courseCode)
+                );
               }}
               key={i}
               className="flex cursor-pointer hover:scale-105 duration-150 transition-all bg-white shadow-md rounded-2xl p-3 items-start justify-start">

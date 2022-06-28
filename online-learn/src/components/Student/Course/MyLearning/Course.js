@@ -6,13 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Utils/Loader";
 import { getBatch } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
+import { getBatchLessonVideoByCourse } from "../../../../Redux/actions/studentActions";
 
 const Course = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [courseCode, setCourseCode] = useState(
+    JSON.parse(localStorage.getItem("courseCode"))
+  );
+
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const batch = useSelector((state) => state.admin.batch);
+  const batch = useSelector((state) => state.admin.batchLessonVideo);
   const [batchData, setBatchData] = useState({});
 
   useEffect(() => {
@@ -26,11 +31,14 @@ const Course = () => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      dispatch(
-        getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
+      if (courseCode !== null) {
+        dispatch(
+          getBatchLessonVideoByCourse({
+            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            courseCode,
+          })
+        );
+      }
     }
   }, []);
 

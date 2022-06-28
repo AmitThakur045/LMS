@@ -6,6 +6,7 @@ import {
   GET_ASSIGNMENT_BY_BATCH_CODE,
   SUBMIT_ASSIGNMENT,
   SIGN_UP,
+  GET_BATCH_LESSON_VIDEO,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -62,5 +63,14 @@ export const studentSignUp = (formData) => async (dispatch) => {
     dispatch({ type: SIGN_UP, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const getBatchLessonVideoByCourse = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getBatchLessonVideoByCourse(formData);
+    dispatch({ type: GET_BATCH_LESSON_VIDEO, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error });
   }
 };

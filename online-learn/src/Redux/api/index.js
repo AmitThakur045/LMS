@@ -64,6 +64,8 @@ export const getAllCourseCodes = () => API.get("/api/admin/getallcoursecodes");
 export const getAllOrganizationName = () =>
   API.get("/api/admin/getallorganizationname");
 export const getBatch = (data) => API.post("/api/admin/getbatch", data);
+export const getBatchLessonVideo = (data) =>
+  API.post("/api/admin/getbatchlessonvideo", data);
 export const addEvent = (event) => API.post("/api/admin/addevent", event);
 export const getBatchEvent = (batchCode) =>
   API.post("/api/admin/getbatchevent", batchCode);
@@ -114,3 +116,5 @@ export const submitAssignment = (formData) =>
   API.post("/api/student/submitassignment", formData);
 export const studentSignUp = (formData) =>
   API.post("/api/student/studentsignup", formData);
+export const getBatchLessonVideoByCourse = (data) =>
+  API.post("/api/student/getbatchlessonvideobycourse", data);

@@ -50,7 +50,10 @@ export const studentLogin = async (req, res) => {
   };
 
   try {
-    const existingStudent = await Student.findOne({ email });
+    const existingStudent = await Student.findOne(
+      { email },
+      { email: 1, firstName: 1, lastName: 1, batchCode: 1, password: 1 }
+    );
     if (!existingStudent) {
       errors.emailError = "Learner doesn't exist.";
       return res.status(404).json(errors);
@@ -96,8 +99,10 @@ export const studentLogin = async (req, res) => {
 export const getCourseByBatchCode = async (req, res) => {
   try {
     const { batchCode } = req.body;
-    console.log("batchCode", batchCode);
-    const courseCodeList = await Batch.findOne({ batchCode });
+    const courseCodeList = await Batch.findOne(
+      { batchCode },
+      { courses: { courseCode: 1 } }
+    );
 
     const data = [];
     let len = courseCodeList.courses.length;
@@ -109,7 +114,6 @@ export const getCourseByBatchCode = async (req, res) => {
       data.push(course);
     }
 
-    // console.log("data", data);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json(error);
@@ -119,21 +123,20 @@ export const getCourseByBatchCode = async (req, res) => {
 export const getAllEvents = async (req, res) => {
   try {
     const { batchCode } = req.body;
-    console.log("batchCode", batchCode);
 
     let len = batchCode.length;
     let data = [];
 
-    console.log("len", len);
     for (let i = 0; i < len; i++) {
-      console.log("code", batchCode[i]);
-      const batch = await Batch.findOne({ batchCode: batchCode[i] });
+      const batch = await Batch.findOne(
+        { batchCode: batchCode[i] },
+        { schedule: 1 }
+      );
       batch.schedule.forEach((element) => {
         data.push(element);
       });
     }
 
-    // console.log("data", data);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json(error);
@@ -176,7 +179,10 @@ export const submitAssignment = async (req, res) => {
       }
     }
 
-    const student = await Student.findOne({ email });
+    const student = await Student.findOne(
+      { email },
+      { assignment: 1, performance: 1 }
+    );
     flag = false;
 
     if (student) {
@@ -216,7 +222,7 @@ export const studentSignUp = async (req, res) => {
   try {
     const { firstName, lastName, email, contactNumber, dob } = req.body;
     const errors = { studentError: String };
-    const existingStudent = await Student.findOne({ email });
+    const existingStudent = await Student.countDocuments({ email });
 
     if (existingStudent) {
       errors.studentError = "Student already exists";
@@ -235,12 +241,33 @@ export const studentSignUp = async (req, res) => {
     });
     await newStudent.save();
 
-    return res.status(200).json({
-      success: true,
-      message: "Student added successfully",
-      response: newStudent,
-    });
+    return res.status(200).json("Student added successfully");
   } catch (error) {
     res.status(500).json(error);
+  }
+};
+
+export const getBatchLessonVideoByCourse = async (req, res) => {
+  try {
+    const { batchCode, courseCode } = req.body;
+    const errors = { noBatchError: String };
+    const batch = await Batch.findOne(
+      { batchCode },
+      {
+        batchCode: 1,
+        batchName: 1,
+        status: 1,
+        subAdmin: 1,
+        organizationName: 1,
+        courses: { $elemMatch: { courseCode: courseCode } },
+      }
+    );
+    if (batch === null) {
+      errors.noBatchError = "No Batch Found";
+      return res.status(404).json(errors);
+    }
+    res.status(200).json(batch);
+  } catch (error) {
+    console.log("Backend Error", error);
   }
 };
