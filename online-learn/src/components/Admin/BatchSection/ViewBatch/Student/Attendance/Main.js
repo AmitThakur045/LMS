@@ -165,8 +165,8 @@ const Main = () => {
           <Loader isLoading={isLoading} />
         </div>
       ) : (
-        <div className="mt-4 flex flex-col pb-12 px-12 space-y-6 overflow-y-scroll overflow-x-hidden h-full ">
-          <div className="flex flex-col  space-y-3 w-[73rem] rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
+        <div className="mt-4 flex flex-col pb-12 lg:px-12 px-2 space-y-6 overflow-y-scroll overflow-x-hidden h-full ">
+          <div className="flex flex-col  space-y-3 w-full rounded-lg py-5 px-4 pr-6 h-full bg-[#f7f7f7]">
             <div className="flex justify-center">
               <div className="text-[18px] font-bold text-primary mb-4">
                 Attendance Report of {courseCode}
@@ -177,7 +177,7 @@ const Main = () => {
                 {eventDates.map((date, idx) => (
                   <div key={idx} className="flex">
                     {idx === 0 ? (
-                      <div className="shadow-md bg-white font-semibold text-[#111111] w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
+                      <div className="shadow-md bg-white font-semibold text-[#111111] w-[12rem] flex items-center px-3 justify-start h-[2.5rem]">
                         Name
                       </div>
                     ) : (
@@ -194,7 +194,7 @@ const Main = () => {
                     {eventDates?.map((date, idx) => (
                       <div key={idx} className="flex ">
                         {idx === 0 ? (
-                          <div className="shadow-md bg-white font-semibold text-primary w-[15rem] flex items-center px-3 justify-start h-[2.5rem]">
+                          <div className="shadow-md bg-white font-semibold text-primary w-[12rem] flex items-center px-3 justify-start h-[2.5rem]">
                             {student.firstName} {student.lastName}
                           </div>
                         ) : (

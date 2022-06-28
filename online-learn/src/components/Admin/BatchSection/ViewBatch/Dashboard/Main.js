@@ -242,7 +242,7 @@ const Main = () => {
                 </div>
               </div>
             </div>
-            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <div className="lg:w-[13rem] py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="course"
                 type="Circular"
@@ -265,7 +265,7 @@ const Main = () => {
               />
               <p className="self-center text-primary">Course Status</p>
             </div>
-            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <div className="lg:w-[13rem] py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="student"
                 type="Circular"
@@ -287,7 +287,7 @@ const Main = () => {
               />
               <p className="self-center text-primary">Attendance</p>
             </div>
-            <div className="py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
+            <div className="lg:w-[13rem] py-3 my-3 flex flex-col items-center justify-center space-y-3 font-semibold bg-white shadow-md rounded-md">
               <ProgressBarComponent
                 id="classes"
                 type="Circular"
@@ -310,7 +310,7 @@ const Main = () => {
               <p className="self-center text-primary">Classes Held</p>
             </div>
           </div>
-          <div className="flex space-x-4 justify-between md:flex-row flex-col">
+          <div className="flex space-x-4 justify-between lg:flex-row flex-col">
             <div className="bg-white shadow-sm rounded-md p-2">
               <LineGraph
                 lineCustomSeries={lineCustomSeries1}
