@@ -63,13 +63,6 @@ const ActiveBatch = () => {
       dispatch(getAllBatchCodes());
     }
   }, []);
-  useEffect(() => {
-    if (Object.keys(batch).length !== 0) {
-      localStorage.removeItem("batchCode");
-      localStorage.removeItem("courseCode");
-    } else {
-    }
-  }, [batch]);
 
   return (
     <div className="lg:h-[60%] w-full h-[50%] rounded-b-3xl shadow-md bg-white flex flex-col py-3">

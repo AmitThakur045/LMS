@@ -19,7 +19,7 @@ import {
   SET_ERRORS,
 } from "../../../../../Redux/actionTypes";
 import {
-  getBatch,
+  getBatchLessonVideo,
   getCourse,
   getCourses,
 } from "../../../../../Redux/actions/adminActions";
@@ -45,11 +45,12 @@ const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const batch = useSelector((state) => state.admin.batch);
+  const batch = useSelector((state) => state.admin.batchLessonVideo);
   const [courseData, setCourseData] = useState([]);
   const courses = useSelector((state) => state.admin.courses);
   const [batchData, setBatchData] = useState({});
   useEffect(() => {
+    dispatch(getBatchLessonVideo({ batchCode }));
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
