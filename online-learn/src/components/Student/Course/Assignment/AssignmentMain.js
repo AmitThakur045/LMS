@@ -109,7 +109,7 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
 
                     <label htmlFor={`answer-${i}`} type="button">
                       <div className="flex text-white bg-[#6EAEE9] rounded-2xl cursor-pointer h-[2rem] w-[7rem] space-x-1 items-center justify-center">
-                        <div>{isSelected ? `Uploaded` : `Upload`}</div>
+                        <div>{isSelected[i] ? `Uploaded` : `Upload`}</div>
                         <CloudUploadIcon />
                       </div>
                     </label>
