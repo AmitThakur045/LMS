@@ -14,9 +14,15 @@ import {
 } from "@mui/material";
 const CourseMain = ({ batchData }) => {
   const [playVideo, setPlayVideo] = useState(false);
+  const [index, setIndex] = useState(JSON.parse(localStorage.getItem("index")));
   const [showVideo, setShowVideo] = useState(false);
   const handle = useFullScreenHandle();
   const [video, setVideo] = useState("");
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("index"))) {
+      setIndex(JSON.parse(localStorage.getItem("index")));
+    }
+  }, []);
 
   const handleVideo = (sectionIdx, lessonIdx) => {};
 
@@ -27,66 +33,68 @@ const CourseMain = ({ batchData }) => {
           <div className="space-y-3">
             {Object.keys(batchData).length !== 0 && (
               <>
-                {batchData.courses[0].lessonVideo.map((section, sectionIdx) => (
-                  <Accordion key={sectionIdx} aria-disabled>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="section">
-                      <div className="flex items-center space-x-10 ">
-                        <div className={` flex justify-center items-center`}>
-                          <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
+                {batchData.courses[index].lessonVideo.map(
+                  (section, sectionIdx) => (
+                    <Accordion key={sectionIdx} aria-disabled>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="section">
+                        <div className="flex items-center space-x-10 ">
+                          <div className={` flex justify-center items-center`}>
+                            <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
+                          </div>
+                          <div className="w-full font-semibold">
+                            {section.sectionName}
+                          </div>
                         </div>
-                        <div className="w-full font-semibold">
-                          {section.sectionName}
-                        </div>
-                      </div>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      {section.lesson.map((lesson, lessonIdx) => (
-                        <Accordion aria-disabled key={lessonIdx}>
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="lesson">
-                            <div className="flex items-center space-x-10 ">
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        {section.lesson.map((lesson, lessonIdx) => (
+                          <Accordion aria-disabled key={lessonIdx}>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="lesson">
+                              <div className="flex items-center space-x-10 ">
+                                <div
+                                  className={` flex justify-center items-center`}>
+                                  <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
+                                </div>
+                                <div className="w-full font-semibold">
+                                  {lesson.lessonName}
+                                </div>
+                              </div>
+                            </AccordionSummary>
+                            <AccordionDetails>
                               <div
-                                className={` flex justify-center items-center`}>
-                                <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
-                              </div>
-                              <div className="w-full font-semibold">
-                                {lesson.lessonName}
-                              </div>
-                            </div>
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <div
-                              onClick={() => {
-                                setPlayVideo(!playVideo);
-                                setShowVideo(true);
-                                setVideo(lesson.video);
-                              }}
-                              className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal">
-                              <div className="flex items-center space-x-3">
-                                <PlayCircleOutlineIcon fontSize="medium" />
+                                onClick={() => {
+                                  setPlayVideo(!playVideo);
+                                  setShowVideo(true);
+                                  setVideo(lesson.video);
+                                }}
+                                className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal">
+                                <div className="flex items-center space-x-3">
+                                  <PlayCircleOutlineIcon fontSize="medium" />
 
-                                <p>
-                                  {sectionIdx + 1}
-                                  {"."}
-                                  {lessonIdx + 1} Lesson Video
-                                </p>
+                                  <p>
+                                    {sectionIdx + 1}
+                                    {"."}
+                                    {lessonIdx + 1} Lesson Video
+                                  </p>
+                                </div>
+                                <div className="flex items-center space-x-5">
+                                  <div className="bg-[#E1E1E1] w-14 h-2 rounded-full"></div>
+                                  <p>{handleVideo(sectionIdx, lessonIdx)}</p>
+                                </div>
                               </div>
-                              <div className="flex items-center space-x-5">
-                                <div className="bg-[#E1E1E1] w-14 h-2 rounded-full"></div>
-                                <p>{handleVideo(sectionIdx, lessonIdx)}</p>
-                              </div>
-                            </div>
-                          </AccordionDetails>
-                        </Accordion>
-                      ))}
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
+                            </AccordionDetails>
+                          </Accordion>
+                        ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  )
+                )}
               </>
             )}
           </div>

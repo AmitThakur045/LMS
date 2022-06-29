@@ -154,7 +154,7 @@ const CourseHeader = ({ batchData }) => {
         <div className="text-white text-[24px] space-y-1 md:flex-[0.8] flex-col pl-6 py-4">
           {Object.keys(batchData).length !== 0 && (
             <>
-              <h1>{batchData?.courses[0]?.courseName}</h1>
+              <h1>{batchData?.courses[index]?.courseName}</h1>
               <p className="text-[#E4BE34] lg:text-[14px] text-[12px]">
                 0 Classes completed | 0% My-Learning videos watched | 0/1
                 Projects Done
