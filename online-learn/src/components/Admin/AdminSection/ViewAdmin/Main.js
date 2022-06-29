@@ -33,15 +33,6 @@ const Main = () => {
       <div className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">View Admin</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
-          <div className="w-[40%] flex items-start justify-center">
-            <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
-              <img
-                src={admin.avatar}
-                className="w-full h-full object-cover"
-                alt="Profile"
-              />
-            </div>
-          </div>
           <div className="flex flex-col sm:w-[60%] w-full space-y-6">
             <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
               <TextField
@@ -83,15 +74,6 @@ const Main = () => {
                 className="bg-white w-[40%]"
                 value={admin.dob}
               />
-              <TextField
-                aria-disabled
-                type="number"
-                id="outlined-basic"
-                label="Contact Number"
-                variant="outlined"
-                className="bg-white w-[60%]"
-                value={admin.contactNumber}
-              />
             </div>
             <div className="flex justify-between ">
               <FormControl aria-disabled className="w-[47%]">
@@ -100,8 +82,7 @@ const Main = () => {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={admin.sub}
-                  label="Sub Admin"
-                >
+                  label="Sub Admin">
                   <MenuItem value="true">Yes</MenuItem>
                   <MenuItem value="false">No</MenuItem>
                 </Select>

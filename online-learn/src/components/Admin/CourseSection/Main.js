@@ -213,7 +213,6 @@ const Main = () => {
                         {user.result.sub === "false" ? (
                           <MenuItem
                             onClick={() => {
-                              handleOpenDeleteModal();
                               handleClose();
                             }}>
                             Delete Course
@@ -221,7 +220,6 @@ const Main = () => {
                         ) : (
                           <MenuItem
                             onClick={() => {
-                              setShowSubAdminModal(true);
                               handleClose();
                             }}>
                             Delete Course

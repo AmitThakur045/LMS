@@ -274,7 +274,7 @@ const Main = () => {
             />
             <div className="shadow-sm rounded-sm shadow-gray-400 py-6 px-4 space-y-4">
               <h1 className="mb-7">
-                Click on Tick Icon to mark it's completion
+                Click on Lesson Tick Icon to mark it's completion
               </h1>
               {courseData.section.map((sectionData, sectionIdx) => (
                 <div
@@ -334,7 +334,7 @@ const Main = () => {
                           </div>
                         )}
                       </label>
-                      <input
+                      {/* <input
                         className="hidden"
                         id={`video-${sectionIdx}-${lessonIdx}`}
                         type="file"
@@ -345,7 +345,7 @@ const Main = () => {
                           });
                           handleVideoUploadButton(e);
                         }}
-                      />
+                      /> */}
                     </div>
                   ))}
                 </div>
@@ -354,6 +354,7 @@ const Main = () => {
             <Button
               size="large"
               type="button"
+              disabled={loading}
               onClick={() => updateChanges()}
               color="error"
               className="w-[7rem] self-center"

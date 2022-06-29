@@ -124,7 +124,7 @@ const Main = () => {
                 <AiOutlineSearch fontSize={20} color="#696969" />
                 <input
                   onChange={(event) => handleSearch(event)}
-                  placeholder="Quick Search Admin"
+                  placeholder="Quick Search Email"
                   className="bg-[#ffffff] placeholder:text-[#A5A4A6]  placeholder:text-[12px] flex w-full outline-none "
                   type="text"
                 />
@@ -160,7 +160,7 @@ const Main = () => {
                   </h1>
                   <h1 className="col-span-3 text-[13px] font-bold">Email</h1>
                   <h1 className="col-span-2 text-[13px] font-bold">
-                    Contact Number
+                    Sub Admin
                   </h1>
                   <h1 className="col-span-3 text-[13px] font-bold">
                     Organization Name
@@ -202,7 +202,7 @@ const Main = () => {
                         dispatch({ type: GET_ADMIN, payload: ad });
                       }}
                       className="col-span-2 font-semibold text-[13px] cursor-pointer">
-                      {ad.contactNumber}
+                      {ad.sub === "true" ? "Yes" : "No"}
                     </p>
                     <p
                       onClick={() => {

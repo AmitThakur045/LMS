@@ -61,7 +61,7 @@ const Main = () => {
     (state) => state.admin.allOrganizationName
   );
   useEffect(() => {
-    if (store.errors || store.admin.adminAdded) {
+    if (Object.keys(store.errors).length !== 0 || store.admin.adminAdded) {
       setLoading(false);
       if (store.admin.adminAdded) {
         if (user.result.sub === "true") {
@@ -85,8 +85,6 @@ const Main = () => {
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_ADMIN, payload: false });
       }
-    } else {
-      setLoading(true);
     }
   }, [store.errors, store.admin.adminAdded]);
 
@@ -200,6 +198,7 @@ const Main = () => {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
             Submit
           </button>

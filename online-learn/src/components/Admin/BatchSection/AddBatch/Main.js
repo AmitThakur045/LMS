@@ -61,19 +61,19 @@ const Main = () => {
       setValues({ ...values, batchCode: "" });
     }
   }, [store.errors]);
-
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
     dispatch(getAllCourseCodes());
     dispatch(getAllOrganizationName());
   }, []);
 
-  const courses = useSelector((store) => store.admin.allCourse);
+  const courses = useSelector((store) => store.admin.allCourseCodes);
+  console.log(courses);
   const allOrganizationName = useSelector(
     (store) => store.admin.allOrganizationName
   );
   useEffect(() => {
-    if (store.errors || store.admin.batchAdded) {
+    if (Object.keys(store.errors).length !== 0 || store.admin.batchAdded) {
       setLoading(false);
       if (store.admin.batchAdded) {
         setValues({
@@ -87,8 +87,6 @@ const Main = () => {
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_BATCH, payload: false });
       }
-    } else {
-      setLoading(true);
     }
   }, [store.errors, store.admin.batchAdded]);
 
@@ -113,8 +111,7 @@ const Main = () => {
     <div className="flex lg:flex-row flex-col overflow-y-auto h-full space-x-5 lg:px-12 px-2 mb-5">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
-      >
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">Add Batch</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="flex flex-col sm:w-[90%] md:w-[60%] w-full space-y-6">
@@ -156,8 +153,7 @@ const Main = () => {
                   label="Organization Name"
                   onChange={(e) =>
                     setValues({ ...values, organizationName: e.target.value })
-                  }
-                >
+                  }>
                   <MenuItem value={user.result.organizationName}>
                     {user.result.organizationName}
                   </MenuItem>
@@ -170,13 +166,11 @@ const Main = () => {
                   label="Organization Name"
                   onChange={(e) =>
                     setValues({ ...values, organizationName: e.target.value })
-                  }
-                >
+                  }>
                   {allOrganizationName?.map((organizationName, idx) => (
                     <MenuItem
                       key={idx}
-                      value={organizationName.organizationName}
-                    >
+                      value={organizationName.organizationName}>
                       {organizationName.organizationName}
                     </MenuItem>
                   ))}
@@ -197,8 +191,7 @@ const Main = () => {
                   onChange={handleCourse}
                   input={<OutlinedInput label="Batch" />}
                   renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
+                  MenuProps={MenuProps}>
                   {courses.map((course) => (
                     <MenuItem key={course.value} value={course.value}>
                       <Checkbox
@@ -231,9 +224,9 @@ const Main = () => {
           </div>
         </div>
         <button
+          disabled={loading}
           type="submit"
-          className="self-end bg-secondary h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-secondaryHover transition-all duration-150"
-        >
+          className="self-end bg-secondary h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-secondaryHover transition-all duration-150">
           Submit
         </button>
         {loading && <Spinner message="Adding Batch" />}

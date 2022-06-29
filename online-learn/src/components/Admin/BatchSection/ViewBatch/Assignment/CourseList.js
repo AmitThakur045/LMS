@@ -12,7 +12,12 @@ import {
   addAssignment,
   getStudentByAssignmentCode,
 } from "../../../../../Redux/actions/adminActions";
-import { ADD_ASSIGNMENT } from "../../../../../Redux/actionTypes";
+import {
+  ADD_ASSIGNMENT,
+  GET_STUDENT_BY_ASSIGNMENT_CODE,
+  SET_ERRORS,
+} from "../../../../../Redux/actionTypes";
+import Spinner from "../../../../../Utils/Spinner";
 
 const style = {
   position: "absolute",
@@ -20,7 +25,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 500,
-  height: 350,
+
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 10,
@@ -43,13 +48,13 @@ const CourseList = ({ currentList, courseCode }) => {
   });
   const [studentList, setStudentList] = useState([]);
   const [currentAssignmentCode, setCurrentAssignmentCode] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState({});
   const [open, setOpen] = useState(false);
   const [assignmentName, setAssignmentName] = useState("");
   const [assignmentDescription, setAssignmentDescription] = useState("");
   const [newAssignment, setNewAssignment] = useState();
-
+  const [addAssignmentLoading, setAddAssignmentLoading] = useState(false);
   const store = useSelector((state) => state);
 
   const handleClose = () => {
@@ -80,7 +85,7 @@ const CourseList = ({ currentList, courseCode }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    setAddAssignmentLoading(true);
     const batchCode = batchData.batchCode;
 
     let assignmentNo = currentList.length + 1;
@@ -100,6 +105,7 @@ const CourseList = ({ currentList, courseCode }) => {
 
   useEffect(() => {
     if (store.admin.assignmentAdded) {
+      setAddAssignmentLoading(false);
       setOpen(false);
       dispatch({ type: ADD_ASSIGNMENT, payload: false });
       setValue({
@@ -113,17 +119,23 @@ const CourseList = ({ currentList, courseCode }) => {
       });
     }
   }, [store.admin.assignmentAdded]);
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setLoading(false);
+      dispatch({ type: GET_STUDENT_BY_ASSIGNMENT_CODE, payload: [] });
+    }
+  }, [store.errors]);
 
   useEffect(() => {
     if (assignmentStudent.length !== 0) {
+      setLoading(false);
+
       setStudentList(assignmentStudent);
     }
-    // console.log("studentList", studentList);
   }, [assignmentStudent]);
 
   useEffect(() => {
     if (currentList.length !== 0) {
-      console.log(currentList[0].assignmentCode);
       dispatch(
         getStudentByAssignmentCode({
           assignmentCode: currentList[0].assignmentCode,
@@ -140,11 +152,15 @@ const CourseList = ({ currentList, courseCode }) => {
 
   useEffect(() => {
     if (currentAssignmentCode !== "") {
+      setLoading(true);
+      dispatch({ type: SET_ERRORS, payload: {} });
+      setStudentList([]);
       dispatch(
         getStudentByAssignmentCode({ assignmentCode: currentAssignmentCode })
       );
     }
   }, [currentAssignmentCode]);
+  console.log(currentAssignmentCode);
 
   return (
     <>
@@ -158,15 +174,13 @@ const CourseList = ({ currentList, courseCode }) => {
                   className={
                     currentAssignmentCode === item.assignmentCode &&
                     "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                  }
-                >
+                  }>
                   <div className="flex items-center">
                     <ListItem
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }
-                    >
+                      }>
                       <div>
                         <div className="flex text-[1.3rem] text-slate-700 space-x-2">
                           <p>Assignment</p>
@@ -199,8 +213,7 @@ const CourseList = ({ currentList, courseCode }) => {
           <div className="bottom-0 fixed w-[14rem]">
             <button
               className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}
-            >
+              onClick={() => setOpen(true)}>
               Create Assignment
             </button>
           </div>
@@ -211,8 +224,7 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}
-              >
+                onClick={() => setOpen(true)}>
                 Create Assignment
               </button>
             </div>
@@ -220,25 +232,25 @@ const CourseList = ({ currentList, courseCode }) => {
         )
       )}
 
-      {currentList.length !== 0 && <StudentList studentList={studentList} />}
+      {currentList.length !== 0 && (
+        <StudentList studentList={studentList} loading={loading} />
+      )}
 
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={submitHandler}>
-            <div className="flex flex-col space-y-4 h-[15rem]">
+            <div className="flex flex-col space-y-4 ">
               <div className="flex items-center">
                 <h1 className="self-center w-[95%] font-bold">
                   Add Assignment
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]"
-                >
+                  className="self-end cursor-pointer w-[5%]">
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -297,8 +309,7 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}
-                >
+                  }}>
                   <input
                     type="file"
                     ref={inputRef}
@@ -310,9 +321,9 @@ const CourseList = ({ currentList, courseCode }) => {
               <div className="flex w-full space-x-2">
                 <div className="w-full">
                   <button
+                    disabled={addAssignmentLoading}
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                  >
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
                     Submit
                   </button>
                 </div>
@@ -323,13 +334,13 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
-                  >
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
                     clear
                   </button>
                 </div>
               </div>
             </div>
+            {addAssignmentLoading && <Spinner message="Adding Assignment" />}
           </form>
         </Box>
       </Modal>

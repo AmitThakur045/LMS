@@ -282,16 +282,7 @@ export const getAllDeleteQueryBySubAdmin = async (req, res) => {
 
 export const addStudent = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      avatar,
-      batch,
-      currentActiveBatch,
-      contactNumber,
-      dob,
-    } = req.body;
+    const { firstName, lastName, email, avatar, contactNumber, dob } = req.body;
     const errors = { studentError: String };
     const existingStudent = await Student.countDocuments({ email });
 
@@ -307,11 +298,8 @@ export const addStudent = async (req, res) => {
       lastName,
       email,
       avatar,
-      batch,
-      currentActiveBatch,
       contactNumber,
       dob,
-
       password: hashedPassword,
     });
     await newStudent.save();
@@ -378,6 +366,7 @@ export const getAllStudent = async (req, res) => {
         contactNumber: 1,
         performance: 1,
         avatar: 1,
+        batchCode: 1,
       }
     );
     const errors = { noStudentError: String };
@@ -435,16 +424,7 @@ export const getAllStudentLength = async (req, res) => {
 
 export const getAllAdmin = async (req, res) => {
   try {
-    const admins = await Admin.find(
-      {},
-      {
-        firstName: 1,
-        lastName: 1,
-        email: 1,
-        contactNumber: 1,
-        organizationName: 1,
-      }
-    );
+    const admins = await Admin.find();
 
     const errors = { noAdminError: String };
 
@@ -469,16 +449,7 @@ export const getAllAdminLength = async (req, res) => {
 export const getAdminsByOrganizationName = async (req, res) => {
   try {
     const { organizationName } = req.body;
-    const admins = await Admin.find(
-      { organizationName: organizationName },
-      {
-        firstName: 1,
-        lastName: 1,
-        email: 1,
-        contactNumber: 1,
-        organizationName: 1,
-      }
-    );
+    const admins = await Admin.find({ organizationName: organizationName });
 
     const errors = { noAdminError: String };
 
@@ -530,6 +501,7 @@ export const getStudentsByOrganizationName = async (req, res) => {
               contactNumber: 1,
               performance: 1,
               avatar: 1,
+              batchCode: 1,
             }
           );
           if (student) {
@@ -551,16 +523,7 @@ export const getStudentsByOrganizationName = async (req, res) => {
 
 export const getAllCourse = async (req, res) => {
   try {
-    const courses = await Course.find(
-      {},
-      {
-        courseCode: 1,
-        courseName: 1,
-        totalLectures: 1,
-        difficulty: 1,
-        courseImg: 1,
-      }
-    );
+    const courses = await Course.find();
     const errors = { courseError: String };
 
     if (courses.length === 0) {
@@ -657,7 +620,13 @@ export const getCourses = async (req, res) => {
       let courseCode = courses[i];
       let temp = await Course.findOne(
         { courseCode },
-        { courseName: 1, courseCode: 1, section: 1, totalLectures: 1 }
+        {
+          courseName: 1,
+          courseCode: 1,
+          section: 1,
+          totalLectures: 1,
+          courseImg: 1,
+        }
       );
       courseData.push(temp);
     }
@@ -689,7 +658,9 @@ export const getStudents = async (req, res) => {
 export const totalAssignment = async (req, res) => {
   try {
     const { batchCode } = req.body;
+    console.log(batchCode);
     const assignments = await Assignment.countDocuments({ batchCode });
+    console.log(assignments);
 
     res.status(200).json(assignments);
   } catch (error) {
@@ -833,7 +804,7 @@ export const addBatch = async (req, res) => {
 export const getAllBatchCodes = async (req, res) => {
   try {
     const batches = await Batch.find({}, { batchCode: 1 });
-    const errors = { noBatchError: String };
+
     let batchCodes = [];
 
     for (let i = 0; i < batches.length; i++) {
@@ -844,8 +815,7 @@ export const getAllBatchCodes = async (req, res) => {
     }
 
     if (batchCodes.length === 0) {
-      errors.noBatchError = "No Batch Found";
-      res.status(400).json(errors);
+      res.status(400).json("No Batch Found");
     }
 
     res.status(200).json(batchCodes);
@@ -1351,8 +1321,8 @@ export const addAssignment = async (req, res) => {
 export const getStudentByAssignmentCode = async (req, res) => {
   try {
     const { assignmentCode } = req.body;
-
-    const errors = { noStudentError: String };
+    console.log(assignmentCode);
+    const errors = { noStudentFoundError: String };
     const assignment = await Assignment.findOne(
       { assignmentCode },
       { student: 1 }
@@ -1378,18 +1348,20 @@ export const getStudentByAssignmentCode = async (req, res) => {
           avatar: student.avatar,
           assignmentCode: assignmentCode,
           studentAnswer: assignmentPdf.studentAnswer,
-          assignment: assignmentPdf,
+          checkedAssignment: assignmentPdf[0].checkedAssignment,
+          score: assignmentPdf[0].score,
+          studentAnswer: assignmentPdf[0].studentAnswer,
         };
 
         StudentList.push(tmp);
       }
     }
     if (StudentList.length === 0) {
-      errors.noStudentError = "No Student Found";
+      errors.noStudentFoundError = "No Student Found";
 
       return res.status(400).json(errors);
     }
-
+    console.log(StudentList.length);
     res.status(200).json(StudentList);
   } catch (error) {
     console.log("Backend Error", error);

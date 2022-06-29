@@ -45,6 +45,7 @@ import {
   UPDATE_BATCH_ADMIN,
   ADD_ORGANIZATION,
   GET_BATCH_LESSON_VIDEO,
+  GET_ALL_COURSE_CODES,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -301,7 +302,8 @@ export const getAllBatchCodes = () => async (dispatch) => {
     const { data } = await api.getAllBatchCodes();
     dispatch({ type: GET_ALL_BATCH, payload: data });
   } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data });
+    // dispatch({ type: SET_ERRORS, payload: error.response.data });
+    console.log(error);
   }
 };
 export const getCoursesLength = () => async (dispatch) => {
@@ -333,7 +335,8 @@ export const getBatchCodesBySubAdmin = (formData) => async (dispatch) => {
     const { data } = await api.getBatchCodesBySubAdmin(formData);
     dispatch({ type: GET_ALL_BATCH, payload: data });
   } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data });
+    // dispatch({ type: SET_ERRORS, payload: error.response.data });
+    console.log(error);
   }
 };
 
@@ -368,7 +371,7 @@ export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
 export const getAllCourseCodes = () => async (dispatch) => {
   try {
     const { data } = await api.getAllCourseCodes();
-    dispatch({ type: GET_ALL_COURSE, payload: data });
+    dispatch({ type: GET_ALL_COURSE_CODES, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

@@ -15,6 +15,7 @@ import LinearProgress, {
 import { Button } from "@mui/material";
 import {
   GET_BATCH,
+  GET_COURSE,
   INDEX_COUNTER,
   SET_ERRORS,
 } from "../../../../../Redux/actionTypes";
@@ -73,9 +74,12 @@ const Main = () => {
       dispatch(getCourses(temp1));
     }
   }, [batch]);
+
   useEffect(() => {
     if (courses.length !== 0) {
-      setIsLoading(false);
+      if (Object.keys(batch).length !== 0) {
+        setIsLoading(false);
+      }
       setCourseData(courses);
     }
   }, [courses]);
@@ -88,13 +92,13 @@ const Main = () => {
         </div>
       ) : (
         <div className="mt-4 flex flex-col pb-12 lg:px-12 px-2 space-y-6 overflow-y-scroll h-full overflow-x-hidden">
-          {courseData?.map((course, idx) => (
+          {courses.map((course, idx) => (
             <div key={idx} className="space-y-4">
               <div className="flex justify-between">
                 <h1 className="font-bold text-primary">{course.courseName}</h1>
                 <Button
                   onClick={() => {
-                    dispatch(getCourse({ courseCode: course.courseCode }));
+                    dispatch({ type: GET_COURSE, payload: course });
                     dispatch({ type: INDEX_COUNTER, payload: idx });
                     navigate("/admin/batch/course/update");
                   }}

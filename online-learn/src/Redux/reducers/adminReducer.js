@@ -46,6 +46,7 @@ import {
   UPDATE_BATCH_ADMIN,
   ADD_ORGANIZATION,
   GET_BATCH_LESSON_VIDEO,
+  GET_ALL_COURSE_CODES,
 } from "../actionTypes";
 
 const initialState = {
@@ -94,6 +95,7 @@ const initialState = {
   batchAdminUpdated: false,
   statusUpdated: false,
   organizationAdded: false,
+  allCourseCodes: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -329,6 +331,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         organizationAdded: action.payload,
+      };
+    case GET_ALL_COURSE_CODES:
+      return {
+        ...state,
+        allCourseCodes: action.payload,
       };
     default:
       return state;

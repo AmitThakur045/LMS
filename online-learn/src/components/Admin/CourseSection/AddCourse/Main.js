@@ -79,7 +79,7 @@ const Main = () => {
   }, [store.errors]);
 
   useEffect(() => {
-    if (store.errors || store.admin.courseAdded) {
+    if (Object.keys(store.errors).length !== 0 || store.admin.courseAdded) {
       dispatch(getAllCourse());
       setLoading(false);
       if (store.admin.courseAdded) {
@@ -110,8 +110,6 @@ const Main = () => {
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_COURSE, payload: false });
       }
-    } else {
-      setLoading(true);
     }
   }, [store.errors, store.admin.courseAdded]);
 
@@ -231,8 +229,7 @@ const Main = () => {
     <div className="flex flex-col lg:flex-row overflow-hidden space-x-5 lg:px-12 px-2 mb-5 overflow-y-auto">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
-      >
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">Add Course</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="w-[40%] flex items-start justify-center">
@@ -247,8 +244,7 @@ const Main = () => {
                 <div className="">
                   <label
                     className="flex items-center justify-center flex-col space-y-3 w-full"
-                    htmlFor="image"
-                  >
+                    htmlFor="image">
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
@@ -350,8 +346,7 @@ const Main = () => {
                     <h1>Section {sectionIdx + 1}</h1>
                     <MdKeyboardArrowDown />
                   </div>
-                }
-              >
+                }>
                 <div className="">
                   <div className="flex space-x-3 md:mx-10 mx-3 mt-3">
                     <div className="space-y-1 flex justify-between w-full">
@@ -377,8 +372,7 @@ const Main = () => {
                           className="h-[2rem] w-[10rem]"
                           disableElevation
                           variant="contained"
-                          color="success"
-                        >
+                          color="success">
                           Section Added
                         </Button>
                       ) : (
@@ -391,8 +385,7 @@ const Main = () => {
                           onClick={() => {
                             sectionToggler(sectionIdx);
                             setValue({ ...value, section: [...section] });
-                          }}
-                        >
+                          }}>
                           Add Section
                         </Button>
                       )}
@@ -411,8 +404,7 @@ const Main = () => {
                                 <h1>Lesson {lessonIdx + 1}</h1>
                                 <MdKeyboardArrowDown />
                               </div>
-                            }
-                          >
+                            }>
                             <div className="space-y-3 md:mx-6 mx-2 mt-3">
                               <div className="flex space-x-3">
                                 <div className="space-y-1 flex justify-between w-full">
@@ -448,8 +440,7 @@ const Main = () => {
                                       className="h-[2rem] w-[10rem]"
                                       disableElevation
                                       color="success"
-                                      variant="contained"
-                                    >
+                                      variant="contained">
                                       Lesson Added
                                     </Button>
                                   ) : (
@@ -461,8 +452,7 @@ const Main = () => {
                                       variant="contained"
                                       onClick={() =>
                                         lessonToggler(sectionIdx, lessonIdx)
-                                      }
-                                    >
+                                      }>
                                       Add Lesson
                                     </Button>
                                   )}
@@ -512,8 +502,7 @@ const Main = () => {
                       disabled={section[sectionIdx].sectionAdded ? true : false}
                       onClick={() => {
                         addNewLesson(sectionIdx);
-                      }}
-                    >
+                      }}>
                       <h1 className="text-base">Lessons</h1>
                       <RiAddLine className=" " />
                     </button>
@@ -529,24 +518,22 @@ const Main = () => {
             className="bg-gray-800 h-[2.5rem] rounded-md hover:bg-black transition-all duration-150 w-full text-white flex items-center justify-center  "
             onClick={() => {
               addNewSection(sectionCount - 1);
-            }}
-          >
+            }}>
             <h1 className="text-base">Sections</h1>
             <RiAddLine className="" />
           </button>
         </div>
         <div className="w-full h-[3rem] flex justify-end space-x-4">
           <button
+            disabled={loading}
             type="submit"
-            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-          >
+            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
             Submit
           </button>
           <button
             type="button"
             onClick={clearForm}
-            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
-          >
+            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
             Clear
           </button>
         </div>
