@@ -7,12 +7,14 @@ import Loader from "../../../../Utils/Loader";
 import { getAssignmentByBatchCode } from "../../../../Redux/actions/studentActions";
 import { getBatch } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
+import { SET_ERRORS } from "../../../../Redux/actionTypes";
 const Course = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const batch = useSelector((state) => state.admin.batch);
+  const store = useSelector((state) => state);
   const [index, setIndex] = useState(JSON.parse(localStorage.getItem("index")));
   const [batchData, setBatchData] = useState({});
   const assignment = useSelector((state) => state.student.assignment);
@@ -23,6 +25,13 @@ const Course = () => {
       setAllAssignment(assignment);
     }
   }, [assignment]);
+
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setIsLoading(false);
+    }
+  }, [store.errors]);
+
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
       dispatch(
@@ -44,6 +53,7 @@ const Course = () => {
         })
       );
     }
+    dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
 
   return (
