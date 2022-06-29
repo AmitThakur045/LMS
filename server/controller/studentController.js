@@ -249,8 +249,10 @@ export const studentSignUp = async (req, res) => {
 
 export const getBatchLessonVideoByCourse = async (req, res) => {
   try {
-    const { batchCode, courseCode } = req.body;
+    const { batchCode, index } = req.body;
+    console.log(index);
     const errors = { noBatchError: String };
+
     const batch = await Batch.findOne(
       { batchCode },
       {
@@ -259,9 +261,21 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
         status: 1,
         subAdmin: 1,
         organizationName: 1,
-        courses: { $elemMatch: { courseCode: courseCode } },
+        courses: {
+          courseName: 1,
+          courseCode: 1,
+          complete: 1,
+          lessonVideo: 1,
+        },
       }
     );
+
+    let course = batch.courses[index];
+    delete batch.courses;
+    batch.courses = [];
+    batch.courses.push(course);
+
+    console.log(batch.courses);
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
       return res.status(404).json(errors);

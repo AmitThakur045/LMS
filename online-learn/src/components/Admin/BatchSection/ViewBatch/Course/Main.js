@@ -105,8 +105,8 @@ const Main = () => {
               <BorderLinearProgress
                 variant="determinate"
                 value={
-                  (batchData.courses[idx].complete.lessonCompleted /
-                    batchData.courses[idx].complete.totalLesson) *
+                  (batch.courses[idx].complete.lessonCompleted /
+                    batch.courses[idx].complete.totalLesson) *
                   100
                 }
               />
@@ -125,7 +125,7 @@ const Main = () => {
                         aria-controls="panel1a-content"
                         id="section">
                         <div className="flex items-center space-x-3">
-                          {batchData.courses[idx].lessonVideo[sectionIdx]
+                          {batch.courses[idx].lessonVideo[sectionIdx]
                             .sectionCompleted ? (
                             <BsFillCheckCircleFill
                               fontSize={20}
