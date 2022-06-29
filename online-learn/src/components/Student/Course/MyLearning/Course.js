@@ -10,9 +10,7 @@ import { getBatchLessonVideoByCourse } from "../../../../Redux/actions/studentAc
 
 const Course = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-  const [courseCode, setCourseCode] = useState(
-    JSON.parse(localStorage.getItem("courseCode"))
-  );
+  const [index, setIndex] = useState(JSON.parse(localStorage.getItem("index")));
 
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -31,11 +29,11 @@ const Course = () => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      if (courseCode !== null) {
+      if (index !== null) {
         dispatch(
           getBatchLessonVideoByCourse({
             batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-            courseCode,
+            index: index,
           })
         );
       }
