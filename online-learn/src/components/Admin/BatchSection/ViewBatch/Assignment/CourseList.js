@@ -150,7 +150,7 @@ const CourseList = ({ currentList, courseCode }) => {
     <>
       {currentList.length !== 0 ? (
         <div>
-          <div className="w-[16rem] h-full flex-col pt-2 shadow-lg overflow-y-auto">
+          <div className="w-[14rem] h-full flex-col pt-2 shadow-lg overflow-y-auto">
             <div>
               {currentList.map((item, index) => (
                 <div
@@ -158,16 +158,19 @@ const CourseList = ({ currentList, courseCode }) => {
                   className={
                     currentAssignmentCode === item.assignmentCode &&
                     "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                  }>
+                  }
+                >
                   <div className="flex items-center">
                     <ListItem
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }>
+                      }
+                    >
                       <div>
-                        <div className="flex text-[1.3rem] text-slate-700">
-                          Assignment {item.assignmentCode.slice(-2)}
+                        <div className="flex text-[1.3rem] text-slate-700 space-x-2">
+                          <p>Assignment</p>
+                          <p>{item.assignmentCode.slice(-2)}</p>
                         </div>
                         <div className="text-sm text-slate-600">
                           {item.assignmentCode}
@@ -193,10 +196,11 @@ const CourseList = ({ currentList, courseCode }) => {
               ))}
             </div>
           </div>
-          <div className="bottom-0 fixed w-[16rem]">
+          <div className="bottom-0 fixed w-[14rem]">
             <button
               className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpen(true)}
+            >
               Create Assignment
             </button>
           </div>
@@ -204,10 +208,11 @@ const CourseList = ({ currentList, courseCode }) => {
       ) : (
         courseCode.length !== 0 && (
           <div className="shadow-lg">
-            <div className="w-[16rem]">
+            <div className="w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}>
+                onClick={() => setOpen(true)}
+              >
                 Create Assignment
               </button>
             </div>
@@ -221,7 +226,8 @@ const CourseList = ({ currentList, courseCode }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <form onSubmit={submitHandler}>
             <div className="flex flex-col space-y-4 h-[15rem]">
@@ -231,7 +237,8 @@ const CourseList = ({ currentList, courseCode }) => {
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]">
+                  className="self-end cursor-pointer w-[5%]"
+                >
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -290,7 +297,8 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}>
+                  }}
+                >
                   <input
                     type="file"
                     ref={inputRef}
@@ -303,7 +311,8 @@ const CourseList = ({ currentList, courseCode }) => {
                 <div className="w-full">
                   <button
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+                  >
                     Submit
                   </button>
                 </div>
@@ -314,7 +323,8 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
+                  >
                     clear
                   </button>
                 </div>
