@@ -41,16 +41,16 @@ const CertificateMain = ({ allAssignment }) => {
               </p>
             </div>
           ))}
+          {allAssignment.length === 0 && (
+            <p className="text-red-500 font-bold text-lg ">
+              No Assignment Present
+            </p>
+          )}
         </div>
         <div className="lg:flex-[0.60] bg-[#F9F9F9] w-full overflow-y-auto">
-          <PdfViewer pdf={selectedPdf} />
+          {selectedPdf !== "" && <PdfViewer pdf={selectedPdf} />}
         </div>
       </div>
-      {allAssignment.length === 0 && (
-        <p className="text-red-500 font-bold text-lg justify-self-center">
-          No Assignment Present
-        </p>
-      )}
     </>
   );
 };
