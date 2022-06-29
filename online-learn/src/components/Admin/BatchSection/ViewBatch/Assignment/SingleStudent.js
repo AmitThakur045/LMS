@@ -85,7 +85,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
       onClick={() => setEmail(item.email)}
       className={
         currentEmail === email &&
-        "bg-slate-200 shadow-lg font-semibold transition-all duration-100"
+        "bg-slate-200 shadow-lg font-semibold transition-all duration-100 overflow-y-auto"
       }>
       {item.checkedAssignment !== undefined
         ? (isMarked = true)

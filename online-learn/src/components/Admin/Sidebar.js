@@ -111,7 +111,9 @@ const Sidebar = () => {
       </div>
       <div className="flex items-center flex-col text-[0.92rem] text-white w-full">
         <h1 className="font-bold w-full text-center">Bessalani LMS Admin</h1>
-        <p className="w-full text-center">@ {new Date().getFullYear()} All right reserved</p>
+        <p className="w-full text-center">
+          @ {new Date().getFullYear()} All right reserved
+        </p>
       </div>
     </div>
   );
