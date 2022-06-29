@@ -367,6 +367,7 @@ export const getAllStudent = async (req, res) => {
         performance: 1,
         avatar: 1,
         batchCode: 1,
+        dob: 1,
       }
     );
     const errors = { noStudentError: String };
@@ -502,6 +503,7 @@ export const getStudentsByOrganizationName = async (req, res) => {
               performance: 1,
               avatar: 1,
               batchCode: 1,
+              dob: 1,
             }
           );
           if (student) {
