@@ -41,9 +41,15 @@ const Main = () => {
   const [eventDates, setEventDates] = useState([]);
   const batch = useSelector((state) => state.admin.batch);
   useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setIsLoading(false);
+    }
+  }, [store.errors]);
+
+  useEffect(() => {
     if (Object.keys(batch).length !== 0) {
       setBatchData(batch);
-      setIsLoading(false);
+
       dispatch(getStudents({ emails: batch.students }));
       dispatch(
         getEventByCourseCode({
@@ -62,10 +68,10 @@ const Main = () => {
   const students = useSelector((state) => state.admin.students);
   useEffect(() => {
     if (events.length !== 0) {
+      setEventDates(events);
       if (attendances.length !== 0 && students.length !== 0) {
         setIsLoading(false);
       }
-      setEventDates(events);
     }
   }, [events]);
 
@@ -97,11 +103,15 @@ const Main = () => {
   };
 
   const uploadAttendanceRecord = () => {
+    setLoading(true);
     dispatch(uploadAttendance(attendanceRecord));
   };
 
   useEffect(() => {
-    if (store.errors || store.admin.attendanceUploaded) {
+    if (
+      Object.keys(store.errors).length !== 0 ||
+      store.admin.attendanceUploaded
+    ) {
       setLoading(false);
       if (store.admin.attendanceUploaded) {
         dispatch({ type: UPLOAD_ATTENDANCE, payload: false });
@@ -112,8 +122,6 @@ const Main = () => {
           })
         );
       }
-    } else {
-      setLoading(true);
     }
   }, [store.errors, store.admin.attendanceUploaded]);
 
@@ -174,7 +182,7 @@ const Main = () => {
             </div>
             <div className="flex flex-col overflow-x-scroll space-y-3 h-full ">
               <div className="flex space-x-1">
-                {eventDates.map((date, idx) => (
+                {events.map((date, idx) => (
                   <div key={idx} className="flex">
                     {idx === 0 ? (
                       <div className="shadow-md bg-white font-semibold text-[#111111] w-[12rem] flex items-center px-3 justify-start h-[2.5rem]">
@@ -189,9 +197,9 @@ const Main = () => {
                 ))}
               </div>
               <div className="flex flex-col space-y-3 ">
-                {studentData.map((student, index) => (
+                {students.map((student, index) => (
                   <div key={student.email} className="flex space-x-1">
-                    {eventDates?.map((date, idx) => (
+                    {events.map((date, idx) => (
                       <div key={idx} className="flex ">
                         {idx === 0 ? (
                           <div className="shadow-md bg-white font-semibold text-primary w-[12rem] flex items-center px-3 justify-start h-[2.5rem]">
@@ -226,6 +234,7 @@ const Main = () => {
           <Button
             onClick={uploadAttendanceRecord}
             className="w-[15rem] self-center"
+            disabled={loading}
             variant="contained">
             Mark Attendance
           </Button>

@@ -28,8 +28,8 @@ const Main = () => {
   const [currentCourseCode, setCurrentCourseCode] = useState("");
 
   const store = useSelector((state) => state);
-  const courseData = JSON.parse(localStorage.getItem("courses"));
   const batchData = useSelector((store) => store.admin.batch);
+  const courseData = useSelector((state) => state.admin.courses);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -37,9 +37,12 @@ const Main = () => {
       setIsLoading(false);
     }
   }, [store.errors]);
+  console.log(store.errors);
+
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
+
   useEffect(() => {
     if (store.admin.assignmentAdded) {
       dispatch(getBatch({ batchCode: batchData.batchCode }));
@@ -48,12 +51,21 @@ const Main = () => {
 
   useEffect(() => {
     if (Object.keys(batchData).length !== 0) {
-      setIsLoading(false);
+      let temp1 = [];
+      for (let i = 0; i < batchData.courses?.length; i++) {
+        temp1.push(batchData.courses[i].courseCode);
+      }
+      dispatch(getCourses(temp1));
       setCurrentCourseCode(batchData.courses[0].courseCode);
       dispatch(getStudents({ emails: batchData.students }));
       setCurrentList(batchData.courses[0].assignment);
     }
   }, [batchData]);
+  useEffect(() => {
+    if (Object.keys(courseData).length !== 0) {
+      setIsLoading(false);
+    }
+  }, [courseData]);
 
   const handleClick = (item) => {
     setCurrentCourseCode(item.courseCode);
@@ -73,7 +85,6 @@ const Main = () => {
             <div className="pt-2 w-full">
               {loading && <Spinner message={"Loading..."} />}
               {!loading &&
-                Object.keys(batchData).length !== 0 &&
                 batchData.courses.map((item, index) => (
                   <div
                     key={index}

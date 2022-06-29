@@ -68,6 +68,10 @@ const Main = () => {
   const [batchData, setBatchData] = useState({});
 
   useEffect(() => {
+    dispatch({ type: SET_ERRORS, payload: {} });
+  }, []);
+
+  useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
       setIsLoading(false);
@@ -85,7 +89,7 @@ const Main = () => {
       }
       dispatch(getCourses(temp));
       dispatch(getStudents({ emails: batch.students }));
-      dispatch(totalAssignment({ batchCode: batchData.batchCode }));
+      dispatch(totalAssignment({ batchCode: batch.batchCode }));
     }
   }, [batch]);
   useEffect(() => {
@@ -141,6 +145,7 @@ const Main = () => {
         temp.push(studentEmail);
         dispatch(getStudents({ emails: temp }));
         dispatch({ type: SET_ERRORS, payload: {} });
+        setError({});
         dispatch({ type: ADD_STUDENT, payload: false });
         handleAddStudentClose();
       }
@@ -221,7 +226,7 @@ const Main = () => {
   }
   function calCourseWiseAttendance(courseCode, attended) {
     let total = 0;
-    total = courseData.find((course) => course.courseCode === courseCode);
+    total = courses.find((course) => course.courseCode === courseCode);
     return Math.round((attended / total.totalLectures) * 100);
   }
   const handleSearch = (event) => {
@@ -268,16 +273,14 @@ const Main = () => {
             open={openAddStudent}
             onClose={handleAddStudentClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            aria-describedby="modal-modal-description">
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
                   <h1 className="self-center w-[95%] font-bold">Add Student</h1>
                   <div
                     onClick={handleAddStudentClose}
-                    className="self-end cursor-pointer w-[5%]"
-                  >
+                    className="self-end cursor-pointer w-[5%]">
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -286,8 +289,7 @@ const Main = () => {
                 </div>
                 <form
                   onSubmit={addstudent}
-                  className="flex flex-col space-y-3  "
-                >
+                  className="flex flex-col space-y-3  ">
                   <TextField
                     required
                     type="email"
@@ -299,12 +301,11 @@ const Main = () => {
                     onChange={(e) => setStudentEmail(e.target.value)}
                   />
                   <Button
-                    disabled={studentEmail !== "" ? false : true}
+                    disabled={loading}
                     type="submit"
                     className=""
                     variant="contained"
-                    color="primary"
-                  >
+                    color="primary">
                     Add
                   </Button>
                   {loading && <Spinner message="Adding Student" />}
@@ -321,8 +322,7 @@ const Main = () => {
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            aria-describedby="modal-modal-description">
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
@@ -331,8 +331,7 @@ const Main = () => {
                   </h1>
                   <div
                     onClick={handleClose}
-                    className="self-end cursor-pointer w-[5%]"
-                  >
+                    className="self-end cursor-pointer w-[5%]">
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -357,8 +356,7 @@ const Main = () => {
                     }}
                     className="w-[25%]"
                     variant="contained"
-                    color="primary"
-                  >
+                    color="primary">
                     Search
                   </Button>
                 </div>
@@ -380,15 +378,13 @@ const Main = () => {
                 color="success"
                 onClick={handleAddStudentOpen}
                 variant="contained"
-                className="w-[13rem] h-[1.8rem] items-center"
-              >
+                className="w-[13rem] h-[1.8rem] items-center">
                 Add Student
               </Button>
               <Button
                 onClick={handleOpen}
                 variant="contained"
-                className="w-[13rem] h-[1.8rem] items-center"
-              >
+                className="w-[13rem] h-[1.8rem] items-center">
                 Mark Attendance
               </Button>
             </div>
@@ -399,8 +395,7 @@ const Main = () => {
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
+                  id="panel1a-header">
                   <div className="lg:grid lg:grid-cols-12 flex md:flex-row flex-col w-full justify-between text-[0.9rem]">
                     <div className="lg:col-span-2 font-semibold flex justify-start items-center space-x-2">
                       <Avatar
@@ -415,12 +410,12 @@ const Main = () => {
                       {student.email}
                     </div>
                     <div className="lg:col-span-2 flex md:justify-center">
-                      Attendance: {calTotalAttendance(student.attendance)}
-                      /{batchData.schedule.length}
+                      Attendance: {calTotalAttendance(student.attendance)}/
+                      {batchData.schedule.length}
                     </div>
                     <div className="lg:col-span-2 flex md:justify-center">
-                      Assignment: {calTotalAssignment(student.assignment)}
-                      /{totalAssignmentInBatch}
+                      Assignment: {calTotalAssignment(student.assignment)}/
+                      {totalAssignmentInBatch}
                     </div>
                     <div className="lg:col-span-3 flex md:justify-center">
                       Courses Completed:{" "}
@@ -517,8 +512,7 @@ const Main = () => {
                         {student.attendance.map((course, idx) => (
                           <div
                             key={course.courseCode}
-                            className="flex flex-col"
-                          >
+                            className="flex flex-col">
                             <h1 className="text-[#47ada8] text-[12px]">
                               {course.courseCode}
                             </h1>

@@ -7,19 +7,12 @@ import SingleStudent from "./SingleStudent";
 import Spinner from "../../../../../Utils/Spinner";
 import { useSelector } from "react-redux";
 
-const StudentList = ({ studentList }) => {
+const StudentList = ({ studentList, loading }) => {
   const store = useSelector((state) => state);
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (Object.keys(store.errors).length !== 0) {
-      setLoading(false);
-    }
-  }, [store.errors]);
 
   return (
     <>
-      {studentList.length !== 0 ? (
+      {studentList.length !== 0 && Object.keys(store.errors).length === 0 ? (
         <div className="xl:w-full lg:w-[36vw] w-[35vw] h-full shadow-lg overflow-y-auto">
           <List>
             {studentList.map((item, index) =>
@@ -40,9 +33,17 @@ const StudentList = ({ studentList }) => {
           </List>
         </div>
       ) : (
-        <div className="w-full h-full shadow-lg overflow-y-auto">
-          {loading && <Spinner message={"Loading..."} />}
-        </div>
+        <>
+          {Object.keys(store.errors).length !== 0 ? (
+            <div className="xl:w-full lg:w-[36vw] w-[35vw] h-full shadow-lg overflow-y-auto text-center text-red-500 font-bold">
+              No Student Found
+            </div>
+          ) : (
+            <div className="w-full h-full shadow-lg overflow-y-auto">
+              {loading && <Spinner message={"Loading..."} />}
+            </div>
+          )}
+        </>
       )}
     </>
   );

@@ -1,4 +1,5 @@
 export const SET_ERRORS = "SET_ERRORS";
+export const SET_NO_BATCH_ERROR = "SET_NO_BATCH_ERROR";
 export const ADMIN_LOGIN = "ADMIN_LOGIN";
 export const LOGOUT = "LOGOUT";
 export const ADD_ADMIN = "ADD_ADMIN";
@@ -20,6 +21,7 @@ export const GET_ALL_STUDENT_LENGTH = "GET_ALL_STUDENT_LENGTH";
 export const GET_STUDENT = "GET_STUDENT";
 export const ADD_BATCH = "ADD_BATCH";
 export const GET_ALL_COURSE = "GET_ALL_COURSE";
+export const GET_ALL_COURSE_CODES = "GET_ALL_COURSE_CODES";
 export const GET_ALL_ORGANIZATION_NAME = "GET_ALL_ORGANIZATION_NAME";
 export const GET_ALL_ADMIN = "GET_ALL_ADMIN";
 export const GET_ALL_ADMIN_LENGTH = "GET_ALL_ADMIN_LENGTH";

@@ -14,19 +14,12 @@ import Spinner from "../../Utils/Spinner";
 const ActiveBatch = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("admin"));
-  const [error, setError] = useState({});
   const store = useSelector((state) => state);
-  const [loading, setLoading] = useState(true);
-  const batch = useSelector((state) => state.admin.batch);
+  const [loading, setLoading] = useState(false);
   const allBatches = useSelector((state) => state.admin.allBatch);
   const [batches, setBatches] = useState([]);
-  useEffect(() => {
-    if (Object.keys(store.errors).length !== 0) {
-      setError(store.errors);
 
-      setLoading(false);
-    }
-  }, [store.errors]);
+  console.log(store.errors);
   useEffect(() => {
     if (allBatches.length !== 0) {
       setLoading(false);
@@ -87,7 +80,7 @@ const ActiveBatch = () => {
             <AiFillEye color="#046387" />
           </div>
         ))}
-        {(loading || error.noBatchError) && (
+        {loading && (
           <>
             {loading && (
               <Spinner
@@ -97,11 +90,6 @@ const ActiveBatch = () => {
                 color="#111111"
                 messageColor="blue"
               />
-            )}
-            {error.noBatchError && (
-              <p className="text-red-500 text-2xl font-bold">
-                {error.noBatchError}
-              </p>
             )}
           </>
         )}

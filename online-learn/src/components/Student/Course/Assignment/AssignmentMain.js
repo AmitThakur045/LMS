@@ -2,14 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDispatch, useSelector } from "react-redux";
 import PdfViewer from "./PdfViewer";
-import {
-  getAssignmentByBatchCode,
-  submitAssignment,
-} from "../../../../Redux/actions/studentActions";
+import { submitAssignment } from "../../../../Redux/actions/studentActions";
 
 import { SUBMIT_ASSIGNMENT } from "../../../../Redux/actionTypes";
 
 const AssignmentMain = ({ batchData, allAssignment }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const dispatch = useDispatch();
   const learner = JSON.parse(localStorage.getItem("learner"));
   const store = useSelector((state) => state);
@@ -17,7 +15,7 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
   const [selectedPdf, setSelectedPdf] = useState("");
   const [value, setValue] = useState("");
   const [isSelected, setIsSelected] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setSelectedPdf(allAssignment[0].assignmentPdf);
     let arr = new Array(allAssignment.length).fill(false);
@@ -38,9 +36,9 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
     data[i] = true;
     setIsSelected(data);
   };
-  console.log(isSelected);
 
   const submitassignment = (i) => {
+    setLoading(true);
     if (value !== "") {
       dispatch(
         submitAssignment({
@@ -56,6 +54,7 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
 
   useEffect(() => {
     if (store.student.assignmentSubmitted) {
+      setLoading(false);
       setValue(false);
       let arr = new Array(allAssignment.length).fill(false);
       setIsSelected(arr);
@@ -82,9 +81,19 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
                     <h3>Assignment code: {data.assignmentCode}</h3>
                     <button
                       type="button"
+                      disabled={
+                        loading ||
+                        data.student.find((st) => st.email === user.email)
+                          ?.email
+                      }
                       onClick={() => submitassignment(i)}
-                      className="bg-blue-600 hover:bg-blue-800 duration-150 transition-all text-white rounded-xl h-[2rem] w-[5rem]">
-                      Submit
+                      className="bg-blue-600 hover:bg-blue-800 duration-150 transition-all text-white rounded-xl h-[2rem] px-4">
+                      {data.student.find((st) => st.email === user.email)
+                        ?.email ? (
+                        "Already Submitted"
+                      ) : (
+                        <>{loading ? "Submitting" : "Submit"}</>
+                      )}
                     </button>
                   </div>
                   <div className="flex space-x-2 items-center">
@@ -98,7 +107,7 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
 
                     <label htmlFor={`answer-${i}`} type="button">
                       <div className="flex text-white bg-[#6EAEE9] rounded-2xl cursor-pointer h-[2rem] w-[7rem] space-x-1 items-center justify-center">
-                        <div>{isSelected[i] ? `Uploaded` : `Upload`}</div>
+                        <div>{isSelected ? `Uploaded` : `Upload`}</div>
                         <CloudUploadIcon />
                       </div>
                     </label>

@@ -90,6 +90,7 @@ const Main = () => {
 
   const addLink = (e) => {
     e.preventDefault();
+    setLoading(true);
     dispatch(
       addBatchLink({
         batchLink: link.batchLink,
@@ -139,6 +140,7 @@ const Main = () => {
 
   useEffect(() => {
     if (store.admin.batchLinkAdded) {
+      setLoading(false);
       setNewEvent({ ...newEvent, link: link.batchLink });
       dispatch({ type: ADD_BATCH_LINK, payload: false });
       handleClose();
@@ -195,12 +197,14 @@ const Main = () => {
                     }
                   />
                   <Button
+                    disabled={loading}
                     type="submit"
                     className="self-end"
                     color="error"
                     variant="contained">
                     Submit
                   </Button>
+                  {loading && <Spinner message="Adding Batch Link" />}
                 </form>
               </div>
             </Box>
@@ -313,6 +317,7 @@ const Main = () => {
                     </FormControl>
                   </div>
                   <button
+                    disabled={loading}
                     type="submit"
                     className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
                     Submit
