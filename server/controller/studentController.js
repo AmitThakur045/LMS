@@ -277,12 +277,6 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
       }
     );
 
-    let course = batch.courses[index];
-    delete batch.courses;
-    batch.courses = [];
-    batch.courses.push(course);
-
-    console.log(batch.courses);
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
       return res.status(404).json(errors);
