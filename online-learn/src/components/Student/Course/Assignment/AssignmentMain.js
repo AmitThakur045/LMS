@@ -17,9 +17,11 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
   const [isSelected, setIsSelected] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setSelectedPdf(allAssignment[0].assignmentPdf);
-    let arr = new Array(allAssignment.length).fill(false);
-    setIsSelected(arr);
+    if (allAssignment.length !== 0) {
+      setSelectedPdf(allAssignment[0].assignmentPdf);
+      let arr = new Array(allAssignment.length).fill(false);
+      setIsSelected(arr);
+    }
   }, []);
 
   const changeHandler = (event, i) => {

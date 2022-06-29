@@ -146,7 +146,9 @@ export const getAllEvents = async (req, res) => {
 export const getAssignmentByBatchCode = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
-
+    const errors = {
+      noAssignmentError: String,
+    };
     let len = batchCode.length;
     let data = [];
 
@@ -154,6 +156,11 @@ export const getAssignmentByBatchCode = async (req, res) => {
     assignment.forEach((element) => {
       data.push(element);
     });
+
+    if (data.length === 0) {
+      errors.noAssignmentError = "No Assignment Found";
+      return res.status(400).json(errors);
+    }
 
     res.status(200).json(data);
   } catch (error) {
