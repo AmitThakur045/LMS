@@ -16,10 +16,22 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
   const [value, setValue] = useState("");
   const [isSelected, setIsSelected] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   useEffect(() => {
     if (allAssignment.length !== 0) {
       setSelectedPdf(allAssignment[0].assignmentPdf);
       let arr = new Array(allAssignment.length).fill(false);
+
+      let n = arr.length;
+      for (let i = 0; i < n; i++) {
+        allAssignment[i].student.map((data, index) => {
+          if (data.email === learner.result.email) {
+            arr[i] = true;
+          }
+        });
+      }
+      setIsSubmitted(arr);
       setIsSelected(arr);
     }
   }, []);
@@ -33,6 +45,7 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
         setValue(fileReader.result);
       };
     }
+
     let data = [...isSelected];
     console.log(i);
     data[i] = true;
@@ -49,6 +62,11 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
           email: learner.result.email,
         })
       );
+
+      let data = [...isSubmitted];
+      console.log(i);
+      data[i] = true;
+      setIsSubmitted(data);
     } else {
       return alert("Submit Answer!!!");
     }
@@ -58,41 +76,40 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
     if (store.student.assignmentSubmitted) {
       setLoading(false);
       setValue(false);
-      let arr = new Array(allAssignment.length).fill(false);
-      setIsSelected(arr);
       dispatch({ type: SUBMIT_ASSIGNMENT, payload: false });
     }
   }, [store.student.assignmentSubmitted]);
 
+  // console.log("allAsssignemnt", allAssignment[0].student.includes(learner.result.email));
+  // console.log("LEARNER", user);
+  // console.log("isSelected", isSelected);
+
   return (
     <>
       {Object.keys(batchData).length !== 0 && (
-        <div className="flex lg:flex-row flex-col w-full lg:h-full bg-white">
-          <div className="lg:flex-[0.4] flex-col w-full bg-[#EDF0F5] rounded-bl-2xl lg:h-full pb-5">
+        <div className="flex lg:flex-row flex-col w-full lg:h-full bg-white pb-[5rem]">
+          <div className="lg:flex-[0.4] flex-col w-full bg-[#EDF0F5] rounded-bl-2xl lg:h-full overflow-y-auto">
             <h1 className="ml-6 mt-7 font-semibold text-2xl">Assignment</h1>
 
-            <div className="flex flex-col space-y-4 mt-4 lg:h-[75vh] h-[50vh] overflow-y-auto">
+            <div className="flex flex-col space-y-4 mt-4 lg:h-full h-[50vh] overflow-y-auto pb-5">
               {allAssignment.map((data, i) => (
                 <div
-                  className="bg-[#127FED] h-[10rem] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between overflow-auto hover:cursor-pointer"
+                  className="bg-[#127FED] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between hover:cursor-pointer"
                   key={i}
                   onClick={() => {
                     setSelectedPdf(data.assignmentPdf);
-                  }}>
+                  }}
+                >
                   <div className="flex justify-between items-center">
                     <h3>Assignment code: {data.assignmentCode}</h3>
                     <button
                       type="button"
-                      disabled={
-                        loading ||
-                        data.student.find((st) => st.email === user.email)
-                          ?.email
-                      }
+                      disabled={loading || isSubmitted[i]}
                       onClick={() => submitassignment(i)}
-                      className="bg-blue-600 hover:bg-blue-800 duration-150 transition-all text-white rounded-xl h-[2rem] px-4">
-                      {data.student.find((st) => st.email === user.email)
-                        ?.email ? (
-                        "Already Submitted"
+                      className="bg-blue-600 hover:bg-blue-800 duration-150 transition-all text-white rounded-xl h-[2rem] px-4"
+                    >
+                      {isSubmitted[i] ? (
+                        "Submitted"
                       ) : (
                         <>{loading ? "Submitting" : "Submit"}</>
                       )}
