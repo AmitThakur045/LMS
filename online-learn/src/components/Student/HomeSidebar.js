@@ -25,7 +25,6 @@ const HomeSidebar = () => {
   };
   const logOut = () => {
     alert("OOPS! Your session expired. Please Login again");
-    dispatch({ type: LOGOUT });
     navigate("/login");
   };
 
