@@ -2,6 +2,7 @@ import express from "express";
 import auth from "../middleware/auth.js";
 import {
   studentLogin,
+  generateOtp,
   getCourseByBatchCode,
   getAllEvents,
   getAssignmentByBatchCode,
@@ -12,6 +13,7 @@ import {
 const router = express.Router();
 
 router.post("/login", studentLogin);
+router.post("/generateotp", generateOtp);
 router.post("/studentsignup", studentSignUp);
 router.post("/getcoursebybatchcode", auth, getCourseByBatchCode);
 router.post("/getallevents", auth, getAllEvents);
