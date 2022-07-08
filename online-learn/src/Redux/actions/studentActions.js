@@ -6,6 +6,7 @@ import {
   GET_ASSIGNMENT_BY_BATCH_CODE,
   SUBMIT_ASSIGNMENT,
   SIGN_UP,
+  OTP,
   GET_BATCH_LESSON_VIDEO,
 } from "../actionTypes";
 import * as api from "../api";
@@ -56,6 +57,17 @@ export const submitAssignment = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const generateOtp = (formData) => async (dispatch) => {
+  try {
+    console.log("otp", formData);
+    const { data } = await api.generateOtp(formData);
+    dispatch({ type: OTP, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}
+
 export const studentSignUp = (formData) => async (dispatch) => {
   try {
     const { data } = await api.studentSignUp(formData);
