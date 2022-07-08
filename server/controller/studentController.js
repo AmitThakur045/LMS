@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
+import { transporter } from "../services/nodemailer.js";
 
 function calPerformance(assignment, totalAssignment) {
   let score = 0;
@@ -224,6 +225,34 @@ export const submitAssignment = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+export const generateOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("generateemail", email);
+    const errors = { studentError: String };
+    const existingStudent = await Student.countDocuments({ email });
+
+    if (existingStudent) {
+      errors.studentError = "Student already exists";
+      return res.status(400).json(errors);
+    }
+
+    const newOtp = Math.floor(Math.random() * 10000);
+
+    const resultEmail = await transporter.sendMail({
+      from: "Nodemailer",
+      to: email,
+      subject: "Welcome to Bessalani",
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
+
+    res.status(200).json(newOtp);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
 
 export const studentSignUp = async (req, res) => {
   try {
