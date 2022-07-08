@@ -6,6 +6,7 @@ import {
   GET_ASSIGNMENT_BY_BATCH_CODE,
   SUBMIT_ASSIGNMENT,
   SIGN_UP,
+  OTP,
 } from "../actionTypes";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   assignment: [],
   assignmentSubmitted: false,
   studentSignedUp: false,
+  otp: null,
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -50,6 +52,11 @@ const studentReducer = (state = initialState, action) => {
       return {
         ...state,
         studentSignedUp: action.payload,
+      };
+    case OTP:
+      return {
+        ...state,
+        otp: action.payload,
       };
     default:
       return state;
