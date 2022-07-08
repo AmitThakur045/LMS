@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API = axios.create({ baseURL: "http://localhost:5000/" });
-const API = axios.create({ baseURL: "https://bessalani-lms.herokuapp.com/" });
+const API = axios.create({ baseURL: "http://localhost:5000/" });
+// const API = axios.create({ baseURL: "https://bessalani-lms.herokuapp.com/" });
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("user")) {
     req.headers.Authorization = `Bearer ${
@@ -113,6 +113,8 @@ export const getAssignmentByBatchCode = (data) =>
   API.post("/api/student/getassignmentbybatchcode", data);
 export const submitAssignment = (formData) =>
   API.post("/api/student/submitassignment", formData);
+export const generateOtp = (formData) =>
+  API.post("/api/student/generateotp", formData);
 export const studentSignUp = (formData) =>
   API.post("/api/student/studentsignup", formData);
 export const getBatchLessonVideoByCourse = (data) =>
