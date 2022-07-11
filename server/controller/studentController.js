@@ -252,11 +252,11 @@ export const generateOtp = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 export const studentSignUp = async (req, res) => {
   try {
-    const { firstName, lastName, email, contactNumber, dob } = req.body;
+    const { firstName, lastName, email, password, dob } = req.body;
     const errors = { studentError: String };
     const existingStudent = await Student.countDocuments({ email });
 
@@ -264,16 +264,13 @@ export const studentSignUp = async (req, res) => {
       errors.studentError = "Student already exists";
       return res.status(400).json(errors);
     }
-    const newDob = dob.split("-").reverse().join("-");
-    let hashedPassword = await bcrypt.hash(newDob, 10);
 
     const newStudent = await new Student({
       firstName,
       lastName,
       email,
-      contactNumber,
       dob,
-      password: hashedPassword,
+      password,
     });
     await newStudent.save();
 

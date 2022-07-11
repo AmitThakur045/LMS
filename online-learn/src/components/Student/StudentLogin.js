@@ -25,8 +25,10 @@ const StudentLogin = () => {
     lastName: "",
     email: "",
     dob: "",
-    contactNumber: "",
+    password: "",
+    confirmPassword: "",
   });
+  const [otpLoader, setOtpLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
@@ -62,6 +64,7 @@ const StudentLogin = () => {
 
   useEffect(() => {
     if (store.errors) {
+      setShowModal(false);
       setError(store.errors);
     }
   }, [store.errors]);
@@ -79,25 +82,27 @@ const StudentLogin = () => {
   const otpGenerate = (e) => {
     e.preventDefault();
     setLoading(true);
+    setShowModal(true);
     if (value.email.trim() === "") {
       setError({ email: "Email is required" });
+      setLoading(false);
     } else {
       dispatch(generateOtp({ email: value.email }));
     }
-    setLoading(false);
   };
-
+  const [otpError, setOtpError] = useState(false);
   const checkOtp = (e) => {
     e.preventDefault();
+    setOtpLoader(true);
     setLoading(true);
 
     console.log("current otp", otp.join(""));
 
     if (otp.join("") == otpValue) {
-      setShowModal(false);
       dispatch(studentSignUp(value));
     } else {
-      setError({ otp: "OTP is incorrect" });
+      setOtpLoader(false);
+      setOtpError(true);
     }
     setLoading(false);
   };
@@ -105,6 +110,7 @@ const StudentLogin = () => {
   // check if the otp is correct
   useEffect(() => {
     if (otpValue) {
+      setLoading(false);
       setShowModal(true);
     }
   }, [otpValue]);
@@ -121,13 +127,18 @@ const StudentLogin = () => {
   useEffect(() => {
     if (store.errors || store.student.studentSignedUp) {
       setLoading(false);
+      setOtpLoader(false);
+      setOtp(["", "", "", ""]);
       if (store.student.studentSignedUp) {
+        setShowModal(false);
+
         setValue({
           firstName: "",
           lastName: "",
           email: "",
           dob: "",
-          contactNumber: "",
+          password: "",
+          confirmPassword: "",
         });
 
         dispatch({ type: SET_ERRORS, payload: {} });
@@ -151,10 +162,12 @@ const StudentLogin = () => {
         open={showModal}
         onClose={() => setShowModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <form onSubmit={checkOtp} className="w-full">
+          <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
+            <div className="flex  items-center justify-center font-bold text-center">
+              Enter OTP received on the given email
+            </div>
             <div className="flex flex-row justify-evenly text-xl">
               <input
                 name="otp1"
@@ -212,18 +225,29 @@ const StudentLogin = () => {
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit"
-              >
+                type="submit">
                 Submit
               </button>
             </div>
+            {otpLoader && (
+              <Spinner
+                message="Signing Up"
+                height={30}
+                width={150}
+                color="#ffffff"
+                messageColor="#22147d"
+              />
+            )}
+            {error.studentError && (
+              <p className="text-red-500 ">{error.studentError}</p>
+            )}
           </form>
         </Box>
       </Modal>
       <div className="bg-primary h-screen w-full flex items-center justify-center">
         <div className="grid lg:grid-cols-2 gird-cols-1">
           <div
-            className={`h-96 hidden lg:block ${
+            className={` h-96 hidden lg:block ${
               showSignUp ? "w-[30rem]" : "w-96"
             } bg-white lg:flex items-center justify-center ${
               translate
@@ -231,8 +255,7 @@ const StudentLogin = () => {
                   ? "translate-x-[18rem]"
                   : "translate-x-[12rem]"
                 : ""
-            }  duration-1000 transition-all rounded-3xl shadow-2xl`}
-          >
+            }  duration-1000 transition-all rounded-3xl shadow-2xl`}>
             <h1 className="text-[3rem]  font-bold text-center">
               Student
               <br />
@@ -243,10 +266,11 @@ const StudentLogin = () => {
             {showSignUp ? (
               <form
                 onSubmit={otpGenerate}
-                className={`sm:w-[30rem] w-[80vw] bg-[#2c2f35] flex flex-col items-center pt-10 pb-4 px-3 ${
+                className={`sm:w-[30rem] w-[80vw] ${
+                  loading ? "h-[30rem]" : ""
+                } bg-[#2c2f35] flex flex-col items-center pt-10 pb-4 px-7 ${
                   translate ? "lg:-translate-x-[12rem]" : ""
-                }  md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}
-              >
+                }  md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}>
                 <h1 className="text-white text-3xl font-semibold">Student</h1>
                 <div className="sm:space-x-8 flex sm:flex-row flex-col w-full">
                   <div className="space-y-1 w-full md:w-[50%]">
@@ -288,43 +312,64 @@ const StudentLogin = () => {
                     />
                   </div>
                   <div className="space-y-1 w-full md:w-[50%]">
-                    <p className="text-[#88909e]">Contact Number</p>
+                    <p className="text-[#88909e]">DOB</p>
                     <input
                       required
-                      className="bg-[#88909e] w-full text-white px-2 outline-none py-1 rounded-sm"
-                      type="number"
-                      value={value.contactNumber}
+                      className="bg-[#88909e] text-white px-2 outline-none py-1 rounded-sm w-full"
+                      type="date"
+                      value={value.dob}
                       onChange={(e) =>
-                        setValue({ ...value, contactNumber: e.target.value })
+                        setValue({ ...value, dob: e.target.value })
                       }
                     />
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-[#88909e]">DOB</p>
-                  <input
-                    required
-                    className="bg-[#88909e] text-white px-2 outline-none py-1 rounded-sm"
-                    type="date"
-                    value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
-                  />
+                <div className="sm:space-x-8 flex sm:flex-row flex-col w-full">
+                  <div className="space-y-1 w-full md:w-[50%]">
+                    <p className="text-[#88909e]">Password</p>
+                    <input
+                      required
+                      className="bg-[#88909e] w-full text-white px-2 outline-none py-1 rounded-sm"
+                      type="password"
+                      value={value.password}
+                      onChange={(e) =>
+                        setValue({ ...value, password: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1 w-full  md:w-[50%]">
+                    <p className="text-[#88909e]">Confirm Password</p>
+                    <input
+                      required
+                      className="bg-[#88909e] w-full text-white px-2 outline-none py-1 rounded-sm"
+                      type="password"
+                      value={value.confirmPassword}
+                      onChange={(e) =>
+                        setValue({ ...value, confirmPassword: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="sm:space-x-8 flex sm:flex-row flex-col w-full justify-center">
+                  {value.password !== "" &&
+                    value.confirmPassword !== "" &&
+                    value.password !== value.confirmPassword && (
+                      <p className="font-bold text-red-500">
+                        Password do not match
+                      </p>
+                    )}
                 </div>
 
                 <button
                   type="submit"
-                  className="sm:w-56 w-full hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
-                >
+                  className="sm:w-56 w-full hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
                   Sign Up
                 </button>
                 <p className="text-white text-sm">
                   Already have an account?{" "}
                   <button
                     onClick={() => setShowSignUp(false)}
-                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
-                  >
+                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150">
                     Sign In
                   </button>
                 </p>
@@ -348,8 +393,7 @@ const StudentLogin = () => {
                   loading ? "h-[27rem]" : "h-96"
                 } sm:w-96 w-[80vw] px-3 bg-[#2c2f35] flex flex-col items-center justify-center ${
                   translate ? "lg:-translate-x-[12rem]" : ""
-                } md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}
-              >
+                } md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}>
                 <h1 className="text-white text-3xl font-semibold">Student</h1>
                 <div className="space-y-1">
                   <p className="text-[#88909e] font-bold text-sm">Email</p>
@@ -390,16 +434,14 @@ const StudentLogin = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-56 hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
-                >
+                  className="w-56 hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
                   Login
                 </button>
                 <p className="text-white text-sm">
                   Don't have an account?{" "}
                   <button
                     onClick={() => setShowSignUp(true)}
-                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
-                  >
+                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150">
                     Sign Up
                   </button>
                 </p>
