@@ -134,7 +134,8 @@ const Main = () => {
                   <Link
                     to="/admin/admin/addadmin"
                     type="button"
-                    className="bg-secondary hover:bg-secondaryHover transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center">
+                    className="bg-secondary hover:bg-secondaryHover transition-all duration-150 rounded-3xl w-[10rem] h-[2rem] flex items-center space-x-3 text-white justify-center"
+                  >
                     <IoIosAddCircleOutline fontSize={20} />
                     <h1>Add Admin</h1>
                   </Link>
@@ -153,66 +154,140 @@ const Main = () => {
               </div>
             )}
             {!error.noAdminError && admins.length !== 0 && (
-              <div className="overflow-y-auto space-y-2 pb-3">
-                <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4 py-1">
-                  <h1 className="col-span-3 text-[13px] font-bold">
-                    Admin Name
-                  </h1>
-                  <h1 className="col-span-3 text-[13px] font-bold">Email</h1>
-                  <h1 className="col-span-2 text-[13px] font-bold">
-                    Sub Admin
-                  </h1>
-                  <h1 className="col-span-3 text-[13px] font-bold">
-                    Organization Name
-                  </h1>
-                  <h1 className="col-span-1 text-[13px] font-bold">Action</h1>
-                </div>
+              // <div className="overflow-y-auto space-y-2 pb-3">
+              //   <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4 py-1">
+              //     <h1 className="col-span-3 text-[13px] font-bold">
+              //       Admin Name
+              //     </h1>
+              //     <h1 className="col-span-3 text-[13px] font-bold">Email</h1>
+              //     <h1 className="col-span-2 text-[13px] font-bold">
+              //       Sub Admin
+              //     </h1>
+              //     <h1 className="col-span-3 text-[13px] font-bold">
+              //       Organization Name
+              //     </h1>
+              //     <h1 className="col-span-1 text-[13px] font-bold">Action</h1>
+              //   </div>
+              //   {admins.map((ad, idx) => (
+              //     <div
+              //       key={idx}
+              //       className="grid grid-cols-12 h-[37px] bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
+              //       <div
+              //         onClick={() => {
+              //           navigate("/admin/admin/viewadmin");
+              //           dispatch({ type: GET_ADMIN, payload: ad });
+              //         }}
+              //         className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
+              //         <Avatar
+              //           sx={{ height: 20, width: 20, bgcolor: "#f48320" }}
+              //           alt="">
+              //           <p className="text-[12px]">
+              //             {ad.firstName.slice(0, 1)}
+              //           </p>
+              //         </Avatar>
+              //         <p className="">
+              //           {ad.firstName} {ad.lastName}
+              //         </p>
+              //       </div>
+              //       <p
+              //         onClick={() => {
+              //           navigate("/admin/admin/viewadmin");
+              //           dispatch({ type: GET_ADMIN, payload: ad });
+              //         }}
+              //         className="col-span-3 font-semibold text-[13px] cursor-pointer">
+              //         {ad.email}
+              //       </p>
+              //       <p
+              //         onClick={() => {
+              //           navigate("/admin/admin/viewadmin");
+              //           dispatch({ type: GET_ADMIN, payload: ad });
+              //         }}
+              //         className="col-span-2 font-semibold text-[13px] cursor-pointer">
+              //         {ad.sub === "true" ? "Yes" : "No"}
+              //       </p>
+              //       <p
+              //         onClick={() => {
+              //           navigate("/admin/admin/viewadmin");
+              //           dispatch({ type: GET_ADMIN, payload: ad });
+              //         }}
+              //         className="col-span-3 font-semibold text-[13px] cursor-pointer">
+              //         {ad.organizationName}
+              //       </p>
+              //       <div className="col-span-1 font-semibold text-[13px] cursor-pointer ">
+              //         <BsThreeDotsVertical
+              //           onClick={(event) => {
+              //             handleClick(event);
+              //             setIndex(idx);
+              //           }}
+              //         />
+              //         <Menu
+              //           id="basic-menu"
+              //           anchorEl={anchorEl}
+              //           open={open}
+              //           onClose={handleClose}
+              //           MenuListProps={{
+              //             "aria-labelledby": "basic-button",
+              //           }}>
+              //           {user.result.sub === "false" ? (
+              //             <>
+              //               <MenuItem
+              //                 onClick={() => {
+              //                   dispatch({
+              //                     type: GET_ADMIN,
+              //                     payload: admins[index],
+              //                   });
+              //                   navigate("/admin/admin/updateadmin");
+              //                 }}>
+              //                 Update Admin
+              //               </MenuItem>
+              //               <MenuItem
+              //                 onClick={() => {
+              //                   handleOpenDeleteModal();
+              //                   handleClose();
+              //                 }}>
+              //                 Delete Admin
+              //               </MenuItem>
+              //             </>
+              //           ) : (
+              //             <>
+              //               {ad.email === user.result.email ? (
+              //                 <MenuItem
+              //                   onClick={() => {
+              //                     dispatch({
+              //                       type: GET_ADMIN,
+              //                       payload: admins[index],
+              //                     });
+              //                     navigate("/admin/admin/updateadmin");
+              //                   }}>
+              //                   Update Admin
+              //                 </MenuItem>
+              //               ) : (
+              //                 <MenuItem
+              //                   onClick={() => {
+              //                     setShowSubAdminModal(true);
+              //                     handleClose();
+              //                   }}>
+              //                   Update Admin
+              //                 </MenuItem>
+              //               )}
+              //               <MenuItem
+              //                 onClick={() => {
+              //                   setShowSubAdminModal(true);
+              //                   handleClose();
+              //                 }}>
+              //                 Delete Admin
+              //               </MenuItem>
+              //             </>
+              //           )}
+              //         </Menu>
+              //       </div>
+              //     </div>
+              //   ))}
+              // </div>
+              <div className="flex fleax-wrap justify-evenly text-[#ffffff]">
                 {admins.map((ad, idx) => (
-                  <div
-                    key={idx}
-                    className="grid grid-cols-12 h-[37px] bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4">
-                    <div
-                      onClick={() => {
-                        navigate("/admin/admin/viewadmin");
-                        dispatch({ type: GET_ADMIN, payload: ad });
-                      }}
-                      className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
-                      <Avatar
-                        sx={{ height: 20, width: 20, bgcolor: "#f48320" }}
-                        alt="">
-                        <p className="text-[12px]">
-                          {ad.firstName.slice(0, 1)}
-                        </p>
-                      </Avatar>
-                      <p className="">
-                        {ad.firstName} {ad.lastName}
-                      </p>
-                    </div>
-                    <p
-                      onClick={() => {
-                        navigate("/admin/admin/viewadmin");
-                        dispatch({ type: GET_ADMIN, payload: ad });
-                      }}
-                      className="col-span-3 font-semibold text-[13px] cursor-pointer">
-                      {ad.email}
-                    </p>
-                    <p
-                      onClick={() => {
-                        navigate("/admin/admin/viewadmin");
-                        dispatch({ type: GET_ADMIN, payload: ad });
-                      }}
-                      className="col-span-2 font-semibold text-[13px] cursor-pointer">
-                      {ad.sub === "true" ? "Yes" : "No"}
-                    </p>
-                    <p
-                      onClick={() => {
-                        navigate("/admin/admin/viewadmin");
-                        dispatch({ type: GET_ADMIN, payload: ad });
-                      }}
-                      className="col-span-3 font-semibold text-[13px] cursor-pointer">
-                      {ad.organizationName}
-                    </p>
-                    <div className="col-span-1 font-semibold text-[13px] cursor-pointer ">
+                  <div className="flex flex-col p-2 w-[13rem] bg-gradient-to-b from-[#0085B4] to-[#009DA7] rounded-md hover:cursor-pointer">
+                    <div className="flex w-full justify-end items-center">
                       <BsThreeDotsVertical
                         onClick={(event) => {
                           handleClick(event);
@@ -226,7 +301,8 @@ const Main = () => {
                         onClose={handleClose}
                         MenuListProps={{
                           "aria-labelledby": "basic-button",
-                        }}>
+                        }}
+                      >
                         {user.result.sub === "false" ? (
                           <>
                             <MenuItem
@@ -236,14 +312,16 @@ const Main = () => {
                                   payload: admins[index],
                                 });
                                 navigate("/admin/admin/updateadmin");
-                              }}>
+                              }}
+                            >
                               Update Admin
                             </MenuItem>
                             <MenuItem
                               onClick={() => {
                                 handleOpenDeleteModal();
                                 handleClose();
-                              }}>
+                              }}
+                            >
                               Delete Admin
                             </MenuItem>
                           </>
@@ -257,7 +335,8 @@ const Main = () => {
                                     payload: admins[index],
                                   });
                                   navigate("/admin/admin/updateadmin");
-                                }}>
+                                }}
+                              >
                                 Update Admin
                               </MenuItem>
                             ) : (
@@ -265,7 +344,8 @@ const Main = () => {
                                 onClick={() => {
                                   setShowSubAdminModal(true);
                                   handleClose();
-                                }}>
+                                }}
+                              >
                                 Update Admin
                               </MenuItem>
                             )}
@@ -273,12 +353,58 @@ const Main = () => {
                               onClick={() => {
                                 setShowSubAdminModal(true);
                                 handleClose();
-                              }}>
+                              }}
+                            >
                               Delete Admin
                             </MenuItem>
                           </>
                         )}
                       </Menu>
+                    </div>
+                    <div
+                      className="w-full h-[6rem] py-3 flex justify-center items-center mt-1"
+                      onClick={() => {
+                        navigate("/admin/admin/viewadmin");
+                        dispatch({ type: GET_ADMIN, payload: ad });
+                      }}
+                    >
+                      <img
+                        className="w-[6rem] h-[6rem] rounded-full"
+                        src="https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bGVuc3xlbnwwfHwwfHw%3D&w=1000&q=80"
+                        alt="profile_image"
+                      />
+                    </div>
+                    <div
+                      className="flex flex-col pt-2 space-y-3"
+                      onClick={() => {
+                        navigate("/admin/admin/viewadmin");
+                        dispatch({ type: GET_ADMIN, payload: ad });
+                      }}
+                    >
+                      <div className="flex flex-col w-full justify-center">
+                        <div className="flex w-full justify-center text-[0.9rem] font-semibold">
+                          {ad.firstName} {ad.lastName}
+                        </div>
+                        <div className="flex w-full justify-center text-[0.75rem] text-gray-200">
+                          {ad.email}
+                        </div>
+                      </div>
+                      <div className="flex flex-col w-full justify-center">
+                        <div className="flex w-full justify-center text-[0.75rem] font-semibold">
+                          ORGANISATION NAME
+                        </div>
+                        <div className="flex w-full justify-center text-[0.75rem] text-gray-200">
+                          {ad.sub === "false"
+                            ? `Super Admin`
+                            : ad.organizationName}
+                        </div>
+                      </div>
+                      <div className="flex w-full items-end text-[0.75rem]">
+                        <div className="flex w-[50%] justify-start">Sub</div>
+                        <div className="flex w-[50%] justify-end">
+                          {ad.sub === "false" ? `No` : `Yes`}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -293,7 +419,8 @@ const Main = () => {
             open={openDeleteModal}
             onClose={handleCloseDeleteModal}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
+            aria-describedby="modal-modal-description"
+          >
             <Box sx={style}>
               <div className="flex flex-col space-y-2">
                 <h1 className="text-3xl">Are you sure?</h1>
@@ -301,7 +428,8 @@ const Main = () => {
                 <div className="space-x-4 text-black">
                   <button
                     className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
-                    onClick={handleCloseDeleteModal}>
+                    onClick={handleCloseDeleteModal}
+                  >
                     No
                   </button>
                   <button
@@ -309,7 +437,8 @@ const Main = () => {
                     onClick={() => {
                       dispatch(deleteAdmin({ email: admins[index].email }));
                       handleCloseDeleteModal();
-                    }}>
+                    }}
+                  >
                     Yes
                   </button>
                 </div>
