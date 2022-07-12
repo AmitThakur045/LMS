@@ -7,6 +7,7 @@ import {
   SUBMIT_ASSIGNMENT,
   SIGN_UP,
   OTP,
+  UPDATE_LEARNER,
 } from "../actionTypes";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   assignmentSubmitted: false,
   studentSignedUp: false,
   otp: null,
+  learnerUpdated: false,
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -58,6 +60,11 @@ const studentReducer = (state = initialState, action) => {
         ...state,
         otp: action.payload,
       };
+    case UPDATE_LEARNER:
+        return {
+          ...state,
+          learnerUpdated: action.payload,
+        };
     default:
       return state;
   }

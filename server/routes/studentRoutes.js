@@ -9,6 +9,7 @@ import {
   submitAssignment,
   studentSignUp,
   getBatchLessonVideoByCourse,
+  updateLearner,
 } from "../controller/studentController.js";
 const router = express.Router();
 
@@ -20,4 +21,5 @@ router.post("/getallevents", auth, getAllEvents);
 router.post("/getassignmentbybatchcode", auth, getAssignmentByBatchCode);
 router.post("/submitassignment", auth, submitAssignment);
 router.post("/getbatchlessonvideobycourse", auth, getBatchLessonVideoByCourse);
+router.post("/updatelearner", auth, updateLearner);
 export default router;

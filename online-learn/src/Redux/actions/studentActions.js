@@ -8,6 +8,7 @@ import {
   SIGN_UP,
   OTP,
   GET_BATCH_LESSON_VIDEO,
+  UPDATE_LEARNER,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -66,7 +67,7 @@ export const generateOtp = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
 
 export const studentSignUp = (formData) => async (dispatch) => {
   try {
@@ -84,5 +85,16 @@ export const getBatchLessonVideoByCourse = (formData) => async (dispatch) => {
     dispatch({ type: GET_BATCH_LESSON_VIDEO, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error });
+  }
+};
+
+export const updateLearner = (value, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.updateLearner(value);
+    dispatch({ type: UPDATE_LEARNER, payload: true });
+    alert("Updated Successfully");
+    navigate("/profile");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
