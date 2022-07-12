@@ -55,3 +55,4 @@ export const SUBMIT_ASSIGNMENT = "SUBMIT_ASSIGNMENT";
 export const OTP = "OTP";
 export const SIGN_UP = "SIGN_UP";
 export const ADD_ORGANIZATION = "ADD_ORGANIZATION";
+export const UPDATE_LEARNER = "UPDATE_LEARNER";
