@@ -154,7 +154,7 @@ const Main = () => {
               </div>
             )}
             {!error.noAdminError && admins.length !== 0 && (
-              <div className="flex flex-wrap justify-between text-[#ffffff] w-full">
+              <div className="flex flex-wrap justify-between text-[#ffffff] w-full overflow-y-auto">
                 {admins.map((ad, idx) => (
                   <div className="flex flex-col m-2 p-2 sm:w-[13rem] w-full bg-gradient-to-b from-[#0085B4] to-[#009DA7] rounded-md hover:cursor-pointer">
                     <div className="flex w-full justify-end items-center">
@@ -238,11 +238,14 @@ const Main = () => {
                         dispatch({ type: GET_ADMIN, payload: ad });
                       }}
                     >
-                      <img
-                        className="w-[6rem] h-[6rem] rounded-full"
-                        src="https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bGVuc3xlbnwwfHwwfHw%3D&w=1000&q=80"
-                        alt="profile_image"
-                      />
+                      <Avatar
+                        sx={{ height: 60, width: 60, bgcolor: "#f48320" }}
+                        alt=""
+                      >
+                        <p className="text-[25px]">
+                          {ad.firstName.slice(0, 1)}
+                        </p>
+                      </Avatar>
                     </div>
                     <div
                       className="flex flex-col pt-2 space-y-3"
@@ -281,7 +284,7 @@ const Main = () => {
               </div>
             )}
           </div>
-          <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col sm:flex-row flex-col lg:items-center items-start lg:pl-5 py-5 rounded-3xl lg:space-y-5 space-x-3 lg:space-x-0">
+          <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col sm:flex-row flex-col lg:items-center items-start lg:pl-5 py-5 rounded-3xl space-y-5 sm:space-y-0 lg:space-y-5 sm:space-x-3 lg:space-x-0">
             <ActiveBatch />
             <RecentNotification />
           </div>
