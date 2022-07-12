@@ -154,7 +154,7 @@ const Main = () => {
               </div>
             )}
             {!error.noAdminError && admins.length !== 0 && (
-              <div className="flex flex-wrap justify-between text-[#ffffff] w-full overflow-y-auto">
+              <div className="flex flex-wrap text-[#ffffff] w-full overflow-y-auto">
                 {admins.map((ad, idx) => (
                   <div className="flex flex-col m-2 p-2 sm:w-[13rem] w-full bg-gradient-to-b from-[#0085B4] to-[#009DA7] rounded-md hover:cursor-pointer">
                     <div className="flex w-full justify-end items-center">

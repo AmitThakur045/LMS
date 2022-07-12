@@ -138,100 +138,7 @@ const Main = () => {
               </div>
             )}
             {!error.courseError && courses.length !== 0 && (
-              // <div className="overflow-y-auto space-y-2 pb-3">
-              //   <div className="grid grid-cols-12 bg-white shadow-md border-[1px] border-[#eeeeee] rounded-md items-center px-4 py-1">
-              //     <h1 className="col-span-3 text-[13px] font-bold">
-              //       Course Code
-              //     </h1>
-              //     <h1 className="col-span-3 text-[13px] font-bold">
-              //       Course Name
-              //     </h1>
-
-              //     <h1 className="col-span-2 text-[13px] font-bold">
-              //       Total Lectures
-              //     </h1>
-              //     <h1 className="col-span-3 text-[13px] font-bold">
-              //       Difficulty
-              //     </h1>
-              //     <h1 className="col-span-1 text-[13px] font-bold">Action</h1>
-              //   </div>
-              //   {courses.map((ad, idx) => (
-              //     <div
-              //       key={idx}
-              //       className="grid grid-cols-12 h-[37px] bg-white border-[1px] border-[#eeeeee] rounded-md items-center px-4">
-              //       <div
-              //         onClick={() => {
-              //           navigate("/admin/course/viewcourse");
-              //           dispatch({ type: GET_COURSE, payload: ad });
-              //         }}
-              //         className="col-span-3 font-semibold text-[13px] cursor-pointer flex space-x-2">
-              //         <Avatar
-              //           sx={{ height: 20, width: 20 }}
-              //           src={ad.courseImg}
-              //           alt=""
-              //         />
-              //         <p className="">{ad.courseCode}</p>
-              //       </div>
-              //       <p
-              //         onClick={() => {
-              //           navigate("/admin/course/viewcourse");
-              //           dispatch({ type: GET_COURSE, payload: ad });
-              //         }}
-              //         className="col-span-3 font-semibold text-[13px] cursor-pointer">
-              //         {ad.courseName}
-              //       </p>
-              //       <p
-              //         onClick={() => {
-              //           navigate("/admin/course/viewcourse");
-              //           dispatch({ type: GET_COURSE, payload: ad });
-              //         }}
-              //         className="col-span-2 font-semibold text-[13px] cursor-pointer">
-              //         {ad.totalLectures}
-              //       </p>
-              //       <p
-              //         onClick={() => {
-              //           navigate("/admin/course/viewcourse");
-              //           dispatch({ type: GET_COURSE, payload: ad });
-              //         }}
-              //         className="col-span-3 font-semibold text-[13px] cursor-pointer">
-              //         {ad.difficulty}
-              //       </p>
-              //       <div className="col-span-1 font-semibold text-[13px] cursor-pointer ">
-              //         <BsThreeDotsVertical
-              //           onClick={(event) => {
-              //             handleClick(event);
-              //             setIndex(idx);
-              //           }}
-              //         />
-              //         <Menu
-              //           id="basic-menu"
-              //           anchorEl={anchorEl}
-              //           open={open}
-              //           onClose={handleClose}
-              //           MenuListProps={{
-              //             "aria-labelledby": "basic-button",
-              //           }}>
-              //           {user.result.sub === "false" ? (
-              //             <MenuItem
-              //               onClick={() => {
-              //                 handleClose();
-              //               }}>
-              //               Delete Course
-              //             </MenuItem>
-              //           ) : (
-              //             <MenuItem
-              //               onClick={() => {
-              //                 handleClose();
-              //               }}>
-              //               Delete Course
-              //             </MenuItem>
-              //           )}
-              //         </Menu>
-              //       </div>
-              //     </div>
-              //   ))}
-              // </div>
-              <div className="flex flex-wrap justify-between text-[#ffffff] w-full overflow-y-auto">
+              <div className="flex flex-wrap text-[#ffffff] w-full overflow-y-auto">
                 {courses.map((ad, idx) => (
                   <div className="flex flex-col m-2 p-2 sm:w-[13rem] w-full bg-gradient-to-b from-[#0085B4] to-[#009DA7] rounded-md hover:cursor-pointer">
                     <div className="flex w-full justify-end items-center">
@@ -319,8 +226,8 @@ const Main = () => {
               </div>
             )}
           </div>
-                    <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col sm:flex-row flex-col lg:items-center items-start lg:pl-5 py-5 rounded-3xl space-y-5 sm:space-y-0 lg:space-y-5 sm:space-x-3 lg:space-x-0">
-  <ActiveBatch />
+          <div className="bg-[#FAFBFF] lg:w-[20%] flex lg:flex-col sm:flex-row flex-col lg:items-center items-start lg:pl-5 py-5 rounded-3xl space-y-5 sm:space-y-0 lg:space-y-5 sm:space-x-3 lg:space-x-0">
+            <ActiveBatch />
             <RecentNotification />
           </div>
           <Modal
