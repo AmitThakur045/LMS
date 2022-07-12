@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { AiFillStar } from "react-icons/ai";
@@ -8,6 +10,7 @@ import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
+import UpdateProfile from "./UpdateProfile/UpdateProfile";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -96,6 +99,13 @@ const Main = ({ courseList, learner, batch }) => {
                 alt=""
               />
               <h1 className="self-center font-bold text-lg">My Profile</h1>
+              <Link
+                to="/updateprofile"
+                className="self-center font-bold text-lg"
+              >
+                Update
+              </Link>
+
               <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10">
                 <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0">
                   <TextField
