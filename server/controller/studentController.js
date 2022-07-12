@@ -229,7 +229,7 @@ export const submitAssignment = async (req, res) => {
 export const generateOtp = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("generateemail", email);
+    // console.log("generateemail", email);
     const errors = { studentError: String };
     const existingStudent = await Student.countDocuments({ email });
 
@@ -283,7 +283,7 @@ export const studentSignUp = async (req, res) => {
 export const getBatchLessonVideoByCourse = async (req, res) => {
   try {
     const { batchCode, index } = req.body;
-    console.log(index);
+    // console.log(index);
     const errors = { noBatchError: String };
 
     const batch = await Batch.findOne(
@@ -310,5 +310,38 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
     res.status(200).json(batch);
   } catch (error) {
     console.log("Backend Error", error);
+  }
+};
+
+export const updateLearner = async (req, res) => {
+  try {
+    const { firstName, lastName, contactNumber, avatar, email } = req.body;
+    const updatedLearner = await Student.findOne(
+      { email },
+      { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1 }
+    );
+
+    if (firstName) {
+      updatedLearner.firstName = firstName;
+      await updatedLearner.save();
+    }
+    if (lastName) {
+      updatedLearner.lastName = lastName;
+      await updatedLearner.save();
+    }
+
+    if (contactNumber) {
+      updatedLearner.contactNumber = contactNumber;
+      await updatedLearner.save();
+    }
+
+    if (avatar) {
+      updatedLearner.avatar = avatar;
+      await updatedLearner.save();
+    }
+
+    res.status(200).json("Student Updated");
+  } catch (error) {
+    res.status(500).json(error.message);
   }
 };

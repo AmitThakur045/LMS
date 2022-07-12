@@ -36,6 +36,7 @@ import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/Updat
 import Certificate from "./components/Student/Course/Certificate/Certificate";
 import Profile from "./components/Student/Profile/Profile";
 import Labs from "./components/Student/Course/Labs/Labs";
+import UpdateProfile from "./components/Student/Profile/UpdateProfile/UpdateProfile";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
       <Route path="/certificate" exact element={<Certificate />} />
+      <Route path="/updateprofile" exact element={<UpdateProfile />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
