@@ -95,7 +95,7 @@ const Main = () => {
         </div>
       ) : (
         <div className="flex flex-col lg:flex-row overflow-hidden h-full space-x-5 lg:px-10 px-2 mb-5 overflow-y-auto">
-          <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-6">
+          <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-6 px-2 py-5 flex flex-col space-y-6">
             <div className="flex flex-col sm:flex-row items-center justify-between">
               <div className="flex w-full sm:w-[15.3rem] bg-[#ffffff] pl-2 border-[#D4D4D4] border-[1px] space-x-2 rounded-md h-[1.8rem] items-center">
                 <AiOutlineSearch fontSize={20} color="#696969" />

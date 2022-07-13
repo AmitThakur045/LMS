@@ -33,7 +33,7 @@ const Main = () => {
   const [dashboardData, setDashboardData] = useState({});
   const [organizationName, setOrganizationName] = useState("All");
 
-  const [width, setWidth] = useState("420px");
+  const [width, setWidth] = useState("590px");
   const [lineChartData, setLineChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
@@ -51,7 +51,7 @@ const Main = () => {
       setError(store.errors);
     }
   }, [store.errors]);
-  console.log(error);
+
   useEffect(() => {
     if (allDeleteQueries.length !== 0) {
       setDeleteQueries(allDeleteQueries);
@@ -61,7 +61,7 @@ const Main = () => {
       }
     }
   }, [allDeleteQueries]);
-  console.log(allDeleteQueries);
+
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
     if (user.result.sub === "true") {
@@ -91,7 +91,7 @@ const Main = () => {
 
   function handleSizeChange() {
     if (window.innerWidth > 1424) {
-      setWidth("600px");
+      setWidth("590px");
     } else if (window.innerWidth > 1300) {
       setWidth("500px");
     } else if (window.innerWidth > 1024) {
@@ -104,7 +104,7 @@ const Main = () => {
       setWidth(toString(window.innerWidth * 0.6) + "px");
     }
   }
-  console.log(width);
+  console.log(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", handleSizeChange);
   }, []);
