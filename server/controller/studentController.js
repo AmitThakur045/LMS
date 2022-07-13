@@ -354,7 +354,7 @@ export const updateLearner = async (req, res) => {
         await updatedLearner.save();
       } else {
         // if new password is empty
-        error.passwordError = "New Password is required";
+        errors.passwordError = "New Password is required";
         return res.status(404).json(errors);
       }
     }
