@@ -101,8 +101,7 @@ const Main = ({ courseList, learner, batch }) => {
               <h1 className="self-center font-bold text-lg">My Profile</h1>
               <Link
                 to="/updateprofile"
-                className="self-center font-bold text-lg"
-              >
+                className="self-center font-medium text-lg bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md">
                 Update
               </Link>
 
