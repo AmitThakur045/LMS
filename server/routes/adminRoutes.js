@@ -64,7 +64,7 @@ router.post("/addadmin", auth, addAdmin);
 router.post("/addstudentquery", auth, addStudentQuery);
 router.post("/updatedeletequery", auth, updateDeleteQuery);
 router.post("/getadmin", auth, getAdmin);
-router.get("/getalldeletequery", auth, getAllDeleteQuery);
+router.post("/getalldeletequery", auth, getAllDeleteQuery);
 router.post("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
 router.post("/updateadmin", auth, updateAdmin);
 router.post("/updatestudent", auth, updateStudent);

@@ -48,16 +48,14 @@ const Main = () => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4 h-[15rem]">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Search Batch</h1>
               <div
                 onClick={handleClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -81,8 +79,7 @@ const Main = () => {
                 }}
                 className="w-[25%]"
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Search
               </Button>
             </div>
@@ -91,17 +88,17 @@ const Main = () => {
       </Modal>
 
       <div className="lg:w-[80%] w-full rounded-3xl shadow-inner bg-[#FAFBFF] lg:px-10 px-2 py-5 flex md:flex-row flex-col justify-center items-start md:space-x-3 space-y-3 md:space-y-0">
-        <Link
-          to="/admin/batch/addbatch"
-          className="bg-secondary shadow-[#111111] h-[10rem] w-full rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150"
-        >
-          <h1>Add Batch</h1>
-          <IoIosAddCircleOutline />
-        </Link>
+        {user.result.sub !== "hr" && (
+          <Link
+            to="/admin/batch/addbatch"
+            className="bg-secondary shadow-[#111111] h-[10rem] w-full rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150">
+            <h1>Add Batch</h1>
+            <IoIosAddCircleOutline />
+          </Link>
+        )}
         <div
           onClick={handleOpen}
-          className="bg-secondary shadow-[#111111] h-[10rem] w-full rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150"
-        >
+          className="bg-secondary shadow-[#111111] h-[10rem] w-full rounded-md shadow-md text-white flex items-center justify-center space-x-2 text-xl cursor-pointer hover:bg-secondaryHover transition-all duration-150">
           <h1>Search Batch</h1>
           <IoIosAddCircleOutline />
         </div>

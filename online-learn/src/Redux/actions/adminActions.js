@@ -314,9 +314,9 @@ export const getCoursesLength = () => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
-export const getAllDeleteQuery = () => async (dispatch) => {
+export const getAllDeleteQuery = (formData) => async (dispatch) => {
   try {
-    const { data } = await api.getAllDeleteQuery();
+    const { data } = await api.getAllDeleteQuery(formData);
     dispatch({ type: GET_ALL_DELETE_QUERY, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });

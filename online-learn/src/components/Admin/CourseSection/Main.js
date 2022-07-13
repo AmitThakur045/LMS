@@ -118,8 +118,7 @@ const Main = () => {
                   <Link
                     to="/admin/course/addcourse"
                     type="button"
-                    className="bg-secondary hover:bg-secondaryHover transition-all duration-150 sm:rounded-3xl sm:w-[10rem] w-full h-[2rem] flex items-center space-x-3 text-white justify-center"
-                  >
+                    className="bg-secondary hover:bg-secondaryHover transition-all duration-150 sm:rounded-3xl sm:w-[10rem] w-full h-[2rem] flex items-center space-x-3 text-white justify-center">
                     <IoIosAddCircleOutline fontSize={20} />
                     <h1>Add Course</h1>
                   </Link>
@@ -141,48 +140,46 @@ const Main = () => {
               <div className="flex flex-wrap text-[#ffffff] w-full overflow-y-auto">
                 {courses.map((ad, idx) => (
                   <div className="flex flex-col m-2 p-2 sm:w-[13rem] w-full bg-gradient-to-b from-[#0085B4] to-[#009DA7] rounded-md hover:cursor-pointer">
-                    <div className="flex w-full justify-end items-center">
-                      <BsThreeDotsVertical
-                        onClick={(event) => {
-                          handleClick(event);
-                          setIndex(idx);
-                        }}
-                      />
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
-                      >
-                        {user.result.sub === "false" ? (
-                          <MenuItem
-                            onClick={() => {
-                              handleClose();
-                            }}
-                          >
-                            Delete Course
-                          </MenuItem>
-                        ) : (
-                          <MenuItem
-                            onClick={() => {
-                              handleClose();
-                            }}
-                          >
-                            Delete Course
-                          </MenuItem>
-                        )}
-                      </Menu>
-                    </div>
+                    {user.result.sub !== "hr" && (
+                      <div className="flex w-full justify-end items-center">
+                        <BsThreeDotsVertical
+                          onClick={(event) => {
+                            handleClick(event);
+                            setIndex(idx);
+                          }}
+                        />
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                          }}>
+                          {user.result.sub === "false" ? (
+                            <MenuItem
+                              onClick={() => {
+                                handleClose();
+                              }}>
+                              Delete Course
+                            </MenuItem>
+                          ) : (
+                            <MenuItem
+                              onClick={() => {
+                                handleClose();
+                              }}>
+                              Delete Course
+                            </MenuItem>
+                          )}
+                        </Menu>
+                      </div>
+                    )}
                     <div
                       className="w-full h-[6rem] py-3 flex justify-center items-center mt-1"
                       onClick={() => {
                         navigate("/admin/course/viewcourse");
                         dispatch({ type: GET_COURSE, payload: ad });
-                      }}
-                    >
+                      }}>
                       <img
                         className="w-[6rem] h-[6rem] rounded-full"
                         src={ad.courseImg}
@@ -194,8 +191,7 @@ const Main = () => {
                       onClick={() => {
                         navigate("/admin/course/viewcourse");
                         dispatch({ type: GET_COURSE, payload: ad });
-                      }}
-                    >
+                      }}>
                       <div className="flex flex-col w-full justify-center">
                         <div className="flex w-full justify-center text-[0.8rem] font-semibold">
                           COURSE CODE
@@ -234,8 +230,7 @@ const Main = () => {
             open={openDeleteModal}
             onClose={handleCloseDeleteModal}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            aria-describedby="modal-modal-description">
             <Box sx={style}>
               <div className="flex flex-col space-y-2">
                 <h1 className="text-3xl">Are you sure?</h1>
@@ -243,8 +238,7 @@ const Main = () => {
                 <div className="space-x-4 text-black">
                   <button
                     className="bg-red-400 text-white rounded-lg w-24 h-8 hover:bg-red-600 transition-all duration-150 "
-                    onClick={handleCloseDeleteModal}
-                  >
+                    onClick={handleCloseDeleteModal}>
                     No
                   </button>
                   <button
@@ -254,8 +248,7 @@ const Main = () => {
                         deleteCourse({ courseCode: courses[index].courseCode })
                       );
                       handleCloseDeleteModal();
-                    }}
-                  >
+                    }}>
                     Yes
                   </button>
                 </div>

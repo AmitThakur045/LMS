@@ -77,17 +77,18 @@ const Main = () => {
             </div>
             <div className="flex justify-between ">
               <FormControl aria-disabled className="w-[47%]">
-                <InputLabel id="demo-simple-select-label">Sub Admin</InputLabel>
+                <InputLabel id="demo-simple-select-label">Type</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={admin.sub}
-                  label="Sub Admin">
-                  <MenuItem value="true">Yes</MenuItem>
-                  <MenuItem value="false">No</MenuItem>
+                  label="Type">
+                  <MenuItem value="true">Sub Admin</MenuItem>
+                  <MenuItem value="hr">HR Admin</MenuItem>
+                  <MenuItem value="false">Super Admin</MenuItem>
                 </Select>
               </FormControl>
-              {admin.sub === "true" && (
+              {(admin.sub === "true" || admin.sub === "hr") && (
                 <TextField
                   aira-disabled
                   type="text"
