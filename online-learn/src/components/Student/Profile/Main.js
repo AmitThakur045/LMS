@@ -91,22 +91,17 @@ const Main = ({ courseList, learner, batch }) => {
         {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
         {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 p-2 text-primary">
-            <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 overflow-hidden">
+            <div className="flex flex-col bg-white py-5 rounded-xl space-y-4 md:h-full h-fit overflow-hidden">
+              {/* User Image */}
               <Avatar
                 className="self-center"
                 sx={{ width: 120, height: 120 }}
                 src={learner.avatar}
                 alt=""
               />
-              <h1 className="self-center font-bold text-lg">My Profile</h1>
-              <Link
-                to="/updateprofile"
-                className="self-center font-medium text-lg bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md">
-                Update
-              </Link>
-
-              <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10">
-                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0">
+              <div className="relative flex flex-col pt-3 overflow-y-auto md:h-full h-[35rem] px-10">
+                {/* User Details */}
+                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-2 lg:space-y-0 my-[0.5rem]">
                   <TextField
                     aria-disabled
                     type="text"
@@ -128,7 +123,7 @@ const Main = ({ courseList, learner, batch }) => {
                     value={learner.lastName}
                   />
                 </div>
-                <div className="flex space-x-6">
+                <div className="flex space-x-6 my-[0.5rem]">
                   <TextField
                     aria-disabled
                     type="date"
@@ -150,7 +145,7 @@ const Main = ({ courseList, learner, batch }) => {
                     value={learner.contactNumber}
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
+                <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-3 lg:space-y-0 my-[0.5rem]">
                   <TextField
                     aria-disabled
                     type="email"
@@ -172,38 +167,55 @@ const Main = ({ courseList, learner, batch }) => {
                     value={learner.batchCode[learner.batchCode.length - 1]}
                   />
                 </div>
-                <div className="border-[1px] border-[#848484] flex flex-col space-y-2 py-3 px-5 text-[14px] sm:text-[16px]">
-                  <div className="flex items-center space-x-4">
+
+                {/* performance table  848484 */}
+                <div className="flex flex-col text-[14px] sm:text-[16px] pt-3">
+                  <div className="flex items-center space-x-4 bg-[#EEEDED] px-3 py-[0.5rem] rounded-t-md">
                     <AiFillStar className="text-[#cbbc4a]" />
 
-                    <h1 className="font-semibold">Performance:</h1>
-                    <p>{learner.performance}</p>
+                    <div className="flex flex-row justify-between w-full pr-2">
+                      <h1 className="font-semibold">Performance:</h1>
+                      <p>{learner.performance}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 px-3 py-[0.5rem] bg-[#F6F6F6]">
                     <AiFillStar className="text-[#cbbc4a]" />
 
-                    <h1 className="font-semibold">Total Attendance:</h1>
-                    <p>
-                      {calculateTotalAttendance()}/{batch.schedule.length}
-                    </p>
+                    <div className="flex flex-row justify-between w-full pr-2">
+                      <h1 className="font-semibold">Total Attendance:</h1>
+                      <p>
+                        {calculateTotalAttendance()}/{batch.schedule.length}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 bg-[#EEEDED] px-3 py-[0.5rem]">
                     <AiFillStar className="text-[#cbbc4a]" />
 
-                    <h1 className="font-semibold">
-                      Total Assignments Submitted:
-                    </h1>
-                    <p>
-                      {learner.assignment.length}/{calculateTotalAssignments()}
-                    </p>
+                    <div className="flex flex-row justify-between w-full pr-2">
+                      <h1 className="font-semibold">
+                        Total Assignments Submitted:
+                      </h1>
+                      <p>
+                        {learner.assignment.length}/
+                        {calculateTotalAssignments()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 px-3 py-[0.5rem] bg-[#F6F6F6] rounded-b-md">
                     <AiFillStar className="text-[#cbbc4a]" />
 
-                    <h1 className="font-semibold">Total Assignment Score:</h1>
-                    <p>{calculateAssignmentScore()}</p>
+                    <div className="flex flex-row justify-between w-full pr-2">
+                      <h1 className="font-semibold">Total Assignment Score:</h1>
+                      <p>{calculateAssignmentScore()}</p>
+                    </div>
                   </div>
                 </div>
+                <Link
+                  to="/updateprofile"
+                  className="absolute self-center font-medium bottom-0 text-lg bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md"
+                >
+                  Update
+                </Link>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-2 grid-rows-2 overflow-hidden ">
