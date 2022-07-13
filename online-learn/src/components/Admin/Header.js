@@ -180,7 +180,13 @@ const Header = ({ title, type, nav, back }) => {
             <h1 className="font-bold">
               {user?.result?.firstName} {user?.result?.lastName}
             </h1>
-            <p>{user?.result?.sub === "true" ? "Sub Admin" : "Super Admin"}</p>
+            <p>
+              {user?.result?.sub === "true"
+                ? "Sub Admin"
+                : user.result.sub === "hr"
+                ? "HR Admin"
+                : "Super Admin"}
+            </p>
           </div>
           <div className="">
             <div
@@ -204,7 +210,7 @@ const Header = ({ title, type, nav, back }) => {
                 }}>
                 Profile
               </MenuItem>
-              {user.result.sub && (
+              {user.result.sub === "false" && (
                 <MenuItem
                   onClick={() => {
                     handleOrganizationModalOpen();

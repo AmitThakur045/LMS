@@ -257,7 +257,11 @@ const Header = ({ back, nav }) => {
                   {user?.result?.firstName} {user?.result?.lastName}
                 </h1>
                 <p>
-                  {user?.result?.sub === "true" ? "Sub Admin" : "Super Admin"}
+                  {user?.result?.sub === "true"
+                    ? "Sub Admin"
+                    : user.result.sub === "hr"
+                    ? "HR Admin"
+                    : "Super Admin"}
                 </p>
               </div>
               <div className="">
@@ -267,22 +271,35 @@ const Header = ({ back, nav }) => {
                   alt="">
                   {user.result.firstName.slice(0, 1)}
                 </div>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}>
-                  <MenuItem onClick={handleStatusModalOpen}>
-                    Update Active Status
-                  </MenuItem>
-                  <MenuItem onClick={handleAdminModalOpen}>
-                    Update Batch Admin
-                  </MenuItem>
-                  <MenuItem onClick={() => logout()}>Log Out</MenuItem>
-                </Menu>
+                {user.result.sub !== "hr" ? (
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}>
+                    <MenuItem onClick={handleStatusModalOpen}>
+                      Update Active Status
+                    </MenuItem>
+                    <MenuItem onClick={handleAdminModalOpen}>
+                      Update Batch Admin
+                    </MenuItem>
+                    <MenuItem onClick={() => logout()}>Log Out</MenuItem>
+                  </Menu>
+                ) : (
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}>
+                    <MenuItem onClick={() => logout()}>Log Out</MenuItem>
+                  </Menu>
+                )}
               </div>
             </div>
           </div>

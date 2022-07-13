@@ -36,6 +36,9 @@ const adminSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    createdBy: {
+      type: String,
+    },
   },
   { strict: false }
 );
