@@ -10,7 +10,6 @@ import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
-import UpdateProfile from "./UpdateProfile/UpdateProfile";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -78,7 +77,7 @@ const Main = ({ courseList, learner, batch }) => {
 
   return (
     <>
-      <div className="bg-[#cacaca] flex-[9.93] flex md:flex-row flex-col mt-4 rounded-t-2xl sm:mr-4 mx-2 sm:mx-0 md:overflow-hidden overflow-auto ">
+      <div className="bg-[#cacaca] flex-[9.93] flex md:flex-row flex-col mt-4 rounded-t-2xl sm:mr-4 mx-2 sm:mx-0 md:overflow-hidden overflow-auto">
         {isMobile && (
           <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
             {isOpen ? (
