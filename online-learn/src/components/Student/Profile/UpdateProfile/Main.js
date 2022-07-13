@@ -12,6 +12,7 @@ const Main = () => {
   const [learner, setLearner] = useState(
     JSON.parse(localStorage.getItem("learner"))
   );
+  const store = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Main = () => {
     email: learner.result.email,
     contactNumber: "",
     avatar: "",
+    oldPassword: "",
+    newPassword: "",
   });
 
   const uploadImage = async (e) => {
@@ -55,7 +58,9 @@ const Main = () => {
       value.lastName === "" &&
       value.email === "" &&
       value.contactNumber === "" &&
-      value.avatar === ""
+      value.avatar === "" &&
+      value.oldPassword === "" &&
+      value.newPassword === ""
     ) {
       alert("Enter atleast one value");
       setLoading(false);
@@ -64,18 +69,20 @@ const Main = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     dispatch({ type: SET_ERRORS, payload: {} });
-  //     if (Object.keys(learner).length === 0) {
-  //       navigate("/admin/learner");
-  //     }
-  //   }, []);
-  
+  useEffect(() => {
+    if (store.errors) {
+      setError(store.errors);
+    }
+    if (error.passwordError) {
+      alert(error.passwordError);
+    }
+  }, [store.errors]);
+
   return (
     <div className="flex w-full lg:flex-row flex-col overflow-y-auto h-full space-x-5 px-2 mb-5">
       <form
         onSubmit={handleSubmit}
-        className="w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
+        className="w-full rounded-lg bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
       >
         <p className="text-[#8d91b1]">Update learner</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
@@ -167,6 +174,30 @@ const Main = () => {
                 value={value.contactNumber}
                 onChange={(e) =>
                   setValue({ ...value, contactNumber: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
+              <TextField
+                type="text"
+                id="outlined-basic"
+                label="Old Password"
+                variant="outlined"
+                className="bg-white w-full"
+                value={value.oldPassword}
+                onChange={(e) =>
+                  setValue({ ...value, oldPassword: e.target.value })
+                }
+              />
+              <TextField
+                type="text"
+                id="outlined-basic"
+                label="New Password"
+                variant="outlined"
+                className="bg-white w-full"
+                value={value.newPassword}
+                onChange={(e) =>
+                  setValue({ ...value, newPassword: e.target.value })
                 }
               />
             </div>

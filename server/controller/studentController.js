@@ -265,12 +265,14 @@ export const studentSignUp = async (req, res) => {
       return res.status(400).json(errors);
     }
 
+    let hashedPassword = await bcrypt.hash(password, 10);
+
     const newStudent = await new Student({
       firstName,
       lastName,
       email,
       dob,
-      password,
+      password: hashedPassword,
     });
     await newStudent.save();
 
@@ -315,26 +317,67 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
 
 export const updateLearner = async (req, res) => {
   try {
-    const { firstName, lastName, contactNumber, avatar, email } = req.body;
+    console.log("update learner", req.body);
+    const {
+      firstName,
+      lastName,
+      contactNumber,
+      avatar,
+      email,
+      oldPassword,
+      newPassword,
+    } = req.body;
+
     const updatedLearner = await Student.findOne(
       { email },
-      { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1 }
+      { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1, password: 1 }
     );
+    const errors = { passwordError: String };
 
+    // check if old password lenght !== 0
+    if (oldPassword.length > 0) {
+      // check to compare old password with user password in db
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        updatedLearner.password
+      );
+      // if old password is incorrect
+      if (!isPasswordCorrect) {
+        errors.passwordError = "Invalid Password";
+        return res.status(404).json(errors);
+      }
+
+      // if new password is not empty update the user password
+      if (newPassword.length > 0) {
+        let hashedPassword = await bcrypt.hash(newPassword, 10);
+        updatedLearner.password = hashedPassword;
+        await updatedLearner.save();
+      } else {
+        // if new password is empty
+        error.passwordError = "New Password is required";
+        return res.status(404).json(errors);
+      }
+    }
+
+    // if first name is not empty update the user first name
     if (firstName) {
       updatedLearner.firstName = firstName;
       await updatedLearner.save();
     }
+
+    // if last name is not empty update the user last name
     if (lastName) {
       updatedLearner.lastName = lastName;
       await updatedLearner.save();
     }
 
+    // if contact number is not empty update the user contact number
     if (contactNumber) {
       updatedLearner.contactNumber = contactNumber;
       await updatedLearner.save();
     }
 
+    // if avatar is not empty update the user avatar
     if (avatar) {
       updatedLearner.avatar = avatar;
       await updatedLearner.save();
