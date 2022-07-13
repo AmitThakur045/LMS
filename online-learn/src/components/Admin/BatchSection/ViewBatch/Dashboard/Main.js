@@ -47,12 +47,12 @@ const Main = () => {
   const attendanceStatus = useSelector((store) => store.admin.attendanceStatus);
   const [totalAttendanceStatus, setTotalAttendanceStatus] = useState(0);
   const [totalClassesHeld, setTotalClassesHeld] = useState(0);
-  const [width, setWidth] = useState("420px");
+  const [width, setWidth] = useState("550px");
 
   // Resize the width of line graph using window width
   function handleSizeChange() {
     if (window.innerWidth > 1424) {
-      setWidth("600px");
+      setWidth("550px");
     } else if (window.innerWidth > 1300) {
       setWidth("500px");
     } else if (window.innerWidth > 1024) {
@@ -330,8 +330,7 @@ const Main = () => {
                     id="demo-select-small"
                     value={courseCode}
                     label="Course"
-                    onChange={(e) => handleChange(e)}
-                  >
+                    onChange={(e) => handleChange(e)}>
                     {batchData.courses.map((course) => (
                       <MenuItem value={course.courseCode}>
                         {course.courseCode}
