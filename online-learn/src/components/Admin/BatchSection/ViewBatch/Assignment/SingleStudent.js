@@ -14,6 +14,8 @@ import { addScore } from "../../../../../Redux/actions/adminActions";
 import { ADD_SCORE } from "../../../../../Redux/actionTypes";
 
 const SingleStudent = ({ item, index, currentEmail }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -74,7 +76,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
     <div key={index} onClick={() => setEmail(item.email)}>
       <ListItem button>
         <button
-          disabled={!isSelected || isAdded}
+          disabled={!isSelected || isAdded || user.result.sub === "hr"}
           type="button"
           onClick={submitHandler}>
           {isAdded ? (
@@ -113,7 +115,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
                   backgroundColor: "#bfd8e0",
                   borderRadius: "20px",
                 }}
-                disabled={isAdded}
+                disabled={isAdded || user.result.sub === "hr"}
                 onClick={() => inputRef.current.click()}>
                 <div className="flex text-blue-600 px-2 space-x-1">
                   {loading ? (
@@ -134,18 +136,34 @@ const SingleStudent = ({ item, index, currentEmail }) => {
               </Button>
             </div>
             <div>
-              <TextField
-                id="outlined-basic"
-                type="number"
-                size="small"
-                label={isAdded ? item.score : "Marks"}
-                variant="outlined"
-                sx={{
-                  width: "70px",
-                }}
-                value={isAdded ? item.score : value.marks}
-                onChange={(e) => setValue({ ...value, marks: e.target.value })}
-              />
+              {user.result.sub !== "hr" ? (
+                <TextField
+                  id="outlined-basic"
+                  type="number"
+                  size="small"
+                  label={isAdded ? item.score : "Marks"}
+                  variant="outlined"
+                  sx={{
+                    width: "70px",
+                  }}
+                  value={isAdded ? item.score : value.marks}
+                  onChange={(e) =>
+                    setValue({ ...value, marks: e.target.value })
+                  }
+                />
+              ) : (
+                <TextField
+                  id="outlined-basic"
+                  type="number"
+                  size="small"
+                  label={isAdded ? item.score : "Marks"}
+                  variant="outlined"
+                  sx={{
+                    width: "70px",
+                  }}
+                  value={isAdded ? item.score : value.marks}
+                />
+              )}
             </div>
           </div>
         </div>

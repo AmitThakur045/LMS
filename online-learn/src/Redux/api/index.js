@@ -54,7 +54,8 @@ export const getAllCourse = () => API.get("/api/admin/getallcourse");
 export const addBatch = (batch) => API.post("/api/admin/addbatch", batch);
 export const getAllBatchCodes = () => API.get("/api/admin/getallbatchcodes");
 export const getCoursesLength = () => API.get("/api/admin/getcourseslength");
-export const getAllDeleteQuery = () => API.get("/api/admin/getalldeletequery");
+export const getAllDeleteQuery = (data) =>
+  API.post("/api/admin/getalldeletequery", data);
 export const getAllDeleteQueryBySubAdmin = (data) =>
   API.post("/api/admin/getalldeletequerybysubadmin", data);
 export const getBatchCodesBySubAdmin = (data) =>
