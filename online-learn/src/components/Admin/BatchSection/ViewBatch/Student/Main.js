@@ -50,6 +50,8 @@ const style = {
   p: 4,
 };
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
@@ -373,21 +375,23 @@ const Main = () => {
                 type="text"
               />
             </div>
-            <div className="lg:space-x-3 space-y-2 lg:space-y-0 flex flex-col lg:flex-row">
-              <Button
-                color="success"
-                onClick={handleAddStudentOpen}
-                variant="contained"
-                className="w-[13rem] h-[1.8rem] items-center">
-                Add Student
-              </Button>
-              <Button
-                onClick={handleOpen}
-                variant="contained"
-                className="w-[13rem] h-[1.8rem] items-center">
-                Mark Attendance
-              </Button>
-            </div>
+            {user.result.sub !== "hr" && (
+              <div className="lg:space-x-3 space-y-2 lg:space-y-0 flex flex-col lg:flex-row">
+                <Button
+                  color="success"
+                  onClick={handleAddStudentOpen}
+                  variant="contained"
+                  className="w-[13rem] h-[1.8rem] items-center">
+                  Add Student
+                </Button>
+                <Button
+                  onClick={handleOpen}
+                  variant="contained"
+                  className="w-[13rem] h-[1.8rem] items-center">
+                  Mark Attendance
+                </Button>
+              </div>
+            )}
           </div>
           <div className="w-full">
             {studentsData.map((student, idx) => (

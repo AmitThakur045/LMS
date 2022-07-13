@@ -59,6 +59,7 @@ const style = {
 };
 
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
@@ -210,11 +211,13 @@ const Main = () => {
             </Box>
           </Modal>
           <div className="flex flex-col lg:px-10 px-2">
-            <div className="flex">
-              <Button onClick={handleOpen} variant="contained">
-                {newEvent.link ? "Update Batch Link" : "Add Batch Link"}
-              </Button>
-            </div>
+            {user.result.sub !== "hr" && (
+              <div className="flex">
+                <Button onClick={handleOpen} variant="contained">
+                  {newEvent.link ? "Update Batch Link" : "Add Batch Link"}
+                </Button>
+              </div>
+            )}
             <div className="flex lg:flex-row flex-col w-full mt-4">
               <div className="overflow-y-auto lg:flex-[0.7] flex lg:justify-start justify-center w-full">
                 <Calendar
@@ -225,106 +228,111 @@ const Main = () => {
                   style={{ height: 500 }}
                 />
               </div>
-              <div className="lg:flex-[0.3] flex flex-col items-center pr-3">
-                <form
-                  onSubmit={handleAddEvent}
-                  className="w-full h-full space-x-5 px-2 mb-5">
-                  <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
-                  <div className="flex flex-col w-full space-y-6">
-                    <div className="flex justify-between w-full">
-                      <TextField
-                        required
-                        type="text"
-                        id="outlined-basic"
-                        label="Title"
-                        variant="outlined"
-                        className="bg-white w-full"
-                        value={newEvent.title}
-                        onChange={(e) =>
-                          setNewEvent({ ...newEvent, title: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="flex justify-between">
-                      <TextField
-                        required
-                        aria-disabled
-                        type="text"
-                        id="outlined-basic"
-                        label="Link"
-                        variant="outlined"
-                        className="bg-white w-full"
-                        value={newEvent.link}
-                      />
-                    </div>
-                    <div className="flex-col space-x-8">
-                      <div>
-                        <p className="text-[#8d91b1]">Start Time</p>
-                      </div>
-                      <div>
+              {user.result.sub !== "hr" && (
+                <div className="lg:flex-[0.3] flex flex-col items-center pr-3">
+                  <form
+                    onSubmit={handleAddEvent}
+                    className="w-full h-full space-x-5 px-2 mb-5">
+                    <p className="text-xl p-2 text-[#8d91b1]">Add Event</p>
+                    <div className="flex flex-col w-full space-y-6">
+                      <div className="flex justify-between w-full">
                         <TextField
                           required
-                          type="datetime-local"
+                          type="text"
                           id="outlined-basic"
+                          label="Title"
                           variant="outlined"
                           className="bg-white w-full"
-                          value={newEvent.start}
+                          value={newEvent.title}
                           onChange={(e) =>
-                            setNewEvent({ ...newEvent, start: e.target.value })
+                            setNewEvent({ ...newEvent, title: e.target.value })
                           }
                         />
                       </div>
-                    </div>
-                    <div className="flex-col space-x-8">
-                      <div>
-                        <p className="text-[#8d91b1]">End Time</p>
-                      </div>
-                      <div>
+                      <div className="flex justify-between">
                         <TextField
                           required
-                          type="datetime-local"
+                          aria-disabled
+                          type="text"
                           id="outlined-basic"
+                          label="Link"
                           variant="outlined"
                           className="bg-white w-full"
-                          value={newEvent.end}
-                          onChange={(e) =>
-                            setNewEvent({ ...newEvent, end: e.target.value })
-                          }
+                          value={newEvent.link}
                         />
                       </div>
+                      <div className="flex-col space-x-8">
+                        <div>
+                          <p className="text-[#8d91b1]">Start Time</p>
+                        </div>
+                        <div>
+                          <TextField
+                            required
+                            type="datetime-local"
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="bg-white w-full"
+                            value={newEvent.start}
+                            onChange={(e) =>
+                              setNewEvent({
+                                ...newEvent,
+                                start: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="flex-col space-x-8">
+                        <div>
+                          <p className="text-[#8d91b1]">End Time</p>
+                        </div>
+                        <div>
+                          <TextField
+                            required
+                            type="datetime-local"
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="bg-white w-full"
+                            value={newEvent.end}
+                            onChange={(e) =>
+                              setNewEvent({ ...newEvent, end: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <FormControl required className="">
+                        <InputLabel id="demo-simple-select-label">
+                          Course Code
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={newEvent.courseCode}
+                          label="Course Code"
+                          onChange={(e) =>
+                            setNewEvent({
+                              ...newEvent,
+                              courseCode: e.target.value,
+                            })
+                          }>
+                          {batchData.courses.map((course, idx) => (
+                            <MenuItem value={course.courseCode}>
+                              {course.courseCode}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </div>
-                    <FormControl required className="">
-                      <InputLabel id="demo-simple-select-label">
-                        Course Code
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={newEvent.courseCode}
-                        label="Course Code"
-                        onChange={(e) =>
-                          setNewEvent({
-                            ...newEvent,
-                            courseCode: e.target.value,
-                          })
-                        }>
-                        {batchData.courses.map((course, idx) => (
-                          <MenuItem value={course.courseCode}>
-                            {course.courseCode}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </div>
-                  <button
-                    disabled={loading}
-                    type="submit"
-                    className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
-                    Submit
-                  </button>
-                  {loading && <Spinner message="Adding Event" />}
-                </form>
-              </div>
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="mt-[1.6rem] bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                      Submit
+                    </button>
+                    {loading && <Spinner message="Adding Event" />}
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </div>

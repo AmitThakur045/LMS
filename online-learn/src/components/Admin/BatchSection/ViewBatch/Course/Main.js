@@ -39,6 +39,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const Main = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
   );
@@ -96,15 +97,17 @@ const Main = () => {
             <div key={idx} className="space-y-4">
               <div className="flex justify-between">
                 <h1 className="font-bold text-primary">{course.courseName}</h1>
-                <Button
-                  onClick={() => {
-                    dispatch({ type: GET_COURSE, payload: course });
-                    dispatch({ type: INDEX_COUNTER, payload: idx });
-                    navigate("/admin/batch/course/update");
-                  }}
-                  variant="contained">
-                  Update
-                </Button>
+                {user.result.sub !== "hr" && (
+                  <Button
+                    onClick={() => {
+                      dispatch({ type: GET_COURSE, payload: course });
+                      dispatch({ type: INDEX_COUNTER, payload: idx });
+                      navigate("/admin/batch/course/update");
+                    }}
+                    variant="contained">
+                    Update
+                  </Button>
+                )}
               </div>
               <BorderLinearProgress
                 variant="determinate"

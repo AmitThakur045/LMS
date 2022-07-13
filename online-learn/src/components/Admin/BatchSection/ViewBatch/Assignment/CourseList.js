@@ -34,6 +34,8 @@ const style = {
 };
 
 const CourseList = ({ currentList, courseCode }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -210,16 +212,19 @@ const CourseList = ({ currentList, courseCode }) => {
               ))}
             </div>
           </div>
-          <div className="bottom-0 fixed w-[14rem]">
-            <button
-              className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-              onClick={() => setOpen(true)}>
-              Create Assignment
-            </button>
-          </div>
+          {user.result.sub !== "hr" && (
+            <div className="bottom-0 fixed w-[14rem]">
+              <button
+                className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+                onClick={() => setOpen(true)}>
+                Create Assignment
+              </button>
+            </div>
+          )}
         </div>
       ) : (
-        courseCode.length !== 0 && (
+        courseCode.length !== 0 &&
+        user.result.sub !== "hr" && (
           <div className="shadow-lg">
             <div className="w-[14rem]">
               <button

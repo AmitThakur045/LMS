@@ -49,8 +49,8 @@ const Main = () => {
     dob: "",
     sub: "",
     organizationName: "",
+    createdBy: user.result.email,
   });
-
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
@@ -162,28 +162,29 @@ const Main = () => {
           <div className="flex space-x-8 ">
             <FormControl required className="w-[50%]" size="small">
               <InputLabel id="demo-simple-select-label" size="small">
-                Sub Admin
+                Type
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={value.sub}
-                label="Sub Admin"
+                label="Type"
                 onChange={(e) => setValue({ ...value, sub: e.target.value })}>
-                <MenuItem value="true">Yes</MenuItem>
-                <MenuItem value="false">No</MenuItem>
+                <MenuItem value="true">Sub Admin</MenuItem>
+                <MenuItem value="hr">HR Admin</MenuItem>
+                <MenuItem value="false">Super Admin</MenuItem>
               </Select>
             </FormControl>
-            {value.sub === "true" && (
+            {(value.sub === "true" || value.sub === "hr") && (
               <FormControl required className="w-[50%]" size="small">
                 <InputLabel id="demo-simple-select-label" size="small">
-                  Sub Admin
+                  Organization Name
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={value.organizationName}
-                  label="Sub Admin"
+                  label="Organization Name"
                   onChange={(e) =>
                     setValue({ ...value, organizationName: e.target.value })
                   }>

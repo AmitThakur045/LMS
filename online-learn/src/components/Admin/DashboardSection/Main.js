@@ -51,16 +51,11 @@ const Main = () => {
       setError(store.errors);
     }
   }, [store.errors]);
+  console.log(error);
   useEffect(() => {
     if (allDeleteQueries.length !== 0) {
       setDeleteQueries(allDeleteQueries);
-      let flag = true;
-      for (let i = 0; i < deleteQueries.length; i++) {
-        if (deleteQueries[i].updated.false) {
-          flag = false;
-        }
-      }
-      setNoQueryFound(flag);
+
       if (Object.keys(adminDashboardData).length !== 0) {
         setIsLoading(false);
       }
@@ -77,9 +72,16 @@ const Main = () => {
         })
       );
       dispatch(getAllDeleteQueryBySubAdmin({ subAdmin: user.result.email }));
+    } else if (user.result.sub === "hr") {
+      dispatch(
+        getAdminDashboardDataByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+      dispatch(getAllDeleteQueryBySubAdmin({ subAdmin: user.result.email }));
     } else {
       dispatch(getAllAdminDashboardData());
-      dispatch(getAllDeleteQuery());
+      dispatch(getAllDeleteQuery({ superAdmin: user.result.email }));
       dispatch(getAllOrganizationName());
     }
   }, []);
@@ -316,7 +318,7 @@ const Main = () => {
             </div>
             <div className=" flex items-center border-l-[1px] border-l-[#955FFF] justify-between pl-3 text-primary font-bold">
               <div className="flex flex-col">
-                <h1 className="items-start">Sub Admins</h1>
+                <h1 className="items-start">Admins</h1>
                 <p>{dashboardData?.totalAdmins}</p>
               </div>
               <img className="hidden lg:block" src={currentIcon} alt="" />
@@ -480,12 +482,7 @@ const Main = () => {
                 {loading && <Spinner message="Loading" />}
                 {error.deleteQueryError && (
                   <p className="text-red-500 flex self-center">
-                    {error.noQueryFound}
-                  </p>
-                )}
-                {noQueryFound && user.result.sub === "false" && (
-                  <p className="text-red-500 flex self-center">
-                    No Query Found
+                    {error.deleteQueryError}
                   </p>
                 )}
               </div>

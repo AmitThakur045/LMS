@@ -210,10 +210,15 @@ export const addStudentQuery = async (req, res) => {
       errors.deleteQueryError = "Query already exists";
       return res.status(400).json(errors);
     }
+    const subAdminData = await Admin.findOne(
+      { email: subAdmin },
+      { createdBy: 1 }
+    );
     const newDeleteQuery = await new DeleteQuery({
       subAdmin,
       code,
       avatar,
+      superAdmin: subAdminData.createdBy,
     });
     await newDeleteQuery.save();
     return res.status(200).json("Delete Query Added successfully");
@@ -254,7 +259,10 @@ export const updateDeleteQuery = async (req, res) => {
 };
 export const getAllDeleteQuery = async (req, res) => {
   try {
-    const deleteQueries = await DeleteQuery.find();
+    const deleteQueries = await DeleteQuery.find({
+      superAdmin: req.body.superAdmin,
+      updated: false,
+    });
     const errors = { deleteQueryError: String };
     if (deleteQueries.length === 0) {
       errors.deleteQueryError = "No Delete Query Found";
