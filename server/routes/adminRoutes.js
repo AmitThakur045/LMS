@@ -5,7 +5,9 @@ import {
   addAdmin,
   getAdmin,
   updateAdmin,
+  resetPassword,
   deleteAdmin,
+  generateOtp,
   addCourse,
   getCourse,
   deleteCourse,
@@ -67,6 +69,8 @@ router.post("/getadmin", auth, getAdmin);
 router.post("/getalldeletequery", auth, getAllDeleteQuery);
 router.post("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
 router.post("/updateadmin", auth, updateAdmin);
+router.post("/generateotp", auth, generateOtp);
+router.post("/resetpassword", auth, resetPassword);
 router.post("/updatestudent", auth, updateStudent);
 router.post("/deleteadmin", auth, deleteAdmin);
 router.post("/addcourse", auth, addCourse);

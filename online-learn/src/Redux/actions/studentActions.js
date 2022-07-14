@@ -61,7 +61,7 @@ export const submitAssignment = (formData) => async (dispatch) => {
 
 export const generateOtp = (formData) => async (dispatch) => {
   try {
-    console.log("otp", formData);
+    // console.log("otp", formData);
     const { data } = await api.generateOtp(formData);
     dispatch({ type: OTP, payload: data });
   } catch (error) {
