@@ -33,7 +33,7 @@ const Main = () => {
   const [dashboardData, setDashboardData] = useState({});
   const [organizationName, setOrganizationName] = useState("All");
 
-  const [width, setWidth] = useState("590px");
+  const [width, setWidth] = useState("420px");
   const [lineChartData, setLineChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
@@ -91,7 +91,7 @@ const Main = () => {
 
   function handleSizeChange() {
     if (window.innerWidth > 1424) {
-      setWidth("590px");
+      setWidth("600px");
     } else if (window.innerWidth > 1300) {
       setWidth("500px");
     } else if (window.innerWidth > 1024) {

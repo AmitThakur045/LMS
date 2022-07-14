@@ -75,10 +75,6 @@ const StudentLogin = () => {
     dispatch(studentSignIn({ email: email, password: password }, navigate));
   };
 
-  const signUp = () => {
-    // e.preventDefault();
-  };
-
   const otpGenerate = (e) => {
     e.preventDefault();
     setLoading(true);

@@ -5,6 +5,8 @@ import {
   ADD_STUDENT,
   DELETE_ADMIN,
   DELETE_COURSE,
+  OTP,
+  RESET_PASSWORD,
   GET_ADMIN,
   GET_ALL_ADMIN,
   GET_ALL_COURSE,
@@ -56,6 +58,8 @@ const initialState = {
   adminUpdated: false,
   studentUpdated: false,
   adminDeleted: false,
+  resetPassword: false,
+  otp: null,
   courseAdded: false,
   course: {},
   courses: [],
@@ -111,6 +115,16 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         adminAdded: action.payload,
+      };
+    case OTP:
+      return {
+        ...state,
+        otp: action.payload,
+      };
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        adminUpdated: action.payload,
       };
     case ADD_DELETE_QUERY:
       return {

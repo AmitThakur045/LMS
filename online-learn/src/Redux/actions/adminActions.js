@@ -4,6 +4,8 @@ import {
   SET_ERRORS,
   UPDATE_ADMIN,
   DELETE_ADMIN,
+  OTP,
+  RESET_PASSWORD,
   ADD_COURSE,
   GET_COURSE,
   DELETE_COURSE,
@@ -106,6 +108,27 @@ export const updateAdmin = (value, navigate) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const generateOtp = (formData) => async (dispatch) => {
+  try {
+    console.log("otp", formData);
+    const { data } = await api.generateAdminOtp(formData);
+    dispatch({ type: OTP, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const resetPassword = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.resetPassword(formData);
+    dispatch({ type: RESET_PASSWORD, payload: data });
+    alert("Password Updated Successfully");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}
+
 export const updateStudent = (value, navigate) => async (dispatch) => {
   try {
     const { data } = await api.updateStudent(value);
