@@ -5,6 +5,7 @@ export const LOGOUT = "LOGOUT";
 export const ADD_ADMIN = "ADD_ADMIN";
 export const ADD_DELETE_QUERY = "ADD_DELETE_QUERY";
 export const UPDATE_DELETE_QUERY = "UPDATE_DELETE_QUERY";
+export const RESET_PASSWORD = "RESET_PASSWORD";
 export const GET_ADMIN = "GET_ADMIN";
 export const UPDATE_ADMIN = "UPDATE_ADMIN";
 export const UPDATE_STUDENT = "UPDATE_STUDENT";

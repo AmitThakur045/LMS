@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
+import { transporter } from "../services/nodemailer.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -45,31 +46,65 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-export const updatedPassword = async (req, res) => {
+export const generateOtp = async (req, res) => {
   try {
-    const { newPassword, confirmPassword, email } = req.body;
-    const errors = { mismatchError: String };
+    const { email } = req.body;
+    console.log("generateemail", email);
+    const errors = { adminError: String };
+    const existingAdmin = await Admin.countDocuments({ email });
 
-    if (newPassword !== confirmPassword) {
-      errors.mismatchError = "Passwords do not match";
+    if (!existingAdmin) {
+      errors.adminError = "Admin does not exist";
       return res.status(400).json(errors);
     }
 
-    const admin = await Admin.findOne({ email });
-    let hashedPassword = await bcrypt.hash(newPassword, 10);
-    admin.password = hashedPassword;
-    await admin.save();
+    const newOtp = Math.floor(Math.random() * 10000);
 
-    if (admin.passwordUpdated === false) {
-      admin.passwordUpdated = true;
-      await admin.save();
+    const resultEmail = await transporter.sendMail({
+      from: "Nodemailer",
+      to: email,
+      subject: "Welcome to Bessalani",
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
+
+    res.status(200).json(newOtp);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { oldPassword, newPassword, email } = req.body;
+    const errors = { passwordError: String };
+
+    const newAdmin = await Admin.findOne({ email }, { password: 1 });
+
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      newAdmin.password
+    );
+
+    // if old password is incorrect
+    if (!isPasswordCorrect) {
+      errors.passwordError = "Invalid Password";
+      return res.status(404).json(errors);
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Password updated successfully",
-      response: admin,
-    });
+    // if new password is not empty update the user password
+    if (newPassword.length > 0) {
+      let hashedPassword = await bcrypt.hash(newPassword, 10);
+      newAdmin.password = hashedPassword;
+      await newAdmin.save();
+    } else {
+      // if new password is empty
+      errors.passwordError = "New Password is required";
+      return res.status(404).json(errors);
+    }
+
+    res.status(200).json("Password Updated");
   } catch (error) {
     const errors = { backendError: String };
     errors.backendError = error;

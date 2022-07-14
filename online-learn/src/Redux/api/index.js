@@ -23,7 +23,10 @@ export const updateAdmin = (admin) => API.post("/api/admin/updateadmin", admin);
 export const updateStudent = (student) =>
   API.post("/api/admin/updatestudent", student);
 export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
-
+export const generateAdminOtp = (data) =>
+  API.post("/api/admin/generateotp", data);
+export const resetPassword = (data) =>
+  API.post("/api/admin/resetpassword", data);
 export const addCourse = (course) => API.post("/api/admin/addcourse", course);
 export const getCourse = (data) => API.post("/api/admin/getcourse", data);
 export const getCourses = (data) => API.post("/api/admin/getcourses", data);
