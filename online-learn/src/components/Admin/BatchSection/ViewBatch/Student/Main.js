@@ -275,14 +275,16 @@ const Main = () => {
             open={openAddStudent}
             onClose={handleAddStudentClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
+            aria-describedby="modal-modal-description"
+          >
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
                   <h1 className="self-center w-[95%] font-bold">Add Student</h1>
                   <div
                     onClick={handleAddStudentClose}
-                    className="self-end cursor-pointer w-[5%]">
+                    className="self-end cursor-pointer w-[5%]"
+                  >
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -291,7 +293,8 @@ const Main = () => {
                 </div>
                 <form
                   onSubmit={addstudent}
-                  className="flex flex-col space-y-3  ">
+                  className="flex flex-col space-y-3  "
+                >
                   <TextField
                     required
                     type="email"
@@ -307,7 +310,8 @@ const Main = () => {
                     type="submit"
                     className=""
                     variant="contained"
-                    color="primary">
+                    color="primary"
+                  >
                     Add
                   </Button>
                   {loading && <Spinner message="Adding Student" />}
@@ -324,7 +328,8 @@ const Main = () => {
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
+            aria-describedby="modal-modal-description"
+          >
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
@@ -333,7 +338,8 @@ const Main = () => {
                   </h1>
                   <div
                     onClick={handleClose}
-                    className="self-end cursor-pointer w-[5%]">
+                    className="self-end cursor-pointer w-[5%]"
+                  >
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -358,7 +364,8 @@ const Main = () => {
                     }}
                     className="w-[25%]"
                     variant="contained"
-                    color="primary">
+                    color="primary"
+                  >
                     Search
                   </Button>
                 </div>
@@ -381,13 +388,15 @@ const Main = () => {
                   color="success"
                   onClick={handleAddStudentOpen}
                   variant="contained"
-                  className="w-[13rem] h-[1.8rem] items-center">
+                  className="w-[13rem] h-[1.8rem] items-center"
+                >
                   Add Student
                 </Button>
                 <Button
                   onClick={handleOpen}
                   variant="contained"
-                  className="w-[13rem] h-[1.8rem] items-center">
+                  className="w-[13rem] h-[1.8rem] items-center"
+                >
                   Mark Attendance
                 </Button>
               </div>
@@ -399,7 +408,8 @@ const Main = () => {
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
-                  id="panel1a-header">
+                  id="panel1a-header"
+                >
                   <div className="lg:grid lg:grid-cols-12 flex md:flex-row flex-col w-full justify-between text-[0.9rem]">
                     <div className="lg:col-span-2 font-semibold flex justify-start items-center space-x-2">
                       <Avatar
@@ -429,8 +439,8 @@ const Main = () => {
                 </AccordionSummary>
                 <AccordionDetails>
                   <div className="flex lg:flex-row flex-col lg:space-x-2 space-y-2 lg:space-y-0 bg-[#fdfdfd]">
-                    <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md px-2 py-4 pb-14 space-y-3">
-                      <h1 className="font-semibold text-[#fe4492] text-[18px]">
+                    <div className="flex-[0.6] flex flex-col bg-[#ffffff] shadow-md border-[1px] border-white  rounded-md px-2 py-4 pb-4 space-y-3">
+                      <h1 className="font-bold text-[#009DA7] text-[18px]">
                         {student.firstName}'s Stats
                       </h1>
                       <div className="flex text-[1rem]">
@@ -438,11 +448,11 @@ const Main = () => {
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
                               <BsPersonCheck className="text-[#eede49]" />
-                              <p className="text-[#47ada8] font-bold">
+                              <p className="text-[#0000008F] font-semibold">
                                 Total Attendance:
                               </p>
                             </div>
-                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            <span className="text-[#0000008F] font-semibold flex-[0.2]">
                               {calTotalAttendance(student.attendance)}/
                               {batchData.schedule.length}
                             </span>
@@ -450,11 +460,11 @@ const Main = () => {
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
                               <BsPersonCheck className="text-[#eede49]" />
-                              <p className="text-[#47ada8] font-bold">
+                              <p className="text-[#0000008F] font-semibold">
                                 Total Assignment:
                               </p>
                             </div>
-                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            <span className="text-[#0000008F] font-semibold flex-[0.2]">
                               {calTotalAssignment(student.assignment)}/
                               {totalAssignmentInBatch}
                             </span>
@@ -462,44 +472,41 @@ const Main = () => {
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
                               <BsPersonCheck className="text-[#eede49]" />
-                              <p className="text-[#47ada8] font-bold">
+                              <p className="text-[#0000008F] font-semibold">
                                 Total Assignment Score:
                               </p>
                             </div>
-                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            <span className="text-[#0000008F] font-semibold flex-[0.2]">
                               {calTotalAssignmentScore(student.assignment)}/10
                             </span>
                           </div>
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
                               <BsPersonCheck className="text-[#eede49]" />
-                              <p className="text-[#47ada8] font-bold">
+                              <p className="text-[#0000008F] font-semibold">
                                 Courses Completed:
                               </p>
                             </div>
-                            <span className="text-[#47ada8] font-bold flex-[0.2]">
+                            <span className="text-[#0000008F] font-semibold flex-[0.2]">
                               {calCourseCompleted(student.attendance)}%
                             </span>
                           </div>
                         </div>
+
+                        {/* CircularProgressbar  */}
                         <div className="flex-[0.4] flex items-center justify-center">
-                          <div className="w-[7rem] h-[7rem]">
+                          <div className="w-[7rem] h-[7rem] font-bold">
                             <CircularProgressbar
                               styles={buildStyles({
                                 path: {
                                   transition: "stroke-dashoffset 0.5s ease 0s",
                                 },
                                 // Text size
-                                text: {
-                                  fontWeight: "600",
-
-                                  fontSize: "16px",
-                                },
-
+                                textSize: "35px",
                                 // Colors
-                                pathColor: "#dc3b7e",
+                                pathColor: "#FFB800",
                                 textColor: "#47ada8",
-                                trailColor: "#431c36",
+                                trailColor: "#BD8800",
                               })}
                               value={75}
                               text={calPerformance(student.assignment)}
@@ -508,16 +515,17 @@ const Main = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md py-4 px-2 pb-14 space-y-4">
-                      <h1 className="font-semibold text-[#fe4492] text-[18px]">
+                    <div className="flex-[0.4] flex flex-col bg-[#ffffff] shadow-md  border-[1px] border-white  rounded-md py-4 px-2 pb-4 space-y-4">
+                      <h1 className="font-semibold text-[#009DA7] text-[18px]">
                         Course Wise Attendance
                       </h1>
                       <div className="space-y-2 overflow-y-auto h-[8rem]">
                         {student.attendance.map((course, idx) => (
                           <div
                             key={course.courseCode}
-                            className="flex flex-col">
-                            <h1 className="text-[#47ada8] text-[12px]">
+                            className="flex flex-col"
+                          >
+                            <h1 className="text-[#47ada8] text-[12px] font-semibold">
                               {course.courseCode}
                             </h1>
                             <div className="flex items-center space-x-2">
