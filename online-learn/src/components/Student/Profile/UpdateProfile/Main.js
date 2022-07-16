@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_ERRORS } from "../../../../Redux/actionTypes";
+import { useNavigate } from "react-router-dom";
 import { updateLearner } from "../../../../Redux/actions/studentActions";
-
+import HomeDrawer from "../../HomeDrawer";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Spinner from "../../../../Utils/Spinner";
 
 const Main = () => {
@@ -14,9 +16,34 @@ const Main = () => {
   );
   const store = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // to check the window size and adjust sidebar
+  const handleResize = () => {
+    let element = document.getElementById("form");
+    if (window.innerWidth < 678) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, [window.innerWidth]);
+
+  // adding the absolte property to form when window width is <= 678px
+  useEffect(() => {
+    let element = document.getElementById("form");
+    if (isMobile === true) {
+      element.classList.add("absolute");
+    } else {
+      element.classList.remove("absolute");
+    }
+  }, [isMobile]);
 
   const [value, setValue] = useState({
     firstName: "",
@@ -78,14 +105,28 @@ const Main = () => {
   console.log(error);
 
   return (
-    <div className="flex w-full lg:flex-row flex-col overflow-y-auto h-full space-x-5 px-2 mb-5">
+    <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">
+      {isMobile && (
+        <div className="absolute h-[5rem] justify-end text-black right-4 top-5 z-30">
+          {isOpen ? (
+            <CancelIcon onClick={() => setIsOpen(false)} />
+          ) : (
+            <MenuIcon onClick={() => setIsOpen(true)} />
+          )}{" "}
+        </div>
+      )}
+      {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
       <form
+        id="form"
         onSubmit={handleSubmit}
-        className="w-full rounded-lg bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
-        <p className="text-[#8d91b1]">Update learner</p>
-        <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
-          <div className="w-[40%] flex items-start justify-center">
-            <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
+        className="w-full sm:rounded-lg bg-[#FAFBFF] border-8 h-full border-[#cacaca] lg:px-14 px-2 py-7 flex flex-col space-y-4"
+      >
+        <p className="text-[#000000] w-full flex justify-center sm:justify-start">
+          Update learner
+        </p>
+        <div className="flex flex-col w-full sm:pr-8 pr-3 sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
+          <div className="sm:w-[35%] flex items-start justify-start">
+            <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-[#D9D9D9] border-[1px] rounded-md border-[#CBCBCB] flex flex-col items-center justify-center">
               {value.avatar !== "" ? (
                 <img
                   src={value.avatar}
@@ -93,15 +134,16 @@ const Main = () => {
                   alt=""
                 />
               ) : (
-                <div className="">
+                <div className="bg-[#D9D9D9]">
                   <label
                     className="flex items-center justify-center flex-col space-y-3"
-                    for="image">
+                    for="image"
+                  >
                     <MdOutlineFileUpload
-                      className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
-                      fontSize={35}
+                      className="w-14 rounded-full h-14 bg-[#CAC7C7] p-2 text-[#7c7b7b] cursor-pointer"
+                      fontSize={45}
                     />
-                    <p>Upload Profile Picture</p>
+                    <p className="text-[#7c7b7b]">Upload Profile Picture</p>
                   </label>
                   <input
                     id="image"
@@ -115,14 +157,14 @@ const Main = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col sm:w-[60%] w-full space-y-6">
+          <div className="flex flex-col sm:w-[65%] w-full space-y-6">
             <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
               <TextField
                 type="text"
                 id="outlined-basic"
                 label={learner.result.firstName}
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.firstName}
                 onChange={(e) =>
                   setValue({ ...value, firstName: e.target.value })
@@ -133,7 +175,7 @@ const Main = () => {
                 id="outlined-basic"
                 label={learner.result.lastName}
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.lastName}
                 onChange={(e) =>
                   setValue({ ...value, lastName: e.target.value })
@@ -147,7 +189,7 @@ const Main = () => {
                 id="outlined-basic"
                 label={learner.result.email}
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.email}
                 onChange={(e) => setValue({ ...value, email: e.target.value })}
               />
@@ -158,7 +200,7 @@ const Main = () => {
                 type="date"
                 id="outlined-basic"
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={learner.result.dob}
                 onChange={(e) => setValue({ ...value, dob: e.target.value })}
               />
@@ -167,7 +209,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Contact Number"
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.contactNumber}
                 onChange={(e) =>
                   setValue({ ...value, contactNumber: e.target.value })
@@ -180,7 +222,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Old Password"
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.oldPassword}
                 onChange={(e) =>
                   setValue({ ...value, oldPassword: e.target.value })
@@ -191,20 +233,21 @@ const Main = () => {
                 id="outlined-basic"
                 label="New Password"
                 variant="outlined"
-                className="bg-white w-full"
+                className="bg-[#F3F3F3] w-full"
                 value={value.newPassword}
                 onChange={(e) =>
                   setValue({ ...value, newPassword: e.target.value })
                 }
               />
             </div>
+            <button
+              type="submit"
+              className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+            >
+              Submit
+            </button>
           </div>
         </div>
-        <button
-          type="submit"
-          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
-          Submit
-        </button>
         {loading && <Spinner message="Updating learner" />}
         {error.passwordError && (
           <p className="text-red-500 flex self-center font-bold">
