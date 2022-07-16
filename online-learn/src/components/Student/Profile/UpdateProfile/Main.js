@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_ERRORS } from "../../../../Redux/actionTypes";
+import { useNavigate } from "react-router-dom";
 import { updateLearner } from "../../../../Redux/actions/studentActions";
-
+import HomeDrawer from "../../HomeDrawer";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Spinner from "../../../../Utils/Spinner";
 
 const Main = () => {
@@ -14,9 +16,34 @@ const Main = () => {
   );
   const store = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // to check the window size and adjust sidebar
+  const handleResize = () => {
+    let element = document.getElementById("form");
+    if (window.innerWidth < 678) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, [window.innerWidth]);
+
+  // adding the absolte property to form when window width is <= 678px
+  useEffect(() => {
+    let element = document.getElementById("form");
+    if (isMobile === true) {
+      element.classList.add("absolute");
+    } else {
+      element.classList.remove("absolute");
+    }
+  }, [isMobile]);
 
   const [value, setValue] = useState({
     firstName: "",
@@ -78,14 +105,27 @@ const Main = () => {
   console.log(error);
 
   return (
-    <div className="flex w-full lg:flex-row flex-col overflow-y-auto h-full space-x-5 sm:pt-4 mb-5">
+    <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">
+      {isMobile && (
+        <div className="absolute h-[5rem] justify-end text-black right-4 top-5 z-30">
+          {isOpen ? (
+            <CancelIcon onClick={() => setIsOpen(false)} />
+          ) : (
+            <MenuIcon onClick={() => setIsOpen(true)} />
+          )}{" "}
+        </div>
+      )}
+      {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
       <form
+        id="form"
         onSubmit={handleSubmit}
         className="w-full sm:rounded-lg bg-[#FAFBFF] border-8 h-full border-[#cacaca] lg:px-14 px-2 py-7 flex flex-col space-y-4"
       >
-        <p className="text-[#000000]">Update learner</p>
+        <p className="text-[#000000] w-full flex justify-center sm:justify-start">
+          Update learner
+        </p>
         <div className="flex flex-col w-full sm:pr-8 pr-3 sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
-          <div className="w-[35%] flex items-start justify-start">
+          <div className="sm:w-[35%] flex items-start justify-start">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-[#D9D9D9] border-[1px] rounded-md border-[#CBCBCB] flex flex-col items-center justify-center">
               {value.avatar !== "" ? (
                 <img
