@@ -46,7 +46,7 @@ const Main = () => {
       <div className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">View Student</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
-          <div className="w-[40%] flex items-start justify-center">
+          <div className="w-[40%] flex items-start justify-start">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
               <img
                 src={student.avatar}
@@ -63,7 +63,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="First Name"
                 variant="outlined"
-                className="bg-white"
+                className="bg-white w-full"
                 value={student.firstName}
               />
               <TextField
@@ -72,7 +72,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Last Name"
                 variant="outlined"
-                className="bg-white"
+                className="bg-white w-full"
                 value={student.lastName}
               />
             </div>
@@ -83,7 +83,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
-                className="bg-white"
+                className="bg-white w-full"
                 value={student.email}
               />
               <TextField
@@ -91,7 +91,7 @@ const Main = () => {
                 type="date"
                 id="outlined-basic"
                 variant="outlined"
-                className="bg-white "
+                className="bg-white w-full"
                 value={student.dob}
               />
             </div>
@@ -102,7 +102,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Contact Number"
                 variant="outlined"
-                className="bg-white"
+                className="bg-white w-full"
                 value={student.contactNumber}
               />
               <TextField
@@ -111,7 +111,7 @@ const Main = () => {
                 id="outlined-basic"
                 label="Performance"
                 variant="outlined"
-                className="bg-white"
+                className="bg-white w-full"
                 value={student.performance}
               />
             </div>
