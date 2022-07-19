@@ -61,22 +61,22 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    // const resultEmail = await transporter.sendMail({
-    //   from: "Nodemailer",
-    //   to: email,
-    //   subject: "Welcome to Bessalani",
-    //   html: `<h1>Welcome to Bessalani</h1>
-    //   <p>Your OTP is ${newOtp}</p>`,
-    // });
-
-    sendMail({
+    const resultEmail = await transporter.sendMail({
+      from: "Nodemailer",
       to: email,
-      from: "at7129652@gmail.com",
       subject: "Welcome to Bessalani",
-      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
       html: `<h1>Welcome to Bessalani</h1>
       <p>Your OTP is ${newOtp}</p>`,
     });
+
+    // sendMail({
+    //   to: email,
+    //   from: "at7129652@gmail.com",
+    //   subject: "Welcome to Bessalani",
+    //   text: `Welcome to Bessalani Your OTP is ${newOtp}`,
+    //   html: `<h1>Welcome to Bessalani</h1>
+    //   <p>Your OTP is ${newOtp}</p>`,
+    // });
 
     res.status(200).json(newOtp);
   } catch (error) {
