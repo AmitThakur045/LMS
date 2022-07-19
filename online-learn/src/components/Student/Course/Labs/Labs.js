@@ -7,6 +7,7 @@ import LabsMain from "./LabsMain";
 import { useDispatch, useSelector } from "react-redux";
 import { getBatch } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
+import decode from "jwt-decode";
 
 const Labs = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
@@ -15,6 +16,10 @@ const Labs = () => {
   const navigate = useNavigate();
   const batch = useSelector((state) => state.admin.batch);
   const [batchData, setBatchData] = useState({});
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    navigate("/login");
+  };
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
       setIsLoading(false);
@@ -23,6 +28,13 @@ const Labs = () => {
     }
   }, [batch]);
   useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {

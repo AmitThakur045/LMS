@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillEye, AiFillStar } from "react-icons/ai";
 import HomeDrawer from "../HomeDrawer";
 import { Avatar, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -20,7 +20,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === "light" ? "#0d136c" : "#308fe8",
+    backgroundColor: theme.palette.mode === "light" ? "#FFB800" : "#308fe8",
   },
 }));
 const Main = ({ courseList, learner, batch }) => {
@@ -160,7 +160,7 @@ const Main = ({ courseList, learner, batch }) => {
                     type="text"
                     size="small"
                     id="outlined-basic"
-                    label="Batch Code"
+                    label="Active Batch Code"
                     variant="outlined"
                     className="bg-white w-full"
                     value={learner.batchCode[learner.batchCode.length - 1]}
@@ -210,46 +210,66 @@ const Main = ({ courseList, learner, batch }) => {
                   </div>
                 </div>
                 <Link
-                  to="/updateprofile"
-                  className="absolute self-center font-medium bottom-0 text-lg bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md"
-                >
+                  to="/profile/updateprofile"
+                  className="absolute self-center font-medium bottom-0 text-lg bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md">
                   Update
                 </Link>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-2 grid-rows-2 overflow-hidden ">
-              <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
-                <h1 className="self-center font-bold text-lg">
-                  Course Wise Attendance
-                </h1>
-                <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                  {learner.attendance.map((course, idx) => (
-                    <div key={course.courseCode} className="flex flex-col">
-                      <h1 className="text-primary text-[12px]">
-                        {course.courseCode}
-                      </h1>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-full">
-                          <BorderLinearProgress
-                            variant="determinate"
-                            value={calCourseWiseAttendance(
+            <div className="grid grid-cols-1 gap-[3.7rem] grid-rows-2 overflow-hidden ">
+              <div className="grid grid-cols-2 gap-2  row-span-1 ">
+                <div className="flex  rounded-xl flex-col bg-white py-5 ">
+                  <h1 className="self-center font-bold text-lg">
+                    Course Wise Attendance
+                  </h1>
+                  <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
+                    {learner.attendance.map((course, idx) => (
+                      <div key={course.courseCode} className="flex flex-col">
+                        <h1 className="text-primary text-[12px]">
+                          {course.courseCode}
+                        </h1>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-full">
+                            <BorderLinearProgress
+                              variant="determinate"
+                              value={calCourseWiseAttendance(
+                                course.courseCode,
+                                course.attended
+                              )}
+                            />
+                          </div>
+                          <p className="text-primary text-[12px]">
+                            {calCourseWiseAttendance(
                               course.courseCode,
                               course.attended
                             )}
-                          />
+                            %
+                          </p>
                         </div>
-                        <p className="text-primary text-[12px]">
-                          {calCourseWiseAttendance(
-                            course.courseCode,
-                            course.attended
-                          )}
-                          %
-                        </p>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+                <div className="flex  rounded-xl flex-col bg-white py-5 ">
+                  <h1 className="self-center font-bold text-lg">All Batches</h1>
+                  <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
+                    {learner.batchCode.map((batch, idx) => (
+                      <div
+                        key={batch}
+                        className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all">
+                        <div className="flex items-center space-x-4">
+                          <p className="bg-[#D5F8F9] h-[25px] w-[25px] flex items-center justify-center text-[12px] text-[#6F6EA5]">
+                            B
+                          </p>
+                          <p className="text-primary text-[12px]">{batch}</p>
+                        </div>
+                        <AiFillEye color="#046387" />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
+
               <div className="flex row-span-1  py-5 rounded-xl flex-col bg-white ">
                 <h1 className="self-center font-bold text-lg">
                   Assignment Wise Score

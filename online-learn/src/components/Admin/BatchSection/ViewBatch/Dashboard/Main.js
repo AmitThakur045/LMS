@@ -47,7 +47,7 @@ const Main = () => {
   const attendanceStatus = useSelector((store) => store.admin.attendanceStatus);
   const [totalAttendanceStatus, setTotalAttendanceStatus] = useState(0);
   const [totalClassesHeld, setTotalClassesHeld] = useState(0);
-  const [width, setWidth] = useState("420px");
+  const [width, setWidth] = useState("550px");
 
   // Resize the width of line graph using window width
   function handleSizeChange() {

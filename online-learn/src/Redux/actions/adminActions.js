@@ -122,12 +122,12 @@ export const generateOtp = (formData) => async (dispatch) => {
 export const resetPassword = (formData) => async (dispatch) => {
   try {
     const { data } = await api.resetPassword(formData);
-    dispatch({ type: RESET_PASSWORD, payload: data });
+    dispatch({ type: RESET_PASSWORD, payload: true });
     alert("Password Updated Successfully");
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
 
 export const updateStudent = (value, navigate) => async (dispatch) => {
   try {

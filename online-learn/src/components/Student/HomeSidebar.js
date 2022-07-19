@@ -9,7 +9,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../Redux/actionTypes";
 
-import decode from "jwt-decode";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center px-3";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center px-3";
@@ -23,20 +22,6 @@ const HomeSidebar = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
   };
-  const logOut = () => {
-    alert("OOPS! Your session expired. Please Login again");
-    navigate("/login");
-  };
-
-  useEffect(() => {
-    const token = user?.token;
-    if (token) {
-      const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) {
-        logOut();
-      }
-    }
-  }, []);
 
   return (
     <div className="hidden sm:block">

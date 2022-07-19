@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import decode from "jwt-decode";
 import HomeSidebar from "../HomeSidebar";
 import Main from "./Main";
 import Loader from "../../../Utils/Loader";
@@ -16,6 +16,12 @@ const Home = () => {
   const batch = useSelector((state) => state.admin.batch);
   const [courseList, setCourseList] = useState([]);
   const [batchData, setBatchData] = useState({});
+
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    navigate("/login");
+  };
+
   useEffect(() => {
     if (courses.length !== 0) {
       if (Object.keys(batch).length !== 0) {
@@ -33,6 +39,13 @@ const Home = () => {
     }
   }, [batch]);
   useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {

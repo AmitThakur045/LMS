@@ -119,8 +119,7 @@ const Main = () => {
       <form
         id="form"
         onSubmit={handleSubmit}
-        className="w-full sm:rounded-lg bg-[#FAFBFF] border-8 h-full border-[#cacaca] lg:px-14 px-2 py-7 flex flex-col space-y-4"
-      >
+        className="w-full sm:rounded-lg bg-[#FAFBFF] border-8 h-full border-[#cacaca] lg:px-14 px-2 py-7 flex flex-col space-y-4">
         <p className="text-[#000000] w-full flex justify-center sm:justify-start">
           Update learner
         </p>
@@ -137,8 +136,7 @@ const Main = () => {
                 <div className="bg-[#D9D9D9]">
                   <label
                     className="flex items-center justify-center flex-col space-y-3"
-                    for="image"
-                  >
+                    for="image">
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#CAC7C7] p-2 text-[#7c7b7b] cursor-pointer"
                       fontSize={45}
@@ -240,12 +238,19 @@ const Main = () => {
                 }
               />
             </div>
-            <button
-              type="submit"
-              className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-            >
-              Submit
-            </button>
+            <div className="flex space-x-3 self-end">
+              <button
+                type="submit"
+                className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                Submit
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/profile")}
+                className="self-end bg-[#e92f2f] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e51717] transition-all duration-150">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
         {loading && <Spinner message="Updating learner" />}
