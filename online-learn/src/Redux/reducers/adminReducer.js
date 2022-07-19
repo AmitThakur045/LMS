@@ -124,7 +124,7 @@ const adminReducer = (state = initialState, action) => {
     case RESET_PASSWORD:
       return {
         ...state,
-        adminUpdated: action.payload,
+        resetPassword: action.payload,
       };
     case ADD_DELETE_QUERY:
       return {

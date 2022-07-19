@@ -275,16 +275,14 @@ const Main = () => {
             open={openAddStudent}
             onClose={handleAddStudentClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            aria-describedby="modal-modal-description">
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
                   <h1 className="self-center w-[95%] font-bold">Add Student</h1>
                   <div
                     onClick={handleAddStudentClose}
-                    className="self-end cursor-pointer w-[5%]"
-                  >
+                    className="self-end cursor-pointer w-[5%]">
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -293,8 +291,7 @@ const Main = () => {
                 </div>
                 <form
                   onSubmit={addstudent}
-                  className="flex flex-col space-y-3  "
-                >
+                  className="flex flex-col space-y-3  ">
                   <TextField
                     required
                     type="email"
@@ -310,8 +307,7 @@ const Main = () => {
                     type="submit"
                     className=""
                     variant="contained"
-                    color="primary"
-                  >
+                    color="primary">
                     Add
                   </Button>
                   {loading && <Spinner message="Adding Student" />}
@@ -328,8 +324,7 @@ const Main = () => {
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            aria-describedby="modal-modal-description">
             <Box sx={style}>
               <div className="flex flex-col space-y-4 h-[15rem]">
                 <div className="flex items-center">
@@ -338,8 +333,7 @@ const Main = () => {
                   </h1>
                   <div
                     onClick={handleClose}
-                    className="self-end cursor-pointer w-[5%]"
-                  >
+                    className="self-end cursor-pointer w-[5%]">
                     <AiOutlineCloseCircle
                       className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                       fontSize={23}
@@ -364,8 +358,7 @@ const Main = () => {
                     }}
                     className="w-[25%]"
                     variant="contained"
-                    color="primary"
-                  >
+                    color="primary">
                     Search
                   </Button>
                 </div>
@@ -388,15 +381,13 @@ const Main = () => {
                   color="success"
                   onClick={handleAddStudentOpen}
                   variant="contained"
-                  className="w-[13rem] h-[1.8rem] items-center"
-                >
+                  className="w-[13rem] h-[1.8rem] items-center">
                   Add Student
                 </Button>
                 <Button
                   onClick={handleOpen}
                   variant="contained"
-                  className="w-[13rem] h-[1.8rem] items-center"
-                >
+                  className="w-[13rem] h-[1.8rem] items-center">
                   Mark Attendance
                 </Button>
               </div>
@@ -408,8 +399,7 @@ const Main = () => {
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
+                  id="panel1a-header">
                   <div className="lg:grid lg:grid-cols-12 flex md:flex-row flex-col w-full justify-between text-[0.9rem]">
                     <div className="lg:col-span-2 font-semibold flex justify-start items-center space-x-2">
                       <Avatar
@@ -447,7 +437,7 @@ const Main = () => {
                         <div className="flex-[0.6] space-y-1">
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
-                              <BsPersonCheck className="text-[#eede49]" />
+                              <BsPersonCheck className="text-[#FFB800]" />
                               <p className="text-[#0000008F] font-semibold">
                                 Total Attendance:
                               </p>
@@ -459,7 +449,7 @@ const Main = () => {
                           </div>
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
-                              <BsPersonCheck className="text-[#eede49]" />
+                              <BsPersonCheck className="text-[#FFB800]" />
                               <p className="text-[#0000008F] font-semibold">
                                 Total Assignment:
                               </p>
@@ -471,7 +461,7 @@ const Main = () => {
                           </div>
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
-                              <BsPersonCheck className="text-[#eede49]" />
+                              <BsPersonCheck className="text-[#FFB800]" />
                               <p className="text-[#0000008F] font-semibold">
                                 Total Assignment Score:
                               </p>
@@ -482,7 +472,7 @@ const Main = () => {
                           </div>
                           <div className="flex w-full">
                             <div className="flex flex-[0.8] space-x-2 items-center">
-                              <BsPersonCheck className="text-[#eede49]" />
+                              <BsPersonCheck className="text-[#FFB800]" />
                               <p className="text-[#0000008F] font-semibold">
                                 Courses Completed:
                               </p>
@@ -523,8 +513,7 @@ const Main = () => {
                         {student.attendance.map((course, idx) => (
                           <div
                             key={course.courseCode}
-                            className="flex flex-col"
-                          >
+                            className="flex flex-col">
                             <h1 className="text-[#47ada8] text-[12px] font-semibold">
                               {course.courseCode}
                             </h1>

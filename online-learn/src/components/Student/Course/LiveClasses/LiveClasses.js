@@ -19,6 +19,7 @@ import LiveClassesMain from "./LiveClassesMain";
 import Loader from "../../../../Utils/Loader";
 import { getBatch } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
+import decode from "jwt-decode";
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
 };
@@ -55,8 +56,18 @@ const LiveClasses = () => {
       setBatchData(batch);
     }
   }, [batch]);
-
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    navigate("/login");
+  };
   useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {

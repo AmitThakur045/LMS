@@ -33,7 +33,7 @@ const Main = () => {
   const [dashboardData, setDashboardData] = useState({});
   const [organizationName, setOrganizationName] = useState("All");
 
-  const [width, setWidth] = useState("420px");
+  const [width, setWidth] = useState("590px");
   const [lineChartData, setLineChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);

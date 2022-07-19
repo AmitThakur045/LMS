@@ -8,7 +8,7 @@ import HomeSidebar from "../HomeSidebar";
 import HomeDrawer from "../HomeDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
-
+import decode from "jwt-decode";
 const isNotActiveStyle = "text-[#555555] flex flex-col items-center";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex flex-col items-center";
@@ -68,11 +68,15 @@ const dummyData2 = [
 const colors = ["red", "blue", "green", "blue", "orange"];
 
 const Community = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const logOut = () => {
+    alert("OOPS! Your session expired. Please Login again");
+    navigate("/login");
+  };
   //choose the screen size
   const handleResize = () => {
     if (window.innerWidth < 678) {
@@ -90,6 +94,16 @@ const Community = () => {
   const logout = () => {
     navigate("/login/adminLogin");
   };
+
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logOut();
+      }
+    }
+  }, []);
 
   return (
     <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
@@ -128,8 +142,7 @@ const Community = () => {
                         fontWeight: "700",
                         color: "#fff",
                       }}
-                      variant="contained"
-                    >
+                      variant="contained">
                       New Thread
                     </Button>
                   </div>
@@ -171,8 +184,7 @@ const Community = () => {
                           color: "#fff",
                           height: "38px",
                         }}
-                        variant="contained"
-                      >
+                        variant="contained">
                         {data.answer}
                       </Button>
                     </div>
@@ -184,8 +196,7 @@ const Community = () => {
                       <div
                         className={`border-2 h-[50px] w-[50px] rounded-full flex items-center justify-center font-bold bg-${
                           colors[Math.floor(Math.random() * colors.length)]
-                        }-500`}
-                      >
+                        }-500`}>
                         {data.avatar}
                       </div>
                     </div>

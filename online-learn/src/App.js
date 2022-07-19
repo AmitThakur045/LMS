@@ -50,7 +50,7 @@ function App() {
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
       <Route path="/certificate" exact element={<Certificate />} />
-      <Route path="/updateprofile" exact element={<UpdateProfile />} />
+      <Route path="/profile/updateprofile" exact element={<UpdateProfile />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
