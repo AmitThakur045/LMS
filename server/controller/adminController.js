@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
+import { sendMail } from "../services/sendgrid.js";
 import { transporter } from "../services/nodemailer.js";
 
 export const adminLogin = async (req, res) => {
@@ -60,10 +61,19 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    const resultEmail = await transporter.sendMail({
-      from: "Nodemailer",
+    // const resultEmail = await transporter.sendMail({
+    //   from: "Nodemailer",
+    //   to: email,
+    //   subject: "Welcome to Bessalani",
+    //   html: `<h1>Welcome to Bessalani</h1>
+    //   <p>Your OTP is ${newOtp}</p>`,
+    // });
+
+    sendMail({
       to: email,
+      from: "at7129652@gmail.com",
       subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
       html: `<h1>Welcome to Bessalani</h1>
       <p>Your OTP is ${newOtp}</p>`,
     });
@@ -104,6 +114,7 @@ export const resetPassword = async (req, res) => {
       return res.status(404).json(errors);
     }
 
+    console.log("newAdmin", newAdmin);
     res.status(200).json("Password Updated");
   } catch (error) {
     const errors = { backendError: String };

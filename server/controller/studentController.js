@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
+import { sendMail } from "../services/sendgrid.js";
 import { transporter } from "../services/nodemailer.js";
 
 function calPerformance(assignment, totalAssignment) {
@@ -240,10 +241,19 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    const resultEmail = await transporter.sendMail({
-      from: "Nodemailer",
+    // const resultEmail = await transporter.sendMail({
+    //   from: "Nodemailer",
+    //   to: email,
+    //   subject: "Welcome to Bessalani",
+    //   html: `<h1>Welcome to Bessalani</h1>
+    //   <p>Your OTP is ${newOtp}</p>`,
+    // });
+
+    sendMail({
       to: email,
+      from: "at7129652@gmail.com",
       subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
       html: `<h1>Welcome to Bessalani</h1>
       <p>Your OTP is ${newOtp}</p>`,
     });
