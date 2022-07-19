@@ -114,11 +114,12 @@ const Header = ({ title, type, nav, back }) => {
   const checkOtp = (e) => {
     e.preventDefault();
     // setOtpLoader(true);
+    setOtpModal(false)
     setLoading(true);
 
     console.log("current otp", otp.join(""));
 
-    if (otp.join("") === otpValue) {
+    if (otp.join("") == otpValue) {
       setOtp(["", "", "", ""]);
       otpValue = null;
       dispatch(resetPassword(value));
