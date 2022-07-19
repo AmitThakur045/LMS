@@ -86,7 +86,7 @@ export const generateOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log("admin reset", req.body);
     const { oldPassword, newPassword, email } = req.body;
     const errors = { passwordError: String };
 

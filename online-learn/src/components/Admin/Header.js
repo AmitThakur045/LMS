@@ -61,7 +61,7 @@ const Header = ({ title, type, nav, back }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
 
   const store = useSelector((state) => state);
-  const otpValue = useSelector((state) => state.admin.otp);
+  let otpValue = useSelector((state) => state.admin.otp);
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
@@ -118,6 +118,7 @@ const Header = ({ title, type, nav, back }) => {
     setLoading(true);
 
     console.log("current otp", otp.join(""));
+    console.log("current otpValue", otpValue);
 
     if (otp.join("") == otpValue) {
       setOtp(["", "", "", ""]);

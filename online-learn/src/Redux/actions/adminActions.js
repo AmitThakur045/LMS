@@ -121,6 +121,7 @@ export const generateOtp = (formData) => async (dispatch) => {
 
 export const resetPassword = (formData) => async (dispatch) => {
   try {
+    console.log("resetPasswordAdmin", formData);
     const { data } = await api.resetPassword(formData);
     dispatch({ type: RESET_PASSWORD, payload: true });
     alert("Password Updated Successfully");
