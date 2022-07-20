@@ -50,7 +50,7 @@ export const adminLogin = async (req, res) => {
 export const generateOtp = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("generateemail", email);
+    // console.log("generateemail", email);
     const errors = { adminError: String };
     const existingAdmin = await Admin.countDocuments({ email });
 
@@ -61,22 +61,22 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    const resultEmail = await transporter.sendMail({
-      from: "Nodemailer",
-      to: email,
-      subject: "Welcome to Bessalani",
-      html: `<h1>Welcome to Bessalani</h1>
-      <p>Your OTP is ${newOtp}</p>`,
-    });
-
-    // sendMail({
+    // const resultEmail = await transporter.sendMail({
+    //   from: "Nodemailer",
     //   to: email,
-    //   from: "at7129652@gmail.com",
     //   subject: "Welcome to Bessalani",
-    //   text: `Welcome to Bessalani Your OTP is ${newOtp}`,
     //   html: `<h1>Welcome to Bessalani</h1>
     //   <p>Your OTP is ${newOtp}</p>`,
     // });
+
+    sendMail({
+      to: email,
+      from: "at7129652@gmail.com",
+      subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
 
     res.status(200).json(newOtp);
   } catch (error) {
@@ -86,7 +86,7 @@ export const generateOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   try {
-    console.log("admin reset", req.body);
+    // console.log("admin reset", req.body);
     const { oldPassword, newPassword, email } = req.body;
     const errors = { passwordError: String };
 
@@ -114,7 +114,7 @@ export const resetPassword = async (req, res) => {
       return res.status(404).json(errors);
     }
 
-    console.log("newAdmin", newAdmin);
+    // console.log("newAdmin", newAdmin);
     res.status(200).json("Password Updated");
   } catch (error) {
     const errors = { backendError: String };
@@ -714,9 +714,9 @@ export const getStudents = async (req, res) => {
 export const totalAssignment = async (req, res) => {
   try {
     const { batchCode } = req.body;
-    console.log(batchCode);
+    // console.log(batchCode);
     const assignments = await Assignment.countDocuments({ batchCode });
-    console.log(assignments);
+    // console.log(assignments);
 
     res.status(200).json(assignments);
   } catch (error) {
@@ -1377,7 +1377,7 @@ export const addAssignment = async (req, res) => {
 export const getStudentByAssignmentCode = async (req, res) => {
   try {
     const { assignmentCode } = req.body;
-    console.log(assignmentCode);
+    // console.log(assignmentCode);
     const errors = { noStudentFoundError: String };
     const assignment = await Assignment.findOne(
       { assignmentCode },
@@ -1417,7 +1417,7 @@ export const getStudentByAssignmentCode = async (req, res) => {
 
       return res.status(400).json(errors);
     }
-    console.log(StudentList.length);
+    // console.log(StudentList.length);
     res.status(200).json(StudentList);
   } catch (error) {
     console.log("Backend Error", error);

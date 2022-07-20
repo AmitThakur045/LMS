@@ -6,6 +6,7 @@ import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
 import { sendMail } from "../services/sendgrid.js";
 import { transporter } from "../services/nodemailer.js";
+import { s3Upload } from "../services/s3service.js";
 
 function calPerformance(assignment, totalAssignment) {
   let score = 0;
@@ -241,22 +242,22 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    const resultEmail = await transporter.sendMail({
-      from: "Nodemailer",
-      to: email,
-      subject: "Welcome to Bessalani",
-      html: `<h1>Welcome to Bessalani</h1>
-      <p>Your OTP is ${newOtp}</p>`,
-    });
-
-    // sendMail({
+    // const resultEmail = await transporter.sendMail({
+    //   from: "Nodemailer",
     //   to: email,
-    //   from: "at7129652@gmail.com",
     //   subject: "Welcome to Bessalani",
-    //   text: `Welcome to Bessalani Your OTP is ${newOtp}`,
     //   html: `<h1>Welcome to Bessalani</h1>
     //   <p>Your OTP is ${newOtp}</p>`,
     // });
+
+    sendMail({
+      to: email,
+      from: "at7129652@gmail.com",
+      subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
 
     res.status(200).json(newOtp);
   } catch (error) {
@@ -388,7 +389,9 @@ export const updateLearner = async (req, res) => {
     }
 
     // if avatar is not empty update the user avatar
-    if (avatar) {
+    if (avatar.name !== "") {
+      const avatarUrl = await s3Upload("images", avatar);
+      console.log("avatarUrl", avatarUrl);
       updatedLearner.avatar = avatar;
       await updatedLearner.save();
     }

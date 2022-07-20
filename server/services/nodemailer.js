@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from "dotenv";
-dotenv.config({path: "server/config/config.env"});
+dotenv.config({path: "./config/config.env"});
 
 const OAuth2 = google.auth.OAuth2;
 
