@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Spinner from "../../../../Utils/Spinner";
 import { getPresignedUrl } from "../../../../Redux/actions/awsActions";
+import axios from "axios";
 
 const Main = () => {
   const [learner, setLearner] = useState(
@@ -59,6 +60,7 @@ const Main = () => {
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
+
     setImage(file);
 
     const base64 = await convertBase64(file);
@@ -105,27 +107,27 @@ const Main = () => {
   };
 
   const s3PresignedUrl = store.aws.presignedUrl;
-  console.log(image);
-
   useEffect(() => {
     if (s3PresignedUrl !== "") {
-      console.log("1");
       async function fetchApi() {
-        const response = await fetch(s3PresignedUrl, {
+        await fetch(s3PresignedUrl, {
           method: "PUT",
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "image/*",
           },
           body: image,
-        });
-        console.log("2");
-        console.log(response);
+        })
+          .then((response) => {
+            console.log(response);
+            const imageUrl = s3PresignedUrl.split("?")[0];
+            let data = value;
+            data.avatar = imageUrl;
 
-        const imageUrl = s3PresignedUrl.split("?")[0];
-
-        console.log("3");
-        dispatch(updateLearner(value, { avatar: imageUrl }, navigate));
-        console.log(imageUrl);
+            dispatch(updateLearner(data, navigate));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
       fetchApi();
       dispatch({ type: GET_PRESIGNED_URL, payload: "" });
@@ -138,7 +140,6 @@ const Main = () => {
       setError(store.errors);
     }
   }, [store.errors]);
-  console.log(error);
 
   return (
     <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">

@@ -337,7 +337,7 @@ export const updateLearner = async (req, res) => {
       oldPassword,
       newPassword,
     } = req.body;
-
+    console.log(avatar);
     const updatedLearner = await Student.findOne(
       { email },
       { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1, password: 1 }
