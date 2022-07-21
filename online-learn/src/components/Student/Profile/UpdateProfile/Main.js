@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_ERRORS } from "../../../../Redux/actionTypes";
+import { GET_PRESIGNED_URL, SET_ERRORS } from "../../../../Redux/actionTypes";
 import { useNavigate } from "react-router-dom";
 import { updateLearner } from "../../../../Redux/actions/studentActions";
 import HomeDrawer from "../../HomeDrawer";
@@ -9,7 +9,7 @@ import { TextField } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Spinner from "../../../../Utils/Spinner";
-import { getPresignedUrl } from "../../../../../../server/controller/s3Controller";
+import { getPresignedUrl } from "../../../../Redux/actions/awsActions";
 
 const Main = () => {
   const [learner, setLearner] = useState(
@@ -52,17 +52,17 @@ const Main = () => {
     lastName: "",
     email: learner.result.email,
     contactNumber: "",
-    avatar: "",
     oldPassword: "",
     newPassword: "",
   });
+  const [avatar, setAvatar] = useState("");
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
     setImage(file);
 
     const base64 = await convertBase64(file);
-    setValue({ ...value, avatar: base64 });
+    setAvatar(base64);
   };
 
   const convertBase64 = (file) => {
@@ -96,10 +96,41 @@ const Main = () => {
       alert("Enter atleast one value");
       setLoading(false);
     } else {
-      dispatch(getPresignedUrl({ fileType: "images" }))
-      dispatch(updateLearner(value, navigate));
+      if (avatar !== "") {
+        dispatch(getPresignedUrl({ fileType: "images" }));
+      } else {
+        dispatch(updateLearner(value, navigate));
+      }
     }
   };
+
+  const s3PresignedUrl = store.aws.presignedUrl;
+  console.log(image);
+
+  useEffect(() => {
+    if (s3PresignedUrl !== "") {
+      console.log("1");
+      async function fetchApi() {
+        const response = await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: image,
+        });
+        console.log("2");
+        console.log(response);
+
+        const imageUrl = s3PresignedUrl.split("?")[0];
+
+        console.log("3");
+        dispatch(updateLearner(value, { avatar: imageUrl }, navigate));
+        console.log(imageUrl);
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
 
   useEffect(() => {
     if (store.errors) {
@@ -131,9 +162,9 @@ const Main = () => {
         <div className="flex flex-col w-full sm:pr-8 pr-3 sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="sm:w-[35%] flex items-start justify-start">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-[#D9D9D9] border-[1px] rounded-md border-[#CBCBCB] flex flex-col items-center justify-center">
-              {value.avatar !== "" ? (
+              {avatar !== "" ? (
                 <img
-                  src={value.avatar}
+                  src={avatar}
                   className="w-full h-full object-cover"
                   alt=""
                 />

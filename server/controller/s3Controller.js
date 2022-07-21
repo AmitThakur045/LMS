@@ -10,12 +10,11 @@ export const getPresignedUrl = async (req, res) => {
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `${fileType}/${uuidv4()}`,
-      Expires: 100,
+      Expires: 60,
     };
 
     const s3 = new S3();
-    const data = await s3.getSignedUrl("putObject", params).promise();
-    console.log("data", data);
+    const data = await s3.getSignedUrlPromise("putObject", params);
     res.json(data);
   } catch (error) {
     console.log("error", error);

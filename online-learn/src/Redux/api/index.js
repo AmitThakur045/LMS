@@ -125,3 +125,7 @@ export const getBatchLessonVideoByCourse = (data) =>
   API.post("/api/student/getbatchlessonvideobycourse", data);
 export const updateLearner = (student) =>
   API.post("/api/student/updatelearner", student);
+
+//AWS
+export const getPresignedUrl = (data) =>
+  API.post("/api/s3/getpresignedurl", data);

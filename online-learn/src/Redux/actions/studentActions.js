@@ -90,7 +90,6 @@ export const getBatchLessonVideoByCourse = (formData) => async (dispatch) => {
 
 export const updateLearner = (value, navigate) => async (dispatch) => {
   try {
-    console.log("updatelearner", value);
     const { data } = await api.updateLearner(value);
     dispatch({ type: UPDATE_LEARNER, payload: true });
     alert("Updated Successfully");

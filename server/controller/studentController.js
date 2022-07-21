@@ -328,7 +328,6 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
 
 export const updateLearner = async (req, res) => {
   try {
-    console.log("update learner", req.body);
     const {
       firstName,
       lastName,
@@ -389,12 +388,10 @@ export const updateLearner = async (req, res) => {
     }
 
     // if avatar is not empty update the user avatar
-    // if (avatar.name !== "") {
-    //   const avatarUrl = await s3Upload("images", avatar);
-    //   console.log("avatarUrl", avatarUrl);
-    //   updatedLearner.avatar = avatar;
-    //   await updatedLearner.save();
-    // }
+    if (avatar !== "") {
+      updatedLearner.avatar = avatar;
+      await updatedLearner.save();
+    }
 
     res.status(200).json("Student Updated");
   } catch (error) {
