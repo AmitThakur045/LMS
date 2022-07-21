@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import adminRoutes from "./routes/adminRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
+import awsRoutes from "./routes/awsRoutes.js";
 
 const app = express();
 dotenv.config({path: "./config/config.env"});
@@ -29,6 +30,7 @@ app.use(function (req, res, next) {
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/s3", awsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {

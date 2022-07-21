@@ -5,19 +5,18 @@ import dotenv from "dotenv";
 dotenv.config({ path: "./config/config.env" });
 
 export const s3Upload = async (place, file) => {
-  const fileContent = fs.readFileSync(file);
-  console.log("fileContent", fileContent);
+  // const fileContent = fs.readFileSync(file);
+  // console.log("fileContent", fileContent);
+  // return fileContent;
 
-  return fileContent;
-//   const s3 = new S3();
-//   const params = {
-//     Bucket: process.env.AWS_BUCKET_NAME,
-//     Key: `${place}/${uuidv4()}`,
-//     Type: type,
-//     Body: file,
-//   };
-//   const data = await s3.upload(params).promise();
+  const s3 = new S3();
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `${place}/${uuidv4()}`,
+    Body: file,
+  };
+  const data = await s3.upload(params).promise();
 
-//   console.log("data", data);
-//   return data.Location;
+  console.log("data", data);
+  return data.Location;
 };

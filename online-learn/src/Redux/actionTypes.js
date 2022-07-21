@@ -57,3 +57,4 @@ export const OTP = "OTP";
 export const SIGN_UP = "SIGN_UP";
 export const ADD_ORGANIZATION = "ADD_ORGANIZATION";
 export const UPDATE_LEARNER = "UPDATE_LEARNER";
+export const GET_PRESIGNED_URL = "GET_PRESIGNED_URL";

@@ -9,6 +9,7 @@ import { TextField } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Spinner from "../../../../Utils/Spinner";
+import { getPresignedUrl } from "../../../../../../server/controller/s3Controller";
 
 const Main = () => {
   const [learner, setLearner] = useState(
@@ -19,6 +20,7 @@ const Main = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState({});
+  const [image, setImage] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -57,6 +59,8 @@ const Main = () => {
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
+    setImage(file);
+
     const base64 = await convertBase64(file);
     setValue({ ...value, avatar: base64 });
   };
@@ -92,6 +96,7 @@ const Main = () => {
       alert("Enter atleast one value");
       setLoading(false);
     } else {
+      dispatch(getPresignedUrl({ fileType: "images" }))
       dispatch(updateLearner(value, navigate));
     }
   };
