@@ -15,6 +15,7 @@ import LinearProgress, {
 import { Button } from "@mui/material";
 import {
   GET_BATCH,
+  GET_PRESIGNED_URL,
   SET_ERRORS,
   UPDATE_COURSE_DATA,
 } from "../../../../../../Redux/actionTypes";
@@ -24,6 +25,7 @@ import {
 } from "../../../../../../Redux/actions/adminActions";
 import Spinner from "../../../../../../Utils/Spinner";
 import Loader from "../../../../../../Utils/Loader";
+import { getPresignedUrl } from "../../../../../../Redux/actions/awsActions";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -197,25 +199,28 @@ const Main = () => {
     }
   };
 
+  const [video, setVideo] = useState({});
   const handleVideoUploadButton = async (e) => {
     setUploadingVideo(true);
+    dispatch(getPresignedUrl({ fileType: "videos" }));
     const file = e.target.files[0];
+    setVideo(file);
     const base64 = await convertBase64(file);
     setUploadedVideo(base64);
   };
 
-  useEffect(() => {
-    if (uploadedVideo !== "") {
-      const temp = tempBatchData;
-      temp.courses[indexCounter].lessonVideo[
-        sectionLessonNumber.sectionNumber
-      ].lesson[sectionLessonNumber.lessonNumber].video = uploadedVideo;
-      setTempBatchData(temp);
+  // useEffect(() => {
+  //   if (uploadedVideo !== "") {
+  //     const temp = tempBatchData;
+  //     temp.courses[indexCounter].lessonVideo[
+  //       sectionLessonNumber.sectionNumber
+  //     ].lesson[sectionLessonNumber.lessonNumber].video = uploadedVideo;
+  //     setTempBatchData(temp);
 
-      setUploadingVideo(false);
-      setUploadedVideo("");
-    }
-  }, [uploadedVideo]);
+  //     setUploadingVideo(false);
+  //     setUploadedVideo("");
+  //   }
+  // }, [uploadedVideo]);
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -242,6 +247,39 @@ const Main = () => {
       })
     );
   };
+
+  const s3PresignedUrl = store.aws.presignedUrl;
+  useEffect(() => {
+    if (s3PresignedUrl !== "") {
+      async function fetchApi() {
+        await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "video/*",
+          },
+          body: video,
+        })
+          .then((response) => {
+            console.log(response);
+            const videoUrl = s3PresignedUrl.split("?")[0];
+            console.log(videoUrl);
+            let temp = tempBatchData;
+            console.log(temp);
+            temp.courses[indexCounter].lessonVideo[
+              sectionLessonNumber.sectionNumber
+            ].lesson[sectionLessonNumber.lessonNumber].video = videoUrl;
+            setTempBatchData(temp);
+            console.log(tempBatchData);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
+
   const [uploadingVideo, setUploadingVideo] = useState(false);
   useEffect(() => {
     if (store.admin.courseUpdated) {
@@ -249,7 +287,7 @@ const Main = () => {
       dispatch({ type: UPDATE_COURSE_DATA, payload: false });
     }
   }, [store.admin.courseUpdated]);
-  console.log(tempBatchData);
+
   return (
     <>
       {isLoading ? (
@@ -325,16 +363,20 @@ const Main = () => {
                         {tempBatchData.courses[indexCounter].lessonVideo[
                           sectionIdx
                         ].lesson[lessonIdx].video === "" ? (
-                          <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            Upload Video
-                          </div>
+                          <>
+                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                              Upload Video
+                            </div>
+                          </>
                         ) : (
-                          <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                            Upload Another Video
-                          </div>
+                          <>
+                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
+                              Upload Another Video
+                            </div>
+                          </>
                         )}
                       </label>
-                      {/* <input
+                      <input
                         className="hidden"
                         id={`video-${sectionIdx}-${lessonIdx}`}
                         type="file"
@@ -345,7 +387,7 @@ const Main = () => {
                           });
                           handleVideoUploadButton(e);
                         }}
-                      /> */}
+                      />
                     </div>
                   ))}
                 </div>
