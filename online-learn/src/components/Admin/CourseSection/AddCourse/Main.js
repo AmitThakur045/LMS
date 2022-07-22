@@ -180,7 +180,7 @@ const Main = () => {
     setError({});
     setLoading(true);
     console.log(value);
-    dispatch(getPresignedUrl({ fileType: "images" }));
+    dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
   };
 
   const clearForm = (e) => {

@@ -96,7 +96,7 @@ const Main = () => {
       setLoading(false);
     } else {
       if (avatar !== "") {
-        dispatch(getPresignedUrl({ fileType: "images" }));
+        dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
       } else {
         dispatch(updateStudent(value, navigate));
       }

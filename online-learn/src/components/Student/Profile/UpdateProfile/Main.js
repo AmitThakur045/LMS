@@ -62,7 +62,7 @@ const Main = () => {
     const file = e.target.files[0];
 
     setImage(file);
-
+    console.log("file", file);
     const base64 = await convertBase64(file);
     setAvatar(base64);
   };
@@ -99,7 +99,7 @@ const Main = () => {
       setLoading(false);
     } else {
       if (avatar !== "") {
-        dispatch(getPresignedUrl({ fileType: "images" }));
+        dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
       } else {
         dispatch(updateLearner(value, navigate));
       }
@@ -139,6 +139,8 @@ const Main = () => {
       setError(store.errors);
     }
   }, [store.errors]);
+
+  console.log("fileImage", image);
 
   return (
     <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">

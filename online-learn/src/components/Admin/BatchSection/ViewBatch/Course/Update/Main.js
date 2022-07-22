@@ -202,8 +202,9 @@ const Main = () => {
   const [video, setVideo] = useState({});
   const handleVideoUploadButton = async (e) => {
     setUploadingVideo(true);
-    dispatch(getPresignedUrl({ fileType: "videos" }));
+    dispatch(getPresignedUrl({ fileType: "videos", fileName: e.target.files[0].name }));
     const file = e.target.files[0];
+    console.log("videoFile", file);
     setVideo(file);
     const base64 = await convertBase64(file);
     setUploadedVideo(base64);
