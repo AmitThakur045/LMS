@@ -5,17 +5,19 @@ dotenv.config({ path: "./config/config.env" });
 
 export const getPresignedUrl = async (req, res) => {
   try {
-    const { fileType } = req.body;
+    const { fileType, fileName } = req.body;
+
+    // console.log("fileName", fileName);
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${fileType}/${uuidv4()}`,
+      Key: `${fileType}/${uuidv4()} - ${fileName}`,
       Expires: 60,
     };
 
     const s3 = new S3({ signatureVersion: "v4", region: "us-east-1" });
     const data = await s3.getSignedUrlPromise("putObject", params);
-    console.log("data URL", data);
+    // console.log("data URL", data);
     res.json(data);
   } catch (error) {
     console.log("error", error);
