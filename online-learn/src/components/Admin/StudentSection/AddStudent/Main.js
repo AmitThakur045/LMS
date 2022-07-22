@@ -148,7 +148,7 @@ const Main = () => {
     e.preventDefault();
     setError({});
     setLoading(true);
-    dispatch(getPresignedUrl({ fileType: "images" }));
+    dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
   };
 
   return (
