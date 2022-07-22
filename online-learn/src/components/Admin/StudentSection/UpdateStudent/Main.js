@@ -36,7 +36,6 @@ const Main = () => {
     const file = e.target.files[0];
     setImage(file);
     const base64 = await convertBase64(file);
-    // setValue({ ...value, avatar: base64 });
     setAvatar(base64);
   };
 
