@@ -3,11 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RiAddLine } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { ADD_COURSE, SET_ERRORS } from "../../../../Redux/actionTypes";
+import {
+  ADD_COURSE,
+  SET_ERRORS,
+  GET_PRESIGNED_URL,
+} from "../../../../Redux/actionTypes";
 import {
   addCourse,
   getAllCourse,
 } from "../../../../Redux/actions/adminActions";
+import { getPresignedUrl } from "../../../../Redux/actions/awsActions";
 
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
@@ -21,9 +26,12 @@ const Main = () => {
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
+  const s3PresignedUrl = store.aws.presignedUrl;
   let lessonCount = 1;
   let sectionCount = 1;
 
+  const [image, setImage] = useState({});
+  const [avatar, setAvatar] = useState("");
   const [section, setSection] = useState([
     {
       sectionNumber: 1,
@@ -92,6 +100,7 @@ const Main = () => {
           section: [],
           courseImg: "",
         });
+        setAvatar("");
         setSection([
           {
             sectionNumber: 1,
@@ -171,7 +180,7 @@ const Main = () => {
     setError({});
     setLoading(true);
     console.log(value);
-    dispatch(addCourse(value));
+    dispatch(getPresignedUrl({ fileType: "images" }));
   };
 
   const clearForm = (e) => {
@@ -187,6 +196,7 @@ const Main = () => {
       section: [],
       courseImg: "",
     });
+    setAvatar("");
     setSection([
       {
         sectionNumber: 1,
@@ -204,10 +214,38 @@ const Main = () => {
     ]);
   };
 
+  useEffect(() => {
+    if (s3PresignedUrl !== "") {
+      async function fetchApi() {
+        await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "image/*",
+          },
+          body: image,
+        })
+          .then((response) => {
+            console.log(response);
+            const imageUrl = s3PresignedUrl.split("?")[0];
+            let data = value;
+            data.courseImg = imageUrl;
+
+            dispatch(addCourse(data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
+
   const uploadImage = async (e) => {
     const file = e.target.files[0];
+    setImage(file);
     const base64 = await convertBase64(file);
-    setValue({ ...value, courseImg: base64 });
+    setAvatar(base64);
   };
 
   const convertBase64 = (file) => {
@@ -229,14 +267,15 @@ const Main = () => {
     <div className="flex flex-col lg:flex-row overflow-hidden space-x-5 lg:px-12 px-2 mb-5 overflow-y-auto">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
+      >
         <p className="text-[#8d91b1]">Add Course</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="w-[40%] flex items-start justify-center">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
-              {value.courseImg !== "" ? (
+              {avatar !== "" ? (
                 <img
-                  src={value.courseImg}
+                  src={avatar}
                   className="w-full h-full object-cover"
                   alt=""
                 />
@@ -244,7 +283,8 @@ const Main = () => {
                 <div className="">
                   <label
                     className="flex items-center justify-center flex-col space-y-3 w-full"
-                    htmlFor="image">
+                    htmlFor="image"
+                  >
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
@@ -346,7 +386,8 @@ const Main = () => {
                     <h1>Section {sectionIdx + 1}</h1>
                     <MdKeyboardArrowDown />
                   </div>
-                }>
+                }
+              >
                 <div className="">
                   <div className="flex space-x-3 md:mx-10 mx-3 mt-3">
                     <div className="space-y-1 flex justify-between w-full">
@@ -372,7 +413,8 @@ const Main = () => {
                           className="h-[2rem] w-[10rem]"
                           disableElevation
                           variant="contained"
-                          color="success">
+                          color="success"
+                        >
                           Section Added
                         </Button>
                       ) : (
@@ -385,7 +427,8 @@ const Main = () => {
                           onClick={() => {
                             sectionToggler(sectionIdx);
                             setValue({ ...value, section: [...section] });
-                          }}>
+                          }}
+                        >
                           Add Section
                         </Button>
                       )}
@@ -404,7 +447,8 @@ const Main = () => {
                                 <h1>Lesson {lessonIdx + 1}</h1>
                                 <MdKeyboardArrowDown />
                               </div>
-                            }>
+                            }
+                          >
                             <div className="space-y-3 md:mx-6 mx-2 mt-3">
                               <div className="flex space-x-3">
                                 <div className="space-y-1 flex justify-between w-full">
@@ -440,7 +484,8 @@ const Main = () => {
                                       className="h-[2rem] w-[10rem]"
                                       disableElevation
                                       color="success"
-                                      variant="contained">
+                                      variant="contained"
+                                    >
                                       Lesson Added
                                     </Button>
                                   ) : (
@@ -452,7 +497,8 @@ const Main = () => {
                                       variant="contained"
                                       onClick={() =>
                                         lessonToggler(sectionIdx, lessonIdx)
-                                      }>
+                                      }
+                                    >
                                       Add Lesson
                                     </Button>
                                   )}
@@ -502,7 +548,8 @@ const Main = () => {
                       disabled={section[sectionIdx].sectionAdded ? true : false}
                       onClick={() => {
                         addNewLesson(sectionIdx);
-                      }}>
+                      }}
+                    >
                       <h1 className="text-base">Lessons</h1>
                       <RiAddLine className=" " />
                     </button>
@@ -518,7 +565,8 @@ const Main = () => {
             className="bg-gray-800 h-[2.5rem] rounded-md hover:bg-black transition-all duration-150 w-full text-white flex items-center justify-center  "
             onClick={() => {
               addNewSection(sectionCount - 1);
-            }}>
+            }}
+          >
             <h1 className="text-base">Sections</h1>
             <RiAddLine className="" />
           </button>
@@ -527,13 +575,15 @@ const Main = () => {
           <button
             disabled={loading}
             type="submit"
-            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+            className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+          >
             Submit
           </button>
           <button
             type="button"
             onClick={clearForm}
-            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
+            className="self-end bg-[#df1111] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
+          >
             Clear
           </button>
         </div>

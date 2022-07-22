@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ADD_STUDENT, SET_ERRORS } from "../../../../Redux/actionTypes";
+import {
+  ADD_STUDENT,
+  SET_ERRORS,
+  GET_PRESIGNED_URL,
+} from "../../../../Redux/actionTypes";
+
+import { getPresignedUrl } from "../../../../Redux/actions/awsActions";
 import {
   addStudent,
   getAllBatchCodes,
@@ -13,16 +19,7 @@ import {
 import ActiveBatch from "../../ActiveBatch";
 import RecentNotification from "../../RecentNotification";
 import { MdOutlineFileUpload } from "react-icons/md";
-import {
-  Checkbox,
-  FormControl,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import Spinner from "../../../../Utils/Spinner";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -42,8 +39,12 @@ const Main = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [image, setImage] = useState({});
+  const [avatar, setAvatar] = useState("");
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const s3PresignedUrl = store.aws.presignedUrl;
 
   const [values, setValues] = useState({
     firstName: "",
@@ -56,8 +57,9 @@ const Main = () => {
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
+    setImage(file);
     const base64 = await convertBase64(file);
-    setValues({ ...values, avatar: base64 });
+    setAvatar(base64);
   };
 
   const convertBase64 = (file) => {
@@ -107,6 +109,7 @@ const Main = () => {
           contactNumber: "",
           avatar: "",
         });
+        setAvatar("");
 
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ADD_STUDENT, payload: false });
@@ -114,25 +117,53 @@ const Main = () => {
     }
   }, [store.errors, store.admin.studentAdded]);
 
+  useEffect(() => {
+    if (s3PresignedUrl !== "") {
+      async function fetchApi() {
+        await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "image/*",
+          },
+          body: image,
+        })
+          .then((response) => {
+            console.log(response);
+            const imageUrl = s3PresignedUrl.split("?")[0];
+            let data = values;
+            data.avatar = imageUrl;
+
+            dispatch(addStudent(data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError({});
     setLoading(true);
-    dispatch(addStudent(values));
+    dispatch(getPresignedUrl({ fileType: "images" }));
   };
 
   return (
     <div className="flex lg:flex-row flex-col overflow-y-auto h-full space-x-5 lg:px-12 px-2 mb-5">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
+      >
         <p className="text-[#8d91b1]">Add Student</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="w-[40%] flex items-start justify-center">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
-              {values.avatar !== "" ? (
+              {avatar !== "" ? (
                 <img
-                  src={values.avatar}
+                  src={avatar}
                   className="w-full h-full object-cover"
                   alt=""
                 />
@@ -140,7 +171,8 @@ const Main = () => {
                 <div className="">
                   <label
                     className="flex items-center justify-center flex-col space-y-3"
-                    for="image">
+                    for="image"
+                  >
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
@@ -227,7 +259,8 @@ const Main = () => {
         <button
           type="submit"
           disabled={loading}
-          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+        >
           Submit
         </button>
         {loading && <Spinner message="Adding Student" />}
