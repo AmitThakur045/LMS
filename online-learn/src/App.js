@@ -30,6 +30,7 @@ import Course from "./components/Student/Course/MyLearning/Course";
 import LiveClasses from "./components/Student/Course/LiveClasses/LiveClasses";
 import Assignment from "./components/Student/Course/Assignment/Assignment";
 import StudentLogin from "./components/Student/StudentLogin";
+import StudentForgotPassword from "./components/Student/StudentForgotPassword";
 import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
 import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
@@ -43,6 +44,7 @@ function App() {
     <Routes>
       <Route path="/*" element={<Home />} />
       <Route path="/login" exact element={<StudentLogin />} />
+      <Route path="/studentforgotpassword" exact element={<StudentForgotPassword />} />
       <Route path="/community" exact element={<Community />} />
       <Route path="/profile" exact element={<Profile />} />
       <Route path="/course" exact element={<Course />} />

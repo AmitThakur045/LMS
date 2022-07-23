@@ -240,14 +240,6 @@ export const generateOtp = async (req, res) => {
 
     const newOtp = Math.floor(Math.random() * 10000);
 
-    // const resultEmail = await transporter.sendMail({
-    //   from: "Nodemailer",
-    //   to: email,
-    //   subject: "Welcome to Bessalani",
-    //   html: `<h1>Welcome to Bessalani</h1>
-    //   <p>Your OTP is ${newOtp}</p>`,
-    // });
-
     sendMail({
       to: email,
       from: "at7129652@gmail.com",
@@ -394,5 +386,55 @@ export const updateLearner = async (req, res) => {
     res.status(200).json("Student Updated");
   } catch (error) {
     res.status(500).json(error.message);
+  }
+};
+
+export const generateOtpForPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const errors = { studentError: String };
+    const existingStudent = await Student.countDocuments({ email });
+
+    if (!existingStudent) {
+      errors.studentError = "Student doesn't exists";
+      return res.status(400).json(errors);
+    }
+
+    const newOtp = Math.floor(Math.random() * 10000);
+
+    sendMail({
+      to: email,
+      from: "at7129652@gmail.com",
+      subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
+
+    res.status(200).json(newOtp);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    const errors = { studentError: String };
+    const existingStudent = await Student.findOne({ email }, { password: 1 });
+
+    if (!existingStudent) {
+      errors.studentError = "Student doesn't exists";
+      return res.status(400).json(errors);
+    }
+
+    let hashedPassword = await bcrypt.hash(newPassword, 10);
+    existingStudent.password = hashedPassword;
+    await existingStudent.save();
+
+    res.status(200).json("Password Updated");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 };

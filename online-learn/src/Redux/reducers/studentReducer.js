@@ -8,6 +8,7 @@ import {
   SIGN_UP,
   OTP,
   UPDATE_LEARNER,
+  FORGOT_PASSWORD,
 } from "../actionTypes";
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   studentSignedUp: false,
   otp: null,
   learnerUpdated: false,
+  forgotPassword: false,
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -61,10 +63,15 @@ const studentReducer = (state = initialState, action) => {
         otp: action.payload,
       };
     case UPDATE_LEARNER:
-        return {
-          ...state,
-          learnerUpdated: action.payload,
-        };
+      return {
+        ...state,
+        learnerUpdated: action.payload,
+      };
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        forgotPassword: action.payload,
+      };
     default:
       return state;
   }

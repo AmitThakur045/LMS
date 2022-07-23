@@ -10,6 +10,8 @@ import {
   studentSignUp,
   getBatchLessonVideoByCourse,
   updateLearner,
+  forgotPassword,
+  generateOtpForPasswordReset
 } from "../controller/studentController.js";
 const router = express.Router();
 
@@ -22,4 +24,6 @@ router.post("/getassignmentbybatchcode", auth, getAssignmentByBatchCode);
 router.post("/submitassignment", auth, submitAssignment);
 router.post("/getbatchlessonvideobycourse", auth, getBatchLessonVideoByCourse);
 router.post("/updatelearner", auth, updateLearner);
+router.post("/generateotpforpasswordreset", generateOtpForPasswordReset);
+router.post("/forgotpassword", forgotPassword);
 export default router;

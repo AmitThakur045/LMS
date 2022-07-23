@@ -9,6 +9,7 @@ import {
   OTP,
   GET_BATCH_LESSON_VIDEO,
   UPDATE_LEARNER,
+  FORGOT_PASSWORD,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -94,6 +95,26 @@ export const updateLearner = (value, navigate) => async (dispatch) => {
     dispatch({ type: UPDATE_LEARNER, payload: true });
     alert("Updated Successfully");
     navigate("/profile");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const forgotPassword = (value, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.forgotPassword(value);
+    dispatch({ type: FORGOT_PASSWORD, payload: true });
+    alert("Password Updated Successfully");
+    navigate("/");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const generateOtpForPasswordReset = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.generateOtpForPasswordReset(formData);
+    dispatch({ type: OTP, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

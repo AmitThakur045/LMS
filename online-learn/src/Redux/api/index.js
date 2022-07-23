@@ -125,6 +125,10 @@ export const getBatchLessonVideoByCourse = (data) =>
   API.post("/api/student/getbatchlessonvideobycourse", data);
 export const updateLearner = (student) =>
   API.post("/api/student/updatelearner", student);
+export const generateOtpForPasswordReset = (formData) =>
+  API.post("/api/student/generateotpforpasswordreset", formData);
+export const forgotPassword = (formData) =>
+  API.post("/api/student/forgotpassword", formData);
 
 //AWS
 export const getPresignedUrl = (data) =>

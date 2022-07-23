@@ -416,6 +416,12 @@ const StudentLogin = () => {
                 >
                   Login
                 </button>
+                <button
+                  onClick={() => navigate("/studentforgotpassword")}
+                  className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
+                >
+                  Forgot Password
+                </button>
                 <p className="text-white text-sm">
                   Don't have an account?{" "}
                   <button
