@@ -5,8 +5,6 @@ import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
 import { sendMail } from "../services/sendgrid.js";
-import { transporter } from "../services/nodemailer.js";
-import { s3Upload } from "../services/s3service.js";
 
 function calPerformance(assignment, totalAssignment) {
   let score = 0;

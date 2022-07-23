@@ -9,7 +9,6 @@ import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
-import { transporter } from "../services/nodemailer.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
