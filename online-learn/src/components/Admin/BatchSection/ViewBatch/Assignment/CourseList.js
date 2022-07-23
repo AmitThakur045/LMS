@@ -12,10 +12,12 @@ import {
   addAssignment,
   getStudentByAssignmentCode,
 } from "../../../../../Redux/actions/adminActions";
+import { getPresignedUrl } from "../../../../../Redux/actions/awsActions";
 import {
   ADD_ASSIGNMENT,
   GET_STUDENT_BY_ASSIGNMENT_CODE,
   SET_ERRORS,
+  GET_PRESIGNED_URL,
 } from "../../../../../Redux/actionTypes";
 import Spinner from "../../../../../Utils/Spinner";
 
@@ -48,6 +50,7 @@ const CourseList = ({ currentList, courseCode }) => {
     assignmentDate: "",
     assignmentPdf: "",
   });
+  const [currPdf, setCurrPdf] = useState({});
   const [studentList, setStudentList] = useState([]);
   const [currentAssignmentCode, setCurrentAssignmentCode] = useState("");
   const [loading, setLoading] = useState(true);
@@ -58,28 +61,47 @@ const CourseList = ({ currentList, courseCode }) => {
   const [newAssignment, setNewAssignment] = useState();
   const [addAssignmentLoading, setAddAssignmentLoading] = useState(false);
   const store = useSelector((state) => state);
+  const s3PresignedUrl = store.aws.s3PresignedUrl;
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (s3PresignedUrl !== "") {
+      async function fetchApi() {
+        await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/*",
+          },
+          body: currPdf,
+        })
+          .then((response) => {
+            console.log(response);
+            const pdfUrl = s3PresignedUrl.split("?")[0];
+
+            setValue({
+              ...value,
+              assignmentPdf: pdfUrl,
+            });
+            setCurrPdf({});
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
+
   const changeHandler = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onloadend = (e) => {
-        setValue({
-          ...value,
-          assignmentPdf: e.target.result,
-        });
-      };
-    }
-    // let newFile = atob(file);
-    // setValue({
-    //   ...value,
-    //   assignmentPdf: newFile,
-    // });
+    setCurrPdf(file);
+    dispatch(
+      getPresignedUrl({ fileType: "pdf", fileName: event.target.files[0].name })
+    );
   };
 
   let assignmentStudent = useSelector((store) => store.admin.studentList);
@@ -176,13 +198,15 @@ const CourseList = ({ currentList, courseCode }) => {
                   className={
                     currentAssignmentCode === item.assignmentCode &&
                     "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                  }>
+                  }
+                >
                   <div className="flex items-center">
                     <ListItem
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }>
+                      }
+                    >
                       <div>
                         <div className="flex text-[1.3rem] text-slate-700 space-x-2">
                           <p>Assignment</p>
@@ -216,7 +240,8 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="bottom-0 fixed w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}>
+                onClick={() => setOpen(true)}
+              >
                 Create Assignment
               </button>
             </div>
@@ -229,7 +254,8 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}>
+                onClick={() => setOpen(true)}
+              >
                 Create Assignment
               </button>
             </div>
@@ -245,7 +271,8 @@ const CourseList = ({ currentList, courseCode }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <form onSubmit={submitHandler}>
             <div className="flex flex-col space-y-4 ">
@@ -255,7 +282,8 @@ const CourseList = ({ currentList, courseCode }) => {
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]">
+                  className="self-end cursor-pointer w-[5%]"
+                >
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -314,7 +342,8 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}>
+                  }}
+                >
                   <input
                     type="file"
                     ref={inputRef}
@@ -328,7 +357,8 @@ const CourseList = ({ currentList, courseCode }) => {
                   <button
                     disabled={addAssignmentLoading}
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
+                  >
                     Submit
                   </button>
                 </div>
@@ -339,7 +369,8 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
+                  >
                     clear
                   </button>
                 </div>
