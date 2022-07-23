@@ -6,7 +6,7 @@ import SingleAssignment from "./SingleAssignment";
 
 const AssignmentMain = ({ batchData, allAssignment }) => {
   const [selectedPdf, setSelectedPdf] = useState("");
-
+  const [isOpen, setIsOpen] = useState(0);
   useEffect(() => {
     if (allAssignment.length !== 0) {
       setSelectedPdf(allAssignment[0].assignmentPdf);
@@ -21,15 +21,17 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
     <>
       {Object.keys(batchData).length !== 0 && (
         <div className="flex lg:flex-row flex-col w-full lg:h-full bg-white pb-[5rem]">
-          <div className="lg:flex-[0.4] flex-col w-full bg-[#EDF0F5] rounded-bl-2xl lg:h-full overflow-y-auto">
+          <div className="lg:flex-[0.4] flex-col w-full bg-[#EDF0F5] rounded-bl-2xl lg:h-full ">
             <h1 className="ml-6 mt-7 font-semibold text-2xl">Assignment</h1>
 
-            <div className="flex flex-col space-y-4 mt-4 lg:h-full h-[50vh] overflow-y-auto pb-5">
+            <div className="flex flex-col space-y-4 mt-4 lg:h-[70vh] h-[50vh] overflow-y-auto pb-5">
               {allAssignment.map((data, i) => (
                 <SingleAssignment
                   data={data}
                   i={i}
                   setSelectedPdf={setSelectedPdf}
+                  setIsOpen={setIsOpen}
+                  isOpen={isOpen}
                 />
                 // <div
                 //   className="bg-[#127FED] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between hover:cursor-pointer"

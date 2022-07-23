@@ -68,7 +68,7 @@ const CourseList = ({ currentList, courseCode }) => {
   };
 
   useEffect(() => {
-    if (s3PresignedUrl !== "") {
+    if (s3PresignedUrl !== "" && pdfUploadLoader === true) {
       async function fetchApi() {
         await fetch(s3PresignedUrl, {
           method: "PUT",

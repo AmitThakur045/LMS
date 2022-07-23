@@ -7,7 +7,7 @@ import {
   GET_PRESIGNED_URL,
   SUBMIT_ASSIGNMENT,
 } from "../../../../Redux/actionTypes";
-const SingleAssignment = ({ data, i, setSelectedPdf }) => {
+const SingleAssignment = ({ data, i, setSelectedPdf, setIsOpen, isOpen }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -94,10 +94,15 @@ const SingleAssignment = ({ data, i, setSelectedPdf }) => {
 
   return (
     <div
-      className="bg-[#127FED] mx-6 rounded-xl px-4 py-4 text-white flex flex-col justify-between hover:cursor-pointer"
+      className={`bg-gradient-to-b ${
+        isOpen === i
+          ? "from-[#00668a] to-[#047880]"
+          : "from-[#0085B4] to-[#009DA7]"
+      }  mx-6 rounded-xl space-y-2 px-4 py-4 text-white flex flex-col justify-between hover:cursor-pointer`}
       key={i}
       onClick={() => {
         setSelectedPdf(data.assignmentPdf);
+        setIsOpen(i);
       }}>
       <div className="flex justify-between items-center">
         <h3>Assignment code: {data.assignmentCode}</h3>
@@ -116,12 +121,12 @@ const SingleAssignment = ({ data, i, setSelectedPdf }) => {
         <h1>{data.assignmentDescription}</h1>
       </div>
       <div className="flex space-x-2">
-        <span className="bg-[#6EAEE9] flex items-center justify-center w-[5rem] rounded-2xl h-[2rem] ">
+        <span className="bg-primary flex items-center justify-center w-[5rem] rounded-2xl h-[2rem] ">
           {data.courseCode}
         </span>
 
         <label htmlFor={`answer-${i}`} type="button">
-          <div className="flex text-white bg-[#6EAEE9] rounded-2xl cursor-pointer h-[2rem] w-[7rem] space-x-1 items-center justify-center">
+          <div className="flex text-white bg-primary rounded-2xl cursor-pointer h-[2rem] w-[7rem] space-x-1 items-center justify-center">
             <div className="">
               {isUploaded
                 ? "Uploaded"

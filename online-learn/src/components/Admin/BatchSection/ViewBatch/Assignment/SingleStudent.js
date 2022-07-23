@@ -11,7 +11,8 @@ import TextField from "@mui/material/TextField";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { addScore } from "../../../../../Redux/actions/adminActions";
-import { ADD_SCORE } from "../../../../../Redux/actionTypes";
+import { ADD_SCORE, GET_PRESIGNED_URL } from "../../../../../Redux/actionTypes";
+import { getPresignedUrl } from "../../../../../Redux/actions/awsActions";
 
 const SingleStudent = ({ item, index, currentEmail }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
@@ -21,28 +22,25 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const store = useSelector((state) => state);
-
+  const [currPdf, setCurrPdf] = useState({});
   const [email, setEmail] = useState("");
   const [isSelected, setIsSelected] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [pdfUploadLoader, SetPdfUploadLoader] = useState(false);
   const [value, setValue] = useState({
     marks: 0,
     selectedFile: "",
   });
-
+  const s3PresignedUrl = store.aws.presignedUrl;
   const changeHandler = (event) => {
+    SetPdfUploadLoader(true);
     const file = event.target.files[0];
-    if (file) {
-      setIsSelected(true);
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onloadend = (e) => {
-        setValue({
-          ...value,
-          selectedFile: fileReader.result,
-        });
-      };
-    }
+    setCurrPdf(file);
+
+    dispatch(
+      getPresignedUrl({ fileType: "pdf", fileName: event.target.files[0].name })
+    );
+    setIsSelected(true);
   };
   useEffect(() => {
     if (item.checkedAssignment !== "") {
@@ -68,15 +66,51 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   useEffect(() => {
     if (store.admin.scoreAdded) {
       setLoading(false);
+      setIsSelected(false);
+      setIsAdded(true);
       dispatch({ type: ADD_SCORE, payload: false });
     }
   }, [store.admin.scoreAdded]);
+
+  useEffect(() => {
+    if (s3PresignedUrl !== "" && pdfUploadLoader === true) {
+      async function fetchApi() {
+        await fetch(s3PresignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/*",
+          },
+          body: currPdf,
+        })
+          .then((response) => {
+            const pdfUrl = s3PresignedUrl.split("?")[0];
+            console.log(response);
+            setValue({
+              ...value,
+              selectedFile: pdfUrl,
+            });
+            SetPdfUploadLoader(false);
+            setCurrPdf({});
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      fetchApi();
+      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
+    }
+  }, [s3PresignedUrl]);
 
   return (
     <div key={index} onClick={() => setEmail(item.email)}>
       <ListItem button>
         <button
-          disabled={!isSelected || isAdded || user.result.sub === "hr"}
+          disabled={
+            !isSelected ||
+            isAdded ||
+            user.result.sub === "hr" ||
+            pdfUploadLoader
+          }
           type="button"
           onClick={submitHandler}>
           {isAdded ? (
@@ -118,10 +152,10 @@ const SingleStudent = ({ item, index, currentEmail }) => {
                 disabled={isAdded || user.result.sub === "hr"}
                 onClick={() => inputRef.current.click()}>
                 <div className="flex text-blue-600 px-2 space-x-1">
-                  {loading ? (
-                    <div>Uploading</div>
+                  {!isSelected ? (
+                    <div>Upload</div>
                   ) : (
-                    <div>{isSelected || isAdded ? `Uploaded` : `Upload`}</div>
+                    <div>{pdfUploadLoader ? `Uploading` : `Uploaded`}</div>
                   )}
 
                   <CloudUploadIcon />
