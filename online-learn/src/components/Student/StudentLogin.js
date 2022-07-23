@@ -37,7 +37,7 @@ const StudentLogin = () => {
   const navigate = useNavigate();
   const store = useSelector((state) => state);
   const [error, setError] = useState({});
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(new Array(4).fill(""));
 
   const otpValue = useSelector((state) => state.student.otp);
 
@@ -152,76 +152,53 @@ const StudentLogin = () => {
       setPassword("");
     }
   }, [store.errors]);
+
+  // OTP value change
+  const otpHandleChange = (element, index) => {
+    if (isNaN(element.value)) return false;
+
+    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+
+    //Focus next input
+    if (element.nextSibling) {
+      element.nextSibling.focus();
+    }
+  };
+
   return (
     <>
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
             <div className="flex  items-center justify-center font-bold text-center">
               Enter OTP received on the given email
             </div>
             <div className="flex flex-row justify-evenly text-xl">
-              <input
-                name="otp1"
-                type="text"
-                autoComplete="off"
-                className="w-[50px] h-[60px] bg-blue-100 border-2 border-blue-500 text-blue-700 px-4 py-2 rounded-md"
-                value={otp[0]}
-                onChange={(e) =>
-                  setOtp([e.target.value, otp[1], otp[2], otp[3]])
-                }
-                tabIndex="1"
-                maxLength="1"
-                onKeyUp={(e) => this.inputfocus(e)}
-              />
-              <input
-                name="otp2"
-                type="text"
-                autoComplete="off"
-                className="w-[50px] h-[60px] bg-blue-100 border-2 border-blue-500 text-blue-700 px-4 py-2 rounded-md"
-                value={otp[1]}
-                onChange={(e) =>
-                  setOtp([otp[0], e.target.value, otp[2], otp[3]])
-                }
-                tabIndex="2"
-                maxLength="1"
-                onKeyUp={(e) => this.inputfocus(e)}
-              />
-              <input
-                name="otp3"
-                type="text"
-                autoComplete="off"
-                className="w-[50px] h-[60px] bg-blue-100 border-2 border-blue-500 text-blue-700 px-4 py-2 rounded-md"
-                value={otp[2]}
-                onChange={(e) =>
-                  setOtp([otp[0], otp[1], e.target.value, otp[3]])
-                }
-                tabIndex="3"
-                maxLength="1"
-                onKeyUp={(e) => this.inputfocus(e)}
-              />
-              <input
-                name="otp4"
-                type="text"
-                autoComplete="off"
-                className="w-[50px] h-[60px] bg-blue-100 border-2 border-blue-500 text-blue-700 px-4 py-2 rounded-md"
-                value={otp[3]}
-                onChange={(e) =>
-                  setOtp([otp[0], otp[1], otp[2], e.target.value])
-                }
-                tabIndex="4"
-                maxLength="1"
-                onKeyUp={(e) => this.inputfocus(e)}
-              />
+              {otp.map((data, index) => {
+                return (
+                  <input
+                    className="w-[50px] h-[60px] bg-blue-100 border-2 border-blue-500 text-blue-700 px-4 py-2 rounded-md"
+                    type="text"
+                    name="otp"
+                    maxLength="1"
+                    key={index}
+                    value={data}
+                    onChange={(e) => otpHandleChange(e.target, index)}
+                    onFocus={(e) => e.target.select()}
+                  />
+                );
+              })}
             </div>
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit">
+                type="submit"
+              >
                 Submit
               </button>
             </div>
@@ -251,7 +228,8 @@ const StudentLogin = () => {
                   ? "translate-x-[18rem]"
                   : "translate-x-[12rem]"
                 : ""
-            }  duration-1000 transition-all rounded-3xl shadow-2xl`}>
+            }  duration-1000 transition-all rounded-3xl shadow-2xl`}
+          >
             <h1 className="text-[3rem]  font-bold text-center">
               Student
               <br />
@@ -266,7 +244,8 @@ const StudentLogin = () => {
                   loading ? "h-[30rem]" : ""
                 } bg-[#2c2f35] flex flex-col items-center pt-10 pb-4 px-7 ${
                   translate ? "lg:-translate-x-[12rem]" : ""
-                }  md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}>
+                }  md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}
+              >
                 <h1 className="text-white text-3xl font-semibold">Student</h1>
                 <div className="sm:space-x-8 flex sm:flex-row flex-col w-full">
                   <div className="space-y-1 w-full md:w-[50%]">
@@ -358,14 +337,16 @@ const StudentLogin = () => {
 
                 <button
                   type="submit"
-                  className="sm:w-56 w-full hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
+                  className="sm:w-56 w-full hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
+                >
                   Sign Up
                 </button>
                 <p className="text-white text-sm">
                   Already have an account?{" "}
                   <button
                     onClick={() => setShowSignUp(false)}
-                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150">
+                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
+                  >
                     Sign In
                   </button>
                 </p>
@@ -389,7 +370,8 @@ const StudentLogin = () => {
                   loading ? "h-[27rem]" : "h-96"
                 } sm:w-96 w-[80vw] px-3 bg-[#2c2f35] flex flex-col items-center justify-center ${
                   translate ? "lg:-translate-x-[12rem]" : ""
-                } md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}>
+                } md:duration-1000 md:transition-all space-y-6 rounded-3xl shadow-2xl`}
+              >
                 <h1 className="text-white text-3xl font-semibold">Student</h1>
                 <div className="space-y-1">
                   <p className="text-[#88909e] font-bold text-sm">Email</p>
@@ -430,14 +412,16 @@ const StudentLogin = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-56 hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
+                  className="w-56 hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
+                >
                   Login
                 </button>
                 <p className="text-white text-sm">
                   Don't have an account?{" "}
                   <button
                     onClick={() => setShowSignUp(true)}
-                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150">
+                    className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
+                  >
                     Sign Up
                   </button>
                 </p>
