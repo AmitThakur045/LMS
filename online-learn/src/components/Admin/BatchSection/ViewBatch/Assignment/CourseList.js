@@ -61,7 +61,7 @@ const CourseList = ({ currentList, courseCode }) => {
   const [newAssignment, setNewAssignment] = useState();
   const [addAssignmentLoading, setAddAssignmentLoading] = useState(false);
   const store = useSelector((state) => state);
-  const s3PresignedUrl = store.aws.s3PresignedUrl;
+  const s3PresignedUrl = store.aws.presignedUrl;
 
   const handleClose = () => {
     setOpen(false);
@@ -78,13 +78,13 @@ const CourseList = ({ currentList, courseCode }) => {
           body: currPdf,
         })
           .then((response) => {
-            console.log(response);
             const pdfUrl = s3PresignedUrl.split("?")[0];
 
             setValue({
               ...value,
               assignmentPdf: pdfUrl,
             });
+            SetPdfUploadLoader(false);
             setCurrPdf({});
           })
           .catch((error) => {
@@ -97,8 +97,10 @@ const CourseList = ({ currentList, courseCode }) => {
   }, [s3PresignedUrl]);
 
   const changeHandler = (event) => {
+    SetPdfUploadLoader(true);
     const file = event.target.files[0];
     setCurrPdf(file);
+
     dispatch(
       getPresignedUrl({ fileType: "pdf", fileName: event.target.files[0].name })
     );
@@ -184,7 +186,8 @@ const CourseList = ({ currentList, courseCode }) => {
       );
     }
   }, [currentAssignmentCode]);
-  console.log(currentAssignmentCode);
+
+  const [pdfUploadLoader, SetPdfUploadLoader] = useState(false);
 
   return (
     <>
@@ -198,15 +201,13 @@ const CourseList = ({ currentList, courseCode }) => {
                   className={
                     currentAssignmentCode === item.assignmentCode &&
                     "bg-slate-200 shadow-xl font-semibold transition-all duration-100"
-                  }
-                >
+                  }>
                   <div className="flex items-center">
                     <ListItem
                       button
                       onClick={() =>
                         setCurrentAssignmentCode(item.assignmentCode)
-                      }
-                    >
+                      }>
                       <div>
                         <div className="flex text-[1.3rem] text-slate-700 space-x-2">
                           <p>Assignment</p>
@@ -240,8 +241,7 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="bottom-0 fixed w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}
-              >
+                onClick={() => setOpen(true)}>
                 Create Assignment
               </button>
             </div>
@@ -254,8 +254,7 @@ const CourseList = ({ currentList, courseCode }) => {
             <div className="w-[14rem]">
               <button
                 className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                onClick={() => setOpen(true)}
-              >
+                onClick={() => setOpen(true)}>
                 Create Assignment
               </button>
             </div>
@@ -271,8 +270,7 @@ const CourseList = ({ currentList, courseCode }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={submitHandler}>
             <div className="flex flex-col space-y-4 ">
@@ -282,8 +280,7 @@ const CourseList = ({ currentList, courseCode }) => {
                 </h1>
                 <div
                   onClick={handleClose}
-                  className="self-end cursor-pointer w-[5%]"
-                >
+                  className="self-end cursor-pointer w-[5%]">
                   <AiOutlineCloseCircle
                     className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                     fontSize={23}
@@ -342,8 +339,7 @@ const CourseList = ({ currentList, courseCode }) => {
                   style={{
                     width: "100%",
                     justifyContent: "left",
-                  }}
-                >
+                  }}>
                   <input
                     type="file"
                     ref={inputRef}
@@ -352,13 +348,17 @@ const CourseList = ({ currentList, courseCode }) => {
                   />
                 </Button>
               </div>
+              {pdfUploadLoader && (
+                <div className="ml-3">
+                  <button>Uploading...</button>
+                </div>
+              )}
               <div className="flex w-full space-x-2">
                 <div className="w-full">
                   <button
-                    disabled={addAssignmentLoading}
+                    disabled={addAssignmentLoading || pdfUploadLoader}
                     type="submit"
-                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                  >
+                    className="self-end bg-[#FB6C3A] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
                     Submit
                   </button>
                 </div>
@@ -369,8 +369,7 @@ const CourseList = ({ currentList, courseCode }) => {
                       setAssignmentDescription("");
                       setNewAssignment();
                     }}
-                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150"
-                  >
+                    className="self-end bg-[#df1111] h-[3rem] text-white w-full rounded-md text-[17px] hover:bg-[#930000] transition-all duration-150">
                     clear
                   </button>
                 </div>

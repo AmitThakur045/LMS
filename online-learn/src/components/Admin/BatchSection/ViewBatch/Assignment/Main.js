@@ -37,7 +37,6 @@ const Main = () => {
       setIsLoading(false);
     }
   }, [store.errors]);
-  console.log(store.errors);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
