@@ -131,6 +131,18 @@ export const updateLearner = (student) =>
   API.post("/api/student/updatelearner", student);
 export const generateOtpForPasswordReset = (formData) =>
   API.post("/api/student/generateotpforpasswordreset", formData);
+export const addThread = (formData) =>
+  API.post("/api/student/addthread", formData);
+export const addThreadReply = (formData) =>
+  API.post("/api/student/addthreadreply", formData);
+export const addProblemCategory = (formData) =>
+  API.post("/api/student/addproblemcategory", formData);
+export const deleteProblemCategory = (formData) =>
+  API.post("/api/student/deleteproblemcategory", formData);
+export const getThreads = (formData) =>
+  API.post("/api/student/getthreads", formData);
+export const getProblemCategories = (formData) =>
+  API.post("/api/student/getproblemcategories", formData);
 export const forgotPassword = (formData) =>
   API.post("/api/student/forgotpassword", formData);
 

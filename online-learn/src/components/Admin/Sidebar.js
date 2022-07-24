@@ -51,8 +51,7 @@ const Sidebar = () => {
             to="/admin/dashboard"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <AiOutlineAppstore fontSize={20} />
               <p className="text-[12px]">Dashboard</p>
@@ -63,8 +62,7 @@ const Sidebar = () => {
             to="/admin/admin"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <RiAdminLine fontSize={20} />
               <p className="text-[12px]">Admin</p>
@@ -75,8 +73,7 @@ const Sidebar = () => {
             to="/admin/course"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <VscLibrary fontSize={20} />
               <p className="text-[12px]">Course</p>
@@ -87,8 +84,7 @@ const Sidebar = () => {
             to="/admin/student"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <BsPerson fontSize={20} />
               <p className="text-[12px]">Student</p>
@@ -99,11 +95,21 @@ const Sidebar = () => {
             to="/admin/batch"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <HiOutlineUserGroup fontSize={20} />
               <p className="text-[12px]">Batch</p>
+            </div>
+            <MdKeyboardArrowRight fontSize={20} />
+          </NavLink>
+          <NavLink
+            to="/admin/community"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <div className="flex items-center space-x-2">
+              <HiOutlineUserGroup fontSize={20} />
+              <p className="text-[12px]">Community</p>
             </div>
             <MdKeyboardArrowRight fontSize={20} />
           </NavLink>

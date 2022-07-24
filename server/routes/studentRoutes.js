@@ -11,7 +11,13 @@ import {
   getBatchLessonVideoByCourse,
   updateLearner,
   forgotPassword,
-  generateOtpForPasswordReset
+  generateOtpForPasswordReset,
+  addThread,
+  getThreads,
+  addThreadReply,
+  addProblemCategory,
+  getProblemCategories,
+  deleteProblemCategory,
 } from "../controller/studentController.js";
 const router = express.Router();
 
@@ -26,4 +32,10 @@ router.post("/getbatchlessonvideobycourse", auth, getBatchLessonVideoByCourse);
 router.post("/updatelearner", auth, updateLearner);
 router.post("/generateotpforpasswordreset", generateOtpForPasswordReset);
 router.post("/forgotpassword", forgotPassword);
+router.post("/addthread", addThread);
+router.post("/addthreadreply", addThreadReply);
+router.post("/addproblemcategory", addProblemCategory);
+router.post("/deleteproblemcategory", deleteProblemCategory);
+router.post("/getthreads", getThreads);
+router.post("/getproblemcategories", getProblemCategories);
 export default router;

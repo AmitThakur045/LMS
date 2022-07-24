@@ -9,6 +9,12 @@ import {
   OTP,
   UPDATE_LEARNER,
   FORGOT_PASSWORD,
+  ADD_THREAD,
+  GET_THREAD,
+  ADD_THREAD_REPLY,
+  GET_PROBLEM_CATEGORIES,
+  ADD_PROBLEM_CATEGORY,
+  DELETE_PROBLEM_CATEGORY,
 } from "../actionTypes";
 
 const initialState = {
@@ -21,6 +27,12 @@ const initialState = {
   otp: null,
   learnerUpdated: false,
   forgotPassword: false,
+  threadAdded: false,
+  threadReplyAdded: false,
+  threads: [],
+  problemCategories: [],
+  problemCategoryAdded: false,
+  problemCategoryDeleted: false,
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -71,6 +83,36 @@ const studentReducer = (state = initialState, action) => {
       return {
         ...state,
         forgotPassword: action.payload,
+      };
+    case ADD_THREAD:
+      return {
+        ...state,
+        threadAdded: action.payload,
+      };
+    case ADD_THREAD_REPLY:
+      return {
+        ...state,
+        threadReplyAdded: action.payload,
+      };
+    case ADD_PROBLEM_CATEGORY:
+      return {
+        ...state,
+        problemCategoryAdded: action.payload,
+      };
+    case DELETE_PROBLEM_CATEGORY:
+      return {
+        ...state,
+        problemCategoryDeleted: action.payload,
+      };
+    case GET_THREAD:
+      return {
+        ...state,
+        threads: action.payload,
+      };
+    case GET_PROBLEM_CATEGORIES:
+      return {
+        ...state,
+        problemCategories: action.payload,
       };
     default:
       return state;

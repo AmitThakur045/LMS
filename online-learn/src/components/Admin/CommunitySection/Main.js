@@ -3,26 +3,23 @@ import { MdForum, MdArrowDropDown, MdArrowRight } from "react-icons/md";
 
 import { RiAddFill } from "react-icons/ri";
 import { AiFillDelete } from "react-icons/ai";
-import Loader from "../../../../../Utils/Loader";
+import Loader from "../../../Utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addProblemCategory,
   deleteProblemCategory,
   getProblemCategories,
   getThreads,
-} from "../../../../../Redux/actions/studentActions";
+} from "../../../Redux/actions/studentActions";
 
 import SingleThread from "./SingleThread";
 import {
   ADD_PROBLEM_CATEGORY,
   DELETE_PROBLEM_CATEGORY,
-} from "../../../../../Redux/actionTypes";
+} from "../../../Redux/actionTypes";
 const forums = ["Let's talk career", "Tech Verse"];
 const Main = () => {
   const store = useSelector((state) => state);
-  const [batchCode, setBatchCode] = useState(
-    JSON.parse(localStorage.getItem("batchCode"))
-  );
   const [openLounge, setOpenLounge] = useState(false);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
@@ -49,22 +46,12 @@ const Main = () => {
   const addOption = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(
-      addProblemCategory({
-        category: forum,
-        communityType: "Batch",
-        batchCode: batchCode,
-      })
-    );
+    dispatch(addProblemCategory({ category: forum, communityType: "All" }));
   };
 
   const deleteOption = (category) => {
     dispatch(
-      deleteProblemCategory({
-        category: category,
-        communityType: "Batch",
-        batchCode: batchCode,
-      })
+      deleteProblemCategory({ category: category, communityType: "All" })
     );
   };
 
@@ -90,28 +77,21 @@ const Main = () => {
     if (store.student.problemCategoryAdded) {
       setLoading(false);
       setForum("");
-      dispatch(
-        getProblemCategories({ communityType: "Batch", batchCode: batchCode })
-      );
+      dispatch(getProblemCategories({ communityType: "All" }));
       dispatch({ type: ADD_PROBLEM_CATEGORY, payload: false });
     }
   }, [store.student.problemCategoryAdded]);
   useEffect(() => {
     if (store.student.problemCategoryDeleted) {
-      dispatch(
-        getProblemCategories({ communityType: "Batch", batchCode: batchCode })
-      );
+      dispatch(getProblemCategories({ communityType: "All" }));
       dispatch({ type: DELETE_PROBLEM_CATEGORY, payload: false });
     }
   }, [store.student.problemCategoryDeleted]);
 
   useEffect(() => {
-    dispatch(getThreads({ communityType: "Batch", batchCode: batchCode }));
-    dispatch(
-      getProblemCategories({ communityType: "Batch", batchCode: batchCode })
-    );
+    dispatch(getThreads({ communityType: "All" }));
+    dispatch(getProblemCategories({ communityType: "All" }));
   }, []);
-  console.log(problemCategory);
 
   return (
     <>
@@ -148,7 +128,7 @@ const Main = () => {
                   onClick={() => setOpenLounge(!openLounge)}
                 />
               )}
-              <h1 className="text-gray-600">Lounge - {batchCode}</h1>
+              <h1 className="text-gray-600">Lounge - All</h1>
             </div>
             <div
               className={` ${

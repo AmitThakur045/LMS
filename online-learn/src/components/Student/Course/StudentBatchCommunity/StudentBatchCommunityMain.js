@@ -4,11 +4,8 @@ import Button from "@mui/material/Button";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 import ArrowRightSharpIcon from "@mui/icons-material/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import HomeSidebar from "../HomeSidebar";
-import HomeDrawer from "../HomeDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
-import decode from "jwt-decode";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
@@ -24,22 +21,11 @@ import {
   TextField,
 } from "@mui/material";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Spinner from "../../../Utils/Spinner";
+import Spinner from "../../../../Utils/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { addThread, getThreads } from "../../../Redux/actions/studentActions";
-import { ADD_THREAD } from "../../../Redux/actionTypes";
+import { addThread } from "../../../../Redux/actions/studentActions";
+import { ADD_THREAD } from "../../../../Redux/actionTypes";
 import Moment from "react-moment";
-
-const dummyData2 = [
-  {
-    id: 1,
-    description: "Let’s talk career",
-  },
-  {
-    id: 2,
-    description: "Tech Verse",
-  },
-];
 
 const style = {
   position: "absolute",
@@ -54,45 +40,12 @@ const style = {
   p: 4,
 };
 
-const Main = ({ threads, error, categories }) => {
+const StudentBatchCommunityMain = ({ threads, error, categories }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const colors = ["#abc43c", "#c65123", "#1b8d34", "#1b4c8d", "#4a1b8d"];
-  const navigate = useNavigate();
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const logOut = () => {
-    alert("OOPS! Your session expired. Please Login again");
-    navigate("/login");
-  };
-  //choose the screen size
-  const handleResize = () => {
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
-  // create an event listener
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, [window.innerWidth]);
-
-  const logout = () => {
-    navigate("/login/adminLogin");
-  };
-
-  useEffect(() => {
-    const token = user?.token;
-    if (token) {
-      const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) {
-        logOut();
-      }
-    }
-  }, []);
 
   const [openNewThreadModal, setOpenNewThreadModal] = useState(false);
   const handleNewThreadModalOpen = () => setOpenNewThreadModal(true);
@@ -104,7 +57,8 @@ const Main = ({ threads, error, categories }) => {
     problemDescription: "",
     problemCategory: "",
     by: user.result.email,
-    communityType: "All",
+    communityType: "Batch",
+    batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
   });
 
   const [loading, setLoading] = useState(false);
@@ -123,7 +77,7 @@ const Main = ({ threads, error, categories }) => {
   }, [store.student.threadAdded]);
 
   return (
-    <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
+    <div className="flex md:flex-row flex-col h-full overflow-y-auto">
       <Modal
         open={openNewThreadModal}
         onClose={handleNewThreadModalClose}
@@ -201,22 +155,12 @@ const Main = ({ threads, error, categories }) => {
           </div>
         </Box>
       </Modal>
-      <div className="bg-white w-full md:flex flex-col my-4 rounded-2xl sm:mr-4 sm:mx-0 mx-2 px-[3.1rem] pt-[3rem] overflow-auto">
-        {isMobile && (
-          <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
-            {isOpen ? (
-              <CancelIcon onClick={() => setIsOpen(false)} />
-            ) : (
-              <MenuIcon onClick={() => setIsOpen(true)} />
-            )}
-          </div>
-        )}
-        {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
+      <div className="bg-white w-full md:flex flex-col px-[3.1rem] pt-[3rem] overflow-auto">
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>
         <div className="flex md:flex-row flex-col space-x-8 space-y-6">
-          <div className="flex flex-col flex-[0.68] overflow-auto">
+          <div className="flex flex-col flex-[0.68] overflow-auto p-3 space-y-3">
             <div className="w-auto rounded-3xl shadow-lg p-8 mt-4 space-y-2">
               <div>
                 <div className="flex flex-row space-x-20 ">
@@ -381,4 +325,4 @@ const Main = ({ threads, error, categories }) => {
   );
 };
 
-export default Main;
+export default StudentBatchCommunityMain;
