@@ -67,7 +67,9 @@ const AdminLogin = () => {
         >
           <h1 className="text-white text-3xl font-semibold">Admin</h1>
           <div className="space-y-1 w-full flex flex-col items-center">
-            <p className="text-[#515966] font-bold text-sm text-left sm:w-[14rem] w-full">Email</p>
+            <p className="text-[#515966] font-bold text-sm text-left sm:w-[14rem] w-full">
+              Email
+            </p>
             <div className="bg-[#515966] rounded-lg sm:w-[14rem] w-full flex  items-center">
               <input
                 onChange={(e) => setEmail(e.target.value)}
@@ -80,7 +82,9 @@ const AdminLogin = () => {
             </div>
           </div>
           <div className="space-y-1 w-full flex flex-col items-center">
-            <p className="text-[#515966] font-bold text-sm text-left sm:w-[14rem] w-full">Password</p>
+            <p className="text-[#515966] font-bold text-sm text-left sm:w-[14rem] w-full">
+              Password
+            </p>
             <div className="bg-[#515966] rounded-lg px-2 flex sm:w-[14rem] w-full  items-center">
               <input
                 onChange={(e) => setPassword(e.target.value)}
@@ -108,6 +112,12 @@ const AdminLogin = () => {
             className="w-32 hover:scale-105 transition-all duration-150 rounded-lg flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
           >
             Login
+          </button>
+          <button
+            onClick={() => navigate("/admin/forgotpassword")}
+            className="text-blue-400 cursor-pointer hover:text-blue-600 transition-all duration-150"
+          >
+            Forgot Password
           </button>
           {loading && (
             <Spinner

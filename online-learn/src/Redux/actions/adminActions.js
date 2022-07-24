@@ -5,6 +5,7 @@ import {
   UPDATE_ADMIN,
   DELETE_ADMIN,
   OTP,
+  FORGOT_PASSWORD,
   RESET_PASSWORD,
   ADD_COURSE,
   GET_COURSE,
@@ -56,6 +57,26 @@ export const adminSignIn = (formData, navigate) => async (dispatch) => {
     const { data } = await api.adminSignIn(formData);
     dispatch({ type: ADMIN_LOGIN, data });
     navigate("/admin/dashboard");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const generateOtpForPasswordResetAdmin = (formData) => async (dispatch) => {
+    try {
+      const { data } = await api.generateOtpForPasswordResetAdmin(formData);
+      dispatch({ type: OTP, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
+
+export const forgotPasswordAdmin = (value, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.forgotPasswordAdmin(value);
+    dispatch({ type: FORGOT_PASSWORD, payload: true });
+    alert("Password Updated Successfully");
+    navigate("/admin/login");
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

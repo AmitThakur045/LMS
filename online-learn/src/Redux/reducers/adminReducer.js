@@ -6,6 +6,7 @@ import {
   DELETE_ADMIN,
   DELETE_COURSE,
   OTP,
+  FORGOT_PASSWORD,
   RESET_PASSWORD,
   GET_ADMIN,
   GET_ALL_ADMIN,
@@ -59,6 +60,7 @@ const initialState = {
   studentUpdated: false,
   adminDeleted: false,
   resetPassword: false,
+  forgotPassword: false,
   otp: null,
   courseAdded: false,
   course: {},
@@ -120,6 +122,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         otp: action.payload,
+      };
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        forgotPassword: action.payload,
       };
     case RESET_PASSWORD:
       return {

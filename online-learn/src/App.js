@@ -24,6 +24,7 @@ import BatchDate from "./components/Admin/BatchSection/ViewBatch/Date/BatchDate"
 import UpdateBatchCourse from "./components/Admin/BatchSection/ViewBatch/Course/Update/UpdateBatchCourse";
 import Attendance from "./components/Admin/BatchSection/ViewBatch/Student/Attendance/Attendance";
 import AdminLogin from "./components/Admin/AdminLogin";
+import AdminForgotPassword from "./components/Admin/AdminForgotPassword";
 
 import Course from "./components/Student/Course/MyLearning/Course";
 
@@ -44,7 +45,11 @@ function App() {
     <Routes>
       <Route path="/*" element={<Home />} />
       <Route path="/login" exact element={<StudentLogin />} />
-      <Route path="/studentforgotpassword" exact element={<StudentForgotPassword />} />
+      <Route
+        path="/studentforgotpassword"
+        exact
+        element={<StudentForgotPassword />}
+      />
       <Route path="/community" exact element={<Community />} />
       <Route path="/profile" exact element={<Profile />} />
       <Route path="/course" exact element={<Course />} />
@@ -55,6 +60,11 @@ function App() {
       <Route path="/profile/updateprofile" exact element={<UpdateProfile />} />
 
       <Route path="/admin/login" exact element={<AdminLogin />} />
+      <Route
+        path="/admin/forgotPassword"
+        exact
+        element={<AdminForgotPassword />}
+      />
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
       <Route path="/admin/batch" exact element={<Batch />} />
       <Route path="/admin/student" exact element={<Student />} />

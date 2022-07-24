@@ -46,6 +46,56 @@ export const adminLogin = async (req, res) => {
   }
 };
 
+export const generateOtpForPasswordResetAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const errors = { adminError: String };
+    const existingAdmin = await Admin.countDocuments({ email });
+
+    if (!existingAdmin) {
+      errors.adminError = "Admin doesn't exists";
+      return res.status(400).json(errors);
+    }
+
+    const newOtp = Math.floor(Math.random() * 10000);
+
+    sendMail({
+      to: email,
+      from: "at7129652@gmail.com",
+      subject: "Welcome to Bessalani",
+      text: `Welcome to Bessalani Your OTP is ${newOtp}`,
+      html: `<h1>Welcome to Bessalani</h1>
+      <p>Your OTP is ${newOtp}</p>`,
+    });
+
+    res.status(200).json(newOtp);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const forgotPasswordAdmin = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    const errors = { adminError: String };
+    const existingAdmin = await Admin.findOne({ email }, { password: 1 });
+
+    if (!existingAdmin) {
+      errors.adminError = "Admin doesn't exists";
+      return res.status(400).json(errors);
+    }
+
+    let hashedPassword = await bcrypt.hash(newPassword, 10);
+    existingAdmin.password = hashedPassword;
+    await existingAdmin.save();
+
+    res.status(200).json("Password Updated");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
 export const generateOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -59,14 +109,6 @@ export const generateOtp = async (req, res) => {
     }
 
     const newOtp = Math.floor(Math.random() * 10000);
-
-    // const resultEmail = await transporter.sendMail({
-    //   from: "Nodemailer",
-    //   to: email,
-    //   subject: "Welcome to Bessalani",
-    //   html: `<h1>Welcome to Bessalani</h1>
-    //   <p>Your OTP is ${newOtp}</p>`,
-    // });
 
     sendMail({
       to: email,

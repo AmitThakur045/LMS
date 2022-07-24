@@ -14,6 +14,10 @@ API.interceptors.request.use((req) => {
 export const adminSignIn = (formData) => API.post("/api/admin/login", formData);
 
 export const addAdmin = (admin) => API.post("/api/admin/addadmin", admin);
+export const generateOtpForPasswordResetAdmin = (formData) =>
+  API.post("/api/admin/generateotpforpasswordresetadmin", formData);
+export const forgotPasswordAdmin = (formData) =>
+  API.post("/api/admin/forgotpasswordadmin", formData);
 export const addStudentQuery = (data) =>
   API.post("/api/admin/addstudentquery", data);
 export const updateDeleteQuery = (data) =>

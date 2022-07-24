@@ -58,6 +58,8 @@ import {
   updateBatchAdmin,
   addOrganizationName,
   getBatchLessonVideo,
+  generateOtpForPasswordResetAdmin,
+  forgotPasswordAdmin
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -68,6 +70,11 @@ router.post("/updatedeletequery", auth, updateDeleteQuery);
 router.post("/getadmin", auth, getAdmin);
 router.post("/getalldeletequery", auth, getAllDeleteQuery);
 router.post("/getalldeletequerybysubadmin", auth, getAllDeleteQueryBySubAdmin);
+router.post(
+  "/generateotpforpasswordresetadmin",
+  generateOtpForPasswordResetAdmin
+);
+router.post("/forgotpasswordadmin", forgotPasswordAdmin);
 router.post("/updateadmin", auth, updateAdmin);
 router.post("/generateotp", auth, generateOtp);
 router.post("/resetpassword", auth, resetPassword);
