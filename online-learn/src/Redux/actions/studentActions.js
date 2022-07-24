@@ -68,7 +68,6 @@ export const submitAssignment = (formData) => async (dispatch) => {
 
 export const generateOtp = (formData) => async (dispatch) => {
   try {
-    // console.log("otp", formData);
     const { data } = await api.generateOtp(formData);
     dispatch({ type: OTP, payload: data });
   } catch (error) {
@@ -153,7 +152,6 @@ export const addProblemCategory = (formData) => async (dispatch) => {
 };
 export const deleteProblemCategory = (formData) => async (dispatch) => {
   try {
-    console.log(formData);
     const { data } = await api.deleteProblemCategory(formData);
     dispatch({ type: DELETE_PROBLEM_CATEGORY, payload: true });
   } catch (error) {

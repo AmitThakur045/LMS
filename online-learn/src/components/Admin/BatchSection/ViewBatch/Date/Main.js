@@ -78,7 +78,7 @@ const Main = () => {
   });
 
   const [allEvents, setAllEvents] = useState([]);
-  console.log(newEvent);
+
   const handleAddEvent = (e) => {
     e.preventDefault();
     setLoading(true);

@@ -90,7 +90,6 @@ const SingleAssignment = ({ data, i, setSelectedPdf, setIsOpen, isOpen }) => {
       dispatch({ type: GET_PRESIGNED_URL, payload: "" });
     }
   }, [s3PresignedUrl]);
-  console.log(isUploading, isSubmitted, isUploaded);
 
   return (
     <div

@@ -8,6 +8,7 @@ import {
 
 import Spinner from "../../Utils/Spinner";
 import { Box, Modal } from "@mui/material";
+import { SET_ERRORS } from "../../Redux/actionTypes";
 
 const AdminForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -46,7 +47,6 @@ const AdminForgotPassword = () => {
     setLoading(true);
     setShowModal(false);
     setError("");
-    console.log("current otp", otp.join(""));
 
     if (otp.join("") == otpValue) {
       setResetPassword(true);
@@ -64,7 +64,7 @@ const AdminForgotPassword = () => {
 
   // check if the otp is correct
   useEffect(() => {
-    if (otpValue !== null) {
+    if (otpValue && email !== "") {
       setError("");
       setLoading(false);
       setShowModal(true);
@@ -86,6 +86,7 @@ const AdminForgotPassword = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
+    dispatch({ type: SET_ERRORS, payload: {} });
     setError("");
     setValue({ ...value, email: email });
     dispatch(generateOtpForPasswordResetAdmin({ email: email }));
@@ -118,8 +119,7 @@ const AdminForgotPassword = () => {
         open={showModal}
         onClose={() => setShowModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
             <div className="flex  items-center justify-center font-bold text-center">
@@ -144,8 +144,7 @@ const AdminForgotPassword = () => {
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit"
-              >
+                type="submit">
                 Submit
               </button>
             </div>
@@ -157,8 +156,7 @@ const AdminForgotPassword = () => {
       {resetPassword ? (
         <form
           onSubmit={resetPasswordHandler}
-          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl"
-        >
+          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl">
           <p className="text-[#88909e] font-bold text-sm">New Password</p>
           <input
             required
@@ -191,8 +189,7 @@ const AdminForgotPassword = () => {
                   : true
               }
               type="submit"
-              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
-            >
+              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
               Reset Password
             </button>
           </div>
@@ -200,8 +197,7 @@ const AdminForgotPassword = () => {
       ) : (
         <form
           onSubmit={submitHandler}
-          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl"
-        >
+          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl">
           <p className="text-[#88909e] font-bold text-sm">Email</p>
           <input
             required
@@ -216,8 +212,7 @@ const AdminForgotPassword = () => {
             <button
               disabled={email.length == 0}
               type="submit"
-              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]"
-            >
+              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
               Send OTP
             </button>
           </div>

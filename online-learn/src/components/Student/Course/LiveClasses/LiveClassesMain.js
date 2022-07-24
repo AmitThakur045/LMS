@@ -66,7 +66,7 @@ const LiveClassesMain = ({ allEvents }) => {
               year: e.start.substr(0, 4),
               date: e.start,
             });
-            console.log(value);
+      
           }}
           style={{ height: "32rem", margin: "10px" }}
         />

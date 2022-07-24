@@ -84,7 +84,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
         })
           .then((response) => {
             const pdfUrl = s3PresignedUrl.split("?")[0];
-            console.log(response);
+    
             setValue({
               ...value,
               selectedFile: pdfUrl,

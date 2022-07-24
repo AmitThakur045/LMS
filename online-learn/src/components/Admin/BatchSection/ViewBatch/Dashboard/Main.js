@@ -40,7 +40,7 @@ const Main = () => {
       lessonCompleted += batch.courses[i].complete.lessonCompleted;
       totalLessons += batch.courses[i].complete.totalLesson;
     }
-    console.log(lessonCompleted, totalLessons);
+
     setCourseStatusNumber(Math.round((lessonCompleted / totalLessons) * 100));
   }
 
@@ -65,7 +65,7 @@ const Main = () => {
       setWidth(toString(window.innerWidth * 0.6) + "px");
     }
   }
-  console.log(width);
+
   useEffect(() => {
     window.addEventListener("resize", handleSizeChange);
   }, []);

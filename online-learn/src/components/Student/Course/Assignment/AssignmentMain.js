@@ -13,9 +13,6 @@ const AssignmentMain = ({ batchData, allAssignment }) => {
     }
   }, []);
 
-  // console.log("allAsssignemnt", allAssignment[0].student.includes(learner.result.email));
-  // console.log("LEARNER", user);
-  // console.log("isSelected", isSelected);
 
   return (
     <>

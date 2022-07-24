@@ -92,7 +92,7 @@ const StudentLogin = () => {
     setOtpLoader(true);
     setLoading(true);
 
-    console.log("current otp", otp.join(""));
+
 
     if (otp.join("") == otpValue) {
       dispatch(studentSignUp(value));

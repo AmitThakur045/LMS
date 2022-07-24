@@ -128,7 +128,7 @@ const Main = () => {
           body: image,
         })
           .then((response) => {
-            console.log(response);
+     
             const imageUrl = s3PresignedUrl.split("?")[0];
             let data = values;
             data.avatar = imageUrl;

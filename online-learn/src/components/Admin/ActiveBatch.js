@@ -19,7 +19,6 @@ const ActiveBatch = () => {
   const allBatches = useSelector((state) => state.admin.allBatch);
   const [batches, setBatches] = useState([]);
 
-  console.log(store.errors);
   useEffect(() => {
     if (allBatches.length !== 0) {
       setLoading(false);

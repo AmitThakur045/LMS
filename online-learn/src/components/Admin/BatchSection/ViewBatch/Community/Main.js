@@ -111,7 +111,7 @@ const Main = () => {
       getProblemCategories({ communityType: "Batch", batchCode: batchCode })
     );
   }, []);
-  console.log(problemCategory);
+
 
   return (
     <>

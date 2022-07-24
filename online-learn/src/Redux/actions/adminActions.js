@@ -62,7 +62,8 @@ export const adminSignIn = (formData, navigate) => async (dispatch) => {
   }
 };
 
-export const generateOtpForPasswordResetAdmin = (formData) => async (dispatch) => {
+export const generateOtpForPasswordResetAdmin =
+  (formData) => async (dispatch) => {
     try {
       const { data } = await api.generateOtpForPasswordResetAdmin(formData);
       dispatch({ type: OTP, payload: data });
@@ -132,7 +133,6 @@ export const updateAdmin = (value, navigate) => async (dispatch) => {
 
 export const generateOtp = (formData) => async (dispatch) => {
   try {
-    console.log("otp", formData);
     const { data } = await api.generateAdminOtp(formData);
     dispatch({ type: OTP, payload: data });
   } catch (error) {
@@ -142,7 +142,6 @@ export const generateOtp = (formData) => async (dispatch) => {
 
 export const resetPassword = (formData) => async (dispatch) => {
   try {
-    console.log("resetPasswordAdmin", formData);
     const { data } = await api.resetPassword(formData);
     dispatch({ type: RESET_PASSWORD, payload: true });
     alert("Password Updated Successfully");
@@ -406,7 +405,7 @@ export const getBatchLessonVideo = (formData) => async (dispatch) => {
 export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
   try {
     const { data } = await api.getBatchesByBatchCode(allBatches);
-    // console.log("dataForm", data);
+ 
     dispatch({ type: GET_BATCHES_BY_BATCH_CODE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
@@ -488,7 +487,7 @@ export const getAttendanceStatus = (formData) => async (dispatch) => {
 export const getAttendanceByBatchCodes = (allBatches) => async (dispatch) => {
   try {
     const { data } = await api.getAttendanceByBatchCodes(allBatches);
-    // console.log("data", data);
+
     dispatch({ type: GET_ATTENDANCE_BY_BATCH_CODES, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });

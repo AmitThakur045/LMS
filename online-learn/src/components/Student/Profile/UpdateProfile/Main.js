@@ -62,7 +62,7 @@ const Main = () => {
     const file = e.target.files[0];
 
     setImage(file);
-    console.log("file", file);
+  
     const base64 = await convertBase64(file);
     setAvatar(base64);
   };
@@ -117,7 +117,7 @@ const Main = () => {
           body: image,
         })
           .then((response) => {
-            console.log(response);
+      
             const imageUrl = s3PresignedUrl.split("?")[0];
             let data = value;
             data.avatar = imageUrl;
@@ -140,7 +140,7 @@ const Main = () => {
     }
   }, [store.errors]);
 
-  console.log("fileImage", image);
+
 
   return (
     <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">

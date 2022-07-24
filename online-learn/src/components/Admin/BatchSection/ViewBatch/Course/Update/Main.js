@@ -204,7 +204,7 @@ const Main = () => {
     setUploadingVideo(true);
     dispatch(getPresignedUrl({ fileType: "videos", fileName: e.target.files[0].name }));
     const file = e.target.files[0];
-    console.log("videoFile", file);
+
     setVideo(file);
     const base64 = await convertBase64(file);
     setUploadedVideo(base64);
@@ -261,16 +261,16 @@ const Main = () => {
           body: video,
         })
           .then((response) => {
-            console.log(response);
+      
             const videoUrl = s3PresignedUrl.split("?")[0];
-            console.log(videoUrl);
+    
             let temp = tempBatchData;
-            console.log(temp);
+ 
             temp.courses[indexCounter].lessonVideo[
               sectionLessonNumber.sectionNumber
             ].lesson[sectionLessonNumber.lessonNumber].video = videoUrl;
             setTempBatchData(temp);
-            console.log(tempBatchData);
+    
           })
           .catch((error) => {
             console.log(error);

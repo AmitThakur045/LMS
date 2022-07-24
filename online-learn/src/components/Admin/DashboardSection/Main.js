@@ -104,7 +104,7 @@ const Main = () => {
       setWidth(toString(window.innerWidth * 0.6) + "px");
     }
   }
-  console.log(window.innerWidth);
+
   useEffect(() => {
     window.addEventListener("resize", handleSizeChange);
   }, []);

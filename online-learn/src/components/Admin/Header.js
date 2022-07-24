@@ -2,6 +2,10 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
+  FormControl,
+  FormLabel,
+  Input,
   Menu,
   MenuItem,
   Modal,
@@ -117,8 +121,6 @@ const Header = ({ title, type, nav, back }) => {
     setOtpModal(false);
     setLoading(true);
 
-    console.log("current otp", otp.join(""));
-    console.log("current otpValue", otpValue);
 
     if (otp.join("") == otpValue) {
       setOtp(["", "", "", ""]);
@@ -146,7 +148,7 @@ const Header = ({ title, type, nav, back }) => {
   const addorganizationname = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(addOrganizationName({ organizationName }));
+    dispatch(addOrganizationName({ organizationName, organizationEmails }));
   };
 
   // check if the otp is correct
@@ -177,28 +179,43 @@ const Header = ({ title, type, nav, back }) => {
       dispatch({ type: SET_ERRORS, payload: {} });
     }
   }, [store.admin.resetPassword]);
+  const [organizationEmails, setOrganizationEmails] = useState([]);
+  const [organizationEmail, setOrganizationEmail] = useState("");
+
+  const handleKeyUp = (e) => {
+    if (e.keyCode == 32) {
+      setOrganizationEmails((oldState) => [...oldState, e.target.value]);
+      setOrganizationEmail("");
+    }
+  };
+
+  const handleDelete = (item, index) => {
+    let arr = [...organizationEmails];
+    arr.splice(index, 1);
+
+    setOrganizationEmails(arr);
+  };
 
   return (
     <div
       className={`flex justify-between w-full ${
         back ? "pl-12" : "lg:pl-20 pl-2"
-      }  pr-12 py-10`}
-    >
+      }  pr-12 py-10`}>
       {/* Add Organization Name */}
       <Modal
         open={openOrganizationModal}
         onClose={handleOrganizationModalClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <div className="flex flex-col space-y-4 h-[15rem]">
+          <div className="flex flex-col space-y-4 ">
             <div className="flex items-center">
-              <h1 className="self-center w-[95%] font-bold">Add Student</h1>
+              <h1 className="self-center w-[95%] font-bold">
+                Add Organization
+              </h1>
               <div
                 onClick={handleOrganizationModalClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -207,8 +224,7 @@ const Header = ({ title, type, nav, back }) => {
             </div>
             <form
               onSubmit={addorganizationname}
-              className="flex flex-col space-y-3  "
-            >
+              className="flex flex-col space-y-3  ">
               <TextField
                 required
                 type="text"
@@ -219,12 +235,38 @@ const Header = ({ title, type, nav, back }) => {
                 value={organizationName}
                 onChange={(e) => setOrganizationName(e.target.value)}
               />
+              <FormControl className="space-y-3">
+                <FormLabel>Email Domain Names</FormLabel>
+                <div className="space-x-1 space-y-1">
+                  {organizationEmails.length !== 0 ? (
+                    organizationEmails.map((item, index) => (
+                      <Chip
+                        size="medium"
+                        onDelete={() => handleDelete(item, index)}
+                        label={item}
+                      />
+                    ))
+                  ) : (
+                    <Chip size="medium" label={"None"} />
+                  )}
+                </div>
+                <TextField
+                  required
+                  type="text"
+                  id="outlined-basic"
+                  label="Domains"
+                  variant="outlined"
+                  className="bg-white mt-5"
+                  value={organizationEmail}
+                  onChange={(e) => setOrganizationEmail(e.target.value)}
+                  onKeyDown={handleKeyUp}
+                />
+              </FormControl>
               <Button
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Add
               </Button>
               {loading && <Spinner message="Adding Organization Name" />}
@@ -243,16 +285,14 @@ const Header = ({ title, type, nav, back }) => {
         open={resetPasswordModal}
         onClose={handleResetPasswordClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4 h-[15rem]">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Update Password</h1>
               <div
                 onClick={handleResetPasswordClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -288,8 +328,7 @@ const Header = ({ title, type, nav, back }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Update
               </Button>
               {loading && <Spinner message="Updating Password" />}
@@ -308,8 +347,7 @@ const Header = ({ title, type, nav, back }) => {
         open={otpModal}
         onClose={() => setOtpModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
             <div className="flex  items-center justify-center font-bold text-center">
@@ -334,8 +372,7 @@ const Header = ({ title, type, nav, back }) => {
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit"
-              >
+                type="submit">
                 Submit
               </button>
             </div>
@@ -370,12 +407,12 @@ const Header = ({ title, type, nav, back }) => {
                 <RiArrowGoBackFill fontSize={20} className="" />
               </Link>
               <div className="">
-                <h1 className="text-primary font-bold text-[26px]">{title}</h1>
+                <h1 className="text-primary font-bold text-[33px]">{title}</h1>
               </div>
             </div>
           ) : (
             <div className="flex items-center space-x-48">
-              <h1 className="text-primary font-bold text-[26px]">{title}</h1>
+              <h1 className="text-primary font-bold text-[33px]">{title}</h1>
             </div>
           )}
         </>
@@ -403,8 +440,7 @@ const Header = ({ title, type, nav, back }) => {
             <div
               onClick={(event) => handleClick(event)}
               className="object-cover cursor-pointer bg-[#f48320] text-white items-center flex justify-center w-[1.8rem] h-[1.8rem]"
-              alt=""
-            >
+              alt="">
               {user.result.firstName.slice(0, 1)}
             </div>
             <Menu
@@ -414,30 +450,26 @@ const Header = ({ title, type, nav, back }) => {
               onClose={handleClose}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
-              }}
-            >
+              }}>
               <MenuItem
                 onClick={() => {
                   dispatch({ type: GET_ADMIN, payload: user.result });
                   navigate("/admin/admin/viewadmin");
-                }}
-              >
+                }}>
                 Profile
               </MenuItem>
               {user.result.sub === "false" && (
                 <MenuItem
                   onClick={() => {
                     handleOrganizationModalOpen();
-                  }}
-                >
+                  }}>
                   Add Organization Name
                 </MenuItem>
               )}
               <MenuItem
                 onClick={() => {
                   handleResetPasswordOpen();
-                }}
-              >
+                }}>
                 Reset Password
               </MenuItem>
               <MenuItem onClick={logout}>Log Out</MenuItem>

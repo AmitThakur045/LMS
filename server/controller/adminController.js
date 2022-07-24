@@ -99,7 +99,7 @@ export const forgotPasswordAdmin = async (req, res) => {
 export const generateOtp = async (req, res) => {
   try {
     const { email } = req.body;
-    // console.log("generateemail", email);
+
     const errors = { adminError: String };
     const existingAdmin = await Admin.countDocuments({ email });
 
@@ -1700,7 +1700,8 @@ export const updateBatchAdmin = async (req, res) => {
 };
 export const addOrganizationName = async (req, res) => {
   try {
-    const { organizationName } = req.body;
+    const { organizationName, organizationEmails } = req.body;
+
     const organization = await Organization.countDocuments({
       organizationName,
     });
@@ -1709,7 +1710,10 @@ export const addOrganizationName = async (req, res) => {
       errors.organizationNameError = "Organization Already Added";
       return res.status(400).json(errors);
     }
-    const newOrganization = await new Organization({ organizationName });
+    const newOrganization = await new Organization({
+      organizationName,
+      organizationEmails,
+    });
     await newOrganization.save();
     return res.status(200).json("Organization Added successfully");
   } catch (error) {

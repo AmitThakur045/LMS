@@ -68,7 +68,7 @@ const Main = () => {
   }, []);
 
   const courses = useSelector((store) => store.admin.allCourseCodes);
-  console.log(courses);
+
   const allOrganizationName = useSelector(
     (store) => store.admin.allOrganizationName
   );
