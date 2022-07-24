@@ -4,7 +4,7 @@ import Sidebar from "../Sidebar";
 
 import Main from "./Main";
 
-const BatchCommunity = () => {
+const Community = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
   return (
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
@@ -21,4 +21,4 @@ const BatchCommunity = () => {
   );
 };
 
-export default BatchCommunity;
+export default Community;

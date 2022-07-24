@@ -33,22 +33,33 @@ import StudentLogin from "./components/Student/StudentLogin";
 import StudentForgotPassword from "./components/Student/StudentForgotPassword";
 import Home from "./components/Student/Home/Home";
 import Community from "./components/Student/Community/Community";
+import StudentBatchCommunity from "./components/Student/Course/StudentBatchCommunity/StudentBatchCommunity";
 import UpdateStudent from "./components/Admin/StudentSection/UpdateStudent/UpdateStudent";
 import Certificate from "./components/Student/Course/Certificate/Certificate";
 import Profile from "./components/Student/Profile/Profile";
 import Labs from "./components/Student/Course/Labs/Labs";
 import UpdateProfile from "./components/Student/Profile/UpdateProfile/UpdateProfile";
+import AdminCommunity from "./components/Admin/CommunitySection/Community";
 
 function App() {
   return (
     <Routes>
       <Route path="/*" element={<Home />} />
       <Route path="/login" exact element={<StudentLogin />} />
-      <Route path="/studentforgotpassword" exact element={<StudentForgotPassword />} />
+      <Route
+        path="/studentforgotpassword"
+        exact
+        element={<StudentForgotPassword />}
+      />
       <Route path="/community" exact element={<Community />} />
       <Route path="/profile" exact element={<Profile />} />
       <Route path="/course" exact element={<Course />} />
       <Route path="/lab" exact element={<Labs />} />
+      <Route
+        path="/studentbatchcommunity"
+        exact
+        element={<StudentBatchCommunity />}
+      />
       <Route path="/assignment" exact element={<Assignment />} />
       <Route path="/liveclass" exact element={<LiveClasses />} />
       <Route path="/certificate" exact element={<Certificate />} />
@@ -58,6 +69,7 @@ function App() {
       <Route path="/admin/dashboard" exact element={<Dashboard />} />
       <Route path="/admin/batch" exact element={<Batch />} />
       <Route path="/admin/student" exact element={<Student />} />
+      <Route path="/admin/community" exact element={<AdminCommunity />} />
       <Route path="/admin/admin" exact element={<Admin />} />
       <Route path="/admin/course" exact element={<AdminCourse />} />
       <Route path="/admin/admin/addadmin" exact element={<AddAdmin />} />

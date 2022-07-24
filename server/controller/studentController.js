@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
+import Problem from "../models/problem.js";
+import Community from "../models/community.js";
 import { sendMail } from "../services/sendgrid.js";
 
 function calPerformance(assignment, totalAssignment) {
@@ -436,5 +438,282 @@ export const forgotPassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
+  }
+};
+
+export const addThread = async (req, res) => {
+  try {
+    const {
+      problemName,
+      problemDescription,
+      problemCategory,
+      by,
+      communityType,
+      batchCode,
+    } = req.body;
+
+    if (communityType === "All") {
+      const newProblem = await new Problem({
+        problemName,
+        problemDescription,
+        problemCategory,
+        by,
+        time: new Date(),
+      });
+      await newProblem.save();
+
+      const existingCommunity = await Community.findOne({
+        communityType: communityType,
+      });
+      if (existingCommunity) {
+        existingCommunity.problem.push(newProblem._id);
+        await existingCommunity.save();
+      } else {
+        let temp = [];
+        temp.push(newProblem._id);
+        const newCommunity = await new Community({
+          communityType: communityType,
+          problem: temp,
+        });
+        await newCommunity.save();
+      }
+    } else {
+      const newProblem = await new Problem({
+        problemName,
+        problemDescription,
+        problemCategory,
+        by,
+        time: new Date(),
+      });
+      await newProblem.save();
+
+      const existingCommunity = await Community.findOne({
+        communityType: communityType,
+        batchCode: batchCode,
+      });
+      if (existingCommunity) {
+        existingCommunity.problem.push(newProblem._id);
+        await existingCommunity.save();
+      } else {
+        let temp = [];
+        temp.push(newProblem._id);
+        const newCommunity = await new Community({
+          communityType: communityType,
+          batchCode: batchCode,
+          problem: temp,
+        });
+        await newCommunity.save();
+      }
+    }
+    res.status(200).json("Thread Added");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+export const addThreadReply = async (req, res) => {
+  try {
+    const { threadId, reply, by } = req.body;
+
+    const problem = await Problem.findById(threadId);
+    problem.reply.push({ solution: reply, by });
+    await problem.save();
+    res.status(200).json("Thread Reply Added");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+export const addProblemCategory = async (req, res) => {
+  try {
+    const { category, communityType, batchCode } = req.body;
+
+    if (communityType === "All") {
+      const existingCommunity = await Community.findOne(
+        {
+          communityType: communityType,
+        },
+        { problemCategories: 1 }
+      );
+      if (existingCommunity) {
+        let check = false;
+        check = existingCommunity.problemCategories.find((cat) => {
+          if (cat.category === category) {
+            return true;
+          }
+        });
+        if (!check) {
+          existingCommunity.problemCategories.push({ category: category });
+          await existingCommunity.save();
+        }
+      } else {
+        let temp = [];
+        temp.push({ category: category });
+        const newCommunity = await new Community({
+          communityType: communityType,
+          problemCategories: temp,
+        });
+        await newCommunity.save();
+      }
+    } else {
+      const existingCommunity = await Community.findOne(
+        {
+          communityType: communityType,
+          batchCode: batchCode,
+        },
+        { problemCategories: 1 }
+      );
+      if (existingCommunity) {
+        let check = false;
+        check = existingCommunity.problemCategories.find((cat) => {
+          if (cat.category === category) {
+            return true;
+          }
+        });
+        if (!check) {
+          existingCommunity.problemCategories.push({ category: category });
+          await existingCommunity.save();
+        }
+      } else {
+        let temp = [];
+        temp.push({ category: category });
+        const newCommunity = await new Community({
+          communityType: communityType,
+          batchCode: batchCode,
+          problemCategories: temp,
+        });
+        await newCommunity.save();
+      }
+    }
+    return res.status(200).json("Category Added");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+export const deleteProblemCategory = async (req, res) => {
+  try {
+    const { category, communityType, batchCode } = req.body;
+    if (communityType === "All") {
+      const community = await Community.findOne(
+        { communityType: communityType },
+        { problemCategories: 1 }
+      );
+
+      for (let i = 0; i < community.problemCategories.length; i++) {
+        if (community.problemCategories[i].category === category) {
+          community.problemCategories.splice(i, 1);
+        }
+      }
+      await community.save();
+    } else {
+      const community = await Community.findOne(
+        { communityType: communityType, batchCode: batchCode },
+        { problemCategories: 1 }
+      );
+
+      for (let i = 0; i < community.problemCategories.length; i++) {
+        if (community.problemCategories[i].category === category) {
+          community.problemCategories.splice(i, 1);
+        }
+      }
+      await community.save();
+    }
+
+    return res.status(200).json("Category Deleted");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+export const getThreads = async (req, res) => {
+  try {
+    const { communityType, batchCode } = req.body;
+    const errors = { noCommunityError: String };
+    if (communityType === "All") {
+      const community = await Community.findOne(
+        { communityType },
+        {
+          problem: 1,
+        }
+      ).populate("problem");
+
+      if (community === null) {
+        errors.noCommunityError = "No Thread Found";
+        return res.status(404).json(errors);
+      } else {
+        if (community.problem.length === 0) {
+          errors.noCommunityError = "No Thread Found";
+          return res.status(404).json(errors);
+        }
+      }
+
+      res.status(200).json(community.problem);
+    } else {
+      const community = await Community.findOne(
+        { communityType, batchCode: batchCode },
+        {
+          problem: 1,
+        }
+      ).populate("problem");
+
+      if (community === null) {
+        errors.noCommunityError = "No Thread Found";
+        return res.status(404).json(errors);
+      } else {
+        if (community.problem.length === 0) {
+          errors.noCommunityError = "No Thread Found";
+          return res.status(404).json(errors);
+        }
+      }
+
+      res.status(200).json(community.problem);
+    }
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+export const getProblemCategories = async (req, res) => {
+  try {
+    const { communityType, batchCode } = req.body;
+
+    if (communityType === "All") {
+      const community = await Community.findOne(
+        { communityType },
+        {
+          problemCategories: 1,
+        }
+      );
+
+      if (community === null) {
+        return res.status(200).json([]);
+      } else {
+        if (community.problemCategories.length === 0) {
+          return res.status(200).json([]);
+        }
+      }
+
+      res.status(200).json(community.problemCategories);
+    } else {
+      const community = await Community.findOne(
+        { communityType, batchCode: batchCode },
+        {
+          problemCategories: 1,
+        }
+      );
+
+      if (community === null) {
+        return res.status(200).json([]);
+      } else {
+        if (community.problemCategories.length === 0) {
+          return res.status(200).json([]);
+        }
+      }
+
+      res.status(200).json(community.problemCategories);
+    }
+  } catch (error) {
+    console.log("Backend Error", error);
   }
 };

@@ -164,7 +164,7 @@ const CourseHeader = ({ batchData }) => {
         </div>
         <div className="md:flex-[0.2] rounded-tr-2xl h-full flex">
           <NavLink
-            to="/community"
+            to="/studentbatchcommunity"
             className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
             <PeopleIcon fontSize="medium" className="" />
             <p className="text-sm lg:text-base">Community</p>

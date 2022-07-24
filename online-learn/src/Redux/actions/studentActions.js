@@ -10,6 +10,12 @@ import {
   GET_BATCH_LESSON_VIDEO,
   UPDATE_LEARNER,
   FORGOT_PASSWORD,
+  ADD_THREAD,
+  GET_THREAD,
+  ADD_THREAD_REPLY,
+  GET_PROBLEM_CATEGORIES,
+  ADD_PROBLEM_CATEGORY,
+  DELETE_PROBLEM_CATEGORY,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -115,6 +121,57 @@ export const generateOtpForPasswordReset = (formData) => async (dispatch) => {
   try {
     const { data } = await api.generateOtpForPasswordReset(formData);
     dispatch({ type: OTP, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addThread = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addThread(formData);
+    dispatch({ type: ADD_THREAD, payload: true });
+    alert("Thread Added Successfully");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addThreadReply = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addThreadReply(formData);
+    dispatch({ type: ADD_THREAD_REPLY, payload: true });
+    alert("Thread Reply Added Successfully");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const addProblemCategory = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addProblemCategory(formData);
+    dispatch({ type: ADD_PROBLEM_CATEGORY, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const deleteProblemCategory = (formData) => async (dispatch) => {
+  try {
+    console.log(formData);
+    const { data } = await api.deleteProblemCategory(formData);
+    dispatch({ type: DELETE_PROBLEM_CATEGORY, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getThreads = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getThreads(formData);
+    dispatch({ type: GET_THREAD, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getProblemCategories = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getProblemCategories(formData);
+    dispatch({ type: GET_PROBLEM_CATEGORIES, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
