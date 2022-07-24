@@ -216,7 +216,7 @@ const Main = ({ threads, error, categories }) => {
           <p className="text-4xl font-bold">Community</p>
         </div>
         <div className="flex md:flex-row flex-col space-x-8 space-y-6">
-          <div className="flex flex-col flex-[0.68] overflow-auto">
+          <div className="flex flex-col flex-[0.68] overflow-auto p-3 space-y-3">
             <div className="w-auto rounded-3xl shadow-lg p-8 mt-4 space-y-2">
               <div>
                 <div className="flex flex-row space-x-20 ">
