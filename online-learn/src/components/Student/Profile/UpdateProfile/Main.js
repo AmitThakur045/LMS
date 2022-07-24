@@ -53,6 +53,7 @@ const Main = () => {
     firstName: "",
     lastName: "",
     email: learner.result.email,
+    avatar: "",
     contactNumber: "",
     oldPassword: "",
     newPassword: "",
