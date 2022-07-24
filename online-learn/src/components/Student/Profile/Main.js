@@ -81,9 +81,9 @@ const Main = ({ courseList, learner, batch }) => {
         {isMobile && (
           <div className="absolute h-[5rem] w-fit justify-end text-black right-4 top-5">
             {isOpen ? (
-              <CancelIcon onClick={() => setIsOpen(false)} />
+              <CancelIcon fontSize="large" onClick={() => setIsOpen(false)} />
             ) : (
-              <MenuIcon onClick={() => setIsOpen(true)} />
+              <MenuIcon fontSize="large" onClick={() => setIsOpen(true)} />
             )}{" "}
           </div>
         )}
