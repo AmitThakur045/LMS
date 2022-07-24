@@ -64,7 +64,7 @@ const AdminForgotPassword = () => {
 
   // check if the otp is correct
   useEffect(() => {
-    if (otpValue) {
+    if (otpValue !== null) {
       setError("");
       setLoading(false);
       setShowModal(true);
