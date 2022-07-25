@@ -155,7 +155,7 @@ const StudentBatchCommunityMain = ({ threads, error, categories }) => {
           </div>
         </Box>
       </Modal>
-      <div className="bg-white w-full md:flex flex-col px-[3.1rem] pt-[3rem] overflow-auto">
+      <div className="bg-white w-full md:flex flex-col sm:px-[3.1rem] px-2 pt-[3rem] overflow-auto">
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>
