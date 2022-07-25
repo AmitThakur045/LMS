@@ -25,6 +25,7 @@ const StudentLogin = () => {
     lastName: "",
     email: "",
     dob: "",
+    organization: "",
     password: "",
     confirmPassword: "",
   });
@@ -79,11 +80,11 @@ const StudentLogin = () => {
     e.preventDefault();
     setLoading(true);
     setShowModal(true);
-    if (value.email.trim() === "") {
-      setError({ email: "Email is required" });
+    if (value.email.trim() === "" || value.password.trim() === "") {
+      setError({ email: "Email and Organization Name is required" });
       setLoading(false);
     } else {
-      dispatch(generateOtp({ email: value.email }));
+      dispatch(generateOtp({ email: value.email, organization: value.organization }));
     }
   };
   const [otpError, setOtpError] = useState(false);
@@ -132,6 +133,7 @@ const StudentLogin = () => {
           lastName: "",
           email: "",
           dob: "",
+          organization: "",
           password: "",
           confirmPassword: "",
         });
@@ -265,6 +267,14 @@ const StudentLogin = () => {
                 required
                 value={value.email}
                 onChange={(e) => setValue({ ...value, email: e.target.value })}
+              />
+              <input
+                className="bg-[#eee] border-none py-[8px] px-[15px] w-full outline-none"
+                type="organizaton"
+                placeholder="Organization Name"
+                required
+                value={value.organization}
+                onChange={(e) => setValue({ ...value, organization: e.target.value })}
               />
               <input
                 className="bg-[#eee] border-none py-[8px] px-[15px] w-full outline-none"

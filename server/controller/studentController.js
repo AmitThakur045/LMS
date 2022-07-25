@@ -6,6 +6,7 @@ import Batch from "../models/batch.js";
 import Assignment from "../models/assignment.js";
 import Problem from "../models/problem.js";
 import Community from "../models/community.js";
+import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
 
 function calPerformance(assignment, totalAssignment) {
@@ -230,13 +231,44 @@ export const submitAssignment = async (req, res) => {
 
 export const generateOtp = async (req, res) => {
   try {
-    const { email } = req.body;
-    // console.log("generateemail", email);
+    const { email, organization } = req.body;
     const errors = { studentError: String };
+    // check if organization exists
+    const existingOrganization = await Organization.countDocuments({
+      organizationName: organization,
+    });
+
+    if (!existingOrganization) {
+      errors.studentError = "Organization doesn't exist";
+      return res.status(400).json(errors);
+    }
+
+    // check if student exists
     const existingStudent = await Student.countDocuments({ email });
 
     if (existingStudent) {
       errors.studentError = "Student already exists";
+      return res.status(400).json(errors);
+    }
+
+    // check if email domain is present in organization or not
+    const organizationDomain = await Organization.findOne({
+      organizationName: organization,
+    });
+
+    const emailDomain = email.split("@")[1];
+    const organizationEmailList = organizationDomain.organizationEmails;
+
+    let flag = false;
+    for (let i = 0; i < organizationEmailList.length; i++) {
+      if (organizationEmailList[i] == emailDomain) {
+        flag = true;
+        break;
+      }
+    }
+
+    if (!flag) {
+      errors.studentError = "Email domain is not present in organization";
       return res.status(400).json(errors);
     }
 
