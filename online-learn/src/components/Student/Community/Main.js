@@ -123,19 +123,21 @@ const Main = ({ threads, error, categories }) => {
   }, [store.student.threadAdded]);
 
   return (
-    <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
+    <div className="relative bg-[#1a1a1a] w-full h-screen flex overflow-y-auto">
       <Modal
         open={openNewThreadModal}
         onClose={handleNewThreadModalClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <div className="flex flex-col space-y-4">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Add New Thread</h1>
               <div
                 onClick={handleNewThreadModalClose}
-                className="self-end cursor-pointer w-[5%]">
+                className="self-end cursor-pointer w-[5%]"
+              >
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -180,7 +182,8 @@ const Main = ({ threads, error, categories }) => {
                   value={problem.problemCategory}
                   onChange={(e) =>
                     setProblem({ ...problem, problemCategory: e.target.value })
-                  }>
+                  }
+                >
                   {categories.map((item, i) => (
                     <MenuItem key={i} value={item.category}>
                       {item.category}
@@ -193,7 +196,8 @@ const Main = ({ threads, error, categories }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary">
+                color="primary"
+              >
                 ADD
               </Button>
               {loading && <Spinner message="Adding Thread" />}
@@ -201,7 +205,7 @@ const Main = ({ threads, error, categories }) => {
           </div>
         </Box>
       </Modal>
-      <div className="bg-white w-full md:flex flex-col my-4 rounded-2xl sm:mr-4 sm:mx-0 mx-2 px-[3.1rem] pt-[3rem] overflow-auto">
+      <div className="absolute bg-white w-full md:flex flex-col sm:my-4 rounded-2xl sm:mr-4 sm:mx-0 sm:px-[3.1rem] px-2 pt-[3rem] overflow-auto">
         {isMobile && (
           <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
             {isOpen ? (
@@ -236,7 +240,8 @@ const Main = ({ threads, error, categories }) => {
                         fontWeight: "700",
                         color: "#fff",
                       }}
-                      variant="contained">
+                      variant="contained"
+                    >
                       New Thread
                     </Button>
                   </div>
@@ -254,7 +259,8 @@ const Main = ({ threads, error, categories }) => {
                 threads.map((problem, index) => (
                   <div
                     key={index}
-                    className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4">
+                    className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4"
+                  >
                     <div className="flex  ">
                       <h1 className="bg-primary text-white rounded-full px-2 py-1">
                         {problem.problemCategory}
@@ -264,7 +270,8 @@ const Main = ({ threads, error, categories }) => {
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
-                        id="lesson">
+                        id="lesson"
+                      >
                         <div className="flex items-center space-x-3">
                           <h1 className="py-2  text-[22px] font-bold text-primary">
                             {problem.problemName}
@@ -286,7 +293,8 @@ const Main = ({ threads, error, categories }) => {
                               <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
-                                id="lesson">
+                                id="lesson"
+                              >
                                 <div className="flex justify-between items-center">
                                   <div className="flex items-center space-x-2">
                                     <Avatar
