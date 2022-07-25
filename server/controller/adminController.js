@@ -1710,9 +1710,16 @@ export const addOrganizationName = async (req, res) => {
       errors.organizationNameError = "Organization Already Added";
       return res.status(400).json(errors);
     }
+
+    // removing space from organization emails
+    const emailsArray = [];
+    for (let i = 0; i < organizationEmails.length; i++) {
+      emailsArray.push(organizationEmails[i].trim());
+    }
+
     const newOrganization = await new Organization({
       organizationName,
-      organizationEmails,
+      organizationEmails: emailsArray,
     });
     await newOrganization.save();
     return res.status(200).json("Organization Added successfully");
