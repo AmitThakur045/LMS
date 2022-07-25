@@ -26,6 +26,7 @@ import {
 import Spinner from "../../../../../../Utils/Spinner";
 import Loader from "../../../../../../Utils/Loader";
 import { getPresignedUrl } from "../../../../../../Redux/actions/awsActions";
+import SingleLesson from "./SingleLesson";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -52,10 +53,11 @@ const Main = () => {
   const [lessonCount, setLessonCount] = useState([]);
   const indexCounter = useSelector((store) => store.admin.index);
   const course = useSelector((store) => store.admin.course);
-  const [completionUpdates, setCompletionUpdates] = useState({});
+
   const [garbageData, setGarbageData] = useState([]);
   const [sectionLessonNumber, setSectionLessonNumber] = useState({});
   const dispatch = useDispatch();
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [courseData, setCourseData] = useState({});
   const batch = useSelector((state) => state.admin.batchLessonVideo);
   useEffect(() => {
@@ -92,8 +94,6 @@ const Main = () => {
     dispatch(getBatchLessonVideo({ batchCode }));
     dispatch({ type: SET_ERRORS, payload: {} });
   }, []);
-
-  const [uploadedVideo, setUploadedVideo] = useState("");
 
   const handleIconClickIncrease = (sectionIdx, lessonIdx) => {
     const temp = tempBatchData;
@@ -199,43 +199,6 @@ const Main = () => {
     }
   };
 
-  const [video, setVideo] = useState({});
-  const handleVideoUploadButton = async (e) => {
-    setUploadingVideo(true);
-    dispatch(getPresignedUrl({ fileType: "videos", fileName: e.target.files[0].name }));
-    const file = e.target.files[0];
-
-    setVideo(file);
-    const base64 = await convertBase64(file);
-    setUploadedVideo(base64);
-  };
-
-  // useEffect(() => {
-  //   if (uploadedVideo !== "") {
-  //     const temp = tempBatchData;
-  //     temp.courses[indexCounter].lessonVideo[
-  //       sectionLessonNumber.sectionNumber
-  //     ].lesson[sectionLessonNumber.lessonNumber].video = uploadedVideo;
-  //     setTempBatchData(temp);
-
-  //     setUploadingVideo(false);
-  //     setUploadedVideo("");
-  //   }
-  // }, [uploadedVideo]);
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
   const updateChanges = () => {
     setLoading(true);
 
@@ -249,39 +212,6 @@ const Main = () => {
     );
   };
 
-  const s3PresignedUrl = store.aws.presignedUrl;
-  useEffect(() => {
-    if (s3PresignedUrl !== "") {
-      async function fetchApi() {
-        await fetch(s3PresignedUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "video/*",
-          },
-          body: video,
-        })
-          .then((response) => {
-      
-            const videoUrl = s3PresignedUrl.split("?")[0];
-    
-            let temp = tempBatchData;
- 
-            temp.courses[indexCounter].lessonVideo[
-              sectionLessonNumber.sectionNumber
-            ].lesson[sectionLessonNumber.lessonNumber].video = videoUrl;
-            setTempBatchData(temp);
-    
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      fetchApi();
-      dispatch({ type: GET_PRESIGNED_URL, payload: "" });
-    }
-  }, [s3PresignedUrl]);
-
-  const [uploadingVideo, setUploadingVideo] = useState(false);
   useEffect(() => {
     if (store.admin.courseUpdated) {
       setLoading(false);
@@ -335,61 +265,19 @@ const Main = () => {
                     <Typography>{sectionData.sectionName}</Typography>
                   </div>
                   {sectionData.lesson?.map((lessonData, lessonIdx) => (
-                    <div
-                      key={lessonIdx}
-                      className="flex justify-between shadow-sm rounded-sm shadow-gray-400 py-4 px-4">
-                      <div className="flex items-center space-x-3">
-                        {tempBatchData.courses[indexCounter].lessonVideo[
-                          sectionIdx
-                        ].lesson[lessonIdx].lessonCompleted ? (
-                          <BsFillCheckCircleFill
-                            onClick={() =>
-                              handleIconClickDecrease(sectionIdx, lessonIdx)
-                            }
-                            fontSize={20}
-                            className="text-[#1bca72]"
-                          />
-                        ) : (
-                          <AiOutlineCheckCircle
-                            onClick={() =>
-                              handleIconClickIncrease(sectionIdx, lessonIdx)
-                            }
-                            fontSize={20}
-                            className="text-[#]"
-                          />
-                        )}
-                        <Typography>{lessonData.lessonName}</Typography>
-                      </div>
-                      <label htmlFor={`video-${sectionIdx}-${lessonIdx}`}>
-                        {tempBatchData.courses[indexCounter].lessonVideo[
-                          sectionIdx
-                        ].lesson[lessonIdx].video === "" ? (
-                          <>
-                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                              Upload Video
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="text-white bg-[#1976d2] px-3  h-[2rem] flex items-center justify-center rounded-md cursor-pointer hover:bg-[#0d539a] transition-all duration-150">
-                              Upload Another Video
-                            </div>
-                          </>
-                        )}
-                      </label>
-                      <input
-                        className="hidden"
-                        id={`video-${sectionIdx}-${lessonIdx}`}
-                        type="file"
-                        onChange={(e) => {
-                          setSectionLessonNumber({
-                            sectionNumber: sectionIdx,
-                            lessonNumber: lessonIdx,
-                          });
-                          handleVideoUploadButton(e);
-                        }}
-                      />
-                    </div>
+                    <SingleLesson
+                      lessonData={lessonData}
+                      lessonIdx={lessonIdx}
+                      tempBatchData={tempBatchData}
+                      sectionIdx={sectionIdx}
+                      indexCounter={indexCounter}
+                      handleIconClickIncrease={handleIconClickIncrease}
+                      handleIconClickDecrease={handleIconClickDecrease}
+                      setSectionLessonNumber={setSectionLessonNumber}
+                      setTempBatchData={setTempBatchData}
+                      sectionLessonNumber={sectionLessonNumber}
+                      setDisableSubmit={setDisableSubmit}
+                    />
                   ))}
                 </div>
               ))}
@@ -397,7 +285,7 @@ const Main = () => {
             <Button
               size="large"
               type="button"
-              disabled={loading}
+              disabled={loading || disableSubmit}
               onClick={() => updateChanges()}
               color="error"
               className="w-[7rem] self-center"
