@@ -39,7 +39,8 @@ const CourseMain = ({ batchData }) => {
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
-                        id="section">
+                        id="section"
+                      >
                         <div className="flex items-center space-x-10 ">
                           <div className={` flex justify-center items-center`}>
                             <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
@@ -55,10 +56,12 @@ const CourseMain = ({ batchData }) => {
                             <AccordionSummary
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls="panel1a-content"
-                              id="lesson">
+                              id="lesson"
+                            >
                               <div className="flex items-center space-x-10 ">
                                 <div
-                                  className={` flex justify-center items-center`}>
+                                  className={` flex justify-center items-center`}
+                                >
                                   <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
                                 </div>
                                 <div className="w-full font-semibold">
@@ -73,7 +76,8 @@ const CourseMain = ({ batchData }) => {
                                   setShowVideo(true);
                                   setVideo(lesson.video);
                                 }}
-                                className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal">
+                                className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal"
+                              >
                                 <div className="flex items-center space-x-3">
                                   <PlayCircleOutlineIcon fontSize="medium" />
 
@@ -104,6 +108,9 @@ const CourseMain = ({ batchData }) => {
         {showVideo && video && (
           <FullScreen className="w-full" handle={handle}>
             <ReactPlayer
+              config={{ file: { attributes: { controlsList: "nodownload" } } }}
+              // Disable right click
+              onContextMenu={(e) => e.preventDefault()}
               controls
               width="100%"
               playing={playVideo}
