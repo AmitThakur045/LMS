@@ -244,6 +244,7 @@ export const addAdmin = async (req, res) => {
       email,
       sub,
       organizationName,
+      createdBy,
     } = req.body;
 
     const errors = { emailError: String };
@@ -275,6 +276,7 @@ export const addAdmin = async (req, res) => {
       dob,
       sub,
       organizationName: tempOrganizationName,
+      createdBy,
     });
     await newAdmin.save();
     return res.status(200).json("Admin Added Successfully");
