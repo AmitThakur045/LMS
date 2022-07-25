@@ -147,8 +147,13 @@ const StudentLogin = () => {
   useEffect(() => {
     if (store.errors) {
       setLoading(false);
-      setEmail("");
-      setPassword("");
+      if (store.errors.emailError) {
+        setEmail("");
+        setPassword("");
+      }
+      if (store.errors.passwordError) {
+        setPassword("");
+      }
     }
   }, [store.errors]);
 
@@ -350,7 +355,7 @@ const StudentLogin = () => {
             <img src={logo} className="md:hidden block h-[8rem]" alt="" />
             <div className="space-y-2">
               <h1 className="font-bold text-[30px]">Student</h1>
-              <h1 className="font-bold m-0 text-[18px]">Login in</h1>
+              <h1 className="font-bold m-0 text-[18px]">Login In</h1>
             </div>
             <div className="w-full space-y-3">
               <input
@@ -383,7 +388,9 @@ const StudentLogin = () => {
                 )}
               </div>
             </div>
-            <button onClick={() => navigate("/studentforgotpassword")}>
+            <button
+              type="button"
+              onClick={() => navigate("/studentforgotpassword")}>
               Forgot your password?
             </button>
             <button

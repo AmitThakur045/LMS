@@ -45,10 +45,10 @@ const AdminForgotPassword = () => {
   const checkOtp = (e) => {
     e.preventDefault();
     setLoading(true);
-    setShowModal(false);
     setError("");
 
     if (otp.join("") == otpValue) {
+      setShowModal(false);
       setResetPassword(true);
     } else {
       setError("Invalid OTP");
@@ -65,7 +65,6 @@ const AdminForgotPassword = () => {
   // check if the otp is correct
   useEffect(() => {
     if (otpValue && email !== "") {
-      setError("");
       setLoading(false);
       setShowModal(true);
     }
@@ -94,27 +93,18 @@ const AdminForgotPassword = () => {
 
   const resetPasswordHandler = (e) => {
     e.preventDefault();
-    setError("");
-    if (value.newPassword !== value.confirmPassword) {
-      setError("Password does not match");
-      setValue({
-        email: email,
-        newPassword: "",
-        confirmPassword: "",
-      });
-    } else {
-      setLoading(true);
-      dispatch(
-        forgotPasswordAdmin(
-          { email: email, newPassword: value.newPassword },
-          navigate
-        )
-      );
-    }
+
+    setLoading(true);
+    dispatch(
+      forgotPasswordAdmin(
+        { email: email, newPassword: value.newPassword },
+        navigate
+      )
+    );
   };
 
   return (
-    <div className="w-full h-screen bg-primary flex flex-row justify-center items-center">
+    <div className="w-full h-screen bg-[#f6f5f7] flex flex-row justify-center items-center">
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
@@ -148,7 +138,7 @@ const AdminForgotPassword = () => {
                 Submit
               </button>
             </div>
-            {error && <p className="text-red-500 ">{error}</p>}
+            {error && <p className="text-red-500 self-center">{error}</p>}
           </form>
         </Box>
       </Modal>
@@ -156,11 +146,10 @@ const AdminForgotPassword = () => {
       {resetPassword ? (
         <form
           onSubmit={resetPasswordHandler}
-          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl">
-          <p className="text-[#88909e] font-bold text-sm">New Password</p>
+          className="bg-[#fff]  w-[25rem] rounded-md p-6 space-y-3 shadow-2xl">
           <input
             required
-            className="bg-[#70747d] w-full text-white px-2 py-2 outline-none rounded-md"
+            className="bg-[#eee] w-full  px-2 py-2 outline-none rounded-md"
             type="text"
             placeholder="New Password"
             value={value.newPassword}
@@ -168,10 +157,9 @@ const AdminForgotPassword = () => {
               setValue({ ...value, newPassword: e.target.value })
             }
           />
-          <p className="text-[#88909e] font-bold text-sm">Confirm Password</p>
           <input
             required
-            className="bg-[#70747d] w-full text-white px-2 py-2 outline-none rounded-md"
+            className="bg-[#eee] w-full  px-2 py-2 outline-none rounded-md"
             type="text"
             placeholder="Confirm Password"
             value={value.confirmPassword}
@@ -179,7 +167,11 @@ const AdminForgotPassword = () => {
               setValue({ ...value, confirmPassword: e.target.value })
             }
           />
-          {error && <p className="text-red-500 ">{error}</p>}
+          {value.newPassword !== "" &&
+            value.confirmPassword !== "" &&
+            value.newPassword !== value.confirmPassword && (
+              <p className="font-bold text-red-500">Password do not match</p>
+            )}
           <div className="w-full flex flex-row justify-center items-center pt-2">
             <button
               disabled={
@@ -189,7 +181,7 @@ const AdminForgotPassword = () => {
                   : true
               }
               type="submit"
-              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
+              className="w-full transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 hover:bg-[#f53c1c] bg-[#ff4b2b] cursor-pointer">
               Reset Password
             </button>
           </div>
@@ -197,11 +189,14 @@ const AdminForgotPassword = () => {
       ) : (
         <form
           onSubmit={submitHandler}
-          className="bg-[#2c2f35] w-[25rem] rounded-md p-6 space-y-3 shadow-2xl">
-          <p className="text-[#88909e] font-bold text-sm">Email</p>
+          className="bg-[#fff]  w-[25rem] rounded-md p-6 space-y-3 shadow-2xl flex flex-col">
+          <h1 className="font-bold text-[20px] self-center">
+            Forgot Password?
+          </h1>
+
           <input
             required
-            className="bg-[#70747d] w-full text-white px-2 py-2 outline-none rounded-md"
+            className="bg-[#eee] w-full  px-2 py-2 outline-none rounded-md"
             type="text"
             placeholder="Enter your email"
             value={email}
@@ -210,9 +205,9 @@ const AdminForgotPassword = () => {
           {error && <p className="text-red-500 ">{error}</p>}
           <div className="w-full flex flex-row justify-center items-center pt-2">
             <button
-              disabled={email.length == 0}
+              disabled={email === ""}
               type="submit"
-              className="w-full hover:scale-105 transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 bg-[#04bd7d]">
+              className="w-full transition-all duration-150 rounded-md flex items-center justify-center text-white text-base py-1 hover:bg-[#f53c1c] bg-[#ff4b2b] cursor-pointer">
               Send OTP
             </button>
           </div>
