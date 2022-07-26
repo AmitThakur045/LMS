@@ -1,6 +1,9 @@
 import Admin from "../models/admin.js";
 import DeleteQuery from "../models/deleteQuery.js";
 import Student from "../models/student.js";
+import Schedule from "../models/schedule.js";
+import BatchAssignment from "../models/batchAssignment.js";
+import BatchCourse from "../models/batchCourse.js";
 import Batch from "../models/batch.js";
 import Attendance from "../models/attendance.js";
 import Course from "../models/course.js";
@@ -9,6 +12,7 @@ import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
+import schedule from "../models/schedule.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -427,7 +431,7 @@ export const addStudentInBatch = async (req, res) => {
     const batch = await Batch.findOne(
       { batchCode },
       { students: 1, courses: 1 }
-    );
+    ).populate("courses");
 
     let alreadyStudent = batch.students.find((em) => em === email);
     if (alreadyStudent !== email) {
@@ -854,7 +858,14 @@ export const addBatch = async (req, res) => {
         cou.lessonVideo.push(temp1);
       }
       cou.complete.totalLesson = sum;
-      courseData.push(cou);
+      const newBatchCourse = await new BatchCourse({
+        courseCode: cou.courseCode,
+        courseName: cou.courseName,
+        complete: cou.complete,
+        lessonVideo: cou.lessonVideo,
+      });
+      await newBatchCourse.save();
+      courseData.push(newBatchCourse._id);
     }
 
     for (let i = 0; i < students.length; i++) {
@@ -932,7 +943,9 @@ export const getBatchesByBatchCode = async (req, res) => {
     let list = [];
 
     for (let i = 0; i < allBatches.length; i++) {
-      const batch = await Batch.findOne({ batchCode: allBatches[i].value });
+      const batch = await Batch.findOne({
+        batchCode: allBatches[i].value,
+      }).populate("courses");
       list.push(batch);
     }
 
@@ -1010,14 +1023,12 @@ export const getBatch = async (req, res) => {
         schedule: 1,
         students: 1,
         batchLink: 1,
-        courses: {
-          courseCode: 1,
-          courseName: 1,
-          assignment: 1,
-          complete: 1,
-        },
+        courses: 1,
       }
-    );
+    )
+      .populate("schedule")
+      .populate("courses", "courseCode courseName assignment complete");
+
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
       return res.status(404).json(errors);
@@ -1039,9 +1050,9 @@ export const getBatchLessonVideo = async (req, res) => {
         status: 1,
         subAdmin: 1,
         organizationName: 1,
-        courses: { courseCode: 1, courseName: 1, lessonVideo: 1, complete: 1 },
+        courses: 1,
       }
-    );
+    ).populate("courses", "courseCode courseName lessonVideo complete");
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
       return res.status(404).json(errors);
@@ -1059,8 +1070,16 @@ export const addEvent = async (req, res) => {
 
     const errors = { noBatchError: String };
     const batch = await Batch.findOne({ batchCode }, { schedule: 1 });
+    const schedule = await new Schedule({
+      title: newEvent.title,
+      start: newEvent.start,
+      end: newEvent.end,
+      link: newEvent.link,
+      courseCode: newEvent.courseCode,
+    });
+    await schedule.save();
 
-    batch.schedule.push(newEvent);
+    batch.schedule.push(schedule._id);
     await batch.save();
     res.status(200).json(batch);
   } catch (error) {
@@ -1083,50 +1102,48 @@ export const updateCourseData = async (req, res) => {
   try {
     const { lessonVideo, complete, batchCode, courseCode } = req.body;
 
-    const batch = await Batch.findOne({ batchCode }, { courses: 1 });
+    const batch = await Batch.findOne({ batchCode }, { courses: 1 }).populate(
+      "courses",
+      "courseCode"
+    );
 
     let index = batch.courses.findIndex(
       (course) => course.courseCode === courseCode
     );
+    const batchCourse = await BatchCourse.findById(batch.courses[index]._id);
     for (let i = 0; i < lessonVideo.length; i++) {
       if (
         lessonVideo[i].sectionCompleted !==
-        batch.courses[index].lessonVideo[i].sectionCompleted
+        batchCourse.lessonVideo[i].sectionCompleted
       ) {
-        batch.courses[index].lessonVideo[i].sectionCompleted =
+        batchCourse.lessonVideo[i].sectionCompleted =
           lessonVideo[i].sectionCompleted;
       }
       for (let j = 0; j < lessonVideo[i].lesson.length; j++) {
         if (
           lessonVideo[i].lesson[j].lessonCompleted !==
-          batch.courses[index].lessonVideo[i].lesson[j].lessonCompleted
+          batchCourse.lessonVideo[i].lesson[j].lessonCompleted
         ) {
-          batch.courses[index].lessonVideo[i].lesson[j].lessonCompleted =
+          batchCourse.lessonVideo[i].lesson[j].lessonCompleted =
             lessonVideo[i].lesson[j].lessonCompleted;
         }
         if (
           lessonVideo[i].lesson[j].video !==
-          batch.courses[index].lessonVideo[i].lesson[j].video
+          batchCourse.lessonVideo[i].lesson[j].video
         ) {
-          batch.courses[index].lessonVideo[i].lesson[j].video =
+          batchCourse.lessonVideo[i].lesson[j].video =
             lessonVideo[i].lesson[j].video;
         }
       }
     }
 
-    if (
-      complete.sectionCompleted !==
-      batch.courses[index].complete.sectionCompleted
-    ) {
-      batch.courses[index].complete.sectionCompleted =
-        complete.sectionCompleted;
+    if (complete.sectionCompleted !== batchCourse.complete.sectionCompleted) {
+      batchCourse.complete.sectionCompleted = complete.sectionCompleted;
     }
-    if (
-      complete.lessonCompleted !== batch.courses[index].complete.lessonCompleted
-    ) {
-      batch.courses[index].complete.lessonCompleted = complete.lessonCompleted;
+    if (complete.lessonCompleted !== batchCourse.complete.lessonCompleted) {
+      batchCourse.complete.lessonCompleted = complete.lessonCompleted;
     }
-    await batch.save();
+    await batchCourse.save();
 
     res.status(200).json("Course Updated");
   } catch (error) {
@@ -1138,7 +1155,9 @@ export const getBatchEvent = async (req, res) => {
   try {
     const { batchCode } = req.body;
 
-    const batch = await Batch.findOne({ batchCode }, { schedule: 1 });
+    const batch = await Batch.findOne({ batchCode }, { schedule: 1 }).populate(
+      "schedule"
+    );
 
     res.status(200).json(batch.schedule);
   } catch (error) {
@@ -1150,7 +1169,10 @@ export const getEventByCourseCode = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
 
-    const batch = await Batch.findOne({ batchCode }, { schedule: 1 });
+    const batch = await Batch.findOne({ batchCode }, { schedule: 1 }).populate(
+      "schedule"
+    );
+
     const schedule = [];
     schedule.push({});
     for (let i = 0; i < batch.schedule.length; i++) {
@@ -1405,10 +1427,13 @@ export const addAssignment = async (req, res) => {
     const currBatch = await Batch.findOne({ batchCode }, { courses: 1 });
     for (let i = 0; i < currBatch.courses.length; i++) {
       if (currBatch.courses[i].courseCode === courseCode) {
-        currBatch.courses[i].assignment.push(newBatchAssignment);
+        const batchCourse = await BatchCourse.findById(
+          currBatch.courses[0]._id
+        );
+        batchCourse.assignment.push(newBatchAssignment);
+        await batchCourse.save();
       }
     }
-    await currBatch.save();
 
     return res.status(200).json("Assignment Added successfully");
   } catch (error) {

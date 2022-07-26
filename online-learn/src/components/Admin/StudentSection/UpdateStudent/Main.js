@@ -104,7 +104,7 @@ const Main = () => {
       alert("Enter atleast one value");
       setLoading(false);
     } else {
-      if (avatar !== "") {
+      if (image) {
         dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
       } else {
         dispatch(updateStudent(value, navigate));
@@ -123,8 +123,7 @@ const Main = () => {
     <div className="flex lg:flex-row flex-col overflow-y-auto h-full space-x-5 lg:px-12 px-2 mb-5">
       <form
         onSubmit={handleSubmit}
-        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4"
-      >
+        className="lg:w-[80%] w-full rounded-3xl bg-[#FAFBFF] lg:px-10 px-2 py-5 flex flex-col space-y-4">
         <p className="text-[#8d91b1]">Update Student</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
           <div className="w-[40%] flex items-start justify-start">
@@ -139,15 +138,12 @@ const Main = () => {
                 <div className="">
                   <label
                     className="flex items-center justify-center flex-col space-y-3"
-                    for="image"
-                  >
+                    for="image">
                     <MdOutlineFileUpload
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
                     />
-                    <p className="w-full text-center">
-                      Upload Profile Picture
-                    </p>
+                    <p className="w-full text-center">Upload Profile Picture</p>
                     {error.avatar && (
                       <p className="text-[#ff0000] text-center">
                         {error.avatar}
@@ -230,8 +226,7 @@ const Main = () => {
         </div>
         <button
           type="submit"
-          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-        >
+          className="self-end bg-[#FB6C3A] h-[3rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150">
           Submit
         </button>
         {loading && <Spinner message="Updating Student" />}

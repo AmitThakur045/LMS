@@ -62,9 +62,9 @@ const Main = () => {
       );
     }
   }, [batch]);
-
   const attendances = useSelector((store) => store.admin.attendance);
   const events = useSelector((store) => store.admin.eventByCourseCode);
+  console.log(events);
   const students = useSelector((state) => state.admin.students);
   useEffect(() => {
     if (events.length !== 0) {

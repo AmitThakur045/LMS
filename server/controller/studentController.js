@@ -105,8 +105,8 @@ export const getCourseByBatchCode = async (req, res) => {
     const { batchCode } = req.body;
     const courseCodeList = await Batch.findOne(
       { batchCode },
-      { courses: { courseCode: 1 } }
-    );
+      { courses: 1 }
+    ).populate("courses", "courseCode");
 
     const data = [];
     let len = courseCodeList.courses.length;
@@ -135,7 +135,7 @@ export const getAllEvents = async (req, res) => {
       const batch = await Batch.findOne(
         { batchCode: batchCode[i] },
         { schedule: 1 }
-      );
+      ).populate("schedule");
       batch.schedule.forEach((element) => {
         data.push(element);
       });
@@ -331,14 +331,9 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
         status: 1,
         subAdmin: 1,
         organizationName: 1,
-        courses: {
-          courseName: 1,
-          courseCode: 1,
-          complete: 1,
-          lessonVideo: 1,
-        },
+        courses: 1,
       }
-    );
+    ).populate("courses", "courseName courseCode complete lessonVideo");
 
     if (batch === null) {
       errors.noBatchError = "No Batch Found";

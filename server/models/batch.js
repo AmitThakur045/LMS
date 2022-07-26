@@ -15,52 +15,8 @@ const batchSchema = new Schema({
     unique: true,
   },
   status: { type: Boolean, default: true },
-  courses: [
-    {
-      assignment: [
-        {
-          assignmentName: { type: String },
-          assignmentCode: { type: String },
-          assignmentPdf: { type: String },
-        },
-      ],
-      courseName: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      courseCode: { type: String },
-      complete: {
-        sectionCompleted: { type: Number },
-        lessonCompleted: { type: Number },
-        totalLesson: { type: Number },
-      },
-      lessonVideo: [
-        {
-          sectionNumber: { type: Number },
-          sectionName: { type: String },
-          sectionCompleted: { type: Boolean, default: false },
-          lesson: [
-            {
-              lessonNumber: { type: Number },
-              lessonName: { type: String },
-              video: { type: String },
-              lessonCompleted: { type: Boolean, default: false },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  schedule: [
-    {
-      title: { type: String },
-      link: { type: String },
-      start: { type: String },
-      end: { type: String },
-      courseCode: { type: String },
-    },
-  ],
+  courses: [{ type: Schema.Types.ObjectId, ref: "batchCourse" }],
+  schedule: [{ type: Schema.Types.ObjectId, ref: "schedule" }],
   students: [{ type: String }],
   batchLink: { type: String },
 });

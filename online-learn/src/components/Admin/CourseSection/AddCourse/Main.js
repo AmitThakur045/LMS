@@ -27,8 +27,9 @@ const Main = () => {
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
   const s3PresignedUrl = store.aws.presignedUrl;
-  let lessonCount = 1;
-  let sectionCount = 1;
+
+  const [lessonCount, setLessonCount] = useState(1);
+  const [sectionCount, setSectionCount] = useState(1);
 
   const [image, setImage] = useState({});
   const [avatar, setAvatar] = useState("");
@@ -135,7 +136,7 @@ const Main = () => {
   const addNewSection = (sectionIdx) => {
     let newSection = {
       sectionName: "",
-      sectionNumber: ++sectionCount,
+      sectionNumber: sectionCount + 1,
       sectionAdded: false,
       lesson: [
         {
@@ -146,19 +147,22 @@ const Main = () => {
         },
       ],
     };
+    setSectionCount(sectionCount + 1);
     let temp = [...section];
     temp.push(newSection);
     setSection(temp);
-    lessonCount = 1;
+    setLessonCount(1);
   };
+  console.log(lessonCount);
 
   const addNewLesson = (sectionIdx) => {
     let newLesson = {
-      lessonNumber: ++lessonCount,
+      lessonNumber: lessonCount + 1,
       lessonName: "",
       lessonDescription: "",
       lessonAdded: false,
     };
+    setLessonCount(lessonCount + 1);
     let temp = [...section];
     temp[sectionIdx].lesson.push(newLesson);
     setSection(temp);
@@ -179,8 +183,11 @@ const Main = () => {
     e.preventDefault();
     setError({});
     setLoading(true);
-
-    dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
+    if (image) {
+      dispatch(getPresignedUrl({ fileType: "images", fileName: image.name }));
+    } else {
+      alert("Please select an image");
+    }
   };
 
   const clearForm = (e) => {
@@ -225,7 +232,6 @@ const Main = () => {
           body: image,
         })
           .then((response) => {
-  
             const imageUrl = s3PresignedUrl.split("?")[0];
             let data = value;
             data.courseImg = imageUrl;
