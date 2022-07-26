@@ -37,7 +37,11 @@ const SingleLesson = ({
     setVideo(file);
   };
   useEffect(() => {
-    if (s3PresignedUrl !== "") {
+    if (
+      s3PresignedUrl !== "" &&
+      sectionIdx === sectionLessonNumber.sectionNumber &&
+      lessonIdx === sectionLessonNumber.lessonNumber
+    ) {
       async function fetchApi() {
         await fetch(s3PresignedUrl, {
           method: "PUT",
@@ -55,6 +59,7 @@ const SingleLesson = ({
               sectionLessonNumber.sectionNumber
             ].lesson[sectionLessonNumber.lessonNumber].video = videoUrl;
             setTempBatchData(temp);
+
             setUploadingVideo(false);
             setVideoUploaded(true);
             setDisableSubmit(false);
@@ -67,6 +72,7 @@ const SingleLesson = ({
       dispatch({ type: GET_PRESIGNED_URL, payload: "" });
     }
   }, [s3PresignedUrl]);
+
   useEffect(() => {
     if (
       tempBatchData.courses[indexCounter].lessonVideo[sectionIdx].lesson[

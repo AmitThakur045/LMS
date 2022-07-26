@@ -20,7 +20,9 @@ const SingleAssignment = ({ data, i, setSelectedPdf, setIsOpen, isOpen }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [currAssignment, setCurrAssignment] = useState(-1);
   const changeHandler = (event, i) => {
+    setCurrAssignment(i);
     setIsUploading(true);
     const file = event.target.files[0];
     setCurrPdf(file);
@@ -65,7 +67,7 @@ const SingleAssignment = ({ data, i, setSelectedPdf, setIsOpen, isOpen }) => {
   }, [store.student.assignmentSubmitted]);
 
   useEffect(() => {
-    if (s3PresignedUrl !== "") {
+    if (s3PresignedUrl !== "" && i === currAssignment) {
       async function fetchApi() {
         await fetch(s3PresignedUrl, {
           method: "PUT",

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { BsFillCheckCircleFill } from "react-icons/bs";
+
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +8,6 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { Button } from "@mui/material";
 import {
-  GET_BATCH,
-  GET_PRESIGNED_URL,
   SET_ERRORS,
   UPDATE_COURSE_DATA,
 } from "../../../../../../Redux/actionTypes";
@@ -25,8 +17,8 @@ import {
 } from "../../../../../../Redux/actions/adminActions";
 import Spinner from "../../../../../../Utils/Spinner";
 import Loader from "../../../../../../Utils/Loader";
-import { getPresignedUrl } from "../../../../../../Redux/actions/awsActions";
-import SingleLesson from "./SingleLesson";
+
+import SingleSection from "./SingleSection";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -246,40 +238,18 @@ const Main = () => {
                 Click on Lesson Tick Icon to mark it's completion
               </h1>
               {courseData.section.map((sectionData, sectionIdx) => (
-                <div
-                  key={sectionIdx}
-                  className="shadow-sm rounded-sm shadow-gray-400 py-6 px-4">
-                  <div className="flex items-center space-x-3 mb-7">
-                    {tempBatchData.courses[indexCounter].lessonVideo[sectionIdx]
-                      .sectionCompleted ? (
-                      <BsFillCheckCircleFill
-                        fontSize={20}
-                        className="text-[#1bca72]"
-                      />
-                    ) : (
-                      <AiOutlineCheckCircle
-                        fontSize={20}
-                        className="text-[#]"
-                      />
-                    )}
-                    <Typography>{sectionData.sectionName}</Typography>
-                  </div>
-                  {sectionData.lesson?.map((lessonData, lessonIdx) => (
-                    <SingleLesson
-                      lessonData={lessonData}
-                      lessonIdx={lessonIdx}
-                      tempBatchData={tempBatchData}
-                      sectionIdx={sectionIdx}
-                      indexCounter={indexCounter}
-                      handleIconClickIncrease={handleIconClickIncrease}
-                      handleIconClickDecrease={handleIconClickDecrease}
-                      setSectionLessonNumber={setSectionLessonNumber}
-                      setTempBatchData={setTempBatchData}
-                      sectionLessonNumber={sectionLessonNumber}
-                      setDisableSubmit={setDisableSubmit}
-                    />
-                  ))}
-                </div>
+                <SingleSection
+                  sectionData={sectionData}
+                  tempBatchData={tempBatchData}
+                  sectionIdx={sectionIdx}
+                  indexCounter={indexCounter}
+                  handleIconClickIncrease={handleIconClickIncrease}
+                  handleIconClickDecrease={handleIconClickDecrease}
+                  setSectionLessonNumber={setSectionLessonNumber}
+                  setTempBatchData={setTempBatchData}
+                  sectionLessonNumber={sectionLessonNumber}
+                  setDisableSubmit={setDisableSubmit}
+                />
               ))}
             </div>
             <Button

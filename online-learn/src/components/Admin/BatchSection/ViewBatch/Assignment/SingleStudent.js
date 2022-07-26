@@ -27,12 +27,14 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [pdfUploadLoader, SetPdfUploadLoader] = useState(false);
+  const [currStudent, setCurrStudent] = useState(-1);
   const [value, setValue] = useState({
     marks: 0,
     selectedFile: "",
   });
   const s3PresignedUrl = store.aws.presignedUrl;
   const changeHandler = (event) => {
+    setCurrStudent(index);
     SetPdfUploadLoader(true);
     const file = event.target.files[0];
     setCurrPdf(file);
@@ -73,7 +75,11 @@ const SingleStudent = ({ item, index, currentEmail }) => {
   }, [store.admin.scoreAdded]);
 
   useEffect(() => {
-    if (s3PresignedUrl !== "" && pdfUploadLoader === true) {
+    if (
+      s3PresignedUrl !== "" &&
+      pdfUploadLoader === true &&
+      currStudent === index
+    ) {
       async function fetchApi() {
         await fetch(s3PresignedUrl, {
           method: "PUT",
@@ -84,7 +90,7 @@ const SingleStudent = ({ item, index, currentEmail }) => {
         })
           .then((response) => {
             const pdfUrl = s3PresignedUrl.split("?")[0];
-    
+
             setValue({
               ...value,
               selectedFile: pdfUrl,
