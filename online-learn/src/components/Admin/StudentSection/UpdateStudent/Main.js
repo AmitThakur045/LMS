@@ -34,6 +34,16 @@ const Main = () => {
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
+
+    // size of the image in bytes
+    if (file.size > 1000000) {
+      setError({
+        ...error,
+        avatar: "Image size should be less than 1MB",
+      });
+      return;
+    }
+
     setImage(file);
     const base64 = await convertBase64(file);
     setAvatar(base64);
@@ -65,7 +75,6 @@ const Main = () => {
           body: image,
         })
           .then((response) => {
-         
             const imageUrl = s3PresignedUrl.split("?")[0];
             let data = value;
             data.avatar = imageUrl;
@@ -118,7 +127,7 @@ const Main = () => {
       >
         <p className="text-[#8d91b1]">Update Student</p>
         <div className="flex flex-col w-full sm:flex-row sm:items-start items-center lg:space-x-16 space-x-4 space-y-6 sm:space-y-0">
-          <div className="w-[40%] flex items-start justify-center">
+          <div className="w-[40%] flex items-start justify-start">
             <div className="lg:w-[250px] w-[10rem] lg:h-[227px] h-[10rem] bg-white border-[1px] border-[#CBCBCB] flex flex-col items-center justify-center">
               {avatar !== "" ? (
                 <img
@@ -136,10 +145,18 @@ const Main = () => {
                       className="w-14 rounded-full h-14 bg-[#d8d8d8] cursor-pointer"
                       fontSize={35}
                     />
-                    <p>Upload Profile Picture</p>
+                    <p className="w-full text-center">
+                      Upload Profile Picture
+                    </p>
+                    {error.avatar && (
+                      <p className="text-[#ff0000] text-center">
+                        {error.avatar}
+                      </p>
+                    )}
                   </label>
                   <input
                     id="image"
+                    accept="image/*"
                     type="file"
                     className="hidden"
                     onChange={(e) => {

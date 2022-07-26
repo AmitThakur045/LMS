@@ -131,6 +131,7 @@ const SingleLesson = ({
         className="hidden"
         id={`video-${sectionIdx}-${lessonIdx}`}
         type="file"
+        accept="video/*"
         onChange={(e) => {
           setSectionLessonNumber({
             sectionNumber: sectionIdx,

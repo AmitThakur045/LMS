@@ -62,8 +62,17 @@ const Main = () => {
   const uploadImage = async (e) => {
     const file = e.target.files[0];
 
+    // size of the image in bytes
+    if (file.size > 1000000) {
+      setError({
+        ...error,
+        avatar: "Image size should be less than 1MB",
+      });
+      return;
+    }
+
     setImage(file);
-  
+
     const base64 = await convertBase64(file);
     setAvatar(base64);
   };
@@ -118,7 +127,6 @@ const Main = () => {
           body: image,
         })
           .then((response) => {
-      
             const imageUrl = s3PresignedUrl.split("?")[0];
             let data = value;
             data.avatar = imageUrl;
@@ -141,14 +149,12 @@ const Main = () => {
     }
   }, [store.errors]);
 
-
-
   return (
     <div className="flex w-full lg:flex-row flex-col sm:overflow-y-auto h-full sm:pt-4 mb-5">
       {isMobile && (
         <div className="absolute h-[5rem] justify-end text-black right-4 top-5 z-30">
           {isOpen ? (
-            <CancelIcon fontSize="large"  onClick={() => setIsOpen(false)} />
+            <CancelIcon fontSize="large" onClick={() => setIsOpen(false)} />
           ) : (
             <MenuIcon fontSize="large" onClick={() => setIsOpen(true)} />
           )}{" "}
@@ -183,10 +189,16 @@ const Main = () => {
                       fontSize={45}
                     />
                     <p className="text-[#7c7b7b]">Upload Profile Picture</p>
+                    {error.avatar && (
+                      <p className="text-[#ff0000] text-center">
+                        {error.avatar}
+                      </p>
+                    )}
                   </label>
                   <input
                     id="image"
                     type="file"
+                    accept="image/*"
                     className="hidden"
                     onChange={(e) => {
                       uploadImage(e);
