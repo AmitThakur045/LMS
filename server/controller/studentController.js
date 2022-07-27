@@ -141,10 +141,10 @@ export const getAllEvents = async (req, res) => {
         return res.status(404).json({
           noEventError: "No events found",
         });
-        batch.schedule.forEach((element) => {
-          data.push(element);
-        });
       }
+      batch.schedule.forEach((element) => {
+        data.push(element);
+      });
     }
     res.status(200).json(data);
   } catch (error) {

@@ -51,6 +51,7 @@ const LiveClasses = () => {
       setAllEvents(events);
     }
   }, [events]);
+  console.log(events);
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
       if (events.length !== 0 || Object.keys(store.errors).length !== 0) {
