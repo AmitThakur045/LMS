@@ -123,21 +123,19 @@ const Main = ({ threads, error, categories }) => {
   }, [store.student.threadAdded]);
 
   return (
-    <div className="relative bg-[#1a1a1a] w-full h-screen flex overflow-y-auto">
+    <div className="relative bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
       <Modal
         open={openNewThreadModal}
         onClose={handleNewThreadModalClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Add New Thread</h1>
               <div
                 onClick={handleNewThreadModalClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -182,8 +180,7 @@ const Main = ({ threads, error, categories }) => {
                   value={problem.problemCategory}
                   onChange={(e) =>
                     setProblem({ ...problem, problemCategory: e.target.value })
-                  }
-                >
+                  }>
                   {categories.map((item, i) => (
                     <MenuItem key={i} value={item.category}>
                       {item.category}
@@ -196,8 +193,7 @@ const Main = ({ threads, error, categories }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 ADD
               </Button>
               {loading && <Spinner message="Adding Thread" />}
@@ -205,7 +201,7 @@ const Main = ({ threads, error, categories }) => {
           </div>
         </Box>
       </Modal>
-      <div className="absolute bg-white w-full md:flex flex-col sm:my-4 rounded-2xl sm:mr-4 sm:mx-0 sm:px-[3.1rem] px-2 pt-[3rem] overflow-auto">
+      <div className="absolute bg-white w-full h-full md:flex flex-col sm:my-4 rounded-2xl sm:mr-4 sm:mx-0 sm:px-[3.1rem] px-2 pt-[3rem] ">
         {isMobile && (
           <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
             {isOpen ? (
@@ -219,8 +215,8 @@ const Main = ({ threads, error, categories }) => {
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>
-        <div className="flex md:flex-row flex-col space-x-8 space-y-6">
-          <div className="flex flex-col flex-[0.68] overflow-auto p-3 space-y-3">
+        <div className="flex md:flex-row flex-col space-x-8 space-y-6 h-full">
+          <div className="flex flex-col flex-[0.68]  p-3 space-y-3">
             <div className="w-auto rounded-3xl shadow-lg p-8 mt-4 space-y-2">
               <div>
                 <div className="flex flex-row space-x-20 ">
@@ -240,8 +236,7 @@ const Main = ({ threads, error, categories }) => {
                         fontWeight: "700",
                         color: "#fff",
                       }}
-                      variant="contained"
-                    >
+                      variant="contained">
                       New Thread
                     </Button>
                   </div>
@@ -254,13 +249,12 @@ const Main = ({ threads, error, categories }) => {
               </div>
             </div>
 
-            <div className="lg:flex-[0.7] flex flex-col space-y-5">
+            <div className=" flex flex-col space-y-5 h-[55vh] p-3 overflow-auto">
               {threads.length !== 0 ? (
                 threads.map((problem, index) => (
                   <div
                     key={index}
-                    className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4"
-                  >
+                    className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4">
                     <div className="flex  ">
                       <h1 className="bg-primary text-white rounded-full px-2 py-1">
                         {problem.problemCategory}
@@ -270,8 +264,7 @@ const Main = ({ threads, error, categories }) => {
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
-                        id="lesson"
-                      >
+                        id="lesson">
                         <div className="flex items-center space-x-3">
                           <h1 className="py-2  text-[22px] font-bold text-primary">
                             {problem.problemName}
@@ -293,8 +286,81 @@ const Main = ({ threads, error, categories }) => {
                               <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
-                                id="lesson"
-                              >
+                                id="lesson">
+                                <div className="flex justify-between items-center">
+                                  <div className="flex items-center space-x-2">
+                                    <Avatar
+                                      sx={{
+                                        width: 30,
+                                        height: 30,
+                                        bgcolor: colors[idx % 5],
+                                      }}
+                                    />
+                                    <h1>{data.by}</h1>
+                                  </div>
+                                </div>
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                <p>{data.solution}</p>
+                              </AccordionDetails>
+                            </Accordion>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex-[0.3] flex items-start space-x-2 justify-end">
+                        <div className="flex flex-col items-end">
+                          <h1 className="text-[15px]">{problem.by}</h1>
+                          <Moment fromNow className="text-[15px]">
+                            {problem.time}
+                          </Moment>
+                        </div>
+                        <Avatar sx={{ bgcolor: "#f48320" }} src="" />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="font-bold text-red-500 self-center mt-10 text-[20px]">
+                  {error}
+                </p>
+              )}
+              {threads.length !== 0 ? (
+                threads.map((problem, index) => (
+                  <div
+                    key={index}
+                    className="shadow-md shadow-gray-400 flex flex-col rounded-lg px-4 py-5 space-y-4">
+                    <div className="flex  ">
+                      <h1 className="bg-primary text-white rounded-full px-2 py-1">
+                        {problem.problemCategory}
+                      </h1>
+                    </div>
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="lesson">
+                        <div className="flex items-center space-x-3">
+                          <h1 className="py-2  text-[22px] font-bold text-primary">
+                            {problem.problemName}
+                          </h1>
+                        </div>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <p>{problem.problemDescription}</p>
+                      </AccordionDetails>
+                    </Accordion>
+                    <div className="flex">
+                      <div className="flex-[0.2]">
+                        Replies {problem.reply.length}
+                      </div>
+                      <div className="flex-[0.5] space-y-2">
+                        <div className="spacey-2">
+                          {problem.reply.map((data, idx) => (
+                            <Accordion key={idx}>
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="lesson">
                                 <div className="flex justify-between items-center">
                                   <div className="flex items-center space-x-2">
                                     <Avatar
