@@ -89,9 +89,9 @@ const Main = () => {
 
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0 || store.admin.courseAdded) {
-      dispatch(getAllCourse());
       setLoading(false);
       if (store.admin.courseAdded) {
+        dispatch(getAllCourse());
         setValue({
           courseName: "",
           courseCode: "",

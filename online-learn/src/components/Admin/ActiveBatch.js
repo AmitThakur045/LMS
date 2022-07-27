@@ -43,7 +43,6 @@ const ActiveBatch = () => {
   }, [store.admin.batchAdded]);
 
   useEffect(() => {
-    dispatch({ type: SET_ERRORS, payload: {} });
     if (user.result.sub === "true") {
       dispatch(
         getBatchCodesBySubAdmin({
