@@ -661,7 +661,7 @@ export const getStudent = async (req, res) => {
     const { email } = req.body;
 
     const errors = { noStudentError: String };
-    const student = await Student.findOne({ email });
+    const student = await Student.findOne({ email }).populate("assignment");
     if (student === null) {
       errors.noStudentError = "No Student Found";
       return res.status(404).json(errors);
