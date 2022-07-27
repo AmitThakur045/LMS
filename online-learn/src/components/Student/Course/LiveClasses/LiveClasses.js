@@ -42,12 +42,6 @@ const LiveClasses = () => {
   const batch = useSelector((state) => state.admin.batch);
   const [batchData, setBatchData] = useState({});
   const [error, setError] = useState({});
-  useEffect(() => {
-    if (Object.keys(store.errors).length !== 0) {
-      setIsLoading(false);
-      setError(store.errors);
-    }
-  }, [store.errors]);
 
   useEffect(() => {
     if (events.length !== 0) {
@@ -59,7 +53,7 @@ const LiveClasses = () => {
   }, [events]);
   useEffect(() => {
     if (Object.keys(batch).length !== 0) {
-      if (events.length !== 0) {
+      if (events.length !== 0 || Object.keys(store.errors).length !== 0) {
         setIsLoading(false);
       }
       setBatchData(batch);
