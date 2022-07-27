@@ -8,6 +8,7 @@ import Problem from "../models/problem.js";
 import Community from "../models/community.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
+import StudentAssignment from "../models/studentAssignment.js";
 
 function calPerformance(assignment, totalAssignment) {
   let score = 0;
@@ -193,24 +194,30 @@ export const submitAssignment = async (req, res) => {
     const student = await Student.findOne(
       { email },
       { assignment: 1, performance: 1 }
-    );
+    ).populate("assignment");
     flag = false;
 
     if (student) {
       for (let i = 0; i < student.assignment.length; i++) {
         if (student.assignment[i].assignmentCode === assignmentCode) {
-          student.assignment[i].studentAnswer = studentAnswer;
+          const studentAssignment = await StudentAssignment.findById(
+            student.assignment[i]._id
+          );
+          studentAssignment.studentAnswer = studentAnswer;
+          await studentAssignment.save();
           flag = true;
           break;
         }
       }
       if (!flag) {
-        student.assignment.push({
+        const studentAssignment = new StudentAssignment({
           assignmentCode: assignmentCode,
           studentAnswer: studentAnswer,
           checkedAssignment: "",
           score: "",
         });
+        await studentAssignment.save();
+        student.assignment.push(studentAssignment._id);
       }
     }
 
@@ -333,8 +340,7 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
         organizationName: 1,
         courses: 1,
       }
-    )
-    .populate({
+    ).populate({
       path: "courses",
       select: "courseCode courseName lessonVideo complete",
       populate: { path: "lessonVideo" },

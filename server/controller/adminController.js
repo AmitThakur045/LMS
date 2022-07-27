@@ -3,6 +3,7 @@ import DeleteQuery from "../models/deleteQuery.js";
 import Student from "../models/student.js";
 import Schedule from "../models/schedule.js";
 import BatchAssignment from "../models/batchAssignment.js";
+import StudentAssignment from "../models/studentAssignment.js";
 import BatchLessonVideo from "../models/batchLessonVideo.js";
 import BatchCourse from "../models/batchCourse.js";
 import Batch from "../models/batch.js";
@@ -13,7 +14,6 @@ import bcrypt from "bcryptjs";
 import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
-import schedule from "../models/schedule.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -329,7 +329,10 @@ export const updateDeleteQuery = async (req, res) => {
     deleteQuery.updated = true;
     await deleteQuery.save();
     if (status === true) {
-      const student = await Student.findOne({ email: code }, { batchCode: 1 });
+      const student = await Student.findOne(
+        { email: code },
+        { batchCode: 1, assignment: 1 }
+      ).populate("assignment");
       for (let i = 0; i < student.batchCode.length; i++) {
         const batch = await Batch.findOne(
           { batchCode: student.batchCode[i] },
@@ -340,6 +343,9 @@ export const updateDeleteQuery = async (req, res) => {
           batch.students.splice(index, 1);
         }
         await batch.save();
+      }
+      for (let i = 0; i < student.assignment.length; i++) {
+        await StudentAssignment.findByIdAndDelete(student.assignment[i]._id);
       }
 
       student.remove();
@@ -1440,7 +1446,7 @@ export const addAssignment = async (req, res) => {
 
     await newAssignment.save();
 
-    const newBatchAssignment = {
+    const temp = {
       assignmentCode: assignmentCode,
       assignmentName: assignmentName,
       assignmentPdf: assignmentPdf,
@@ -1453,7 +1459,13 @@ export const addAssignment = async (req, res) => {
           currBatch.courses[i]._id,
           { assignment: 1 }
         );
-        batchCourse.assignment.push(newBatchAssignment);
+        const newBatchAssignment = await new BatchAssignment({
+          assignmentName: temp.assignmentName,
+          assignmentCode: temp.assignmentCode,
+          assignmentPdf: temp.assignmentPdf,
+        });
+        await newBatchAssignment.save();
+        batchCourse.assignment.push(newBatchAssignment._id);
         await batchCourse.save();
       }
     }
@@ -1482,7 +1494,7 @@ export const getStudentByAssignmentCode = async (req, res) => {
           email: assignment.student[i].email,
         },
         { assignment: 1, email: 1, firstName: 1, lastName: 1, avatar: 1 }
-      );
+      ).populate("assignment");
       if (student) {
         const assignmentPdf = student.assignment.filter((item) => {
           return item.assignmentCode === assignmentCode;
@@ -1526,7 +1538,10 @@ export const addScore = async (req, res) => {
       return res.status(404).json(errors);
     }
 
-    const student = await Student.findOne({ email }, { assignment: 1 });
+    const student = await Student.findOne(
+      { email },
+      { assignment: 1 }
+    ).populate("assignment");
     if (student === null) {
       errors.noAssignmentError = "No Student Found";
       return res.status(404).json(errors);
@@ -1534,8 +1549,12 @@ export const addScore = async (req, res) => {
 
     for (let i = 0; i < student.assignment.length; i++) {
       if (student.assignment[i].assignmentCode === assignmentCode) {
-        student.assignment[i].checkedAssignment = checkedAssignment;
-        student.assignment[i].score = score;
+        const studentAssignment = await StudentAssignment.findById(
+          student.assignment[i]._id
+        );
+        studentAssignment.checkedAssignment = checkedAssignment;
+        studentAssignment.score = score;
+        await studentAssignment.save();
       }
     }
 

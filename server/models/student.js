@@ -45,10 +45,8 @@ const studentSchema = new Schema({
   },
   assignment: [
     {
-      assignmentCode: { type: String },
-      studentAnswer: { type: String },
-      checkedAssignment: { type: String },
-      score: { type: Number, default: 0 },
+      type: Schema.Types.ObjectId,
+      ref: "studentAssignment",
     },
   ],
   attendance: [

@@ -3,9 +3,8 @@ const { Schema } = mongoose;
 const batchCourseSchema = new Schema({
   assignment: [
     {
-      assignmentName: { type: String },
-      assignmentCode: { type: String },
-      assignmentPdf: { type: String },
+      type: Schema.Types.ObjectId,
+      ref: "batchAssignment",
     },
   ],
   courseName: {
