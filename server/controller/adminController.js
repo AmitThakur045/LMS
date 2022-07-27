@@ -1045,7 +1045,11 @@ export const getBatch = async (req, res) => {
       }
     )
       .populate("schedule")
-      .populate("courses", "courseCode courseName assignment complete");
+      .populate({
+        path: "courses",
+        select: "courseCode courseName assignment complete",
+        populate: { path: "assignment" },
+      });
 
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
@@ -1452,7 +1456,10 @@ export const addAssignment = async (req, res) => {
       assignmentPdf: assignmentPdf,
     };
 
-    const currBatch = await Batch.findOne({ batchCode }, { courses: 1 });
+    const currBatch = await Batch.findOne(
+      { batchCode },
+      { courses: 1 }
+    ).populate("courses");
     for (let i = 0; i < currBatch.courses.length; i++) {
       if (currBatch.courses[i].courseCode === courseCode) {
         const batchCourse = await BatchCourse.findById(

@@ -71,6 +71,7 @@ const Main = () => {
 
     setCurrentList(item.assignment);
   };
+  console.log(batchData);
 
   return (
     <>
