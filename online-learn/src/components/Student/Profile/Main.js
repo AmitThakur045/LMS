@@ -284,7 +284,7 @@ const Main = ({ courseList, learner, batch }) => {
                         <div className="w-full">
                           <BorderLinearProgress
                             variant="determinate"
-                            value={assignment.score}
+                            value={assignment.score * 10}
                           />
                         </div>
                         <p className="text-primary text-[12px]">
