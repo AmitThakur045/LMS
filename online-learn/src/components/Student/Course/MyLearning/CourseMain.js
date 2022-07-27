@@ -39,11 +39,15 @@ const CourseMain = ({ batchData }) => {
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
-                        id="section"
-                      >
+                        id="section">
                         <div className="flex items-center space-x-10 ">
                           <div className={` flex justify-center items-center`}>
-                            <div className="h-3 w-3 bg-[#111111] rounded-full"></div>
+                            <div
+                              className={`h-3 w-3 ${
+                                section.sectionCompleted
+                                  ? "bg-[#0bb288]"
+                                  : "bg-[#111111]"
+                              } rounded-full`}></div>
                           </div>
                           <div className="w-full font-semibold">
                             {section.sectionName}
@@ -56,13 +60,16 @@ const CourseMain = ({ batchData }) => {
                             <AccordionSummary
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls="panel1a-content"
-                              id="lesson"
-                            >
+                              id="lesson">
                               <div className="flex items-center space-x-10 ">
                                 <div
-                                  className={` flex justify-center items-center`}
-                                >
-                                  <div className="h-3 w-3 bg-[#7d7d7d] rounded-full"></div>
+                                  className={` flex justify-center items-center`}>
+                                  <div
+                                    className={`h-3 w-3 ${
+                                      lesson.lessonCompleted
+                                        ? "bg-[#0bb288]"
+                                        : "bg-[#7d7d7d]"
+                                    } rounded-full`}></div>
                                 </div>
                                 <div className="w-full font-semibold">
                                   {lesson.lessonName}
@@ -76,8 +83,7 @@ const CourseMain = ({ batchData }) => {
                                   setShowVideo(true);
                                   setVideo(lesson.video);
                                 }}
-                                className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal"
-                              >
+                                className="rounded-bl-lg rounded-br-lg cursor-pointer bg-[#4864F6] flex justify-between items-center px-4 py-2 text-white text-sm font-normal">
                                 <div className="flex items-center space-x-3">
                                   <PlayCircleOutlineIcon fontSize="medium" />
 
