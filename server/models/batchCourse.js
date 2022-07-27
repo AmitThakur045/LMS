@@ -19,21 +19,7 @@ const batchCourseSchema = new Schema({
     lessonCompleted: { type: Number },
     totalLesson: { type: Number },
   },
-  lessonVideo: [
-    {
-      sectionNumber: { type: Number },
-      sectionName: { type: String },
-      sectionCompleted: { type: Boolean, default: false },
-      lesson: [
-        {
-          lessonNumber: { type: Number },
-          lessonName: { type: String },
-          video: { type: String },
-          lessonCompleted: { type: Boolean, default: false },
-        },
-      ],
-    },
-  ],
+  lessonVideo: [{ type: Schema.Types.ObjectId, ref: "batchLessonVideo" }],
 });
 
 export default mongoose.model("batchCourse", batchCourseSchema);

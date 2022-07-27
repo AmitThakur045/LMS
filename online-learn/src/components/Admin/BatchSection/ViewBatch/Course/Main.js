@@ -85,6 +85,8 @@ const Main = () => {
     }
   }, [courses]);
 
+  console.log(batch);
+
   return (
     <>
       {isLoading ? (

@@ -333,7 +333,12 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
         organizationName: 1,
         courses: 1,
       }
-    ).populate("courses", "courseName courseCode complete lessonVideo");
+    )
+    .populate({
+      path: "courses",
+      select: "courseCode courseName lessonVideo complete",
+      populate: { path: "lessonVideo" },
+    });
 
     if (batch === null) {
       errors.noBatchError = "No Batch Found";

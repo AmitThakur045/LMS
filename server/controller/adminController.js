@@ -3,6 +3,7 @@ import DeleteQuery from "../models/deleteQuery.js";
 import Student from "../models/student.js";
 import Schedule from "../models/schedule.js";
 import BatchAssignment from "../models/batchAssignment.js";
+import BatchLessonVideo from "../models/batchLessonVideo.js";
 import BatchCourse from "../models/batchCourse.js";
 import Batch from "../models/batch.js";
 import Attendance from "../models/attendance.js";
@@ -431,7 +432,7 @@ export const addStudentInBatch = async (req, res) => {
     const batch = await Batch.findOne(
       { batchCode },
       { students: 1, courses: 1 }
-    ).populate("courses");
+    ).populate("courses", "courseCode");
 
     let alreadyStudent = batch.students.find((em) => em === email);
     if (alreadyStudent !== email) {
@@ -855,9 +856,17 @@ export const addBatch = async (req, res) => {
           };
           temp1.lesson.push(temp2);
         }
-        cou.lessonVideo.push(temp1);
+        const newBatchLessonVideo = await new BatchLessonVideo({
+          sectionNumber: temp1.sectionNumber,
+          sectionName: temp1.sectionName,
+          sectionCompleted: temp1.sectionCompleted,
+          lesson: temp1.lesson,
+        });
+        await newBatchLessonVideo.save();
+        cou.lessonVideo.push(newBatchLessonVideo._id);
       }
       cou.complete.totalLesson = sum;
+
       const newBatchCourse = await new BatchCourse({
         courseCode: cou.courseCode,
         courseName: cou.courseName,
@@ -945,7 +954,10 @@ export const getBatchesByBatchCode = async (req, res) => {
     for (let i = 0; i < allBatches.length; i++) {
       const batch = await Batch.findOne({
         batchCode: allBatches[i].value,
-      }).populate("courses");
+      }).populate({
+        path: "courses",
+        populate: { path: "lessonVideo" },
+      });
       list.push(batch);
     }
 
@@ -1052,7 +1064,12 @@ export const getBatchLessonVideo = async (req, res) => {
         organizationName: 1,
         courses: 1,
       }
-    ).populate("courses", "courseCode courseName lessonVideo complete");
+    ).populate({
+      path: "courses",
+      select: "courseCode courseName lessonVideo complete",
+      populate: { path: "lessonVideo" },
+    });
+
     if (batch === null) {
       errors.noBatchError = "No Batch Found";
       return res.status(404).json(errors);
@@ -1110,31 +1127,36 @@ export const updateCourseData = async (req, res) => {
     let index = batch.courses.findIndex(
       (course) => course.courseCode === courseCode
     );
-    const batchCourse = await BatchCourse.findById(batch.courses[index]._id);
+    const batchCourse = await BatchCourse.findById(batch.courses[index]._id, {
+      lessonVideo: 1,
+      complete: 1,
+    }).populate("lessonVideo");
+
     for (let i = 0; i < lessonVideo.length; i++) {
+      const batchLessonVideo = await BatchLessonVideo.findById(
+        lessonVideo[i]._id
+      );
       if (
         lessonVideo[i].sectionCompleted !==
         batchCourse.lessonVideo[i].sectionCompleted
       ) {
-        batchCourse.lessonVideo[i].sectionCompleted =
-          lessonVideo[i].sectionCompleted;
+        batchLessonVideo.sectionCompleted = lessonVideo[i].sectionCompleted;
       }
       for (let j = 0; j < lessonVideo[i].lesson.length; j++) {
         if (
           lessonVideo[i].lesson[j].lessonCompleted !==
-          batchCourse.lessonVideo[i].lesson[j].lessonCompleted
+          batchLessonVideo.lesson[j].lessonCompleted
         ) {
-          batchCourse.lessonVideo[i].lesson[j].lessonCompleted =
+          batchLessonVideo.lesson[j].lessonCompleted =
             lessonVideo[i].lesson[j].lessonCompleted;
         }
         if (
-          lessonVideo[i].lesson[j].video !==
-          batchCourse.lessonVideo[i].lesson[j].video
+          lessonVideo[i].lesson[j].video !== batchLessonVideo.lesson[j].video
         ) {
-          batchCourse.lessonVideo[i].lesson[j].video =
-            lessonVideo[i].lesson[j].video;
+          batchLessonVideo.lesson[j].video = lessonVideo[i].lesson[j].video;
         }
       }
+      await batchLessonVideo.save();
     }
 
     if (complete.sectionCompleted !== batchCourse.complete.sectionCompleted) {
@@ -1428,7 +1450,8 @@ export const addAssignment = async (req, res) => {
     for (let i = 0; i < currBatch.courses.length; i++) {
       if (currBatch.courses[i].courseCode === courseCode) {
         const batchCourse = await BatchCourse.findById(
-          currBatch.courses[0]._id
+          currBatch.courses[i]._id,
+          { assignment: 1 }
         );
         batchCourse.assignment.push(newBatchAssignment);
         await batchCourse.save();
