@@ -16,6 +16,8 @@ import {
   GET_PROBLEM_CATEGORIES,
   ADD_PROBLEM_CATEGORY,
   DELETE_PROBLEM_CATEGORY,
+  GET_BATCH_THREAD,
+  GET_BATCH_PROBLEM_CATEGORIES,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -161,7 +163,11 @@ export const deleteProblemCategory = (formData) => async (dispatch) => {
 export const getThreads = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getThreads(formData);
-    dispatch({ type: GET_THREAD, payload: data });
+    if (formData.communityType === "Batch") {
+      dispatch({ type: GET_BATCH_THREAD, payload: data });
+    } else {
+      dispatch({ type: GET_THREAD, payload: data });
+    }
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
@@ -169,7 +175,11 @@ export const getThreads = (formData) => async (dispatch) => {
 export const getProblemCategories = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getProblemCategories(formData);
-    dispatch({ type: GET_PROBLEM_CATEGORIES, payload: data });
+    if (formData.communityType === "Batch") {
+      dispatch({ type: GET_BATCH_PROBLEM_CATEGORIES, payload: data });
+    } else {
+      dispatch({ type: GET_PROBLEM_CATEGORIES, payload: data });
+    }
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

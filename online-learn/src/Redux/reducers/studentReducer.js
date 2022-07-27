@@ -15,6 +15,8 @@ import {
   GET_PROBLEM_CATEGORIES,
   ADD_PROBLEM_CATEGORY,
   DELETE_PROBLEM_CATEGORY,
+  GET_BATCH_THREAD,
+  GET_BATCH_PROBLEM_CATEGORIES,
 } from "../actionTypes";
 
 const initialState = {
@@ -30,7 +32,9 @@ const initialState = {
   threadAdded: false,
   threadReplyAdded: false,
   threads: [],
+  batchThreads: [],
   problemCategories: [],
+  batchProblemCategories: [],
   problemCategoryAdded: false,
   problemCategoryDeleted: false,
 };
@@ -109,10 +113,20 @@ const studentReducer = (state = initialState, action) => {
         ...state,
         threads: action.payload,
       };
+    case GET_BATCH_THREAD:
+      return {
+        ...state,
+        batchThreads: action.payload,
+      };
     case GET_PROBLEM_CATEGORIES:
       return {
         ...state,
         problemCategories: action.payload,
+      };
+    case GET_BATCH_PROBLEM_CATEGORIES:
+      return {
+        ...state,
+        batchProblemCategories: action.payload,
       };
     default:
       return state;

@@ -21,8 +21,10 @@ const StudentBatchCommunity = () => {
   const navigate = useNavigate();
   const batch = useSelector((state) => state.admin.batch);
   const [batchData, setBatchData] = useState({});
-  const allThreads = useSelector((state) => state.student.threads);
-  const allCategories = useSelector((state) => state.student.problemCategories);
+  const allThreads = useSelector((state) => state.student.batchThreads);
+  const allCategories = useSelector(
+    (state) => state.student.batchProblemCategories
+  );
   const [threads, setThreads] = useState([]);
   const [problemCategory, setProblemCategory] = useState([]);
   const [error, setError] = useState({});
