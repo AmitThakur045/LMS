@@ -46,7 +46,7 @@ const CertificateMain = ({ allAssignment }) => {
                   keyId === i
                     ? "from-[#00668a] to-[#047880]"
                     : "from-[#0085B4] to-[#009DA7]"
-                }   cursor-pointer rounded-lg flex flex-col px-4 py-4 text-white`}>
+                }   cursor-pointer rounded-lg flex flex-col px-4 py-4 max-h-[11rem] text-white`}>
                 <div className="flex space-x-1 text-[20px] font-[600]">
                   <h1>{i < 10 ? `0${i + 1}` : "i+1"}</h1>
                   <span>:</span>
