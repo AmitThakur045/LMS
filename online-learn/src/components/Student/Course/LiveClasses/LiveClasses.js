@@ -34,12 +34,21 @@ const localizer = dateFnsLocalizer({
 const LiveClasses = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const [isLoading, setIsLoading] = useState(true);
+  const store = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [allEvents, setAllEvents] = useState([]);
   const events = useSelector((state) => state.student.allEvents);
   const batch = useSelector((state) => state.admin.batch);
   const [batchData, setBatchData] = useState({});
+  const [error, setError] = useState({});
+  useEffect(() => {
+    if (Object.keys(store.errors).length !== 0) {
+      setIsLoading(false);
+      setError(store.errors);
+    }
+  }, [store.errors]);
+
   useEffect(() => {
     if (events.length !== 0) {
       if (Object.keys(batch).length !== 0) {

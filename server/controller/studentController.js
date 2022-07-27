@@ -137,6 +137,10 @@ export const getAllEvents = async (req, res) => {
         { batchCode: batchCode[i] },
         { schedule: 1 }
       ).populate("schedule");
+      if(batch.schedule.length === 0){
+        return res.status(404).json({
+          noEventError: "No events found"
+        })
       batch.schedule.forEach((element) => {
         data.push(element);
       });
