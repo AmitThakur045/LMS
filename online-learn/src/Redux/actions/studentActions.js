@@ -80,7 +80,7 @@ export const generateOtp = (formData) => async (dispatch) => {
 export const studentSignUp = (formData) => async (dispatch) => {
   try {
     const { data } = await api.studentSignUp(formData);
-    alert("Student Added Succesfully");
+
     dispatch({ type: SIGN_UP, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });

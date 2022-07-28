@@ -129,7 +129,9 @@ const StudentLogin = () => {
       setOtp(["", "", "", ""]);
       if (store.student.studentSignedUp) {
         setShowModal(false);
-
+        setEmail(value.email);
+        setPassword(value.password);
+        setAnimate(false);
         setValue({
           firstName: "",
           lastName: "",
@@ -369,7 +371,7 @@ const StudentLogin = () => {
             <img src={logo} className="md:hidden block h-[8rem]" alt="" />
             <div className="space-y-2">
               <h1 className="font-bold text-[30px]">Student</h1>
-              <h1 className="font-bold m-0 text-[18px]">Login In</h1>
+              <h1 className="font-bold m-0 text-[18px]">Log In</h1>
             </div>
             <div className="w-full space-y-3">
               <input
