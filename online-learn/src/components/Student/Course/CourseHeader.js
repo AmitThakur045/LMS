@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import PeopleIcon from "@mui/icons-material/People";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -49,19 +49,18 @@ const CourseHeader = ({ batchData }) => {
     setValue({ queryType: "", description: "", student: "", batchCode: "" });
   };
 
-  //choose the screen size
-  const handleResize = () => {
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (window.innerWidth < 678) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     }
-  };
-
-  // create an event listener
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, [window.innerWidth]);
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("index"))) {
@@ -84,14 +83,16 @@ const CourseHeader = ({ batchData }) => {
         open={openHelpModal}
         onClose={handleHelpModalClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <div className="flex flex-col space-y-4 h-[15rem]">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Raise a Query</h1>
               <div
                 onClick={handleHelpModalClose}
-                className="self-end cursor-pointer w-[5%]">
+                className="self-end cursor-pointer w-[5%]"
+              >
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -110,7 +111,8 @@ const CourseHeader = ({ batchData }) => {
                   label="Sub Admin"
                   onChange={(e) =>
                     setValue({ ...value, queryType: e.target.value })
-                  }>
+                  }
+                >
                   <MenuItem value="tech">Tech</MenuItem>
                   <MenuItem value="nontech">Non-Tech</MenuItem>
                 </Select>
@@ -133,7 +135,8 @@ const CourseHeader = ({ batchData }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary">
+                color="primary"
+              >
                 Add
               </Button>
             </form>
@@ -165,13 +168,15 @@ const CourseHeader = ({ batchData }) => {
         <div className="md:flex-[0.2] rounded-tr-2xl h-full flex">
           <NavLink
             to="/studentbatchcommunity"
-            className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center">
+            className="bg-[#C4C4C4] h-full flex flex-col items-center flex-[0.4] justify-center"
+          >
             <PeopleIcon fontSize="medium" className="" />
             <p className="text-sm lg:text-base">Community</p>
           </NavLink>
           <div
             onClick={handleHelpModalOpen}
-            className="text-white h-full flex flex-col items-center flex-[0.4] justify-center cursor-pointer">
+            className="text-white h-full flex flex-col items-center flex-[0.4] justify-center cursor-pointer"
+          >
             <HelpOutlineIcon fontSize="medium" className="" />
             <p className="text-sm lg:text-base">Help</p>
           </div>

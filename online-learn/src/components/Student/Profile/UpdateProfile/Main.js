@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_PRESIGNED_URL, SET_ERRORS } from "../../../../Redux/actionTypes";
 import { useNavigate } from "react-router-dom";
@@ -23,18 +23,18 @@ const Main = ({ learner }) => {
   const dispatch = useDispatch();
   const s3PresignedUrl = store.aws.presignedUrl;
 
-  // to check the window size and adjust sidebar
-  const handleResize = () => {
-    // let element = document.getElementById("form");
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (window.innerWidth < 678) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     }
-  };
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, [window.innerWidth]);
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   // adding the absolte property to form when window width is <= 678px
   useEffect(() => {

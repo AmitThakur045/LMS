@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
@@ -67,18 +67,19 @@ const Main = ({ threads, error, categories }) => {
     alert("OOPS! Your session expired. Please Login again");
     navigate("/login");
   };
-  //choose the screen size
-  const handleResize = () => {
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (window.innerWidth < 678) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     }
-  };
-  // create an event listener
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, [window.innerWidth]);
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   const logout = () => {
     navigate("/login/adminLogin");
@@ -215,7 +216,7 @@ const Main = ({ threads, error, categories }) => {
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>
-        <div className="flex md:flex-row flex-col space-x-8 space-y-6 h-full">
+        <div className="flex md:flex-row flex-col-reverse space-x-8 space-y-6 h-full">
           <div className="flex flex-col flex-[0.68]  p-3 space-y-3">
             <div className="w-auto rounded-3xl shadow-lg p-8 mt-4 space-y-2">
               <div>

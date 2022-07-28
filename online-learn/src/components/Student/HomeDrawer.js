@@ -64,7 +64,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
     }
   }, []);
   return (
-    <div className="w-[20rem] h-full bg-[#1a1a1a]">
+    <div className="w-[5rem] h-full bg-[#1a1a1a] absolute">
       <Drawer
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -83,12 +83,12 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
               <p className="lg:text-sm text-xs">Courses</p>
             </NavLink>
             <NavLink
-              to="/resources"
+              to="/resource"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
               }>
               <DiamondIcon className="lg:h-5 h-3" alt="" />
-              <p className="lg:text-sm text-xs">Resources</p>
+              <p className="lg:text-sm text-xs">Resource</p>
             </NavLink>
             <NavLink
               to="/community"

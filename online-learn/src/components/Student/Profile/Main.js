@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -64,16 +64,18 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const handleResize = () => {
-    if (window.innerWidth < 678) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (window.innerWidth < 678) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     }
-  };
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, [window.innerWidth]);
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   function calculateAssignmentScore() {
     let score = 0;

@@ -6,7 +6,6 @@ const Resource = () => {
   return (
     <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
       <HomeSidebar />
-
       <Main />
     </div>
   );
