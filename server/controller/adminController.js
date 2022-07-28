@@ -66,7 +66,10 @@ export const generateOtpForPasswordResetAdmin = async (req, res) => {
 
     sendMail({
       to: email,
-      from: "at7129652@gmail.com",
+      from: {
+        name: "Besslani",
+        email: "at7129652@gmail.com",
+      },
       subject: "Welcome to Bessalani",
       text: `Welcome to Bessalani Your OTP is ${newOtp}`,
       html: `<h1>Welcome to Bessalani</h1>
@@ -106,7 +109,7 @@ export const generateOtp = async (req, res) => {
     const { email } = req.body;
 
     const errors = { adminError: String };
-    const existingAdmin = await Admin.countDocuments({ email });
+    const existingAdmin = await Admin.findOne({ email }, { password: 1 });
 
     if (!existingAdmin) {
       errors.adminError = "Admin does not exist";
@@ -117,7 +120,10 @@ export const generateOtp = async (req, res) => {
 
     sendMail({
       to: email,
-      from: "at7129652@gmail.com",
+      from: {
+        name: "Besslani",
+        email: "at7129652@gmail.com",
+      },
       subject: "Welcome to Bessalani",
       text: `Welcome to Bessalani Your OTP is ${newOtp}`,
       html: `<h1>Welcome to Bessalani</h1>
@@ -883,12 +889,15 @@ export const addBatch = async (req, res) => {
       courseData.push(newBatchCourse._id);
     }
 
+    // Adding students to the batch
     for (let i = 0; i < students.length; i++) {
       if (students[i][0] !== "") {
         const student = await Student.findOne(
           { email: students[i][0] },
           { batchCode: 1, attendance: 1, dateOfJoining: 1 }
         );
+
+        // If student laready singup for the batch
         if (student) {
           let alreadyBatch = student.batchCode.find(
             (code) => code === batchCode
@@ -904,6 +913,20 @@ export const addBatch = async (req, res) => {
           var d = Date(Date.now());
           student.dateOfJoining = d.toString();
           await student.save();
+        } else {
+          // if Student did not signup for the batch send an email to remid them
+          const email = students[i][0];
+
+          sendMail({
+            to: email,
+            from: {
+              name: "Besslani",
+              email: "at7129652@gmail.com",
+            },
+            subject: "SignUp to Bessalani",
+            text: `Please signup to Bessalani for the batch allocation at your earliest.`,
+            html: `<h1>Please signup to Bessalani for the batch allocation at your earliest.</h1>`,
+          });
         }
       }
     }

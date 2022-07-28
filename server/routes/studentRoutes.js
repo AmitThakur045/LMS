@@ -10,6 +10,7 @@ import {
   studentSignUp,
   getBatchLessonVideoByCourse,
   updateLearner,
+  resetPasswordStudent,
   forgotPassword,
   generateOtpForPasswordReset,
   addThread,
@@ -30,6 +31,7 @@ router.post("/getassignmentbybatchcode", auth, getAssignmentByBatchCode);
 router.post("/submitassignment", auth, submitAssignment);
 router.post("/getbatchlessonvideobycourse", auth, getBatchLessonVideoByCourse);
 router.post("/updatelearner", auth, updateLearner);
+router.post("/resetpasswordstudent", auth, resetPasswordStudent);
 router.post("/generateotpforpasswordreset", generateOtpForPasswordReset);
 router.post("/forgotpassword", forgotPassword);
 router.post("/addthread", addThread);

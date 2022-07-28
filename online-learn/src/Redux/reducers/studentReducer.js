@@ -17,6 +17,7 @@ import {
   DELETE_PROBLEM_CATEGORY,
   GET_BATCH_THREAD,
   GET_BATCH_PROBLEM_CATEGORIES,
+  RESET_PASSWORD,
 } from "../actionTypes";
 
 const initialState = {
@@ -29,6 +30,7 @@ const initialState = {
   otp: null,
   learnerUpdated: false,
   forgotPassword: false,
+  resetPassword: false,
   threadAdded: false,
   threadReplyAdded: false,
   threads: [],
@@ -87,6 +89,11 @@ const studentReducer = (state = initialState, action) => {
       return {
         ...state,
         forgotPassword: action.payload,
+      };
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        resetPassword: action.payload,
       };
     case ADD_THREAD:
       return {
