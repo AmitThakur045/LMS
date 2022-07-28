@@ -7,6 +7,7 @@ import { getBatch, getStudent } from "../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import decode from "jwt-decode";
+import { SET_ERRORS } from "../../../Redux/actionTypes";
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
@@ -18,10 +19,13 @@ const Profile = () => {
   const batch = useSelector((state) => state.admin.batch);
   const [courseList, setCourseList] = useState([]);
   const [learner, setLearner] = useState({});
-
+  const [noBatch, setNoBatch] = useState(false);
   useEffect(() => {
     if (Object.keys(student).length !== 0) {
       if (courses.length !== 0 && Object.keys(batch).length !== 0) {
+        setIsLoading(false);
+      }
+      if (noBatch) {
         setIsLoading(false);
       }
       setLearner(student);
@@ -61,17 +65,22 @@ const Profile = () => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      dispatch(
-        getCourseByBatchCode({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
+      dispatch({ type: SET_ERRORS, payload: {} });
       dispatch(getStudent({ email: user.result.email }));
-      dispatch(
-        getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
+      if (user.result.batchCode.length !== 0) {
+        dispatch(
+          getCourseByBatchCode({
+            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          })
+        );
+        dispatch(
+          getBatch({
+            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          })
+        );
+      } else {
+        setNoBatch(true);
+      }
     }
   }, []);
   return (
@@ -84,7 +93,12 @@ const Profile = () => {
         <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
           <HomeSidebar />
           {user !== null && (
-            <Main courseList={courseList} learner={learner} batch={batch} />
+            <Main
+              courseList={courseList}
+              learner={learner}
+              batch={batch}
+              noBatch={noBatch}
+            />
           )}
         </div>
       )}

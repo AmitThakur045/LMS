@@ -23,7 +23,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "light" ? "#FFB800" : "#308fe8",
   },
 }));
-const Main = ({ courseList, learner, batch }) => {
+const Main = ({ courseList, learner, batch, noBatch }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleResize = () => {
@@ -134,7 +134,7 @@ const Main = ({ courseList, learner, batch }) => {
                     value={learner.dob}
                   />
                   <TextField
-                    aria-disabled
+                    disabled
                     type="number"
                     size="small"
                     id="outlined-basic"
@@ -155,16 +155,29 @@ const Main = ({ courseList, learner, batch }) => {
                     className="bg-white w-full"
                     value={learner.email}
                   />
-                  <TextField
-                    aria-disabled
-                    type="text"
-                    size="small"
-                    id="outlined-basic"
-                    label="Active Batch Code"
-                    variant="outlined"
-                    className="bg-white w-full"
-                    value={learner.batchCode[learner.batchCode.length - 1]}
-                  />
+                  {noBatch ? (
+                    <TextField
+                      aria-disabled
+                      type="text"
+                      size="small"
+                      id="outlined-basic"
+                      label="Active Batch Code"
+                      variant="outlined"
+                      className="bg-white w-full"
+                      value={"No Batch"}
+                    />
+                  ) : (
+                    <TextField
+                      aria-disabled
+                      type="text"
+                      size="small"
+                      id="outlined-basic"
+                      label="Active Batch Code"
+                      variant="outlined"
+                      className="bg-white w-full"
+                      value={learner.batchCode[learner.batchCode.length - 1]}
+                    />
+                  )}
                 </div>
 
                 {/* performance table  848484 */}
@@ -174,7 +187,11 @@ const Main = ({ courseList, learner, batch }) => {
 
                     <div className="flex flex-row justify-between w-full pr-2">
                       <h1 className="font-semibold">Performance:</h1>
-                      <p>{learner.performance}</p>
+                      {noBatch ? (
+                        <p className="text-red-600">No Batch Found!</p>
+                      ) : (
+                        <p>{learner.performance}</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center space-x-4 px-3 py-[0.5rem] bg-[#F6F6F6]">
@@ -182,9 +199,13 @@ const Main = ({ courseList, learner, batch }) => {
 
                     <div className="flex flex-row justify-between w-full pr-2">
                       <h1 className="font-semibold">Total Attendance:</h1>
-                      <p>
-                        {calculateTotalAttendance()}/{batch.schedule.length}
-                      </p>
+                      {noBatch ? (
+                        <p className="text-red-600">No Batch Found!</p>
+                      ) : (
+                        <p>
+                          {calculateTotalAttendance()}/{batch.schedule.length}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center space-x-4 bg-[#EEEDED] px-3 py-[0.5rem]">
@@ -194,10 +215,14 @@ const Main = ({ courseList, learner, batch }) => {
                       <h1 className="font-semibold">
                         Total Assignments Submitted:
                       </h1>
-                      <p>
-                        {learner.assignment.length}/
-                        {calculateTotalAssignments()}
-                      </p>
+                      {noBatch ? (
+                        <p className="text-red-600">No Batch Found!</p>
+                      ) : (
+                        <p>
+                          {learner.assignment.length}/
+                          {calculateTotalAssignments()}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center space-x-4 px-3 py-[0.5rem] bg-[#F6F6F6] rounded-b-md">
@@ -205,7 +230,11 @@ const Main = ({ courseList, learner, batch }) => {
 
                     <div className="flex flex-row justify-between w-full pr-2">
                       <h1 className="font-semibold">Total Assignment Score:</h1>
-                      <p>{calculateAssignmentScore()}</p>
+                      {noBatch ? (
+                        <p className="text-red-600">No Batch Found!</p>
+                      ) : (
+                        <p>{calculateAssignmentScore()}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -223,7 +252,7 @@ const Main = ({ courseList, learner, batch }) => {
                     Course Wise Attendance
                   </h1>
                   <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {learner.attendance.map((course, idx) => (
+                    {learner.attendance?.map((course, idx) => (
                       <div key={course.courseCode} className="flex flex-col">
                         <h1 className="text-primary text-[12px]">
                           {course.courseCode}
@@ -253,7 +282,7 @@ const Main = ({ courseList, learner, batch }) => {
                 <div className="flex  rounded-xl flex-col bg-white py-5 ">
                   <h1 className="self-center font-bold text-lg">All Batches</h1>
                   <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                    {learner.batchCode.map((batch, idx) => (
+                    {learner.batchCode?.map((batch, idx) => (
                       <div
                         key={batch}
                         className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all">
@@ -275,7 +304,7 @@ const Main = ({ courseList, learner, batch }) => {
                   Assignment Wise Score
                 </h1>
                 <div className="flex flex-col space-y-6 pt-3 overflow-y-auto px-10 h-[20rem]">
-                  {learner.assignment.map((assignment, idx) => (
+                  {learner.assignment?.map((assignment, idx) => (
                     <div key={idx} className="flex flex-col">
                       <h1 className="text-primary text-[12px]">
                         {assignment.assignmentCode}
