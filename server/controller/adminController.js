@@ -15,6 +15,18 @@ import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
 
+// Function to generate OTP
+function generateOTP() {
+  // Declare a digits variable 
+  // which stores all digits
+  var digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < 4; i++ ) {
+      OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+}
+
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
   const errors = { emailError: String, passwordError: String };
@@ -62,7 +74,7 @@ export const generateOtpForPasswordResetAdmin = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    const newOtp = Math.floor(Math.random() * 10000);
+    const newOtp = generateOTP();
 
     sendMail({
       to: email,
@@ -116,7 +128,7 @@ export const generateOtp = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    const newOtp = Math.floor(Math.random() * 10000);
+    const newOtp = generateOTP();
 
     sendMail({
       to: email,
