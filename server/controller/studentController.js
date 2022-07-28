@@ -318,7 +318,7 @@ export const studentSignUp = async (req, res) => {
     });
     await newStudent.save();
 
-    return res.status(200).json("Student added successfully");
+    return res.status(200).json({ email: email, password: password });
   } catch (error) {
     res.status(500).json(error);
   }
