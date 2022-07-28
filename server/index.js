@@ -9,7 +9,7 @@ import studentRoutes from "./routes/studentRoutes.js";
 import awsRoutes from "./routes/awsRoutes.js";
 
 const app = express();
-dotenv.config({path: "./config/config.env"});
+dotenv.config({ path: "./config/config.env" });
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 // app.use(cors());

@@ -84,7 +84,9 @@ const StudentLogin = () => {
       setError({ email: "Email and Organization Name is required" });
       setLoading(false);
     } else {
-      dispatch(generateOtp({ email: value.email, organization: value.organization }));
+      dispatch(
+        generateOtp({ email: value.email, organization: value.organization })
+      );
     }
   };
   const [otpError, setOtpError] = useState(false);
@@ -274,7 +276,9 @@ const StudentLogin = () => {
                 placeholder="Organization Name"
                 required
                 value={value.organization}
-                onChange={(e) => setValue({ ...value, organization: e.target.value })}
+                onChange={(e) =>
+                  setValue({ ...value, organization: e.target.value })
+                }
               />
               <input
                 className="bg-[#eee] border-none py-[8px] px-[15px] w-full outline-none"

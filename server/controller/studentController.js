@@ -73,10 +73,6 @@ export const studentLogin = async (req, res) => {
       errors.passwordError = "Invalid Credentials";
       return res.status(404).json(errors);
     }
-    if (existingStudent.batchCode.length === 0) {
-      errors.batchError = "Wait for an Admin to appoint you a Batch";
-      return res.status(404).json(errors);
-    }
 
     const token = jwt.sign(
       {

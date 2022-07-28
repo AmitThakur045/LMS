@@ -7,6 +7,7 @@ import { getCourseByBatchCode } from "../../../Redux/actions/studentActions";
 import { getBatch } from "../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import NoBatch from "./NoBatch";
 const Home = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Home = () => {
   const batch = useSelector((state) => state.admin.batch);
   const [courseList, setCourseList] = useState([]);
   const [batchData, setBatchData] = useState({});
+  const [noBatch, setNoBatch] = useState(false);
 
   const logOut = () => {
     alert("OOPS! Your session expired. Please Login again");
@@ -49,16 +51,21 @@ const Home = () => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      dispatch(
-        getCourseByBatchCode({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
-      dispatch(
-        getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
-        })
-      );
+      if (user.result.batchCode.length === 0) {
+        setNoBatch(true);
+        setIsLoading(false);
+      } else {
+        dispatch(
+          getCourseByBatchCode({
+            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          })
+        );
+        dispatch(
+          getBatch({
+            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          })
+        );
+      }
     }
   }, []);
 
@@ -71,9 +78,10 @@ const Home = () => {
       ) : (
         <div className="bg-[#1a1a1a] w-full h-screen flex overflow-hidden">
           <HomeSidebar />
-          {user !== null && (
+          {user !== null && !noBatch && (
             <Main courseList={courseList} batchData={batchData} />
           )}
+          {user !== null && noBatch && <NoBatch />}
         </div>
       )}
     </>
