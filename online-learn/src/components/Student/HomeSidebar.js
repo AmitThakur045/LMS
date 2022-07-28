@@ -39,7 +39,7 @@ const HomeSidebar = () => {
             <p className="lg:text-sm text-xs">Courses</p>
           </NavLink>
           <NavLink
-            to="/resources"
+            to="/resource"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
             }>

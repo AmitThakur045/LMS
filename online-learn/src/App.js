@@ -41,6 +41,7 @@ import Profile from "./components/Student/Profile/Profile";
 import Labs from "./components/Student/Course/Labs/Labs";
 import UpdateProfile from "./components/Student/Profile/UpdateProfile/UpdateProfile";
 import AdminCommunity from "./components/Admin/CommunitySection/Community";
+import Resource from "./components/Student/Resource/Resource";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
       />
       <Route path="/community" exact element={<Community />} />
       <Route path="/profile" exact element={<Profile />} />
+      <Route path="/resource" exact element={<Resource />} />
       <Route path="/course" exact element={<Course />} />
       <Route path="/lab" exact element={<Labs />} />
       <Route
