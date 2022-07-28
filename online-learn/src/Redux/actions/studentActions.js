@@ -18,6 +18,7 @@ import {
   DELETE_PROBLEM_CATEGORY,
   GET_BATCH_THREAD,
   GET_BATCH_PROBLEM_CATEGORIES,
+  RESET_PASSWORD,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -106,6 +107,16 @@ export const updateLearner = (value, navigate) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+
+export const resetPasswordStudent = (value) => async (dispatch) => {
+  try {
+    const { data } = await api.resetPasswordStudent(value);   
+    alert("Password Reset Successfully");
+    dispatch({ type: RESET_PASSWORD, payload: true }); 
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+}
 
 export const forgotPassword = (value, navigate) => async (dispatch) => {
   try {

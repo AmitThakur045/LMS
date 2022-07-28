@@ -358,46 +358,12 @@ export const getBatchLessonVideoByCourse = async (req, res) => {
 
 export const updateLearner = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      contactNumber,
-      avatar,
-      email,
-      oldPassword,
-      newPassword,
-    } = req.body;
-    console.log(avatar);
+    const { firstName, lastName, contactNumber, avatar, email } = req.body;
     const updatedLearner = await Student.findOne(
       { email },
-      { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1, password: 1 }
+      { firstName: 1, lastName: 1, contactNumber: 1, avatar: 1 }
     );
     const errors = { passwordError: String };
-
-    // check if old password lenght !== 0
-    if (oldPassword.length > 0) {
-      // check to compare old password with user password in db
-      const isPasswordCorrect = await bcrypt.compare(
-        oldPassword,
-        updatedLearner.password
-      );
-      // if old password is incorrect
-      if (!isPasswordCorrect) {
-        errors.passwordError = "Invalid Password";
-        return res.status(404).json(errors);
-      }
-
-      // if new password is not empty update the user password
-      if (newPassword.length > 0) {
-        let hashedPassword = await bcrypt.hash(newPassword, 10);
-        updatedLearner.password = hashedPassword;
-        await updatedLearner.save();
-      } else {
-        // if new password is empty
-        errors.passwordError = "New Password is required";
-        return res.status(404).json(errors);
-      }
-    }
 
     // if first name is not empty update the user first name
     if (firstName) {
@@ -426,6 +392,44 @@ export const updateLearner = async (req, res) => {
     res.status(200).json("Student Updated");
   } catch (error) {
     res.status(500).json(error.message);
+  }
+};
+
+export const resetPasswordStudent = async (req, res) => {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+    // console.log("req", req.body);
+    const errors = { passwordError: String };
+    const updatedLearner = await Student.findOne({ email }, { password: 1 });
+
+    // check if old password lenght !== 0
+    if (oldPassword.length > 0) {
+      // check to compare old password with user password in db
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        updatedLearner.password
+      );
+      // if old password is incorrect
+      if (!isPasswordCorrect) {
+        errors.passwordError = "Invalid Password";
+        return res.status(404).json(errors);
+      }
+
+      // if new password is not empty update the user password
+      if (newPassword.length > 0) {
+        let hashedPassword = await bcrypt.hash(newPassword, 10);
+        updatedLearner.password = hashedPassword;
+        await updatedLearner.save();
+      } else {
+        // if new password is empty
+        errors.passwordError = "New Password is required";
+        return res.status(404).json(errors);
+      }
+    }
+
+    res.status(200).json("Password Updated");
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 

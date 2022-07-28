@@ -51,9 +51,7 @@ const Main = ({ learner }) => {
     lastName: "",
     email: learner.email,
     avatar: "",
-    contactNumber: "",
-    oldPassword: "",
-    newPassword: "",
+    contactNumber: ""
   });
 
   const uploadImage = async (e) => {
@@ -98,9 +96,7 @@ const Main = ({ learner }) => {
       value.lastName === "" &&
       value.email === "" &&
       value.contactNumber === "" &&
-      value.avatar === "" &&
-      value.oldPassword === "" &&
-      value.newPassword === ""
+      value.avatar === ""
     ) {
       alert("Enter atleast one value");
       setLoading(false);
@@ -259,30 +255,6 @@ const Main = ({ learner }) => {
                 value={value.contactNumber}
                 onChange={(e) =>
                   setValue({ ...value, contactNumber: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex flex-col lg:flex-row justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
-              <TextField
-                type="text"
-                id="outlined-basic"
-                label="Old Password"
-                variant="outlined"
-                className="bg-[#F3F3F3] w-full"
-                value={value.oldPassword}
-                onChange={(e) =>
-                  setValue({ ...value, oldPassword: e.target.value })
-                }
-              />
-              <TextField
-                type="text"
-                id="outlined-basic"
-                label="New Password"
-                variant="outlined"
-                className="bg-[#F3F3F3] w-full"
-                value={value.newPassword}
-                onChange={(e) =>
-                  setValue({ ...value, newPassword: e.target.value })
                 }
               />
             </div>
