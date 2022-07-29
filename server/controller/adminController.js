@@ -1826,9 +1826,10 @@ export const updateBatchAdmin = async (req, res) => {
 export const addOrganizationName = async (req, res) => {
   try {
     const { organizationName, organizationEmails } = req.body;
+    let temp = organizationName.toLowerCase();
 
     const organization = await Organization.countDocuments({
-      organizationName,
+      organizationName: temp,
     });
     const errors = { organizationNameError: String };
     if (organization) {
@@ -1843,7 +1844,7 @@ export const addOrganizationName = async (req, res) => {
     }
 
     const newOrganization = await new Organization({
-      organizationName,
+      organizationName: temp,
       organizationEmails: emailsArray,
     });
     await newOrganization.save();

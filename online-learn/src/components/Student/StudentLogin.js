@@ -79,7 +79,7 @@ const StudentLogin = () => {
   const otpGenerate = (e) => {
     e.preventDefault();
     setLoading(true);
-    setShowModal(true);
+
     if (value.email.trim() === "" || value.password.trim() === "") {
       setError({ email: "Email and Organization Name is required" });
       setLoading(false);
@@ -109,6 +109,7 @@ const StudentLogin = () => {
   useEffect(() => {
     if (otpValue) {
       setLoading(false);
+
       setShowModal(true);
     }
   }, [otpValue]);

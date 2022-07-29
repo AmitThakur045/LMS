@@ -336,7 +336,9 @@ const Main = () => {
                   onChange={(e) => handleOrganizationNameChange(e)}>
                   <MenuItem value="All">All</MenuItem>
                   {allOrganizationName.map((organization) => (
-                    <MenuItem value={organization.organizationName}>
+                    <MenuItem
+                      className="capitalize"
+                      value={organization.organizationName}>
                       {organization.organizationName}
                     </MenuItem>
                   ))}

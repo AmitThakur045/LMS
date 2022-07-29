@@ -189,7 +189,9 @@ const Main = () => {
                     setValue({ ...value, organizationName: e.target.value })
                   }>
                   {allOrganizationName.map((organization) => (
-                    <MenuItem value={organization.organizationName}>
+                    <MenuItem
+                      className="capitalize"
+                      value={organization.organizationName}>
                       {organization.organizationName}
                     </MenuItem>
                   ))}

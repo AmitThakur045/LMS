@@ -154,7 +154,9 @@ const Main = () => {
                   onChange={(e) =>
                     setValues({ ...values, organizationName: e.target.value })
                   }>
-                  <MenuItem value={user.result.organizationName}>
+                  <MenuItem
+                    className="capitalize"
+                    value={user.result.organizationName}>
                     {user.result.organizationName}
                   </MenuItem>
                 </Select>
@@ -169,6 +171,7 @@ const Main = () => {
                   }>
                   {allOrganizationName?.map((organizationName, idx) => (
                     <MenuItem
+                      className="capitalize"
                       key={idx}
                       value={organizationName.organizationName}>
                       {organizationName.organizationName}
