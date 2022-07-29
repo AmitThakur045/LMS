@@ -249,7 +249,7 @@ export const generateOtp = async (req, res) => {
     const errors = { studentError: String };
     // check if organization exists
     const existingOrganization = await Organization.countDocuments({
-      organizationName: organization,
+      organizationName: organization.toLowerCase(),
     });
 
     if (!existingOrganization) {
@@ -267,7 +267,7 @@ export const generateOtp = async (req, res) => {
 
     // check if email domain is present in organization or not
     const organizationDomain = await Organization.findOne({
-      organizationName: organization,
+      organizationName: organization.toLowerCase(),
     });
 
     const emailDomain = email.split("@")[1];
