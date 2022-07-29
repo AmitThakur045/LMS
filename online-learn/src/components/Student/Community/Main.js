@@ -202,7 +202,7 @@ const Main = ({ threads, error, categories }) => {
           </div>
         </Box>
       </Modal>
-      <div className="absolute bg-white w-full h-full md:flex flex-col sm:my-4 rounded-2xl sm:mr-4 sm:mx-0 sm:px-[3.1rem] px-2 pt-[3rem] ">
+      <div className="absolute bg-white w-full h-full md:flex flex-col sm:my-4 sm:rounded-2xl sm:mr-4 sm:mx-0 sm:px-[3.1rem] px-2 pt-[3rem] ">
         {isMobile && (
           <div className="absolute h-[5rem] justify-end text-black right-4 top-5">
             {isOpen ? (
@@ -216,7 +216,7 @@ const Main = ({ threads, error, categories }) => {
         <div>
           <p className="text-4xl font-bold">Community</p>
         </div>
-        <div className="flex md:flex-row flex-col-reverse space-x-8 space-y-6 h-full">
+        <div className="flex md:flex-row flex-col space-x-8 space-y-6 h-full">
           <div className="flex flex-col flex-[0.68]  p-3 space-y-3">
             <div className="w-auto rounded-3xl shadow-lg p-8 mt-4 space-y-2">
               <div>
