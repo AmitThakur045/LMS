@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import decode from "jwt-decode";
 const Certificate = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,7 +53,7 @@ const Certificate = () => {
     } else {
       dispatch(
         getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
       dispatch(getStudent({ email: user.result.email }));

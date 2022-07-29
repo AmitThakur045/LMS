@@ -33,6 +33,9 @@ const localizer = dateFnsLocalizer({
 
 const LiveClasses = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -75,11 +78,11 @@ const LiveClasses = () => {
     if (JSON.parse(localStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
-      dispatch(getAllEvents({ batchCode: user.result.batchCode }));
+      dispatch(getAllEvents({ batchCode: batchCode }));
 
       dispatch(
         getBatch({
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
     }

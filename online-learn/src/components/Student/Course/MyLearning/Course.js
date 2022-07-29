@@ -11,7 +11,9 @@ import decode from "jwt-decode";
 const Course = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const [index, setIndex] = useState(JSON.parse(localStorage.getItem("index")));
-
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const Course = () => {
       if (index !== null) {
         dispatch(
           getBatchLessonVideoByCourse({
-            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            batchCode: batchCode,
             index: index,
           })
         );

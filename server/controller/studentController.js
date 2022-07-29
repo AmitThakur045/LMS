@@ -138,24 +138,17 @@ export const getAllEvents = async (req, res) => {
   try {
     const { batchCode } = req.body;
 
-    let len = batchCode.length;
-    let data = [];
-
-    for (let i = 0; i < len; i++) {
-      const batch = await Batch.findOne(
-        { batchCode: batchCode[i] },
-        { schedule: 1 }
-      ).populate("schedule");
-      if (batch.schedule.length === 0) {
-        return res.status(404).json({
-          noEventError: "No events found",
-        });
-      }
-      batch.schedule.forEach((element) => {
-        data.push(element);
+    const batch = await Batch.findOne(
+      { batchCode: batchCode },
+      { schedule: 1 }
+    ).populate("schedule");
+    if (batch.schedule.length === 0) {
+      return res.status(404).json({
+        noEventError: "No events found",
       });
     }
-    res.status(200).json(data);
+
+    res.status(200).json(batch.schedule);
   } catch (error) {
     res.status(500).json(error);
   }
