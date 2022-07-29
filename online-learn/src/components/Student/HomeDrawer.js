@@ -12,7 +12,8 @@ import { getBatch } from "../../Redux/actions/adminActions";
 import decode from "jwt-decode";
 import { BsFillPersonFill } from "react-icons/bs";
 
-const isNotActiveStyle = "text-[#555555] flex w-full flex-col items-center px-3";
+const isNotActiveStyle =
+  "text-[#555555] flex w-full flex-col items-center px-3";
 const isActiveStyle =
   "border-r-2 border-white  text-white flex w-full flex-col items-center px-3";
 const useStyles = makeStyles({
@@ -32,7 +33,9 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
-
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
@@ -58,7 +61,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
     } else {
       dispatch(
         getBatch({
-          batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
     }
