@@ -32,6 +32,7 @@ const Main = () => {
 
   return (
     <>
+        {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
       <div
         id="main"
         className="flex bg-white w-full items-center justify-center h-full"
@@ -45,10 +46,9 @@ const Main = () => {
             )}
           </div>
         )}
-        {isOpen && <HomeDrawer isOpen={isOpen} setIsOpen={setIsOpen} />}
-        <h1 className="text-[32px] font-semibold text-[#af2525]">
+        <div className="text-[32px] font-semibold text-[#af2525]">
           Coming Soon...
-        </h1>
+        </div>
       </div>
     </>
   );
