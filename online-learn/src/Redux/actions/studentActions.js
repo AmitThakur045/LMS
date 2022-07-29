@@ -19,6 +19,7 @@ import {
   GET_BATCH_THREAD,
   GET_BATCH_PROBLEM_CATEGORIES,
   RESET_PASSWORD,
+  GET_STUDENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -110,13 +111,13 @@ export const updateLearner = (value, navigate) => async (dispatch) => {
 
 export const resetPasswordStudent = (value) => async (dispatch) => {
   try {
-    const { data } = await api.resetPasswordStudent(value);   
+    const { data } = await api.resetPasswordStudent(value);
     alert("Password Reset Successfully");
-    dispatch({ type: RESET_PASSWORD, payload: true }); 
+    dispatch({ type: RESET_PASSWORD, payload: true });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
-}
+};
 
 export const forgotPassword = (value, navigate) => async (dispatch) => {
   try {
@@ -142,6 +143,14 @@ export const addThread = (formData) => async (dispatch) => {
     const { data } = await api.addThread(formData);
     dispatch({ type: ADD_THREAD, payload: true });
     alert("Thread Added Successfully");
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getStudentData = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getStudentData(formData);
+    dispatch({ type: GET_STUDENT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }

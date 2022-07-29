@@ -56,7 +56,12 @@ const Main = () => {
       }
       dispatch(getCourses(temp1));
       setCurrentCourseCode(batchData.courses[0].courseCode);
-      dispatch(getStudents({ emails: batchData.students }));
+      dispatch(
+        getStudents({
+          emails: batchData.students,
+          batchCode: batchData.batchCode,
+        })
+      );
       setCurrentList(batchData.courses[0].assignment);
     }
   }, [batchData]);

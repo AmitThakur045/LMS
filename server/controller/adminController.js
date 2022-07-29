@@ -17,12 +17,12 @@ import { sendMail } from "../services/sendgrid.js";
 
 // Function to generate OTP
 function generateOTP() {
-  // Declare a digits variable 
+  // Declare a digits variable
   // which stores all digits
-  var digits = '0123456789';
-  let OTP = '';
-  for (let i = 0; i < 4; i++ ) {
-      OTP += digits[Math.floor(Math.random() * 10)];
+  var digits = "0123456789";
+  let OTP = "";
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
   }
   return OTP;
 }
@@ -466,6 +466,7 @@ export const addStudentInBatch = async (req, res) => {
         student.attendance.push({
           courseCode: batch.courses[j].courseCode,
           attended: 0,
+          batchCode: batchCode,
         });
       }
       var d = Date(Date.now());
@@ -765,13 +766,22 @@ export const getCourses = async (req, res) => {
 };
 export const getStudents = async (req, res) => {
   try {
-    const { emails } = req.body;
+    const { emails, batchCode } = req.body;
 
     const errors = { noStudentError: String };
     const studentsData = [];
     for (let i = 0; i < emails.length; i++) {
       let email = emails[i];
-      const temp = await Student.findOne({ email });
+      const student = await Student.findOne({ email }).populate("assignment");
+      let temp = student;
+      let attendanceData = temp.attendance.filter((att) => {
+        return att.batchCode === batchCode;
+      });
+      temp.attendance = attendanceData;
+      let assignmentData = temp.assignment.filter((ass) => {
+        return ass.batchCode === batchCode;
+      });
+      temp.assignment = assignmentData;
       studentsData.push(temp);
     }
     if (studentsData.length === 0) {
@@ -919,7 +929,11 @@ export const addBatch = async (req, res) => {
             student.batchCode.push(batchCode);
           }
           for (let j = 0; j < courses.length; j++) {
-            student.attendance.push({ courseCode: courses[j], attended: 0 });
+            student.attendance.push({
+              courseCode: courses[j],
+              attended: 0,
+              batchCode: batchCode,
+            });
           }
           stu.push(students[i][0]);
           var d = Date(Date.now());

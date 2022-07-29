@@ -11,6 +11,9 @@ import NoBatch from "./NoBatch";
 const Home = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
   const navigate = useNavigate();
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.student.courseList);
@@ -57,12 +60,12 @@ const Home = () => {
       } else {
         dispatch(
           getCourseByBatchCode({
-            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            batchCode: batchCode,
           })
         );
         dispatch(
           getBatch({
-            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            batchCode: batchCode,
           })
         );
       }

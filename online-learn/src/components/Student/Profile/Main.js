@@ -44,7 +44,14 @@ const style = {
   p: 4,
 };
 
-const Main = ({ courseList, learner, batch, noBatch }) => {
+const Main = ({
+  courseList,
+  learner,
+  batch,
+  noBatch,
+  currBatch,
+  setCurrBatch,
+}) => {
   const user = JSON.parse(localStorage.getItem("learner"));
   let otpValue = useSelector((state) => state.student.otp);
   const store = useSelector((state) => state);
@@ -195,16 +202,14 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
         open={resetPasswordModal}
         onClose={handleResetPasswordClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Update Password</h1>
               <div
                 onClick={handleResetPasswordClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -264,8 +269,7 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Update
               </Button>
               {loading && <Spinner message="Updating Password" />}
@@ -284,8 +288,7 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
         open={otpModal}
         onClose={() => setOtpModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
             <div className="flex  items-center justify-center font-bold text-center">
@@ -310,8 +313,7 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit"
-              >
+                type="submit">
                 Submit
               </button>
             </div>
@@ -417,10 +419,10 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
                       type="text"
                       size="small"
                       id="outlined-basic"
-                      label="Active Batch Code"
+                      label="Current Batch Code"
                       variant="outlined"
                       className="bg-white w-full"
-                      value={learner.batchCode[learner.batchCode.length - 1]}
+                      value={currBatch}
                     />
                   )}
                 </div>
@@ -486,16 +488,14 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
                 <div className="absolute self-center bottom-0 flex flex-row space-x-3">
                   <Link
                     to="/profile/updateprofile"
-                    className="font-medium bottom-0 bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md"
-                  >
+                    className="font-medium bottom-0 bg-red-600 hover:bg-red-700 duration-150 transition-all text-white px-2 py-1 rounded-md">
                     Update
                   </Link>
                   <div
                     onClick={() => {
                       handleResetPasswordOpen();
                     }}
-                    className="font-medium bottom-0 bg-green-600 hover:cursor-pointer hover:bg-green-700 duration-150 transition-all text-white px-2 py-1 rounded-md"
-                  >
+                    className="font-medium bottom-0 bg-green-600 hover:cursor-pointer hover:bg-green-700 duration-150 transition-all text-white px-2 py-1 rounded-md">
                     Reset Password
                   </div>
                 </div>
@@ -541,8 +541,7 @@ const Main = ({ courseList, learner, batch, noBatch }) => {
                     {learner.batchCode?.map((batch, idx) => (
                       <div
                         key={batch}
-                        className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all"
-                      >
+                        className="flex items-center justify-between cursor-pointer px-4 hover:bg-slate-100 duration-150 transition-all">
                         <div className="flex items-center space-x-4">
                           <p className="bg-[#D5F8F9] h-[25px] w-[25px] flex items-center justify-center text-[12px] text-[#6F6EA5]">
                             B

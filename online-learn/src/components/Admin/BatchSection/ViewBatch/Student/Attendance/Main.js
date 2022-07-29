@@ -50,7 +50,9 @@ const Main = () => {
     if (Object.keys(batch).length !== 0) {
       setBatchData(batch);
 
-      dispatch(getStudents({ emails: batch.students }));
+      dispatch(
+        getStudents({ emails: batch.students, batchCode: batch.batchCode })
+      );
       dispatch(
         getEventByCourseCode({
           batchCode: batch.batchCode,
