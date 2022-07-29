@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import HomeSidebar from "../HomeSidebar";
 import Main from "./Main";
 import Loader from "../../../Utils/Loader";
-import { getCourseByBatchCode } from "../../../Redux/actions/studentActions";
+import {
+  getCourseByBatchCode,
+  getStudentData,
+} from "../../../Redux/actions/studentActions";
 import { getBatch, getStudent } from "../../../Redux/actions/adminActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +14,14 @@ import { SET_ERRORS } from "../../../Redux/actionTypes";
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const [currBatch, setCurrBatch] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const navigate = useNavigate();
   const courses = useSelector((state) => state.student.courseList);
   const student = useSelector((state) => state.admin.student);
@@ -66,23 +75,27 @@ const Profile = () => {
       navigate("/login");
     } else {
       dispatch({ type: SET_ERRORS, payload: {} });
-      dispatch(getStudent({ email: user.result.email }));
       if (user.result.batchCode.length !== 0) {
         dispatch(
+          getStudentData({ email: user.result.email, batchCode: batchCode })
+        );
+        dispatch(
           getCourseByBatchCode({
-            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            batchCode: batchCode,
           })
         );
         dispatch(
           getBatch({
-            batchCode: user.result.batchCode[user.result.batchCode.length - 1],
+            batchCode: batchCode,
           })
         );
       } else {
+        dispatch(getStudent({ email: user.result.email }));
         setNoBatch(true);
       }
     }
   }, []);
+
   return (
     <>
       {isLoading ? (
@@ -98,6 +111,7 @@ const Profile = () => {
               learner={learner}
               batch={batch}
               noBatch={noBatch}
+              currBatch={batchCode}
             />
           )}
         </div>

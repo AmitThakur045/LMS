@@ -51,6 +51,7 @@ const studentSchema = new Schema({
   ],
   attendance: [
     {
+      batchCode: { type: String },
       courseCode: { type: String },
       attended: { type: Number },
     },

@@ -19,6 +19,7 @@ import {
   addProblemCategory,
   getProblemCategories,
   deleteProblemCategory,
+  getStudentData,
 } from "../controller/studentController.js";
 const router = express.Router();
 
@@ -40,4 +41,5 @@ router.post("/addproblemcategory", addProblemCategory);
 router.post("/deleteproblemcategory", deleteProblemCategory);
 router.post("/getthreads", getThreads);
 router.post("/getproblemcategories", getProblemCategories);
+router.post("/getstudentdata", getStudentData);
 export default router;

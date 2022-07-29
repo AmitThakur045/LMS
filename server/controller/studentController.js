@@ -48,12 +48,12 @@ function calPerformance(assignment, totalAssignment) {
 
 // Function to generate OTP
 function generateOTP() {
-  // Declare a digits variable 
+  // Declare a digits variable
   // which stores all digits
-  var digits = '0123456789';
-  let OTP = '';
-  for (let i = 0; i < 4; i++ ) {
-      OTP += digits[Math.floor(Math.random() * 10)];
+  var digits = "0123456789";
+  let OTP = "";
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
   }
   return OTP;
 }
@@ -112,6 +112,7 @@ export const studentLogin = async (req, res) => {
 export const getCourseByBatchCode = async (req, res) => {
   try {
     const { batchCode } = req.body;
+
     const courseCodeList = await Batch.findOne(
       { batchCode },
       { courses: 1 }
@@ -223,6 +224,7 @@ export const submitAssignment = async (req, res) => {
       }
       if (!flag) {
         const studentAssignment = new StudentAssignment({
+          batchCode: assignment.batchCode,
           assignmentCode: assignmentCode,
           studentAnswer: studentAnswer,
           checkedAssignment: "",
@@ -767,6 +769,27 @@ export const getProblemCategories = async (req, res) => {
 
       res.status(200).json(community.problemCategories);
     }
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+
+export const getStudentData = async (req, res) => {
+  try {
+    const { email, batchCode } = req.body;
+
+    const student = await Student.findOne({ email }).populate("assignment");
+    let temp = student;
+    let attendanceData = temp.attendance.filter((att) => {
+      return att.batchCode === batchCode;
+    });
+    temp.attendance = attendanceData;
+    let assignmentData = temp.assignment.filter((ass) => {
+      return ass.batchCode === batchCode;
+    });
+    temp.assignment = assignmentData;
+
+    res.status(200).json(temp);
   } catch (error) {
     console.log("Backend Error", error);
   }

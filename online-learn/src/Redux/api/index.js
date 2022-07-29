@@ -135,6 +135,8 @@ export const generateOtpForPasswordReset = (formData) =>
   API.post("/api/student/generateotpforpasswordreset", formData);
 export const addThread = (formData) =>
   API.post("/api/student/addthread", formData);
+export const getStudentData = (formData) =>
+  API.post("/api/student/getstudentdata", formData);
 export const addThreadReply = (formData) =>
   API.post("/api/student/addthreadreply", formData);
 export const addProblemCategory = (formData) =>

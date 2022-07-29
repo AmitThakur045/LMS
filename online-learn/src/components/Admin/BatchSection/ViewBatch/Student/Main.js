@@ -68,6 +68,7 @@ const Main = () => {
   const students = useSelector((state) => state.admin.students);
   const courses = useSelector((state) => state.admin.courses);
   const [batchData, setBatchData] = useState({});
+  console.log(courses);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
@@ -90,7 +91,9 @@ const Main = () => {
         temp.push(batch.courses[i].courseCode);
       }
       dispatch(getCourses(temp));
-      dispatch(getStudents({ emails: batch.students }));
+      dispatch(
+        getStudents({ emails: batch.students, batchCode: batch.batchCode })
+      );
       dispatch(totalAssignment({ batchCode: batch.batchCode }));
     }
   }, [batch]);
@@ -115,6 +118,7 @@ const Main = () => {
   }, [courses]);
   useEffect(() => {
     if (students.length !== 0) {
+      console.log(students);
       setStudentsData(students);
       if (courses.length !== 0 && totalAssignments.length !== -1) {
         setIsLoading(false);
@@ -145,7 +149,7 @@ const Main = () => {
       if (store.admin.studentAdded) {
         let temp = batchData.students;
         temp.push(studentEmail);
-        dispatch(getStudents({ emails: temp }));
+        dispatch(getStudents({ emails: temp, batchCode: batch.batchCode }));
         dispatch({ type: SET_ERRORS, payload: {} });
         setError({});
         dispatch({ type: ADD_STUDENT, payload: false });
@@ -229,6 +233,7 @@ const Main = () => {
   function calCourseWiseAttendance(courseCode, attended) {
     let total = 0;
     total = courses.find((course) => course.courseCode === courseCode);
+
     return Math.round((attended / total.totalLectures) * 100);
   }
   const handleSearch = (event) => {
