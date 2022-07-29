@@ -46,14 +46,16 @@ const studentReducer = (state = initialState, action) => {
     case STUDENT_LOGIN:
       localStorage.setItem("user", JSON.stringify({ ...action?.data }));
       localStorage.setItem("learner", JSON.stringify({ ...action?.data }));
-      localStorage.setItem(
-        "batchCode",
-        JSON.stringify(
-          action?.data.result.batchCode[
-            action?.data.result.batchCode.length - 1
-          ]
-        )
-      );
+      if (action.data.result.batchCode.length !== 0) {
+        localStorage.setItem(
+          "batchCode",
+          JSON.stringify(
+            action?.data?.result?.batchCode[
+              action?.data?.result?.batchCode?.length - 1
+            ]
+          )
+        );
+      }
       return { ...state, authData: action?.data };
     case LOGOUT:
       localStorage.clear();
