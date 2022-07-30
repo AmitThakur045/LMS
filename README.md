@@ -241,68 +241,74 @@ Short Explanation of all the available options on the Student Side
 
 #### Course
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `Course` | Click on any course to view its content |
-| `Course Image with Progress` | Click on course image with progress to view Course Panel |
+<a href="./Docs-Images/Student_Course.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Course` | Click on any course to view its content |<a href="./Docs-Images/Student_Course_View.JPG">Preview</a>
+| `Course Image with Progress` | Click on course image with progress to view Course Panel |<a href="./Docs-Images/Student_Course_Course_Panel.JPG">Preview</a>
 
 #### Community
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `New Thread` | Create a new Thread |
+<a href="./Docs-Images/Student_Community.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `New Thread` | Create a new Thread |<a href="./Docs-Images/Student_Community_New_Thread.JPG">Preview</a>
 
 #### Profile
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `Update` | Update the user data |
-| `Reset Password` | Change the password of the user with OTP verification |
+<a href="./Docs-Images/Student_Profile.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Update` | Update the user data | <a href="./Docs-Images/Student_Profile_Update.JPG">Preview</a>
+| `Reset Password` | Change the password of the user with OTP verification | <a href="./Docs-Images/Student_Profile_Reset_Password.JPG">Preview</a>
+
+#### Change Batch
+
+<a href="./Docs-Images/Student_Change_Batch.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Change Batch` | Choose batch |
 
 #### Course Panel
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
+|     Option     | Description                                                               | Preview |
+| :------------: | ------------------------------------------------------------------------- | ------- |
 | `Course Panel` | Click on the image with progress of any course to reveal its course panel |
 
 #### Header
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `Community ` | Click on it to get Batch community |
+<a href="./Docs-Images/Student_Course_Header.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Community ` | Click on it to get Batch community |<a href="./Docs-Images/Student_Course_Header_Community.JPG">Preview</a>
 
 #### My Learning
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `Watch Course Lesson Video` | Click on any lesson within a section to view its recorded session if available |
+<a href="./Docs-Images/Student_Course_My_Learning.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Watch Course Lesson Video` | Click on any lesson within a section to view its recorded session if available |<a href="./Docs-Images/Student_Course_My_Learning_Video.JPG">Preview</a>
 
 #### Live Class
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `Join` | Click on any event and join the meet on given time |
+<a href="./Docs-Images/Student_Course_Live_Class.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `Join` | Click on any event and join the meet on given time |<a href="./Docs-Images/Student_Course_Live_Class_Join.JPG">Preview</a>
 
 #### Assignment
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
-| `View Assignment` | Click on any assignment to view its PDF |
-| `Upload` | Upload your answer to an assignment and click submit to submit it|
+<a href="./Docs-Images/Student_Course_Assignment.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
+| `View Assignment` | Click on any assignment to view its PDF |<a href="./Docs-Images/Student_Course_Assignment_View.JPG">Preview</a>
+| `Upload` | Upload your answer to an assignment and click submit to submit it|<a href="./Docs-Images/Student_Course_Assignment_Upload.JPG">Preview</a>
 
 #### Certificate
 
-(https://appwrite.io/docs/client/account)
-| Option | Description |
-| :-------: | ----------------------------------------------- |
+<a href="./Docs-Images/Student_Course_Certificate.JPG">Preview</a>
+| Option | Description | Preview |
+| :-------: | ----------------------------------------------- | ------- |
 | `View Assignment` | Click on any assignment to view your checked marksheet |
 | `Unlock Certificate` | Click on unlock certificate to get your certificate after finishing every assignment |
 
