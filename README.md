@@ -32,8 +32,20 @@ Bessalani-LMS is web based Mern application which aims to provide an educational
 learn new skills.
 
 ## Portals
+
 - [Admin]
 - [Student]
+
+## Admin Portal
+
+### Description
+
+- Types of Admin
+  - Super Admin - Head of All Admins who can perform any action
+  - Sub Admin - Supervisor of an Batch
+  - HR Admin - An Employee of an Organization who can monitor the data of all the batches within its organization
+
+### Work Flow
 
 ## Admin User Interface
 
@@ -41,144 +53,132 @@ Short Explanation of all the available options on the Admin Side
 
 ### Admin Header
 
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Profile`  | See your Profile       |
-| `Add Organization` | Add Organization Name with one or more Custom Domain names |
-| `Reset Password` | Reset your account Password with OTP verification |
-| `Log Out` | Log Out |
+|       Option       | Description                                                | Super Admin | Sub Admin | HR Admin |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- |
+|     `Profile`      | See your Profile                                           | ✅          | ✅        | ✅       |
+| `Add Organization` | Add Organization Name with one or more Custom Domain names | ✅          |           |          |
+|  `Reset Password`  | Reset your account Password with OTP verification          | ✅          | ✅        | ✅       |
+|     `Log Out`      | Log Out                                                    | ✅          | ✅        | ✅       |
 
 ### Dashboard
 
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Graph Filter`  | See all the stats according to an Organization       |
-| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin |
+|     Option      | Description                                                      | Super Admin | Sub Admin | HR Admin |
+| :-------------: | ---------------------------------------------------------------- | ----------- | --------- | -------- |
+| `Graph Filter`  | See all the stats according to an Organization                   | ✅          |           |          |
+| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅          |           |          |
 
 ### Admin
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Quick Search Admin`  | Search an Admin by Email      |
-| `Add Admin` | Add a Super, Sub or HR admin |  
-| `Update Admin` | Update a particular Admin |  
-| `Delete Admin` | Delete a particular Admin | 
-| `View Admin` | View a particular Admin | 
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Quick Search Admin` | Search an Admin by Email | ✅ | ✅ | ✅ |
+| `Add Admin` | Add a Super, Sub or HR admin | ✅ | | |  
+| `Update Admin` | Update a particular Admin | ✅ | ✅ | ✅ |  
+| `Delete Admin` | Delete a particular Admin | ✅ | | |
+| `View Admin` | View a particular Admin | ✅ | ✅ | ✅ |
 
 ### Course
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Quick Search Course`  | Search an Course by Course Code      |
-| `Add Course` | Add a Course |  
-| `View Course` | View a particular Course | 
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Quick Search Course` | Search an Course by Course Code | ✅ | ✅ | ✅ |
+| `Add Course` | Add a Course | ✅ | | |  
+| `View Course` | View a particular Course | ✅ | ✅ | ✅ |
 
 ### Student
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Quick Search Student`  | Search an Student by Email      |
-| `Add Student` | Add a Student |  
-| `Update Student` | Update a particular Student |  
-| `Delete Student` | Delete a particular Student | 
-| `View Student` | View a particular Student |                          |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
+| `Add Student` | Add a Student | ✅ | ✅ | |  
+| `Update Student` | Update a particular Student | ✅ | ✅ | |  
+| `Delete Student` | Delete a particular Student | ✅ | ✅ | |
+| `View Student` | View a particular Student | ✅ | ✅ | ✅ |
 
 ### Batch
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Add Batch` | Add a Batch |  
-| `Search Batch` | Search a Batch |      
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Add Batch` | Add a Batch | ✅ | ✅ | |  
+| `Search Batch` | Search a Batch | ✅ | ✅ | ✅ |
 
 ### Community
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Add Category` | Add a Category |  
-| `Delete Category` | Delete a Category |  
-| `Reply` | Reply to a problem |  
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Add Category` | Add a Category | ✅ | ✅ | |  
+| `Delete Category` | Delete a Category | ✅ | ✅ | |  
+| `Reply` | Reply to a problem | ✅ | ✅ | |
 
 ### View Batch
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches |  
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches | ✅ | ✅ | ✅ |
 
 ### Batch Header
 
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Update Active Status`  | Update Active Status of a batch, Closed or Active        |
-| `Update Batch Admin`  | Update Batch Admin assigned to the Current Batch        |
-| `Log Out` | Log Out |
+|         Option         | Description                                       | Super Admin | Sub Admin | HR Admin |
+| :--------------------: | ------------------------------------------------- | ----------- | --------- | -------- |
+| `Update Active Status` | Update Active Status of a batch, Closed or Active | ✅          | ✅        |          |
+|  `Update Batch Admin`  | Update Batch Admin assigned to the Current Batch  | ✅          | ✅        |          |
+|       `Log Out`        | Log Out                                           | ✅          | ✅        | ✅       |
 
 ### Batch Dashboard
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Graph Filter`  | See all the stats according to a Course       |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Graph Filter` | See all the stats according to a Course | ✅ | ✅ | ✅ |
 
 ### Batch Course
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `View Course`  | View Course Progress      |
-| `Update Course`  | Update Course Progress      |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `View Course` | View Course Progress | ✅ | ✅ | ✅ |
+| `Update Course` | Update Course Progress | ✅ | ✅ | |
 
 ### Batch Date
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Add Schedule`  | Add Schedule of Class      |
-| `Update Batch Link`  | Update Scheduled Class Link      |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Add Schedule` | Add Schedule of Class | ✅ | ✅ | |
+| `Update Batch Link` | Update Scheduled Class Link | ✅ | ✅ | |
 
 ### Batch Student
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Add Student`  | Add a Student in Current Batch      |
-| `Mark Attendance`  | Mark Attendance of Students for each scheduled Classes of all the courses     |
-| `Quick Search Student`  | Search an Student by Email      |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Add Student` | Add a Student in Current Batch | ✅ | ✅ | |
+| `Mark Attendance` | Mark Attendance of Students for each scheduled Classes of all the courses | ✅ | ✅ | |
+| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
 
 ### Batch Assignment
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Select Course`  | Select a Course by Clicking on it      |
-| `Select Assignment`  | Select an Assignment to view the list of Students who have submitted the assignment     |
-| `Upload Review and Score`  | Upload Review by Clicking on the upload option and add Score in the input field      |
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Select Course` | Select a Course by Clicking on it | ✅ | ✅ | ✅ |
+| `Select Assignment` | Select an Assignment to view the list of Students who have submitted the assignment | ✅ | ✅ | ✅ |
+| `Upload Review and Score` | Upload Review by Clicking on the upload option and add Score in the input field | ✅ | ✅ | |
 
 ### Batch Community
 
 (https://appwrite.io/docs/client/account)
-
-| Option  | Description                                     |
-| :-------: | ----------------------------------------------- |
-| `Add Category` | Add a Category |  
-| `Delete Category` | Delete a Category |  
-| `Reply` | Reply to a problem |  
+| Option | Description | Super Admin | Sub Admin | HR Admin |
+| :-------: | ----------------------------------------------- |-----------|-----------|----------|
+| `Add Category` | Add a Category | ✅ | ✅ | |  
+| `Delete Category` | Delete a Category | ✅ | ✅ | |  
+| `Reply` | Reply to a problem | ✅ | ✅ | |
 
 ## Known Issues
 
