@@ -15,10 +15,7 @@ import Assignment from "../models/assignment.js";
 import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
 
-// Function to generate OTP
 function generateOTP() {
-  // Declare a digits variable
-  // which stores all digits
   var digits = "0123456789";
   let OTP = "";
   for (let i = 0; i < 4; i++) {
