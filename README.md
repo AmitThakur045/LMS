@@ -12,7 +12,7 @@ learn new skills.
   
 ## Index
 
-- [What is Bessalani LMS](what-is-bessalani-lms?)
+- [What is Bessalani LMS](what-is-bessalani-lms)
 - [Roadmap](#roadmap)
   - [Client Side](#client-side)
   - [Server Side](#server-side)
