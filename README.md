@@ -86,7 +86,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Admin Header
 
-<a href="./Docs-Images/Admin_Header.JPG">Image</a>
+<a target="_blank" rel="noreferrer" href="./Docs-Images/Admin_Header.JPG">Image</a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- |
 | `Profile` | See your Profile | ✅ | ✅ | ✅ |
