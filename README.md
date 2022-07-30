@@ -12,7 +12,7 @@ learn new skills.
   
 ## Index
 
-- [What is Appwrite](#what-is-appwrite)
+- [What is Bessalani LMS](what-is-bessalani-lms?)
 - [Roadmap](#roadmap)
   - [Client Side](#client-side)
   - [Server Side](#server-side)
@@ -30,6 +30,9 @@ learn new skills.
 
 Bessalani-LMS is web based Mern application which aims to provide an educational platform to educate Students to
 learn new skills.
+
+## Portals
+
 
 ## User Interface
 
