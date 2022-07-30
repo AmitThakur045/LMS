@@ -42,7 +42,7 @@ const style = {
   p: 4,
 };
 const Header = ({ back, nav }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState({});

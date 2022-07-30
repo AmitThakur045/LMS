@@ -8,7 +8,9 @@ import { getBatch, getStudent } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
 import decode from "jwt-decode";
 const Certificate = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
   );
@@ -48,7 +50,7 @@ const Certificate = () => {
         logOut();
       }
     }
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
       dispatch(

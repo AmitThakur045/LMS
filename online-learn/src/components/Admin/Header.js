@@ -49,7 +49,7 @@ const style = {
   p: 4,
 };
 const Header = ({ title, type, nav, back }) => {
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(sessionStorage.getItem("admin"));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [value, setValue] = useState({
@@ -208,15 +208,13 @@ const Header = ({ title, type, nav, back }) => {
     <div
       className={`flex justify-between w-full ${
         back ? "pl-12" : "lg:pl-20 pl-2"
-      }  pr-12 py-10`}
-    >
+      }  pr-12 py-10`}>
       {/* Add Organization Name */}
       <Modal
         open={openOrganizationModal}
         onClose={handleOrganizationModalClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4 ">
             <div className="flex items-center">
@@ -225,8 +223,7 @@ const Header = ({ title, type, nav, back }) => {
               </h1>
               <div
                 onClick={handleOrganizationModalClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -235,8 +232,7 @@ const Header = ({ title, type, nav, back }) => {
             </div>
             <form
               onSubmit={addorganizationname}
-              className="flex flex-col space-y-3  "
-            >
+              className="flex flex-col space-y-3  ">
               <TextField
                 required
                 type="text"
@@ -278,8 +274,7 @@ const Header = ({ title, type, nav, back }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Add
               </Button>
               {loading && <Spinner message="Adding Organization Name" />}
@@ -298,16 +293,14 @@ const Header = ({ title, type, nav, back }) => {
         open={resetPasswordModal}
         onClose={handleResetPasswordClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="flex flex-col space-y-4">
             <div className="flex items-center">
               <h1 className="self-center w-[95%] font-bold">Update Password</h1>
               <div
                 onClick={handleResetPasswordClose}
-                className="self-end cursor-pointer w-[5%]"
-              >
+                className="self-end cursor-pointer w-[5%]">
                 <AiOutlineCloseCircle
                   className="text-gray-400 hover:text-gray-500 duration-150 transition-all"
                   fontSize={23}
@@ -367,8 +360,7 @@ const Header = ({ title, type, nav, back }) => {
                 type="submit"
                 className=""
                 variant="contained"
-                color="primary"
-              >
+                color="primary">
                 Update
               </Button>
               {loading && <Spinner message="Updating Password" />}
@@ -387,8 +379,7 @@ const Header = ({ title, type, nav, back }) => {
         open={otpModal}
         onClose={() => setOtpModal(false)}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <form onSubmit={checkOtp} className="w-full flex flex-col space-y-5">
             <div className="flex  items-center justify-center font-bold text-center">
@@ -413,8 +404,7 @@ const Header = ({ title, type, nav, back }) => {
             <div className="w-full flex flex-row justify-center mt-5">
               <button
                 className="self-end bg-[#FB6C3A] h-[2rem] text-white w-[10rem] rounded-md text-[17px] hover:bg-[#e54e17] transition-all duration-150"
-                type="submit"
-              >
+                type="submit">
                 Submit
               </button>
             </div>
@@ -482,8 +472,7 @@ const Header = ({ title, type, nav, back }) => {
             <div
               onClick={(event) => handleClick(event)}
               className="object-cover cursor-pointer bg-[#f48320] text-white items-center flex justify-center w-[1.8rem] h-[1.8rem]"
-              alt=""
-            >
+              alt="">
               {user.result.firstName.slice(0, 1)}
             </div>
             <Menu
@@ -493,30 +482,26 @@ const Header = ({ title, type, nav, back }) => {
               onClose={handleClose}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
-              }}
-            >
+              }}>
               <MenuItem
                 onClick={() => {
                   dispatch({ type: GET_ADMIN, payload: user.result });
                   navigate("/admin/admin/viewadmin");
-                }}
-              >
+                }}>
                 Profile
               </MenuItem>
               {user.result.sub === "false" && (
                 <MenuItem
                   onClick={() => {
                     handleOrganizationModalOpen();
-                  }}
-                >
+                  }}>
                   Add Organization Name
                 </MenuItem>
               )}
               <MenuItem
                 onClick={() => {
                   handleResetPasswordOpen();
-                }}
-              >
+                }}>
                 Reset Password
               </MenuItem>
               <MenuItem onClick={logout}>Log Out</MenuItem>

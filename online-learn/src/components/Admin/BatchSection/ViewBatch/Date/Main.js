@@ -59,7 +59,7 @@ const style = {
 };
 
 const Main = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);

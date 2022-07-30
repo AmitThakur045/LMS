@@ -14,7 +14,9 @@ import {
 } from "../../../../Redux/actions/studentActions";
 
 const StudentBatchCommunity = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ const StudentBatchCommunity = () => {
         logOut();
       }
     }
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
       dispatch(

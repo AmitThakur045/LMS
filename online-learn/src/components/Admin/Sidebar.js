@@ -16,7 +16,7 @@ const isActiveStyle =
   "flex justify-between items-center w-[75%] text-[#5C5892] bg-white px-5 h-[3.5rem] rounded-md";
 
 const Sidebar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {
@@ -32,11 +32,11 @@ const Sidebar = () => {
         logout();
       }
     }
-    setUser(JSON.parse(localStorage.getItem("admin")));
+    setUser(JSON.parse(sessionStorage.getItem("admin")));
   }, []);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("admin")) === null) {
+    if (JSON.parse(sessionStorage.getItem("admin")) === null) {
       navigate("/admin/login");
     }
   }, []);

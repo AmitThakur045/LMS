@@ -14,7 +14,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_THREAD_REPLY } from "../../../Redux/actionTypes";
 const SingleThread = ({ problem, index }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
   const colors = ["#abc43c", "#c65123", "#1b8d34", "#1b4c8d", "#4a1b8d"];
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();

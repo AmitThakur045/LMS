@@ -13,7 +13,9 @@ import decode from "jwt-decode";
 import { SET_ERRORS } from "../../../Redux/actionTypes";
 
 const Profile = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
   );
@@ -71,7 +73,7 @@ const Profile = () => {
         logOut();
       }
     }
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
       dispatch({ type: SET_ERRORS, payload: {} });

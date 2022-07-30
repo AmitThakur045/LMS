@@ -34,7 +34,9 @@ const CourseSidebar = () => {
     window.addEventListener("resize", handleResize);
   });
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");

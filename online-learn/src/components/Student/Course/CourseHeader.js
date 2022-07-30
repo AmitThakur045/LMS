@@ -31,7 +31,7 @@ const style = {
   p: 4,
 };
 const CourseHeader = ({ batchData }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("learner")));
 
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);

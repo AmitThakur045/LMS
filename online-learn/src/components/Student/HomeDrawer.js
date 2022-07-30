@@ -54,7 +54,7 @@ const HomeDrawer = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("learner")));
 
   const [openChangeBatchModal, setOpenChangeBatchModal] = useState(false);
   const [batchCode, setBatchCode] = useState("");

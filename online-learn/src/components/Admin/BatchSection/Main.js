@@ -31,7 +31,7 @@ const style = {
 const Main = () => {
   const dispatch = useDispatch();
   const [selectedBatch, setSelectedBatch] = useState("");
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(sessionStorage.getItem("admin"));
 
   const allBatches = useSelector((state) => state.admin.allBatch);
   const batch = useSelector((state) => state.admin.batch);

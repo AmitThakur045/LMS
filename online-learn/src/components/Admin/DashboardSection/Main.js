@@ -25,7 +25,7 @@ import PieChart from "../../../Utils/PieChart";
 import Spinner from "../../../Utils/Spinner";
 
 const Main = () => {
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(sessionStorage.getItem("admin"));
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState({});

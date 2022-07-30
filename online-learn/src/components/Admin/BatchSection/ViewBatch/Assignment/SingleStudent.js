@@ -15,7 +15,7 @@ import { ADD_SCORE, GET_PRESIGNED_URL } from "../../../../../Redux/actionTypes";
 import { getPresignedUrl } from "../../../../../Redux/actions/awsActions";
 
 const SingleStudent = ({ item, index, currentEmail }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
 
   const inputRef = useRef(null);
   const dispatch = useDispatch();

@@ -13,7 +13,7 @@ import Spinner from "../../Utils/Spinner";
 
 const ActiveBatch = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(sessionStorage.getItem("admin"));
   const store = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
   const allBatches = useSelector((state) => state.admin.allBatch);

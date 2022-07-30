@@ -36,7 +36,7 @@ const style = {
 };
 
 const CourseList = ({ currentList, courseCode }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
 
   const inputRef = useRef(null);
   const dispatch = useDispatch();

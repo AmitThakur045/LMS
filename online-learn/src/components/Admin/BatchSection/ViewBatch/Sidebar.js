@@ -17,7 +17,7 @@ const isActiveStyle =
   "flex justify-between items-center w-[75%] text-[#5C5892] bg-white px-5 h-[3.5rem] rounded-md";
 
 const Sidebar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
   );
@@ -46,7 +46,7 @@ const Sidebar = () => {
   }, []);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("admin")) === null) {
+    if (JSON.parse(sessionStorage.getItem("admin")) === null) {
       navigate("/admin/login");
     }
   }, []);
@@ -61,8 +61,7 @@ const Sidebar = () => {
             to="/admin/batch/viewbatch"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <AiOutlineAppstore fontSize={20} />
               <p className="text-[12px]">
@@ -75,8 +74,7 @@ const Sidebar = () => {
             to="/admin/batch/course"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <RiAdminLine fontSize={20} />
               <p className="text-[12px]">Course</p>
@@ -87,8 +85,7 @@ const Sidebar = () => {
             to="/admin/batch/date"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <AiOutlineCalendar fontSize={20} />
               <p className="text-[12px]">Date</p>
@@ -99,8 +96,7 @@ const Sidebar = () => {
             to="/admin/batch/student"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <VscLibrary fontSize={20} />
               <p className="text-[12px]">Student</p>
@@ -111,8 +107,7 @@ const Sidebar = () => {
             to="/admin/batch/assignment"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <BsPerson fontSize={20} />
               <p className="text-[12px]">Assignment</p>
@@ -123,8 +118,7 @@ const Sidebar = () => {
             to="/admin/batch/community"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }
-          >
+            }>
             <div className="flex items-center space-x-2">
               <HiOutlineUserGroup fontSize={20} />
               <p className="text-[12px]">Community</p>

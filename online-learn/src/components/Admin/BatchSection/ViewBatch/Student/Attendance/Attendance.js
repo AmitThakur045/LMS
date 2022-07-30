@@ -4,7 +4,7 @@ import Sidebar from "../../Sidebar";
 import Main from "./Main";
 
 const Attendance = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
   return (
     <div className="h-screen w-full bg-[#ffffff] flex overflow-hidden">
       <div className="lg:flex-[0.15] flex-[0.25] h-screen">

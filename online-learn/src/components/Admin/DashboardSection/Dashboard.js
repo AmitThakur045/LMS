@@ -7,7 +7,7 @@ import Main from "./Main";
 import Loader from "../../../Utils/Loader";
 
 const Dashboard = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
 
   return (
     <div className="flex h-screen w-full bg-[#ffffff] overflow-hidden">

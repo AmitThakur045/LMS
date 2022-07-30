@@ -3,9 +3,9 @@ import axios from "axios";
 const API = axios.create({ baseURL: "http://localhost:5000/" });
 // const API = axios.create({ baseURL: "https://bessalani-lms.herokuapp.com/" });
 API.interceptors.request.use((req) => {
-  if (localStorage.getItem("user")) {
+  if (sessionStorage.getItem("user")) {
     req.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("user")).token
+      JSON.parse(sessionStorage.getItem("user")).token
     }`;
   }
   return req;

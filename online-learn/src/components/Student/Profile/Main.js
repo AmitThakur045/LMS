@@ -52,7 +52,7 @@ const Main = ({
   currBatch,
   setCurrBatch,
 }) => {
-  const user = JSON.parse(localStorage.getItem("learner"));
+  const user = JSON.parse(sessionStorage.getItem("learner"));
   let otpValue = useSelector((state) => state.student.otp);
   const store = useSelector((state) => state);
 

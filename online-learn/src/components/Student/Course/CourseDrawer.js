@@ -35,7 +35,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("learner")));
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate("/login");
@@ -57,7 +57,7 @@ const CourseDrawer = ({ isOpen, setIsOpen }) => {
   }, []);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     }
   }, []);

@@ -38,7 +38,7 @@ const style = {
 const HomeSidebar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("learner")));
   const [openChangeBatchModal, setOpenChangeBatchModal] = useState(false);
   const [batchCode, setBatchCode] = useState("");
 

@@ -41,7 +41,9 @@ const style = {
 };
 
 const StudentBatchCommunityMain = ({ threads, error, categories }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const colors = ["#abc43c", "#c65123", "#1b8d34", "#1b4c8d", "#4a1b8d"];
   const store = useSelector((state) => state);
   const dispatch = useDispatch();

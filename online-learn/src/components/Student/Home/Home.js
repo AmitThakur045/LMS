@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NoBatch from "./NoBatch";
 const Home = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const navigate = useNavigate();
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
@@ -51,7 +53,7 @@ const Home = () => {
         logOut();
       }
     }
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
       if (user.result.batchCode.length === 0) {

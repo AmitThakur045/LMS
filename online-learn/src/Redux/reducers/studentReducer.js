@@ -44,8 +44,8 @@ const initialState = {
 const studentReducer = (state = initialState, action) => {
   switch (action.type) {
     case STUDENT_LOGIN:
-      localStorage.setItem("user", JSON.stringify({ ...action?.data }));
-      localStorage.setItem("learner", JSON.stringify({ ...action?.data }));
+      sessionStorage.setItem("user", JSON.stringify({ ...action?.data }));
+      sessionStorage.setItem("learner", JSON.stringify({ ...action?.data }));
       if (action.data.result.batchCode.length !== 0) {
         localStorage.setItem(
           "batchCode",

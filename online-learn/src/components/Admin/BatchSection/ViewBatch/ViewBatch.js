@@ -5,7 +5,7 @@ import Main from "./Dashboard/Main";
 import Header from "./Header";
 
 const ViewBatch = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("admin")));
 
   return (
     <>

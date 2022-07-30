@@ -10,7 +10,9 @@ const CertificateMain = ({ allAssignment }) => {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
 
   const [selectedPdf, setSelectedPdf] = useState("");
   useEffect(() => {

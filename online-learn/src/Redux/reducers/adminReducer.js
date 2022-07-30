@@ -107,8 +107,8 @@ const initialState = {
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADMIN_LOGIN:
-      localStorage.setItem("user", JSON.stringify({ ...action?.data }));
-      localStorage.setItem("admin", JSON.stringify({ ...action?.data }));
+      sessionStorage.setItem("user", JSON.stringify({ ...action?.data }));
+      sessionStorage.setItem("admin", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action?.data };
     case LOGOUT:
       localStorage.clear();

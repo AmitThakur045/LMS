@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { getBatchLessonVideoByCourse } from "../../../../Redux/actions/studentActions";
 import decode from "jwt-decode";
 const Course = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const [index, setIndex] = useState(JSON.parse(localStorage.getItem("index")));
   const [batchCode, setBatchCode] = useState(
     JSON.parse(localStorage.getItem("batchCode"))
@@ -38,7 +40,7 @@ const Course = () => {
         logOut();
       }
     }
-    if (JSON.parse(localStorage.getItem("learner")) === null) {
+    if (JSON.parse(sessionStorage.getItem("learner")) === null) {
       navigate("/login");
     } else {
       if (index !== null) {

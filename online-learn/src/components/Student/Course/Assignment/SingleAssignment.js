@@ -8,12 +8,14 @@ import {
   SUBMIT_ASSIGNMENT,
 } from "../../../../Redux/actionTypes";
 const SingleAssignment = ({ data, i, setSelectedPdf, setIsOpen, isOpen }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("learner")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("learner"))
+  );
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
   const s3PresignedUrl = store.aws.presignedUrl;
   const [currPdf, setCurrPdf] = useState({});
-  const learner = JSON.parse(localStorage.getItem("learner"));
+  const learner = JSON.parse(sessionStorage.getItem("learner"));
   const [value, setValue] = useState("");
   const [isSelected, setIsSelected] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -115,7 +115,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               className="rounded-[20px]  hover:bg-[#f53c1c] bg-[#ff4b2b] text-white text-[12px] font-bold py-[12px] px-[45px] uppercase transition-all duration-[80ms]">
-              Login In
+              Log In
             </button>
 
             {loading && (
@@ -163,7 +163,7 @@ const AdminLogin = () => {
                     onClick={() => setAnimate(false)}
                     className="rounded-full border-[1px] border-white px-4 py-1 hover:bg-[#ff4b2b] "
                     id="signIn">
-                    Login In
+                    Log In
                   </button>
                 </div>
               </div>
