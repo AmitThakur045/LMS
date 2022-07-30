@@ -12,19 +12,42 @@ learn new skills.
   
 ## Index
 
+- [Built With](#built-with)
 - [What is Bessalani LMS](#what-is-bessalani-lms)
-- [Roadmap](#roadmap)
-  - [Client Side](#client-side)
-  - [Server Side](#server-side)
-- [Rest API Snippets](#rest-api-snippets)
-  - [Client](#client)
-  - [Account](#account)
-  - [Databases](#databases)
-  - [Storage](#storage)
-  - [Teams](#teams)
+- [Portals](#portals)
+  - [Admin](#admin)
+  - [Student](#student)
+- [Admin Portal](#admin-portal)
+  - [Description](#description)
+  - [Work Flow](#work-flow)
+  - [Admin User Interface](#admin-user-interface)
+    - [Admin Header](#admin-header)
+    - [Dashboard](#dashboard)
+    - [Admin](#admin)
+    - [Course](#course)
+    - [Student](#student)
+    - [Batch](#batch)
+    - [Community](#community)
+    - [View Batch](#view-batch)
+    - [Batch Header](#batch-header)
+    - [Batch Dashboard](#batch-dashboard)
+    - [Batch Course](#batch-course)
+    - [Batch Date](#batch-date)
+    - [Batch Student](#batch-student)
+    - [Batch Assignment](#batch-assignment)
+    - [Batch Community](#batch-community)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [License](#license)
+
+## Built With
+
+- [![React][react.js]][react-url]
+- [![Tailwind CSS][tailwind.css]][tailwindcss-url]
+- [![Node.js][node.js]][node-url]
+- [![Express][express.js]][express-url]
+- [![MongoDB][mongodb]][mongodb-url]
+- [![Amazon S3][amazon-s3]][amazon-s3-url]
 
 ## What is Bessalani LMS?
 
@@ -33,8 +56,8 @@ learn new skills.
 
 ## Portals
 
-- [Admin]
-- [Student]
+- [Admin](#admin)
+- [Student](#student)
 
 ## Admin Portal
 
@@ -47,11 +70,21 @@ learn new skills.
 
 ### Work Flow
 
-## Admin User Interface
+- Add Admin
+
+  1. Add an organization if it doesn't exist
+  2. Add Admin in that organization
+
+- Add Batch
+  1. Add an organization if it doesn't exist
+  2. Add Batch in that organization
+  3. Update the Batch Admin to any Sub Admin (Optional)
+
+### Admin User Interface
 
 Short Explanation of all the available options on the Admin Side
 
-### Admin Header
+#### Admin Header
 
 |       Option       | Description                                                | Super Admin | Sub Admin | HR Admin |
 | :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- |
@@ -60,14 +93,14 @@ Short Explanation of all the available options on the Admin Side
 |  `Reset Password`  | Reset your account Password with OTP verification          | ✅          | ✅        | ✅       |
 |     `Log Out`      | Log Out                                                    | ✅          | ✅        | ✅       |
 
-### Dashboard
+#### Dashboard
 
 |     Option      | Description                                                      | Super Admin | Sub Admin | HR Admin |
 | :-------------: | ---------------------------------------------------------------- | ----------- | --------- | -------- |
 | `Graph Filter`  | See all the stats according to an Organization                   | ✅          |           |          |
 | `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅          |           |          |
 
-### Admin
+#### Admin
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -78,7 +111,7 @@ Short Explanation of all the available options on the Admin Side
 | `Delete Admin` | Delete a particular Admin | ✅ | | |
 | `View Admin` | View a particular Admin | ✅ | ✅ | ✅ |
 
-### Course
+#### Course
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -87,7 +120,7 @@ Short Explanation of all the available options on the Admin Side
 | `Add Course` | Add a Course | ✅ | | |  
 | `View Course` | View a particular Course | ✅ | ✅ | ✅ |
 
-### Student
+#### Student
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -98,7 +131,7 @@ Short Explanation of all the available options on the Admin Side
 | `Delete Student` | Delete a particular Student | ✅ | ✅ | |
 | `View Student` | View a particular Student | ✅ | ✅ | ✅ |
 
-### Batch
+#### Batch
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -106,7 +139,7 @@ Short Explanation of all the available options on the Admin Side
 | `Add Batch` | Add a Batch | ✅ | ✅ | |  
 | `Search Batch` | Search a Batch | ✅ | ✅ | ✅ |
 
-### Community
+#### Community
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -115,14 +148,14 @@ Short Explanation of all the available options on the Admin Side
 | `Delete Category` | Delete a Category | ✅ | ✅ | |  
 | `Reply` | Reply to a problem | ✅ | ✅ | |
 
-### View Batch
+#### View Batch
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches | ✅ | ✅ | ✅ |
 
-### Batch Header
+#### Batch Header
 
 |         Option         | Description                                       | Super Admin | Sub Admin | HR Admin |
 | :--------------------: | ------------------------------------------------- | ----------- | --------- | -------- |
@@ -130,14 +163,14 @@ Short Explanation of all the available options on the Admin Side
 |  `Update Batch Admin`  | Update Batch Admin assigned to the Current Batch  | ✅          | ✅        |          |
 |       `Log Out`        | Log Out                                           | ✅          | ✅        | ✅       |
 
-### Batch Dashboard
+#### Batch Dashboard
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Graph Filter` | See all the stats according to a Course | ✅ | ✅ | ✅ |
 
-### Batch Course
+#### Batch Course
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -145,7 +178,7 @@ Short Explanation of all the available options on the Admin Side
 | `View Course` | View Course Progress | ✅ | ✅ | ✅ |
 | `Update Course` | Update Course Progress | ✅ | ✅ | |
 
-### Batch Date
+#### Batch Date
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -153,7 +186,7 @@ Short Explanation of all the available options on the Admin Side
 | `Add Schedule` | Add Schedule of Class | ✅ | ✅ | |
 | `Update Batch Link` | Update Scheduled Class Link | ✅ | ✅ | |
 
-### Batch Student
+#### Batch Student
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -162,7 +195,7 @@ Short Explanation of all the available options on the Admin Side
 | `Mark Attendance` | Mark Attendance of Students for each scheduled Classes of all the courses | ✅ | ✅ | |
 | `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
 
-### Batch Assignment
+#### Batch Assignment
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -171,7 +204,7 @@ Short Explanation of all the available options on the Admin Side
 | `Select Assignment` | Select an Assignment to view the list of Students who have submitted the assignment | ✅ | ✅ | ✅ |
 | `Upload Review and Score` | Upload Review by Clicking on the upload option and add Score in the input field | ✅ | ✅ | |
 
-### Batch Community
+#### Batch Community
 
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
@@ -179,6 +212,95 @@ Short Explanation of all the available options on the Admin Side
 | `Add Category` | Add a Category | ✅ | ✅ | |  
 | `Delete Category` | Delete a Category | ✅ | ✅ | |  
 | `Reply` | Reply to a problem | ✅ | ✅ | |
+
+## Student Portal
+
+### Description
+
+- The Student Portal is a web application that allows students to view the progress of their courses and to submit assignments.
+
+### Work Flow
+
+    1. Login to the Student Portal
+    2. Click on the Profile to view the profile of the student.
+    3. Select a Course by clicking on its image to redirect to the contents of that Course
+    4. Click on any lesson of a section to view it's video if available
+    5. Click on the Live Class to view the scheduled classes
+    6. Click on the Assignments to view the list of assignments of the course. Upload and submit the assignment.
+    7. Click on the Certificate to view the list of all the submitted assignment and unlock the given certificate if available.
+    7. Click on the Community to view the list of problems and replies. Click on new Thread to create a new problem.
+    8. Logout
+
+### Student User Interface
+
+Short Explanation of all the available options on the Student Side
+
+#### Course
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Course` | Click on any course to view its content |
+| `Course Image with Progress` | Click on course image with progress to view Course Panel |
+
+#### Community
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `New Thread` | Create a new Thread |
+
+#### Profile
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Update` | Update the user data |
+| `Reset Password` | Change the password of the user with OTP verification |
+
+#### Course Panel
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Course Panel` | Click on the image with progress of any course to reveal its course panel |
+
+#### Header
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Community ` | Click on it to get Batch community |
+
+#### My Learning
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Watch Course Lesson Video` | Click on any lesson within a section to view its recorded session if available |
+
+#### Live Class
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `Join` | Click on any event and join the meet on given time |
+
+#### Assignment
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `View Assignment` | Click on any assignment to view its PDF |
+| `Upload` | Upload your answer to an assignment and click submit to submit it|
+
+#### Certificate
+
+(https://appwrite.io/docs/client/account)
+| Option | Description |
+| :-------: | ----------------------------------------------- |
+| `View Assignment` | Click on any assignment to view your checked marksheet |
+| `Unlock Certificate` | Click on unlock certificate to get your certificate after finishing every assignment |
 
 ## Known Issues
 
@@ -195,3 +317,18 @@ Please adhere to this project's [Code of Conduct](CODE_OF_CONDUCT.md).
 ## License
 
 This project is MIT licensed. See [`LICENSE`](LICENSE) for more details
+
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[react.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[react-url]: https://reactjs.org/
+[tailwind.css]: https://img.shields.io/badge/Tailwind-20232A?style=for-the-badge&logo=tailwindcss&logoColor=61DAFB
+[tailwindcss-url]: https://tailwindcss.com/
+[node.js]: https://img.shields.io/badge/Node-20232A?style=for-the-badge&logo=nodedotjs&logoColor=68A063
+[node-url]: https://nodejs.org/
+[express.js]: https://img.shields.io/badge/Express-20232A?style=for-the-badge&logo=express&logoColor=68A063
+[express-url]: https://expressjs.com/
+[mongodb]: https://img.shields.io/badge/MongoDB-20232A?style=for-the-badge&logo=mongodb&logoColor=68A063
+[mongodb-url]: https://www.mongodb.com/
+[amazon-s3]: https://img.shields.io/badge/AmazonS3-20232A?style=for-the-badge&logo=amazons3&logoColor=FF9900
+[amazon-s3-url]: https://aws.amazon.com/s3/
