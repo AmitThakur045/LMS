@@ -86,136 +86,136 @@ Short Explanation of all the available options on the Admin Side
 
 #### Admin Header
 
-<a target="_blank" href="./Docs-Images/Admin_Header.JPG">Image</a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- |
-| `Profile` | See your Profile | ✅ | ✅ | ✅ |
-| `Add Organization` | Add Organization Name with one or more Custom Domain names | ✅ | | |
-| `Reset Password` | Reset your account Password with OTP verification | ✅ | ✅ | ✅ |
-| `Log Out` | Log Out | ✅ | ✅ | ✅ |
+<a target="_blank" href="./Docs-Images/Admin_Header.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Profile` | See your Profile | ✅ | ✅ | ✅ | <a target="_blank" href="./Docs-Images/Admin_Header_Profile.JPG">Preview</a>
+| `Add Organization` | Add Organization Name with one or more Custom Domain names | ✅ | | | <a target="_blank" href="./Docs-Images/Admin_Header_Add_Organization.JPG">Preview</a>
+| `Reset Password` | Reset your account Password with OTP verification | ✅ | ✅ | ✅ | <a target="_blank" href="./Docs-Images/Admin_Header_Reset_Password.JPG">Preview</a>
+| `Log Out` | Log Out | ✅ | ✅ | ✅ | <a target="_blank" href="./Docs-Images/Admin_Header_Log_Out.JPG">Preview</a>
 
 #### Dashboard
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------------: | ---------------------------------------------------------------- | ----------- | --------- | -------- |
-| `Graph Filter` | See all the stats according to an Organization | ✅ | | |
-| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅ | | |
+<a href="./Docs Images/Admin_Dashboard_1.JPG">Preview 1</a>
+<a href="./Docs Images/Admin_Dashboard_2.JPG">Preview2</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Graph Filter` | See all the stats according to an Organization | ✅ | | | <a target="_blank" href="./Docs-Images/Admin_Dashboard_Filter.JPG">Preview</a>
+| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅ | | | <a target="_blank" href="./Docs-Images/Admin_Dashboard_Student_Query.JPG">Preview</a>
 
 #### Admin
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Quick Search Admin` | Search an Admin by Email | ✅ | ✅ | ✅ |
-| `Add Admin` | Add a Super, Sub or HR admin | ✅ | | |  
-| `Update Admin` | Update a particular Admin | ✅ | ✅ | ✅ |  
-| `Delete Admin` | Delete a particular Admin | ✅ | | |
-| `View Admin` | View a particular Admin | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Admin.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Quick Search Admin` | Search an Admin by Email | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Admin_Search.JPG">Preview</a>
+| `Add Admin` | Add a Super, Sub or HR admin | ✅ | | | <a target="_blank" href="./Docs-Images/Admin_Admin_Create.JPG">Preview</a>
+| `Update Admin` | Update a particular Admin | ✅ | ✅ | ✅ | <a target="_blank" href="./Docs-Images/Admin_Admin_Update.JPG">Preview</a>
+| `Delete Admin` | Delete a particular Admin | ✅ | | |<a target="_blank" href="./Docs-Images/Admin_Admin_Delete.JPG">Preview</a>
+| `View Admin` | View a particular Admin | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Admin_View.JPG">Preview</a>
 
 #### Course
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Quick Search Course` | Search an Course by Course Code | ✅ | ✅ | ✅ |
-| `Add Course` | Add a Course | ✅ | | |  
-| `View Course` | View a particular Course | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Course.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Quick Search Course` | Search an Course by Course Code | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Course_Search.JPG">Preview</a>
+| `Add Course` | Add a Course | ✅ | | | <a target="_blank" href="./Docs-Images/Admin_Course_Create.JPG">Preview</a>
+| `View Course` | View a particular Course | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Course_View.JPG">Preview</a>
 
 #### Student
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
-| `Add Student` | Add a Student | ✅ | ✅ | |  
-| `Update Student` | Update a particular Student | ✅ | ✅ | |  
-| `Delete Student` | Delete a particular Student | ✅ | ✅ | |
-| `View Student` | View a particular Student | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Student.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Student_Search.JPG">Preview</a>
+| `Add Student` | Add a Student | ✅ | ✅ | | <a target="_blank" href="./Docs-Images/Admin_Student_Create.JPG">Preview</a>
+| `Update Student` | Update a particular Student | ✅ | ✅ | | <a target="_blank" href="./Docs-Images/Admin_Student_Update.JPG">Preview</a>
+| `Delete Student` | Delete a particular Student | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Student_Delete.JPG">Preview</a>
+| `View Student` | View a particular Student | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Student_View.JPG">Preview</a>
 
 #### Batch
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Batch` | Add a Batch | ✅ | ✅ | |  
-| `Search Batch` | Search a Batch | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Batch.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Add Batch` | Add a Batch | ✅ | ✅ | | <a target="_blank" href="./Docs-Images/Admin_Batch_Add.JPG">Preview</a>
+| `Search Batch` | Search a Batch | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Search.JPG">Preview</a>
 
 #### Community
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Category` | Add a Category | ✅ | ✅ | |  
-| `Delete Category` | Delete a Category | ✅ | ✅ | |  
-| `Reply` | Reply to a problem | ✅ | ✅ | |
+<a href="./Docs Images/Admin_Community.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Add Category` | Add a Category | ✅ | ✅ | | <a target="_blank" href="./Docs-Images/Admin_Community_Category_Add.JPG">Preview</a>
+| `Delete Category` | Delete a Category | ✅ | ✅ | | <a target="_blank" href="./Docs-Images/Admin_Community_Category_Delete.JPG">Preview</a>
+| `Reply` | Reply to a problem | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Community_Reply.JPG">Preview</a>
 
 #### View Batch
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches | ✅ | ✅ | ✅ |
+|    Option    | Description                                                                                          | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------: | ---------------------------------------------------------------------------------------------------- | ----------- | --------- | -------- | ------- |
+| `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches | ✅          | ✅        | ✅       |
 
 #### Batch Header
 
-|         Option         | Description                                       | Super Admin | Sub Admin | HR Admin |
-| :--------------------: | ------------------------------------------------- | ----------- | --------- | -------- |
-| `Update Active Status` | Update Active Status of a batch, Closed or Active | ✅          | ✅        |          |
-|  `Update Batch Admin`  | Update Batch Admin assigned to the Current Batch  | ✅          | ✅        |          |
-|       `Log Out`        | Log Out                                           | ✅          | ✅        | ✅       |
+<a href="./Docs Images/Admin_Batch_Header.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :--------------------: | ------------------------------------------------- | ----------- | --------- | -------- | ------- |
+| `Update Active Status` | Update Active Status of a batch, Closed or Active | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Header_Update_Active_Status.JPG">Preview</a>
+| `Update Batch Admin` | Update Batch Admin assigned to the Current Batch | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Header_Update_Batch_Admin.JPG">Preview</a>
+| `Log Out` | Log Out | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Header_Log_Out.JPG">Preview</a>
 
 #### Batch Dashboard
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Graph Filter` | See all the stats according to a Course | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Batch_Dashboard.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Graph Filter` | See all the stats according to a Course | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Dashboard_Filter.JPG">Preview</a>
 
 #### Batch Course
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `View Course` | View Course Progress | ✅ | ✅ | ✅ |
-| `Update Course` | Update Course Progress | ✅ | ✅ | |
+<a href="./Docs Images/Admin_Batch_Course.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `View Course` | View Course Progress | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Course_View.JPG">Preview</a>
+| `Update Course` | Update Course Progress | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Course_Update.JPG">Preview</a>
 
 #### Batch Date
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Schedule` | Add Schedule of Class | ✅ | ✅ | |
-| `Update Batch Link` | Update Scheduled Class Link | ✅ | ✅ | |
+<a href="./Docs Images/Admin_Batch_Date.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Add Schedule` | Add Schedule of Class | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Date_Add_Event.JPG">Preview</a>
+| `Update Batch Link` | Update Scheduled Class Link | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Date_Update_Batch_Link.JPG">Preview</a>
 
 #### Batch Student
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Student` | Add a Student in Current Batch | ✅ | ✅ |
-| `Mark Attendance` | Mark Attendance of Students for each scheduled Classes of all the courses | ✅ | ✅ | |
-| `View Student` | View Student's stats by clicking on any student | ✅ | ✅ | |
-| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
+<a href="./Docs Images/Admin_Batch_Student.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Add Student` | Add a Student in Current Batch | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Student_Add.JPG">Preview</a>
+| `Mark Attendance` | Mark Attendance of Students for each scheduled Classes of all the courses | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Student_Mark_Attendance.JPG">Preview</a>
+| `View Student` | View Student's stats by clicking on any student | ✅ | ✅ | |<a target="_blank" href="./Docs-Images/Admin_Batch_Student_View.JPG">Preview</a>
+| `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |<a target="_blank" href="./Docs-Images/Admin_Batch_Student_Search.JPG">Preview</a>
 
 #### Batch Assignment
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Select Course` | Select a Course by Clicking on it | ✅ | ✅ | ✅ |
-| `Create Assignment` | Add an Assignment | ✅ | ✅ | |
-| `Select Assignment` | Select an Assignment to view the list of Students who have submitted the assignment | ✅ | ✅ | ✅ |
-| `Upload Review and Score` | Upload Review by Clicking on the upload option and add Score in the input field | ✅ | ✅ | |
+<a href="./Docs Images/Admin_Batch_Assignment.JPG">Preview</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin | Preview |
+| :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- | ------ |
+| `Select Course` | Select a Course by Clicking on it | ✅ | ✅ | ✅ |<a href="./Docs Images/Admin_Batch_Assignment_Select_Course.JPG">Preview</a>
+| `Create Assignment` | Add an Assignment | ✅ | ✅ | |<a href="./Docs Images/Admin_Batch_Assignment_Create.JPG">Preview</a>
+| `Select Assignment` | Select an Assignment to view the list of Students who have submitted the assignment | ✅ | ✅ | ✅ |<a href="./Docs Images/Admin_Batch_Assignment_Select_Assignment.JPG">Preview</a>
+| `Upload Review and Score` | Upload Review by Clicking on the upload option and add Score in the input field | ✅ | ✅ | |<a href="./Docs Images/Admin_Batch_Assignment_Upload_Score.JPG">Preview</a>
 
 #### Batch Community
 
-<a href="./Docs Images/"></a>
-| Option | Description | Super Admin | Sub Admin | HR Admin |
-| :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Category` | Add a Category | ✅ | ✅ | |  
-| `Delete Category` | Delete a Category | ✅ | ✅ | |  
-| `Reply` | Reply to a problem | ✅ | ✅ | |
+|      Option       | Description        | Super Admin | Sub Admin | HR Admin | Preview |
+| :---------------: | ------------------ | ----------- | --------- | -------- | ------- |
+|  `Add Category`   | Add a Category     | ✅          | ✅        |          |
+| `Delete Category` | Delete a Category  | ✅          | ✅        |          |
+|      `Reply`      | Reply to a problem | ✅          | ✅        |          |
 
 ## Student Portal
 
