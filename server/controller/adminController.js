@@ -764,7 +764,7 @@ export const getAllCourse = async (req, res) => {
     console.log("Backend Error", error);
   }
 };
-// get all courses in database
+// get courses by  in database
 export const getCourseByOrganizationName = async (req, res) => {
   try {
     const { organizationName } = req.body;
@@ -772,6 +772,40 @@ export const getCourseByOrganizationName = async (req, res) => {
     let courses = [];
     const batches = await Batch.find(
       { organizationName: organizationName },
+      { courses: 1 }
+    ).populate("courses", "courseCode");
+    for (let i = 0; i < batches.length; i++) {
+      for (let j = 0; j < batches[i].courses.length; j++) {
+        const course = await Course.findOne({
+          courseCode: batches[i].courses[j].courseCode,
+        });
+        if (course) {
+          courses.push(course);
+        }
+      }
+    }
+
+    const errors = { courseError: String };
+
+    // if no course found return error
+    if (courses.length === 0) {
+      errors.courseError = "No Course Found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json(courses);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
+// get all courses in database
+export const getCourseBySubAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    // find all courses in the database
+    let courses = [];
+    const batches = await Batch.find(
+      { subAdmin: email },
       { courses: 1 }
     ).populate("courses", "courseCode");
     for (let i = 0; i < batches.length; i++) {
@@ -1854,14 +1888,11 @@ export const getAdminDashboardDataBySubAdmin = async (req, res) => {
       attendances: [],
       batchStrength: [],
     };
-    const courses = await Course.countDocuments();
-    if (courses) {
-      data.totalCourses = courses;
-    }
+
     // find all the batches for the given subadmin
     const batches = await Batch.find(
       { subAdmin: email },
-      { batchCode: 1, students: 1 }
+      { batchCode: 1, students: 1, courses: 1 }
     );
 
     // if batches exist
@@ -1870,6 +1901,7 @@ export const getAdminDashboardDataBySubAdmin = async (req, res) => {
       data.totalBatches = batches.length;
       let temp = [];
       for (let i = 0; i < batches.length; i++) {
+        data.totalCourses += batches[i].courses.length;
         // add the batch code and no of student in that batch
         data.batchStrength.push({
           batchCode: batches[i].batchCode,
@@ -1983,15 +2015,10 @@ export const getAdminDashboardDataByOrganizationName = async (req, res) => {
       batchStrength: [],
     };
 
-    // need to update
-    const courses = await Course.countDocuments();
-    if (courses) {
-      data.totalCourses = courses;
-    }
     // find all the batches for the given organization
     const batches = await Batch.find(
       { organizationName },
-      { batchCode: 1, students: 1 }
+      { batchCode: 1, students: 1, courses: 1 }
     );
 
     // if batches exist
@@ -2000,6 +2027,7 @@ export const getAdminDashboardDataByOrganizationName = async (req, res) => {
       data.totalBatches = batches.length;
       let temp = [];
       for (let i = 0; i < batches.length; i++) {
+        data.totalCourses += batches[i].courses.length;
         // add the batch code and no of student in that batch
         data.batchStrength.push({
           batchCode: batches[i].batchCode,

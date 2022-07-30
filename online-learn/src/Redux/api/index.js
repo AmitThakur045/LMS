@@ -100,6 +100,8 @@ export const getAdminDashboardDataBySubAdmin = (formData) =>
   API.post("/api/admin/getadmindashboarddatabysubadmin", formData);
 export const getCourseByOrganizationName = (formData) =>
   API.post("/api/admin/getcoursebyorganizationname", formData);
+export const getCourseBySubAdmin = (formData) =>
+  API.post("/api/admin/getcoursebysubadmin", formData);
 export const getAdminDashboardDataByOrganizationName = (formData) =>
   API.post("/api/admin/getadmindashboarddatabyorganizationname", formData);
 export const getAllAdminDashboardData = () =>

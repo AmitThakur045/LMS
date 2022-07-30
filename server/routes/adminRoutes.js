@@ -61,6 +61,7 @@ import {
   generateOtpForPasswordResetAdmin,
   forgotPasswordAdmin,
   getCourseByOrganizationName,
+  getCourseBySubAdmin,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -134,6 +135,7 @@ router.post(
   getAdminDashboardDataBySubAdmin
 );
 router.post("/getcoursebyorganizationname", auth, getCourseByOrganizationName);
+router.post("/getcoursebysubadmin", auth, getCourseBySubAdmin);
 router.post(
   "/getadmindashboarddatabyorganizationname",
   auth,

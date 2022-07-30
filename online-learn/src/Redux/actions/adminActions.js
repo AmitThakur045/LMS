@@ -561,6 +561,14 @@ export const getCourseByOrganizationName = (formData) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
+export const getCourseBySubAdmin = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getCourseBySubAdmin(formData);
+    dispatch({ type: GET_ALL_COURSE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const getAdminDashboardDataByOrganizationName =
   (formData) => async (dispatch) => {
     try {
