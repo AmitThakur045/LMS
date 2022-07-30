@@ -17,6 +17,9 @@ const StudentBatchCommunity = () => {
   const [user, setUser] = useState(
     JSON.parse(sessionStorage.getItem("learner"))
   );
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -80,19 +83,19 @@ const StudentBatchCommunity = () => {
     } else {
       dispatch(
         getBatch({
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
       dispatch(
         getThreads({
           communityType: "Batch",
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
       dispatch(
         getProblemCategories({
           communityType: "Batch",
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
     }

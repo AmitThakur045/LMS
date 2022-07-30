@@ -13,6 +13,9 @@ const Course = () => {
   const [user, setUser] = useState(
     JSON.parse(sessionStorage.getItem("learner"))
   );
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +42,7 @@ const Course = () => {
     if (Object.keys(batch).length !== 0) {
       dispatch(
         getAssignmentByBatchCode({
-          batchCode: user.result.batchCode[0],
+          batchCode: batch.batchCode,
           courseCode: batch.courses[index].courseCode,
         })
       );
@@ -63,7 +66,7 @@ const Course = () => {
     } else {
       dispatch(
         getBatch({
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
     }

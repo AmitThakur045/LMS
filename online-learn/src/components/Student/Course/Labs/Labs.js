@@ -13,6 +13,9 @@ const Labs = () => {
   const [user, setUser] = useState(
     JSON.parse(sessionStorage.getItem("learner"))
   );
+  const [batchCode, setBatchCode] = useState(
+    JSON.parse(localStorage.getItem("batchCode"))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ const Labs = () => {
     } else {
       dispatch(
         getBatch({
-          batchCode: user?.result.batchCode[user.result.batchCode.length - 1],
+          batchCode: batchCode,
         })
       );
     }
