@@ -10,6 +10,7 @@ import Organization from "../models/organization.js";
 import { sendMail } from "../services/sendgrid.js";
 import StudentAssignment from "../models/studentAssignment.js";
 
+// function to calculate the performance of a student
 function calPerformance(assignment, totalAssignment) {
   let score = 0;
 
@@ -58,6 +59,7 @@ function generateOTP() {
   return OTP;
 }
 
+// function to provide the facility if login for student
 export const studentLogin = async (req, res) => {
   const { email, password } = req.body;
   const errors = {
@@ -71,6 +73,7 @@ export const studentLogin = async (req, res) => {
       { email },
       { email: 1, firstName: 1, lastName: 1, batchCode: 1, password: 1 }
     );
+    // if email is not found in the database then throw error
     if (!existingStudent) {
       errors.emailError = "Learner doesn't exist.";
       return res.status(404).json(errors);
@@ -79,13 +82,15 @@ export const studentLogin = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(
       password,
       existingStudent.password
-    );
-
+      );
+        
+    // if password is incorrect then throw error
     if (!isPasswordCorrect) {
       errors.passwordError = "Invalid Credentials";
       return res.status(404).json(errors);
     }
 
+    // if email and password is correct then generate token
     const token = jwt.sign(
       {
         email: existingStudent.email,
@@ -109,10 +114,12 @@ export const studentLogin = async (req, res) => {
   }
 };
 
+// get course data by batch code
 export const getCourseByBatchCode = async (req, res) => {
   try {
     const { batchCode } = req.body;
 
+    // find the courses present in given batch code
     const courseCodeList = await Batch.findOne(
       { batchCode },
       { courses: 1 }
@@ -122,6 +129,8 @@ export const getCourseByBatchCode = async (req, res) => {
     let len = courseCodeList.courses.length;
 
     for (let i = 0; i < len; i++) {
+      // find the course details by course code
+      // and push it to the data array
       const course = await Course.findOne({
         courseCode: courseCodeList.courses[i].courseCode,
       });
@@ -134,6 +143,7 @@ export const getCourseByBatchCode = async (req, res) => {
   }
 };
 
+// get all events which are added by subadmin
 export const getAllEvents = async (req, res) => {
   try {
     const { batchCode } = req.body;
@@ -154,6 +164,7 @@ export const getAllEvents = async (req, res) => {
   }
 };
 
+// get all the assignments of a batch using batch code and course code
 export const getAssignmentByBatchCode = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
@@ -163,11 +174,13 @@ export const getAssignmentByBatchCode = async (req, res) => {
     let len = batchCode.length;
     let data = [];
 
+    // find the assignments of a batch using batch code and course code
     const assignment = await Assignment.find({ batchCode, courseCode });
     assignment.forEach((element) => {
       data.push(element);
     });
 
+    // if no assignment is found then throw error
     if (data.length === 0) {
       errors.noAssignmentError = "No Assignment Found";
       return res.status(400).json(errors);
@@ -178,19 +191,25 @@ export const getAssignmentByBatchCode = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+// submit assignment by student
 export const submitAssignment = async (req, res) => {
   try {
     const { assignmentCode, studentAnswer, email } = req.body;
     const assignment = await Assignment.findOne({ assignmentCode });
 
     let flag = false;
+    // if assignments exist 
     if (assignment) {
       for (let i = 0; i < assignment.student.length; i++) {
+        // if the student has already submitted the assignment
         if (assignment.student[i].email === email) {
           flag = true;
           break;
         }
       }
+
+      // if the student has not submitted the assignment
       if (!flag) {
         assignment.student.push({ email: email });
         await assignment.save();
@@ -205,6 +224,7 @@ export const submitAssignment = async (req, res) => {
 
     if (student) {
       for (let i = 0; i < student.assignment.length; i++) {
+        // if the student has already submitted the assignment
         if (student.assignment[i].assignmentCode === assignmentCode) {
           const studentAssignment = await StudentAssignment.findById(
             student.assignment[i]._id
@@ -215,6 +235,7 @@ export const submitAssignment = async (req, res) => {
           break;
         }
       }
+      // if the student has not submitted the assignment
       if (!flag) {
         const studentAssignment = new StudentAssignment({
           batchCode: assignment.batchCode,
@@ -231,8 +252,10 @@ export const submitAssignment = async (req, res) => {
     const assignments = await Assignment.find({
       batchCode: assignment.batchCode,
     });
+    // update the assignment length
     let totalAssignment = assignments.length;
 
+    // calculate the performance 
     const performance = calPerformance(student.assignment, totalAssignment);
     student.performance = performance;
     await student.save();
@@ -243,6 +266,7 @@ export const submitAssignment = async (req, res) => {
   }
 };
 
+// to genrate the otp for the student
 export const generateOtp = async (req, res) => {
   try {
     const { email, organization } = req.body;
@@ -275,6 +299,7 @@ export const generateOtp = async (req, res) => {
 
     let flag = false;
     for (let i = 0; i < organizationEmailList.length; i++) {
+      // if the email domain is present in organization
       if (organizationEmailList[i] == emailDomain) {
         flag = true;
         break;
@@ -303,17 +328,20 @@ export const generateOtp = async (req, res) => {
   }
 };
 
+// to facilitate the student signup 
 export const studentSignUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password, dob } = req.body;
     const errors = { studentError: String };
     const existingStudent = await Student.countDocuments({ email });
 
+    // if student already exists
     if (existingStudent) {
       errors.studentError = "Student already exists";
       return res.status(400).json(errors);
     }
 
+    // hash the password
     let hashedPassword = await bcrypt.hash(password, 10);
 
     const newStudent = await new Student({
@@ -560,6 +588,7 @@ export const addThread = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 export const addThreadReply = async (req, res) => {
   try {
     const { threadId, reply, by } = req.body;
