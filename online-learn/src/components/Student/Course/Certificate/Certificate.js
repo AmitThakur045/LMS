@@ -7,6 +7,7 @@ import Loader from "../../../../Utils/Loader";
 import { getBatch, getStudent } from "../../../../Redux/actions/adminActions";
 import { useNavigate } from "react-router-dom";
 import decode from "jwt-decode";
+import { getStudentData } from "../../../../Redux/actions/studentActions";
 const Certificate = () => {
   const [user, setUser] = useState(
     JSON.parse(sessionStorage.getItem("learner"))
@@ -58,7 +59,9 @@ const Certificate = () => {
           batchCode: batchCode,
         })
       );
-      dispatch(getStudent({ email: user.result.email }));
+      dispatch(
+        getStudentData({ email: user.result.email, batchCode: batchCode })
+      );
     }
   }, []);
 
