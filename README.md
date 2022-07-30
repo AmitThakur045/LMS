@@ -191,8 +191,9 @@ Short Explanation of all the available options on the Admin Side
 (https://appwrite.io/docs/client/account)
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
-| `Add Student` | Add a Student in Current Batch | ✅ | ✅ | |
+| `Add Student` | Add a Student in Current Batch | ✅ | ✅ |
 | `Mark Attendance` | Mark Attendance of Students for each scheduled Classes of all the courses | ✅ | ✅ | |
+| `View Student` | View Student's stats by clicking on any student | ✅ | ✅ | |
 | `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
 
 #### Batch Assignment
@@ -201,6 +202,7 @@ Short Explanation of all the available options on the Admin Side
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Select Course` | Select a Course by Clicking on it | ✅ | ✅ | ✅ |
+| `Create Assignment` | Add an Assignment | ✅ | ✅ | |
 | `Select Assignment` | Select an Assignment to view the list of Students who have submitted the assignment | ✅ | ✅ | ✅ |
 | `Upload Review and Score` | Upload Review by Clicking on the upload option and add Score in the input field | ✅ | ✅ | |
 
@@ -221,7 +223,7 @@ Short Explanation of all the available options on the Admin Side
 
 ### Work Flow
 
-    1. Login to the Student Portal
+    1. Login to the Student Portal. If user is not created, then create a new user by clicking on sign up.
     2. Click on the Profile to view the profile of the student.
     3. Select a Course by clicking on its image to redirect to the contents of that Course
     4. Click on any lesson of a section to view it's video if available
