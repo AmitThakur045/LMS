@@ -14,6 +14,7 @@ import {
 import {
   deleteCourse,
   getAllCourse,
+  getCourseByOrganizationName,
 } from "../../../Redux/actions/adminActions";
 import Spinner from "../../../Utils/Spinner";
 import { Avatar, Box, Menu, MenuItem, Modal } from "@mui/material";
@@ -73,9 +74,17 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAllCourse());
+    if (user.result.sub === "true" || user.result.sub === "hr") {
+      dispatch(
+        getCourseByOrganizationName({
+          organizationName: user.result.organizationName,
+        })
+      );
+    } else {
+      dispatch(getAllCourse());
+    }
     dispatch({ type: DELETE_COURSE, payload: false });
-  }, [store.admin.courseDeleted]);
+  }, []);
 
   const handleSearch = (event) => {
     let value = event.target.value;

@@ -535,7 +535,7 @@ export const addStudentInBatch = async (req, res) => {
       batch.students.push(email);
       await batch.save();
 
-      // set the attendance of the student to 0 for all the courses if the current batch 
+      // set the attendance of the student to 0 for all the courses if the current batch
       // as he is recently added to the batch
       for (let j = 0; j < batch.courses.length; j++) {
         student.attendance.push({
@@ -634,7 +634,7 @@ export const getAllStudentLength = async (req, res) => {
   }
 };
 
-// get all the admin in the database 
+// get all the admin in the database
 export const getAllAdmin = async (req, res) => {
   try {
     const admins = await Admin.find();
@@ -764,6 +764,40 @@ export const getAllCourse = async (req, res) => {
     console.log("Backend Error", error);
   }
 };
+// get all courses in database
+export const getCourseByOrganizationName = async (req, res) => {
+  try {
+    const { organizationName } = req.body;
+    // find all courses in the database
+    let courses = [];
+    const batches = await Batch.find(
+      { organizationName: organizationName },
+      { courses: 1 }
+    ).populate("courses", "courseCode");
+    for (let i = 0; i < batches.length; i++) {
+      for (let j = 0; j < batches[i].courses.length; j++) {
+        const course = await Course.findOne({
+          courseCode: batches[i].courses[j].courseCode,
+        });
+        if (course) {
+          courses.push(course);
+        }
+      }
+    }
+
+    const errors = { courseError: String };
+
+    // if no course found return error
+    if (courses.length === 0) {
+      errors.courseError = "No Course Found";
+      return res.status(400).json(errors);
+    }
+
+    res.status(200).json(courses);
+  } catch (error) {
+    console.log("Backend Error", error);
+  }
+};
 
 // get the count of courses in database
 export const getCoursesLength = async (req, res) => {
@@ -809,7 +843,7 @@ export const addCourse = async (req, res) => {
     } = req.body;
     const errors = { courseCodeError: String };
     const existingCourse = await Course.countDocuments({ courseCode });
-    
+
     // check if the course code is already in the database
     if (existingCourse) {
       errors.courseCodeError = "Course already exists";
@@ -833,7 +867,7 @@ export const addCourse = async (req, res) => {
   }
 };
 
-// get the course using the course code 
+// get the course using the course code
 export const getCourse = async (req, res) => {
   try {
     const { courseCode } = req.body;
@@ -850,7 +884,7 @@ export const getCourse = async (req, res) => {
   }
 };
 
-// get all the courses 
+// get all the courses
 export const getCourses = async (req, res) => {
   try {
     const courses = req.body;
@@ -872,7 +906,7 @@ export const getCourses = async (req, res) => {
       courseData.push(temp);
     }
 
-    // return array of courses 
+    // return array of courses
     res.status(200).json(courseData);
   } catch (error) {
     res.status(500).json(error);
@@ -939,7 +973,7 @@ export const deleteAdmin = async (req, res) => {
     const batches = await Batch.countDocuments({ subAdmin: email });
     const errors = { adminError: String };
 
-    // if given admin is not the subadmin of any active batch then delete it  
+    // if given admin is not the subadmin of any active batch then delete it
     if (batches.length === 0) {
       await Admin.findOneAndDelete({ email });
       res.status(200).json({ message: "Admin Deleted" });
@@ -1324,7 +1358,7 @@ export const addBatchLink = async (req, res) => {
   }
 };
 
-// update the course data in the given batch 
+// update the course data in the given batch
 export const updateCourseData = async (req, res) => {
   try {
     const { lessonVideo, complete, batchCode, courseCode } = req.body;
@@ -1374,7 +1408,7 @@ export const updateCourseData = async (req, res) => {
     if (complete.sectionCompleted !== batchCourse.complete.sectionCompleted) {
       batchCourse.complete.sectionCompleted = complete.sectionCompleted;
     }
-    // update the complete status of the course section 
+    // update the complete status of the course section
     if (complete.lessonCompleted !== batchCourse.complete.lessonCompleted) {
       batchCourse.complete.lessonCompleted = complete.lessonCompleted;
     }
@@ -1437,7 +1471,7 @@ export const getEventByCourseCode = async (req, res) => {
   }
 };
 
-// get attendance 
+// get attendance
 export const getAttendance = async (req, res) => {
   try {
     const { batchCode, courseCode } = req.body;
@@ -1463,7 +1497,7 @@ export const getAttendanceStatus = async (req, res) => {
     let LectureAttended = 0;
     let totalClasses = 0;
 
-    // to find the total classes and lecture attendance 
+    // to find the total classes and lecture attendance
     for (let i = 0; i < attendance.length; i++) {
       if (attendance[i].students.length !== 0) {
         totalClasses++;
@@ -1487,7 +1521,7 @@ export const getAttendanceByBatchCodes = async (req, res) => {
 
     let attendance = [];
     for (let i = 0; i < allBatches.length; i++) {
-      // find the attendance of the given batch 
+      // find the attendance of the given batch
       const attendances = await Attendance.find({
         batchCode: allBatches[i].value,
       });
@@ -1648,7 +1682,7 @@ export const addAssignment = async (req, res) => {
     const existingAssignment = await Assignment.countDocuments({
       assignmentCode,
     });
-    
+
     // check if the assignment code is already in the database
     if (existingAssignment) {
       errors.assignmentCodeError = "Assignment already exists";
@@ -1780,7 +1814,7 @@ export const addScore = async (req, res) => {
       { email },
       { assignment: 1 }
     ).populate("assignment");
-    
+
     // if no student found then return error
     if (student === null) {
       errors.noAssignmentError = "No Student Found";
@@ -1793,7 +1827,7 @@ export const addScore = async (req, res) => {
         const studentAssignment = await StudentAssignment.findById(
           student.assignment[i]._id
         );
-        // update the course 
+        // update the course
         studentAssignment.checkedAssignment = checkedAssignment;
         studentAssignment.score = score;
         await studentAssignment.save();
@@ -1842,7 +1876,7 @@ export const getAdminDashboardDataBySubAdmin = async (req, res) => {
           students: batches[i].students.length,
         });
 
-        // update the total students 
+        // update the total students
         data.totalStudents += batches[i].students.length;
 
         // find the date of joining of the students in the batches[i]
@@ -1949,12 +1983,12 @@ export const getAdminDashboardDataByOrganizationName = async (req, res) => {
       batchStrength: [],
     };
 
-    // need to update 
+    // need to update
     const courses = await Course.countDocuments();
     if (courses) {
       data.totalCourses = courses;
     }
-    // find all the batches for the given organization 
+    // find all the batches for the given organization
     const batches = await Batch.find(
       { organizationName },
       { batchCode: 1, students: 1 }

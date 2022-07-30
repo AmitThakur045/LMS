@@ -59,7 +59,8 @@ import {
   addOrganizationName,
   getBatchLessonVideo,
   generateOtpForPasswordResetAdmin,
-  forgotPasswordAdmin
+  forgotPasswordAdmin,
+  getCourseByOrganizationName,
 } from "../controller/adminController.js";
 const router = express.Router();
 
@@ -132,6 +133,7 @@ router.post(
   auth,
   getAdminDashboardDataBySubAdmin
 );
+router.post("/getcoursebyorganizationname", auth, getCourseByOrganizationName);
 router.post(
   "/getadmindashboarddatabyorganizationname",
   auth,

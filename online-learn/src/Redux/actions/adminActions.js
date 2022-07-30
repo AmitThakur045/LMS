@@ -405,7 +405,7 @@ export const getBatchLessonVideo = (formData) => async (dispatch) => {
 export const getBatchesByBatchCode = (allBatches) => async (dispatch) => {
   try {
     const { data } = await api.getBatchesByBatchCode(allBatches);
- 
+
     dispatch({ type: GET_BATCHES_BY_BATCH_CODE, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
@@ -553,6 +553,14 @@ export const getAdminDashboardDataBySubAdmin =
       dispatch({ type: SET_ERRORS, payload: error.response.data });
     }
   };
+export const getCourseByOrganizationName = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.getCourseByOrganizationName(formData);
+    dispatch({ type: GET_ALL_COURSE, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const getAdminDashboardDataByOrganizationName =
   (formData) => async (dispatch) => {
     try {
