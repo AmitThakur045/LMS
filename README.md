@@ -12,7 +12,7 @@ learn new skills.
   
 ## Index
 
-- [What is Bessalani LMS](what-is-bessalani-lms)
+- [What is Bessalani LMS](#what-is-bessalani-lms)
 - [Roadmap](#roadmap)
   - [Client Side](#client-side)
   - [Server Side](#server-side)
@@ -32,9 +32,10 @@ Bessalani-LMS is web based Mern application which aims to provide an educational
 learn new skills.
 
 ## Portals
+- [Admin]
+- [Student]
 
-
-## User Interface
+## Admin User Interface
 
 Short Explanation of all the available options on the Admin Side
 
