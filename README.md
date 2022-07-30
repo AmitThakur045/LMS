@@ -86,23 +86,25 @@ Short Explanation of all the available options on the Admin Side
 
 #### Admin Header
 
-|       Option       | Description                                                | Super Admin | Sub Admin | HR Admin |
+<a href="./Docs-Images/Admin_Header.JPG">Image</a>
+| Option | Description | Super Admin | Sub Admin | HR Admin |
 | :----------------: | ---------------------------------------------------------- | ----------- | --------- | -------- |
-|     `Profile`      | See your Profile                                           | ✅          | ✅        | ✅       |
-| `Add Organization` | Add Organization Name with one or more Custom Domain names | ✅          |           |          |
-|  `Reset Password`  | Reset your account Password with OTP verification          | ✅          | ✅        | ✅       |
-|     `Log Out`      | Log Out                                                    | ✅          | ✅        | ✅       |
+| `Profile` | See your Profile | ✅ | ✅ | ✅ |
+| `Add Organization` | Add Organization Name with one or more Custom Domain names | ✅ | | |
+| `Reset Password` | Reset your account Password with OTP verification | ✅ | ✅ | ✅ |
+| `Log Out` | Log Out | ✅ | ✅ | ✅ |
 
 #### Dashboard
 
-|     Option      | Description                                                      | Super Admin | Sub Admin | HR Admin |
+<a href="./Docs Images/"></a>
+| Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------------: | ---------------------------------------------------------------- | ----------- | --------- | -------- |
-| `Graph Filter`  | See all the stats according to an Organization                   | ✅          |           |          |
-| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅          |           |          |
+| `Graph Filter` | See all the stats according to an Organization | ✅ | | |
+| `Student Query` | Approve or Decline deletion of a particular student by Sub Admin | ✅ | | |
 
 #### Admin
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Quick Search Admin` | Search an Admin by Email | ✅ | ✅ | ✅ |
@@ -113,7 +115,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Course
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Quick Search Course` | Search an Course by Course Code | ✅ | ✅ | ✅ |
@@ -122,7 +124,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Student
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Quick Search Student` | Search an Student by Email | ✅ | ✅ | ✅ |
@@ -133,7 +135,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Add Batch` | Add a Batch | ✅ | ✅ | |  
@@ -141,7 +143,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Community
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Add Category` | Add a Category | ✅ | ✅ | |  
@@ -150,7 +152,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### View Batch
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `View Batch` | View a Batch either by searching in Search Batch or Clicking on a particular Batch in Active Batches | ✅ | ✅ | ✅ |
@@ -165,14 +167,14 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch Dashboard
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Graph Filter` | See all the stats according to a Course | ✅ | ✅ | ✅ |
 
 #### Batch Course
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `View Course` | View Course Progress | ✅ | ✅ | ✅ |
@@ -180,7 +182,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch Date
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Add Schedule` | Add Schedule of Class | ✅ | ✅ | |
@@ -188,7 +190,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch Student
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Add Student` | Add a Student in Current Batch | ✅ | ✅ |
@@ -198,7 +200,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch Assignment
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Select Course` | Select a Course by Clicking on it | ✅ | ✅ | ✅ |
@@ -208,7 +210,7 @@ Short Explanation of all the available options on the Admin Side
 
 #### Batch Community
 
-(https://appwrite.io/docs/client/account)
+<a href="./Docs Images/"></a>
 | Option | Description | Super Admin | Sub Admin | HR Admin |
 | :-------: | ----------------------------------------------- |-----------|-----------|----------|
 | `Add Category` | Add a Category | ✅ | ✅ | |  
