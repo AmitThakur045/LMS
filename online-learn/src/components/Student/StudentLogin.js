@@ -180,7 +180,7 @@ const StudentLogin = () => {
   console.log(animate);
 
   return (
-    <div className="bg-[#f6f5f7] flex flex-col justify-center items-center h-screen  overflow-hidden">
+    <div className="bg-[#f6f5f7] flex flex-col  items-center h-screen justify-center overflow-hidden">
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
@@ -440,6 +440,13 @@ const StudentLogin = () => {
                 {error.usernameError || error.passwordError || error.batchError}
               </p>
             )}
+            <div className="w-full flex justify-center ">
+              <button
+                className="bg-[#e6e6e6] py-1 px-2 rounded-full mb-1"
+                onClick={() => navigate("/admin/login")}>
+                Admin Login
+              </button>
+            </div>
           </form>
         </div>
         <div
